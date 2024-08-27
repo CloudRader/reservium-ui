@@ -21,15 +21,16 @@ function Login({ onLogin }) {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const code = params.get('code');
+        const state = params.get('state');
 
         if (code) {
-            handleAuthenticationResponse(code);
+            handleAuthenticationResponse(code,state);
         }
     }, [location, onLogin, navigate]);
 
-    const handleAuthenticationResponse = async (code) => {
+    const handleAuthenticationResponse = async (code, state) => {
         try {
-            await sendCodeToServer(code);
+            await sendCodeToServer(code ,state);
 
             const userInfo = await getUserInfo();
 
@@ -41,9 +42,9 @@ function Login({ onLogin }) {
         }
     };
 
-    const sendCodeToServer = async (code) => {
+    const sendCodeToServer = async (code ,state ) => {
         try {
-            await axios.get(`${config.domenServer}/users/callback/auth?code=${code}`);
+            await axios.get(`${config.domenServer}/users/callback?code=${code}&state=${state}`);
         } catch (error) {
             console.error('Error sending code to server:', error);
             throw error;

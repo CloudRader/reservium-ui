@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Header from './Header';
-import StudyRoom from './StudyRoom';
-import ClubRoom from './ClubRoom';
-import Grill from './Grill';
-import Logout from "./Logout";
 import ReservationComponent from "./ReservationComponent";
 import config from "./Config";
 import CreateNewCalendar from "./CreateNewCalendar";
@@ -14,10 +11,8 @@ function RedirectToExternal({ url }) {
     useEffect(() => {
         window.location.href = url;
     }, [url]);
-
-    return null; // Since we are redirecting, there's no need to render anything
+    return null;
 }
-
 
 function Login({ onLogin }) {
     const location = useLocation();
@@ -25,12 +20,37 @@ function Login({ onLogin }) {
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const userNameParam = params.get('username');
-        if (userNameParam) {
-            onLogin(userNameParam);
-            navigate('/'); // Redirect to home page or any other route after login
+        const username = params.get('username');
+        console.log(params);
+        const authToken = params.get('auth_token');
+
+        if (username && authToken) {
+            handleAuthenticationResponse(username, authToken);
         }
     }, [location, onLogin, navigate]);
+
+    const handleAuthenticationResponse = async (username, authToken) => {
+        try {
+            await sendAuthDataToServer( authToken);
+
+            onLogin(username);
+
+            navigate('/');
+        } catch (error) {
+            console.error('Error handling authentication response:', error);
+        }
+    };
+
+    const sendAuthDataToServer = async (authToken) => {
+        try {
+            await axios.post(`${config.domenServer}/users/callback`, {
+                authToken
+            });
+        } catch (error) {
+            console.error('Error sending auth data to server:', error);
+            throw error;
+        }
+    };
 
     return null;
 }
@@ -38,7 +58,6 @@ function Login({ onLogin }) {
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
-    const location = useLocation();
 
     const handleLogin = useCallback((userName) => {
         setIsLoggedIn(true);
@@ -60,7 +79,8 @@ function App() {
         }
     }, []);
 
-    const logintUrl = `${config.domenServer}/users/login`;
+    const loginUrl = `${config.domenServer}/users/login`;
+
     return (
         <div>
             <Header isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />
@@ -68,9 +88,8 @@ function App() {
                 <Route path='/club-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
                 <Route path='/study-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username}  onLogout={handleLogout} roomCalendarLink={config.studyRoomCalendarLink} selectedZone={"stud"}/>} />
                 <Route path='/grill' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.grillCalendarLink} selectedZone={"grill"}/>} />
-                <Route path='/login' element={<RedirectToExternal url={logintUrl} />}/>
-                <Route path='/logined' element={<Login onLogin={handleLogin}  />} />
-                <Route path='/logout' element={<Logout onLogout={handleLogout} />} />
+                <Route path='/login' element={<RedirectToExternal url={loginUrl} />}/>
+                <Route path='/logined' element={<Login onLogin={handleLogin} />} />
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
                 <Route path='/create-new-calendar' element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />} />
                 <Route path='/create-new-miniservice' element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />} />

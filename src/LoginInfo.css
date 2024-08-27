@@ -1,0 +1,10 @@
+.info{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 20px;
+    /*background-color: #bd974f;*/
+}
+.text{
+    margin-top: 3px;
+}

@@ -43,7 +43,7 @@ function Login({ onLogin }) {
 
     const sendCodeToServer = async (code) => {
         try {
-            await axios.get(`${config.backendUrl}/auth?code=${code}`);
+            await axios.get(`${config.backendUrl}/users/callback/auth?code=${code}`);
         } catch (error) {
             console.error('Error sending code to server:', error);
             throw error;

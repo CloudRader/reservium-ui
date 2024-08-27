@@ -20,20 +20,20 @@ function Login({ onLogin }) {
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const username = params.get('username');
-        console.log(params);
-        const authToken = params.get('auth_token');
+        const code = params.get('code');
 
-        if (username && authToken) {
-            handleAuthenticationResponse(username, authToken);
+        if (code) {
+            handleAuthenticationResponse(code);
         }
     }, [location, onLogin, navigate]);
 
-    const handleAuthenticationResponse = async (username, authToken) => {
+    const handleAuthenticationResponse = async (code) => {
         try {
-            await sendAuthDataToServer( authToken);
+            await sendCodeToServer(code);
 
-            onLogin(username);
+            const userInfo = await getUserInfo();
+
+            onLogin(userInfo.username);
 
             navigate('/');
         } catch (error) {
@@ -41,13 +41,21 @@ function Login({ onLogin }) {
         }
     };
 
-    const sendAuthDataToServer = async (authToken) => {
+    const sendCodeToServer = async (code) => {
         try {
-            await axios.post(`${config.domenServer}/users/callback`, {
-                authToken
-            });
+            await axios.post(`${config.backendUrl}/auth`, { code });
         } catch (error) {
-            console.error('Error sending auth data to server:', error);
+            console.error('Error sending code to server:', error);
+            throw error;
+        }
+    };
+
+    const getUserInfo = async () => {
+        try {
+            const response = await axios.get(`${config.backendUrl}/user-info`);
+            return response.data;
+        } catch (error) {
+            console.error('Error getting user info:', error);
             throw error;
         }
     };

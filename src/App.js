@@ -60,6 +60,7 @@ function App() {
         }
     }, []);
 
+    const logintUrl = `${config.domenServer}/users/login`;
     return (
         <div>
             <Header isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />
@@ -67,7 +68,7 @@ function App() {
                 <Route path='/club-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
                 <Route path='/study-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username}  onLogout={handleLogout} roomCalendarLink={config.studyRoomCalendarLink} selectedZone={"stud"}/>} />
                 <Route path='/grill' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.grillCalendarLink} selectedZone={"grill"}/>} />
-                <Route path='/login' element={<RedirectToExternal url="https://rezervace.buk.cvut.cz:8000/auth_is/login" />}/>
+                <Route path='/login' element={<RedirectToExternal url={logintUrl} />}/>
                 <Route path='/logined' element={<Login onLogin={handleLogin}  />} />
                 <Route path='/logout' element={<Logout onLogout={handleLogout} />} />
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />

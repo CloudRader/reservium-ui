@@ -43,7 +43,7 @@ function Login({ onLogin }) {
 
     const sendCodeToServer = async (code) => {
         try {
-            await axios.get(`${config.backendUrl}/users/callback/auth?code=${code}`);
+            await axios.get(`${config.domenServer}/users/callback/auth?code=${code}`);
         } catch (error) {
             console.error('Error sending code to server:', error);
             throw error;
@@ -52,7 +52,7 @@ function Login({ onLogin }) {
 
     const getUserInfo = async () => {
         try {
-            const response = await axios.get(`${config.backendUrl}/user-info`);
+            const response = await axios.get(`${config.domenServer}/user-info`);
             return response.data;
         } catch (error) {
             console.error('Error getting user info:', error);

@@ -6,7 +6,7 @@ import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
 
-const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink, service}) => {
+const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink, services}) => {
     const [options, setOptions] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
@@ -18,20 +18,20 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
 
 
     useEffect(() => {
-        const newOptions = service.reservation_types.map(name => ({value: name, label: name}));
+        const newOptions = services.reservation_types.map(name => ({value: name, label: name}));
         setOptions(newOptions);
         seterrFetchingTypeOfReservations(false); // Reset fetch error if successful response
 
-    }, [service]);
+    }, [services]);
 
     useEffect(() => {
-        if (service.mini_services) {
-            const newAdditionalServices = service.mini_services.map(name => ({value: name, label: name}));
+        if (services.mini_services) {
+            const newAdditionalServices = services.mini_services.map(name => ({value: name, label: name}));
             setAdditionalServices(newAdditionalServices);
             seterrFetchingAdditionalServices(false); // Reset fetch error if successful response
 
         }
-    }, [service]);
+    }, [services]);
 
     const handleTypeChange = (selectedOption) => {
         setSelectedType(selectedOption.value);

@@ -24,26 +24,24 @@ async function getReservationServiceData() {
         // Extract the data from the response
         const data = response.data;
         const result = [];
-        data.calendars.forEach(info => {
+        data.map(info => {
             const tmp = {
+                linkName: info.alias,
                 serviceName: info.name,
-                calendars: []
+                reservation_types: [],
+                mini_services: [],
             };
 
-            // Iterate over the calendars to extract the necessary details
-            info.calendars.forEach(calendar => {
-                // Create an object with the relevant details for each calendar
-                const calendarDetails = {
-                    reservationType: calendar.reservation_type,
-                    hasMiniServices: calendar.mini_services,
-                    name: info.name
-                };
-
-                tmp.calendars.push(calendarDetails);
+            tmp.reservation_types = info.calendars.map(calendar => {
+                console.log(calendar.reservation_type);
+                return calendar.reservation_type;
             });
+            tmp.mini_services = info.mini_services.map(mini_service => {
+                return mini_service.name;
+            });
+
             result.push(tmp);
         })
-
         console.log("result", result);
         return result;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 const Header = ({ username, isLoggedIn, onLogout, services }) => {
-    const location = useLocation();
+    // const location = useLocation();
 
     return (
         <header className="bg-green-100 shadow-md">
@@ -13,21 +13,21 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                             <span className="text-2xl font-bold text-green-800">Buben Club</span>
                         </div>
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                            {/*{services.map((item) => (*/}
-                            {/*    <NavLink*/}
-                            {/*        key={item.name}*/}
-                            {/*        to={item.name}*/}
-                            {/*        className={({ isActive }) =>*/}
-                            {/*            `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${*/}
-                            {/*                isActive*/}
-                            {/*                    ? 'border-green-600 text-green-900'*/}
-                            {/*                    : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'*/}
-                            {/*            }`*/}
-                            {/*        }*/}
-                            {/*    >*/}
-                            {/*        {item.name}*/}
-                            {/*    </NavLink>*/}
-                            {/*))}*/}
+                            {services.map((item) => (
+                                <NavLink
+                                    key={item.linkName}
+                                    to={item.linkName}
+                                    className={({ isActive }) =>
+                                        `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                                            isActive
+                                                ? 'border-green-600 text-green-900'
+                                                : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
+                                        }`
+                                    }
+                                >
+                                   Reserve {item.serviceName}
+                                </NavLink>
+                            ))}
                         </div>
                     </div>
                     <div className="hidden sm:ml-6 sm:flex sm:items-center">

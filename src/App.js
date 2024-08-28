@@ -30,11 +30,11 @@ function Login({ onLogin }) {
 
     const handleAuthenticationResponse = async (code, state) => {
         try {
-            await sendCodeToServer(code ,state);
+            const username = await sendCodeToServer(code ,state);
+            const response = await getUserInfo();
+            const userInfo = { active_member: response.active_member , section_head: response.section_head};
 
-            const userInfo = await getUserInfo();
-
-            onLogin(userInfo.username);
+            onLogin(username,userInfo);
 
             navigate('/');
         } catch (error) {
@@ -42,9 +42,10 @@ function Login({ onLogin }) {
         }
     };
 
-    const sendCodeToServer = async (code ,state ) => {
+    const sendCodeToServer = async (code, state) => {
         try {
-            await axios.get(`${config.domenServer}/users/callback?code=${code}&state=${state}`);
+            const response = await axios.get(`${config.domenServer}/users/callback?code=${code}&state=${state}`);
+            return response.data.username;
         } catch (error) {
             console.error('Error sending code to server:', error);
             throw error;
@@ -53,7 +54,7 @@ function Login({ onLogin }) {
 
     const getUserInfo = async () => {
         try {
-            const response = await axios.get(`${config.domenServer}/user-info`);
+            const response = await axios.get(`${config.domenServer}/users/me`);
             return response.data;
         } catch (error) {
             console.error('Error getting user info:', error);
@@ -67,10 +68,13 @@ function Login({ onLogin }) {
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
+    const [userRoles, setUserRoles] =
+        useState({ active_member: false, section_head: false } );
 
-    const handleLogin = useCallback((userName) => {
+    const handleLogin = useCallback((userName, ) => {
         setIsLoggedIn(true);
         setUsername(userName);
+        set
         localStorage.setItem('userName', userName);
     }, []);
 
@@ -92,7 +96,7 @@ function App() {
 
     return (
         <div>
-            <Header isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />
+            <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={handleLogout} />
             <Routes>
                 <Route path='/club-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
                 <Route path='/study-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username}  onLogout={handleLogout} roomCalendarLink={config.studyRoomCalendarLink} selectedZone={"stud"}/>} />

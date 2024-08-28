@@ -14,12 +14,14 @@ function RedirectToExternal({ url }) {
     return null;
 }
 
+// get a callback
 function Login({ onLogin }) {
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
+        console.log("from is ", params);
         const code = params.get('code');
         const state = params.get('state');
 
@@ -71,10 +73,10 @@ function App() {
     const [userRoles, setUserRoles] =
         useState({ active_member: false, section_head: false } );
 
-    const handleLogin = useCallback((userName, ) => {
+    const handleLogin = useCallback((userName, userRoles) => {
         setIsLoggedIn(true);
         setUsername(userName);
-        set
+        setUserRoles(userRoles)
         localStorage.setItem('userName', userName);
     }, []);
 

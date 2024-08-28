@@ -1,110 +1,59 @@
-import LoginInfo from "./LoginInfo";
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import ReservationForm from "./ReservationForm";
-import LoginButton from "./LoginButton";
-import './Header.css';
 
-
-const Header = ({ username,isLoggedIn, onLogout }) => {
-    // use the useLocation hook to get the current pathname
+const Header = ({ username, isLoggedIn, onLogout, services }) => {
     const location = useLocation();
-    const pathname = location.pathname;
-
-    // use the pathname to determine the selected room
-    const [selectedRoom, setSelectedRoom] = useState(null); // todo Delete
-
-    useEffect(() => { // TODO
-        if (pathname === '/study-room') {
-            setSelectedRoom('Study Room');
-        } else if (pathname === '/club-room' || pathname === '/') {
-            setSelectedRoom('Club Room');
-        } else if (pathname === '/grill') {
-            setSelectedRoom('Grill');
-        } else {
-            setSelectedRoom(null);
-        }
-    }, [pathname]);
-
-    // use a ref to store the header element
-    const headerRef = useRef(null);
-
-
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light header">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <NavLink
-                        to="/club-room"
-                        className={({isActive}) =>
-                            isActive ? "nav-link selected selected-link" : "nav-link"
-                        }
-                    >
-                        Reserve a Club Room
-                    </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        to="/study-room"
-                        className={({isActive}) =>
-                            isActive ? "nav-link selected selected-link" : "nav-link"
-                        }
-                    >
-                        Reserve a Study Room
-                    </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        to="/grill"
-                        className={({isActive}) =>
-                            isActive ? "nav-link selected selected-link" : "nav-link"
-                        }
-                    >
-                        Reserve a Grill
-                    </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        to="/create-new-calendar"
-                        className={({isActive}) =>
-                            isActive ? "nav-link selected selected-link" : "nav-link"
-                        }
-                    >
-                        Create Calendar
-                    </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        to='/create-new-miniservice'
-                        className={({isActive}) =>
-                            isActive ? "nav-link selected selected-link" : "nav-link"
-                        }
-                    >
-                        Create Mini Service
-                    </NavLink>
-                </li>
-            </ul>
-            <div className="log-section">
-                {isLoggedIn ? (
-                    <div className="logout">
-                        <div className="text">Welcome, {username}</div>
-                        <NavLink
-                                to="/logout"
-                                className={({isActive}) =>
-                                    isActive ? "nav-link selected selected-link" : "nav-link"
-                                }>
-                            Log out
-                        </NavLink>
+        <header className="bg-green-100 shadow-md">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <nav className="flex justify-between h-16">
+                    <div className="flex">
+                        <div className="flex-shrink-0 flex items-center">
+                            <span className="text-2xl font-bold text-green-800">Ultra</span>
+                        </div>
+                        <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                            {/*{services.map((item) => (*/}
+                            {/*    <NavLink*/}
+                            {/*        key={item.name}*/}
+                            {/*        to={item.name}*/}
+                            {/*        className={({ isActive }) =>*/}
+                            {/*            `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${*/}
+                            {/*                isActive*/}
+                            {/*                    ? 'border-green-600 text-green-900'*/}
+                            {/*                    : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'*/}
+                            {/*            }`*/}
+                            {/*        }*/}
+                            {/*    >*/}
+                            {/*        {item.name}*/}
+                            {/*    </NavLink>*/}
+                            {/*))}*/}
+                        </div>
                     </div>
-                ) : (
-                    <LoginButton />
-                )}
+                    <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                        {isLoggedIn ? (
+                            <div className="flex items-center space-x-4">
+                                <span className="text-sm font-medium text-green-700">Welcome, {username}</span>
+                                <button
+                                    onClick={onLogout}
+                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                >
+                                    Log out
+                                </button>
+                            </div>
+                        ) : (
+                            <NavLink
+                                to="/login"
+                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                            >
+                                Log in
+                            </NavLink>
+                        )}
+                    </div>
+                </nav>
             </div>
-        </nav>
+        </header>
     );
-
-
 };
 
 export default Header;

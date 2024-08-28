@@ -58,20 +58,20 @@ function Login({ onLogin }) {
 
     const getUserInfo = async () => {
         try {
-            axios.interceptors.request.use(
-                config => {
-                    const token = localStorage.getItem('authToken');
-                    if (token) {
-                        config.headers['Authorization'] = 'Bearer ' + token;
-                    }
-                    return config;
-                },
-                error => {
-                    return Promise.reject(error);
-                }
-            );
+            // axios.interceptors.request.use(
+            //     config => {
+            //         const token = localStorage.getItem('authToken');
+            //         if (token) {
+            //             config.headers['Authorization'] = 'Bearer ' + token;
+            //         }
+            //         return config;
+            //     },
+            //     error => {
+            //         return Promise.reject(error);
+            //     }
+            // );
 
-            const response = await axios.get(`${config.domenServer}я бы мог`);
+            const response = await axios.get(`${config.domenServer}/users/me`);
             return response.data;
         } catch (error) {
             console.error('Error getting user info:', error);

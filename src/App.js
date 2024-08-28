@@ -1,4 +1,4 @@
-import React, {  useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Route, Routes, } from 'react-router-dom';
 import Header from './Header';
 import ReservationComponent from "./ReservationComponent";
@@ -23,30 +23,21 @@ async function getReservationServiceData() {
 
         // Extract the data from the response
         const data = response.data;
-        const result = [];
-        data.map(info => {
-            const tmp = {
+        const result = data.map(info => {
+            return {
                 linkName: info.alias,
                 serviceName: info.name,
-                reservation_types: [],
-                mini_services: [],
+                reservation_types: info.calendars.map(calendar => calendar.reservation_type),
+                mini_services: info.mini_services.map(mini_service => mini_service.name),
             };
+        });
 
-            tmp.reservation_types = info.calendars.map(calendar => {
-                console.log(calendar.reservation_type);
-                return calendar.reservation_type;
-            });
-            tmp.mini_services = info.mini_services.map(mini_service => {
-                return mini_service.name;
-            });
-
-            result.push(tmp);
-        })
         console.log("result", result);
         return result;
 
     } catch (error) {
         console.error('Error fetching reservation service data:', error);
+        return [];
     }
 }
 
@@ -54,7 +45,17 @@ async function getReservationServiceData() {
 function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
     const loginUrl = `${config.domenServer}/users/login`;
-    const services = getReservationServiceData();
+
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const data = await getReservationServiceData();
+            setServices(data);
+        }
+        fetchData();
+    }, []);
+
     return (
         <div>
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={logout} services={services}/>

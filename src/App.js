@@ -7,6 +7,8 @@ import config from "./Config";
 import CreateNewCalendar from "./CreateNewCalendar";
 import CreateNewMiniService from "./CreateNewMiniService";
 
+axios.defaults.withCredentials = true;
+
 function RedirectToExternal({ url }) {
     useEffect(() => {
         window.location.href = url;
@@ -24,7 +26,7 @@ function Login({ onLogin }) {
         console.log("from is ", params);
         const code = params.get('code');
         const state = params.get('state');
-
+        console.log('Cookies:', document.cookie);
         if (code) {
             handleAuthenticationResponse(code,state);
         }
@@ -56,7 +58,20 @@ function Login({ onLogin }) {
 
     const getUserInfo = async () => {
         try {
-            const response = await axios.get(`${config.domenServer}/users/me`);
+            axios.interceptors.request.use(
+                config => {
+                    const token = localStorage.getItem('authToken');
+                    if (token) {
+                        config.headers['Authorization'] = 'Bearer ' + token;
+                    }
+                    return config;
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+
+            const response = await axios.get(`${config.domenServer}я бы мог`);
             return response.data;
         } catch (error) {
             console.error('Error getting user info:', error);

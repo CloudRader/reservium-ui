@@ -18,14 +18,15 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
 
 
     useEffect(() => {
-        const newOptions = services.reservation_types.map(name => ({value: name, label: name}));
-        setOptions(newOptions);
-        seterrFetchingTypeOfReservations(false); // Reset fetch error if successful response
-
+        if (services) {
+            const newOptions = services.reservation_types.map(name => ({value: name, label: name}));
+            setOptions(newOptions);
+            seterrFetchingTypeOfReservations(false); // Reset fetch error if successful response
+        }
     }, [services]);
 
     useEffect(() => {
-        if (services.mini_services) {
+        if (services && services.mini_services) {
             const newAdditionalServices = services.mini_services.map(name => ({value: name, label: name}));
             setAdditionalServices(newAdditionalServices);
             seterrFetchingAdditionalServices(false); // Reset fetch error if successful response
@@ -110,7 +111,7 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
                 options: additionalServices,
             },
         ]);
-    }, [options, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations, service]);
+    }, [options, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations, services]);
 
     const handleSubmit = (formData) => {
         axios.post(config.domenServer + '/events/post/', formData)

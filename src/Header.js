@@ -1,8 +1,7 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Header = ({ username, isLoggedIn, onLogout, services }) => {
-    // const location = useLocation();
 
     return (
         <header className="bg-green-100 shadow-md">
@@ -18,14 +17,14 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                                     key={item.linkName}
                                     to={item.linkName}
                                     className={({ isActive }) =>
-                                        `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                                        `inline-flex items-center px-1 pt-1  text-sm font-medium ${
                                             isActive
                                                 ? 'border-green-600 text-green-900'
                                                 : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
                                         }`
                                     }
                                 >
-                                   Reserve {item.serviceName}
+                                    {item.serviceName}
                                 </NavLink>
                             ))}
                         </div>

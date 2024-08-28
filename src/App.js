@@ -58,19 +58,33 @@ function App() {
 
     return (
         <div>
-            <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={logout} services={services}/>
+            <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={logout} services={services} />
             <Routes>
-                <Route path='/club-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={logout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
-                <Route path='/study-room' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username}  onLogout={logout} roomCalendarLink={config.studyRoomCalendarLink} selectedZone={"stud"}/>} />
-                <Route path='/grill' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={logout} roomCalendarLink={config.grillCalendarLink} selectedZone={"grill"}/>} />
+                {services
+                    .map(service => (
+                        <Route
+                            key={service.linkName}
+                            path={`/${service.linkName}`}
+                            element={
+                                <ReservationComponent
+                                    isLoggedIn={isLoggedIn}
+                                    username={username}
+                                    onLogout={logout}
+                                    roomCalendarLink={config[`${service.linkName}CalendarLink`]} // Используем linkName для динамической подстановки ссылки на календарь
+                                    service={service}
+                                />
+                            }
+                        />
+                    ))}
                 <Route path='/login' element={<RedirectToExternal url={loginUrl} />} />
                 <Route path='/logined' element={<Login />} />
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
-                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={logout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
                 <Route path='/create-new-calendar' element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
                 <Route path='/create-new-miniservice' element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
+                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} username={username} onLogout={logout} roomCalendarLink={config.clubRoomCalendarLink} selectedZone={"klub"} />} />
             </Routes>
         </div>
     );
 }
+
 export default App;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import GoogleCalendar from './GoogleCalendar';
 import ReservationForm from './ReservationForm';
@@ -6,7 +6,7 @@ import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
 
-const ReservationComponent = ({ isLoggedIn, username, onLogout, roomCalendarLink, selectedZone }) => {
+const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink, service}) => {
     const [options, setOptions] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
@@ -18,35 +18,20 @@ const ReservationComponent = ({ isLoggedIn, username, onLogout, roomCalendarLink
 
 
     useEffect(() => {
-        axios.get(`${config.domenServer}/calendars/alias/${selectedZone}`)
-            .then(response => {
-                const data = response.data;
-                const newOptions = data.map(name => ({ value: name, label: name }));
-                setOptions(newOptions);
-                seterrFetchingTypeOfReservations(false); // Reset fetch error if successful response
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                seterrFetchingTypeOfReservations(true);
-            });
-    }, [selectedZone]);
+        const newOptions = service.reservation_types.map(name => ({value: name, label: name}));
+        setOptions(newOptions);
+        seterrFetchingTypeOfReservations(false); // Reset fetch error if successful response
+
+    }, [service]);
 
     useEffect(() => {
-        if (selectedType) {
-            axios.get(`${config.domenServer}/calendars/type/${selectedType}`)
-                .then(response => {
-                    const data = response.data;
-                    const newAdditionalServices = data.map(service => ({ value: service, label: service }));
-                    setAdditionalServices(newAdditionalServices);
-                    seterrFetchingAdditionalServices(false); // Reset fetch error if successful response
-                })
-                .catch(error => {
-                    console.error("Error fetching additional services:", error);
-                    setAdditionalServices([]); // Set additional services to empty array on error
-                    seterrFetchingAdditionalServices(true); // Set fetch error flag
-                });
+        if (service.mini_services) {
+            const newAdditionalServices = service.mini_services.map(name => ({value: name, label: name}));
+            setAdditionalServices(newAdditionalServices);
+            seterrFetchingAdditionalServices(false); // Reset fetch error if successful response
+
         }
-    }, [selectedType]);
+    }, [service]);
 
     const handleTypeChange = (selectedOption) => {
         setSelectedType(selectedOption.value);
@@ -109,7 +94,7 @@ const ReservationComponent = ({ isLoggedIn, username, onLogout, roomCalendarLink
                 labelColor: 'text-primary',
                 validation: (value) => !!value
             },
-            errFetchingTypeOfReservations ? { type: "empty"} : { // Render empty array if there's a fetch error
+            errFetchingTypeOfReservations ? {type: "empty"} : { // Render empty array if there's a fetch error
                 name: 'type',
                 type: 'select',
                 labelText: 'Type of Reservation',
@@ -117,7 +102,7 @@ const ReservationComponent = ({ isLoggedIn, username, onLogout, roomCalendarLink
                 options: options,
                 validation: (value) => !!value
             },
-            errFetchingAdditionalServices ? { type: "empty"} : { // Render empty array if there's a fetch error
+            errFetchingAdditionalServices ? {type: "empty"} : { // Render empty array if there's a fetch error
                 name: 'additionalServices',
                 type: 'checkbox',
                 labelText: 'Additional Services',
@@ -125,7 +110,7 @@ const ReservationComponent = ({ isLoggedIn, username, onLogout, roomCalendarLink
                 options: additionalServices,
             },
         ]);
-    }, [options, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations,selectedZone]);
+    }, [options, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations, service]);
 
     const handleSubmit = (formData) => {
         axios.post(config.domenServer + '/events/post/', formData)
@@ -159,14 +144,15 @@ const ReservationComponent = ({ isLoggedIn, username, onLogout, roomCalendarLink
                 errorMessage === '401' ?
                     (<Logout onLogout={onLogout}/>) :
                     (<>
-                        <ReservationForm formFields={formFields} username={username} onSubmit={handleSubmit} onTypeChange={handleTypeChange} />
+                        <ReservationForm formFields={formFields} username={username} onSubmit={handleSubmit}
+                                         onTypeChange={handleTypeChange}/>
                         {successMessage && <div className="alert alert-success">{successMessage}</div>}
                         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
                     </>)
             ) : (
-                <LoginInfo />
+                <LoginInfo/>
             )}
-            <GoogleCalendar src={roomCalendarLink} />
+            <GoogleCalendar src={roomCalendarLink}/>
         </div>
     );
 };

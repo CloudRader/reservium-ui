@@ -22,7 +22,7 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                                     key={item.linkName}
                                     to={item.linkName}
                                     className={({isActive}) =>
-                                        `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium no-underline ${
+                                        `inline-flex items-center px-1 pt-4 border-b-2 text-sm font-medium no-underline ${
                                             isActive
                                                 ? 'border-green-600 text-green-900'
                                                 : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
@@ -38,7 +38,7 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                     <div className="hidden sm:flex sm:items-center ">
                         {isLoggedIn ? (
                             <div className="flex items-center space-x-4">
-                                <span className="text-sm font-medium text-green-700">Welcome, {username}</span>
+                                <span className="text-sm font-medium text-green-700">{username}</span>
                                 <button
                                     onClick={onLogout}
                                     className="no-underline inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

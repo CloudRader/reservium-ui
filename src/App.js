@@ -8,6 +8,7 @@ import CreateNewMiniService from "./CreateNewMiniService";
 import {Login, useAuth} from "./Login";
 import Logout from "./Logout";
 import axios from 'axios';
+import Footer from "./Footer";
 
 function RedirectToExternal({ url }) {
     useEffect(() => {
@@ -82,6 +83,7 @@ function App() {
                 <Route path='/create-new-miniservice' element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout} roomCalendarLink={config.clubCalendarLink} selectedZone={"club"} />} />
             </Routes>
+            <Footer/>
         </div>
     );
 }

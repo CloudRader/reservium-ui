@@ -5,6 +5,7 @@ import ReservationForm from './ReservationForm';
 import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
+import Footer from "./Footer";
 
 const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLink, service}) => {
     const [reservationTypes, setReservationTypes] = useState([]);

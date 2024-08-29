@@ -70,7 +70,7 @@ function App() {
                                 <ReservationComponent
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
-                                    roomCalendarLink={config[`${service.linkName}CalendarLink`]}
+                                    roomCalendarLinks={config[`${service.linkName}CalendarLinks`]}
                                     service={service}
                                 />
                             }
@@ -81,7 +81,7 @@ function App() {
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
                 <Route path='/create-new-calendar' element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
                 <Route path='/create-new-miniservice' element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
-                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout} roomCalendarLink={config.clubCalendarLink} selectedZone={"club"} />} />
+                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout} roomCalendarLinks={config.clubCalendarLinks} selectedZone={"club"} />} />
             </Routes>
             <Footer/>
         </div>

@@ -5,9 +5,8 @@ import ReservationForm from './ReservationForm';
 import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
-import Footer from "./Footer";
 
-const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLink, service}) => {
+const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
@@ -155,7 +154,7 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLink, service})
             ) : (
                 <LoginInfo/>
             )}
-            <GoogleCalendar src={roomCalendarLink}/>
+            <GoogleCalendar googleCalendars={roomCalendarLinks}/>
         </div>
     );
 };

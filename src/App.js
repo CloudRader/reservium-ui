@@ -42,7 +42,7 @@ async function getReservationServiceData() {
 
 function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
-    const loginUrl = `${config.domenServer}/`;
+    const loginUrl = `${config.domenServer}/users/login`;
 
     const [services, setServices] = useState([]);
 

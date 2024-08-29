@@ -1,5 +1,5 @@
 import React from 'react';
-import bubenLogo from './public/buben_logo.svg';
+import bubenLogo from '../public/buben_logo.svg';
 const Footer = () => {
     return (
         <footer className="bg-gradient-to-r from-green-50 to-green-100 shadow-md mt-auto">

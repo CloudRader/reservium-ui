@@ -6,7 +6,7 @@ import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
 
-const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink, service}) => {
+const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLink, service}) => {
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
@@ -118,7 +118,7 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
         axios.post(config.domenServer + '/events/post/', formData)
             .then(response => {
                 if (response.status === 201) {
-                    console.log('Reservation successful', response);
+                    console.log('Reservation successful', response); // TODO delete
                     setSuccessMessage('Reservation created successfully!');
                     setErrorMessage('');
                 } else {
@@ -146,7 +146,7 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
                 errorMessage === '401' ?
                     (<Logout onLogout={onLogout}/>) :
                     (<>
-                        <ReservationForm formFields={formFields} username={username} onSubmit={handleSubmit}
+                        <ReservationForm formFields={formFields} onSubmit={handleSubmit}
                                          onTypeChange={handleTypeChange}/>
                         {successMessage && <div className="alert alert-success">{successMessage}</div>}
                         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}

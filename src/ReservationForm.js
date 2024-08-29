@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 const ReservationForm = ({ formFields, onSubmit, onTypeChange }) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
 
-    const handleChange = (e, field) => {
+    const validateField = useCallback((field, value) => {
+        if (field.validation && !field.validation(value)) {
+            return `Invalid value for ${field.labelText}`;
+        }
+        return null;
+    }, []);
+
+    const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;
         let updatedValue = value;
 
         if (field.type === 'date' || field.type === 'time') {
-            const isValid = field.validation ? field.validation(value) : true;
-            if (!isValid) {
-                setErrors(prevErrors => ({
-                    ...prevErrors,
-                    [name]: `Invalid value for ${field.labelText}`,
-                }));
-                return;
-            }
-            setErrors(prevErrors => {
-                const { [name]: removed, ...rest } = prevErrors;
-                return rest;
-            });
+            const error = validateField(field, value);
+            setErrors(prevErrors => error
+                ? { ...prevErrors, [name]: error }
+                : { ...prevErrors, [name]: undefined }
+            );
+            if (error) return;
         }
 
         if (field.type === 'time') {
@@ -28,37 +29,31 @@ const ReservationForm = ({ formFields, onSubmit, onTypeChange }) => {
         }
 
         setFormData(prevData => {
-            if (type === 'checkbox') {
-                const currentValues = prevData[name] || [];
-                return {
+            const newData = type === 'checkbox'
+                ? {
                     ...prevData,
                     [name]: checked
-                        ? [...currentValues, value]
-                        : currentValues.filter(item => item !== value),
-                };
-            } else {
-                return {
-                    ...prevData,
-                    [name]: updatedValue,
-                };
+                        ? [...(prevData[name] || []), value]
+                        : (prevData[name] || []).filter(item => item !== value),
+                }
+                : { ...prevData, [name]: updatedValue };
+
+            if (field.name === 'type' && onTypeChange) {
+                onTypeChange({ value: updatedValue });
             }
+
+            return newData;
         });
+    }, [onTypeChange, validateField]);
 
-        if (field.name === 'type' && onTypeChange) {
-            onTypeChange({ value: updatedValue });
-        }
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
-        let validationErrors = {};
-        formFields.forEach(field => {
-            const value = formData[field.name];
-            if (field.validation && !field.validation(value)) {
-                validationErrors[field.name] = `Invalid value for ${field.labelText}`;
-            }
-        });
+        const validationErrors = formFields.reduce((acc, field) => {
+            const error = validateField(field, formData[field.name]);
+            if (error) acc[field.name] = error;
+            return acc;
+        }, {});
 
         setErrors(validationErrors);
 
@@ -74,7 +69,59 @@ const ReservationForm = ({ formFields, onSubmit, onTypeChange }) => {
             };
             onSubmit(payload);
         }
-    };
+    }, [formData, formFields, onSubmit, validateField]);
+
+    const renderField = useCallback((field) => {
+        const commonProps = {
+            name: field.name,
+            value: formData[field.name] || '',
+            onChange: (e) => handleChange(e, field),
+            className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        };
+
+        switch (field.type) {
+            case 'select':
+                return (
+                    <select {...commonProps}>
+                        <option value="">Select an option</option>
+                        {field.options.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                    </select>
+                );
+            case 'checkbox':
+                return (
+                    <div className="space-y-2">
+                        {field.options.map((option) => (
+                            <div key={option.value} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    {...commonProps}
+                                    value={option.value}
+                                    id={`${field.name}-${option.value}`}
+                                    checked={(formData[field.name] || []).includes(option.value)}
+                                    className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+                                />
+                                <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">
+                                    {option.label}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                );
+            case 'empty':
+                return null;
+            default:
+                return (
+                    <input
+                        type={field.type}
+                        {...commonProps}
+                        min={field.min}
+                        max={field.max}
+                    />
+                );
+        }
+    }, [formData, handleChange]);
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -86,48 +133,7 @@ const ReservationForm = ({ formFields, onSubmit, onTypeChange }) => {
                             <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
                                 {field.labelText}
                             </label>
-                            {field.type === 'select' ? (
-                                <select
-                                    className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                    name={field.name}
-                                    value={formData[field.name] || ''}
-                                    onChange={(e) => handleChange(e, field)}
-                                >
-                                    <option value="">Select an option</option>
-                                    {field.options.map((option) => (
-                                        <option key={option.value} value={option.value}>{option.label}</option>
-                                    ))}
-                                </select>
-                            ) : field.type === 'checkbox' ? (
-                                <div className="space-y-2">
-                                    {field.options.map((option) => (
-                                        <div key={option.value} className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                name={field.name}
-                                                value={option.value}
-                                                id={`${field.name}-${option.value}`}
-                                                checked={(formData[field.name] || []).includes(option.value)}
-                                                onChange={(e) => handleChange(e, field)}
-                                                className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
-                                            />
-                                            <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">
-                                                {option.label}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : field.type !== 'empty' && (
-                                <input
-                                    type={field.type}
-                                    className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                    name={field.name}
-                                    value={formData[field.name] || ''}
-                                    onChange={(e) => handleChange(e, field)}
-                                    min={field.min}
-                                    max={field.max}
-                                />
-                            )}
+                            {renderField(field)}
                             {errors[field.name] && (
                                 <p className="text-red-600 text-sm mt-1">{errors[field.name]}</p>
                             )}

@@ -105,7 +105,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
     ], [reservationTypes, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations]);
 
     const handleSubmit = useCallback((formData) => {
-        axios.post(`${config.domenServer}/events/post/`, formData)
+        axios.post(`${config.domenServer}/events/create_event`, formData)
             .then(response => {
                 if (response.status === 201) {
                     setSuccessMessage('Reservation created successfully!');

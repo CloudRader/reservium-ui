@@ -67,8 +67,8 @@ const config = {
     // clubCalendarLink: "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FPrague&bgcolor=%23B39DDB&title=Club%20Room&showTz=0&showPrint=0&hl=en&src=Y185MGMwNTM1ODNkNGQyYWUxNTY1NTFjNmVjZDMxMWY4N2RhZDYxMGEzMjcyNTQ1YzM2Mzg3OTY0NWY2OTY4Y2VmQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y19mOGE4N2JhZDlkZjYzODQxYTM0MzgzNWU2YzU1OTY0MzgzNWFhM2M5MDgzMDI2ODAzMjQ4MDdiNjFkY2I3ZTQ5QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y18xOTU4NmEzZGE1MGNhMDY1NjZlZjYyMDEyZDY4MjllYmY0ZTMwMjYxMDgyMTJlOWY5ZDBjYzJmYzZiYzdjNDRhQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y180ZjNjY2I5YjI1ZTNlMzdiYzFkY2VhODc4NGE4YTExNDQyZDM5ZTcwMDgwOWExMmJlZTIxYmJlZWI2N2FmNzY1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y184ZmM4YzY3NjBmN2UzMmVkNTc3ODVjZjQ3MzlkYzYzZTQwNmI0YTgwMmFlZWM2NWNhMGIxYTNmNTY2OTYyNjNkQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y19hYzg5MzBiMDAwZTQzODE4NzA3ZDZmZjVlYzRlNDBiN2VmNTI5ZjRkYjc5MDg5Y2Q1YzNlZGFhM2I1OWZiNDFiQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23cc00a9&color=%230B8043&color=%238E24AA&color=%23616161&color=%23D50000&color=%23F6BF26",
     // grillCalendarLink: "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FPrague&bgcolor=%23EF6C00&title=Grill%20Centrum&showPrint=0&showTz=0&hl=en&src=Y182Y2FiMzM5NmYzZTBkNDAwZDA3OTA0YjA4ZjQyN2ZmOWM2NmI5MGI4MDk0ODhjZmU2NDAxYTg3ODkxYWIxY2ZkQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23EF6C00" ,
     // studyCalendarLink: "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FPrague&bgcolor=%233F51B5&title=Study%20Room&showPrint=0&showTz=0&hl=en&src=Y184ZjA3YTA1NGRjNGNkMDJmODQ4NDkxZmZlZTlhZGIwMzAyNjExODExZTcxMWZmZTkyMWU0MDI1ZDE4ZDQyZWYyQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y182MDliYzRmZGVmZTMxMGUzMGRlYzAyZDkwNzUzZjQzNGQ4MmNkNzM4ODE4ZGVjNjc5YWQwMThkMTI3MzFmOTdmQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%233F51B5&color=%23039BE5" ,
-    grillCalendarLink: googleCalendarsGrill,
-    studyCalendarLink:  googleCalendarsStudyRoom,
+    grillCalendarLinks: googleCalendarsGrill,
+    studyCalendarLinks:  googleCalendarsStudyRoom,
     googleCalendarApiKey:  "AIzaSyARjUqLIMYShXY_JQAuUYdzb3G4Malsv3c",
 };
 export default config;

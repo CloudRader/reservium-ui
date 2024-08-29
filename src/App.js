@@ -37,7 +37,7 @@ async function getReservationServiceData() {
         return result;
 
     } catch (error) {
-        console.error('Error fetching reservation service data:', error);
+        console.log('Error fetching reservation service data:', error);
         return [];
     }
 }
@@ -54,8 +54,8 @@ function App() {
             const data = await getReservationServiceData();
             setServices(data);
         }
-        fetchData();
-    }, []);
+        if(isLoggedIn) fetchData();
+    }, [isLoggedIn]);
 
     return (
         <div>

@@ -69,5 +69,6 @@ const config = {
     // studyCalendarLink: "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FPrague&bgcolor=%233F51B5&title=Study%20Room&showPrint=0&showTz=0&hl=en&src=Y184ZjA3YTA1NGRjNGNkMDJmODQ4NDkxZmZlZTlhZGIwMzAyNjExODExZTcxMWZmZTkyMWU0MDI1ZDE4ZDQyZWYyQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y182MDliYzRmZGVmZTMxMGUzMGRlYzAyZDkwNzUzZjQzNGQ4MmNkNzM4ODE4ZGVjNjc5YWQwMThkMTI3MzFmOTdmQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%233F51B5&color=%23039BE5" ,
     grillCalendarLink: googleCalendarsGrill,
     studyCalendarLink:  googleCalendarsStudyRoom,
+    googleCalendarApiKey:  "AIzaSyARjUqLIMYShXY_JQAuUYdzb3G4Malsv3c",
 };
 export default config;

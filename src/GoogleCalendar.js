@@ -8,11 +8,11 @@ import listPlugin from '@fullcalendar/list';
 import * as bootstrap from "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./GoogleCalendar.css"
+import config from "./Config";
 
 
 
 function Calendar({ googleCalendars }) {
-    const googleCalendarApiKey = "AIzaSyARjUqLIMYShXY_JQAuUYdzb3G4Malsv3c"; // TODO to .env
 
     const eventDidMount = (info) => {
         const event = info.event;
@@ -64,7 +64,7 @@ function Calendar({ googleCalendars }) {
                 dayMaxEventRows={2}
                 fixedWeekCount={false}
                 firstDay={1}
-                googleCalendarApiKey={googleCalendarApiKey}
+                googleCalendarApiKey={config.googleCalendarApiKey}
                 eventSources={googleCalendars}
                 eventDidMount={eventDidMount}
                 eventTimeFormat={{

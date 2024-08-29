@@ -9,7 +9,6 @@ a {
 
 .calendar-container {
   width: 80%;  /* Set the width of the container */
-  height: 100%; /* Set the height of the container */
   margin: 0 auto; /* Center the container horizontally */
   border: 1px solid #ccc; /* Optional: Add a border around the container */
   padding: 10px; /* Optional: Add some padding inside the container */

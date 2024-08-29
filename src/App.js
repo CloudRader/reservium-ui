@@ -19,10 +19,7 @@ function RedirectToExternal({ url }) {
 
 async function getReservationServiceData() {
     try {
-        // Make the GET request to the /reservation_services/ endpoint
         const response = await axios.get(`${config.domenServer}/reservation_services/`);
-
-        // Extract the data from the response
         const data = response.data;
         const result = data.map(info => {
             return {
@@ -45,7 +42,7 @@ async function getReservationServiceData() {
 
 function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
-    const loginUrl = `${config.domenServer}/users/login`;
+    const loginUrl = `${config.domenServer}/`;
 
     const [services, setServices] = useState([]);
 

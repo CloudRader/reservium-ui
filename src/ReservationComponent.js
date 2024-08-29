@@ -112,7 +112,7 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
                 options: additionalServices,
             },
         ]);
-    }, [options, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations, services]);
+    }, [reservationTypes, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations, service]);
 
     const handleSubmit = (formData) => {
         axios.post(config.domenServer + '/events/post/', formData)

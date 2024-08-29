@@ -11,27 +11,21 @@ axios.defaults.withCredentials = true;
 const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
-    const [selectedType, setSelectedType] = useState(null);
-    const [errFetchingAdditionalServices, setErrFetchingAdditionalServices] = useState(false);
-    const [errFetchingTypeOfReservations, setErrFetchingTypeOfReservations] = useState(false);
+    const [errorMessages, setErrorMessages] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         if (service) {
-            setReservationTypes(service.reservation_types.map(name => ({ value: name, label: name })));
-            setErrFetchingTypeOfReservations(false);
-
-            if (service.mini_services) {
-                setAdditionalServices(service.mini_services.map(name => ({ value: name, label: name })));
-                setErrFetchingAdditionalServices(false);
-            }
+            setReservationTypes(service.reservation_types?.map(name => ({ value: name, label: name })) || []);
+            setAdditionalServices(service.mini_services?.map(name => ({ value: name, label: name })) || []);
         }
     }, [service]);
 
-    const handleTypeChange = useCallback((selectedOption) => {
-        setSelectedType(selectedOption.value);
-    }, []);
+    const getTomorrowDate = () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return tomorrow.toISOString().split('T')[0];
+    };
 
     const formFields = useMemo(() => [
         {
@@ -39,6 +33,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             type: 'date',
             labelText: 'Start Date',
             labelColor: 'text-success',
+            defaultValue: getTomorrowDate(),
             validation: (value) => {
                 const year = new Date(value).getFullYear();
                 return year > 2023 && year < 3000;
@@ -49,13 +44,15 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             type: 'time',
             labelText: 'Start Time',
             labelColor: 'text-success',
-            validation: (value) => !!value,
+            defaultValue: '09:00',
+            validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
         },
         {
             name: 'endDate',
             type: 'date',
             labelText: 'End Date',
             labelColor: 'text-success',
+            defaultValue: getTomorrowDate(),
             validation: (value) => {
                 const year = new Date(value).getFullYear();
                 return year > 2023 && year < 3000;
@@ -66,7 +63,8 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             type: 'time',
             labelText: 'End Time',
             labelColor: 'text-success',
-            validation: (value) => !!value,
+            defaultValue: '17:00',
+            validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
         },
         {
             name: 'purpose',
@@ -80,16 +78,16 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             type: 'number',
             labelText: 'Number of Guests',
             labelColor: 'text-success',
-            validation: (value) => value < 40,
+            validation: (value) => value > 0 && value < 40,
         },
         {
             name: 'email',
             type: 'email',
             labelText: 'Email',
             labelColor: 'text-primary',
-            validation: (value) => !!value
+            validation: (value) => /\S+@\S+\.\S+/.test(value),
         },
-        errFetchingTypeOfReservations ? { type: "empty" } : {
+        {
             name: 'type',
             type: 'select',
             labelText: 'Type of Reservation',
@@ -97,29 +95,31 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             options: reservationTypes,
             validation: (value) => !!value
         },
-        errFetchingAdditionalServices ? { type: "empty" } : {
+        {
             name: 'additionalServices',
             type: 'checkbox',
             labelText: 'Additional Services',
             labelColor: 'text-primary',
             options: additionalServices,
         },
-    ], [reservationTypes, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations]);
+    ], [reservationTypes, additionalServices]);
 
     const handleSubmit = useCallback((formData) => {
         axios.post(`${config.domenServer}/events/create_event`, formData)
             .then(response => {
                 if (response.status === 201) {
                     setSuccessMessage('Reservation created successfully!');
-                    setErrorMessage('');
+                    setErrorMessages({});
                 } else {
                     setSuccessMessage('');
-                    setErrorMessage(`Error creating reservation. ${response.data.message}`);
+                    setErrorMessages({ general: `Error creating reservation. ${response.data.message}` });
                 }
             })
             .catch(error => {
                 setSuccessMessage('');
-                setErrorMessage(error.response?.status === 401 ? '401' : 'Error creating reservation, try again later.');
+                setErrorMessages(error.response?.status === 401
+                    ? { auth: 'Authentication failed. Please log in again.' }
+                    : { general: 'Error creating reservation, try again later.' });
             });
     }, []);
 
@@ -127,7 +127,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
         return <LoginInfo />;
     }
 
-    if (errorMessage === '401') {
+    if (errorMessages.auth) {
         return <Logout onLogout={onLogout} />;
     }
 
@@ -136,10 +136,9 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             <ReservationForm
                 formFields={formFields}
                 onSubmit={handleSubmit}
-                onTypeChange={handleTypeChange}
             />
             {successMessage && <div className="alert alert-success">{successMessage}</div>}
-            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+            {errorMessages.general && <div className="alert alert-danger">{errorMessages.general}</div>}
             <GoogleCalendar googleCalendars={roomCalendarLinks} />
         </div>
     );

@@ -20,6 +20,7 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
     useEffect(() => {
         if (services) {
             const newOptions = services.reservation_types.map(name => ({value: name, label: name}));
+            console.log('newOptions', newOptions);
             setOptions(newOptions);
             seterrFetchingTypeOfReservations(false); // Reset fetch error if successful response
         }
@@ -28,6 +29,7 @@ const ReservationComponent = ({isLoggedIn, username, onLogout, roomCalendarLink,
     useEffect(() => {
         if (services && services.mini_services) {
             const newAdditionalServices = services.mini_services.map(name => ({value: name, label: name}));
+            console.log('newOptions', newAdditionalServices);
             setAdditionalServices(newAdditionalServices);
             seterrFetchingAdditionalServices(false); // Reset fetch error if successful response
 

@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import config from "./Config";
-import Logout from "./Logout";
-import ReservationForm from "./ReservationForm";
 import LoginInfo from "./LoginInfo";
 
 const CreateNewMiniService = ({isLoggedIn, username}) => {

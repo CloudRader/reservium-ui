@@ -43,7 +43,6 @@ async function getReservationServiceData() {
 function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
     const loginUrl = `${config.domenServer}/users/login`;
-
     const [services, setServices] = useState([]);
 
     useEffect(() => {
@@ -52,7 +51,7 @@ function App() {
             setServices(data);
         }
         if(isLoggedIn) fetchData();
-    }, [isLoggedIn]);
+    }, [isLoggedIn, username, userRoles]);
 
     return (
         <div>

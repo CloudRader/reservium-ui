@@ -21,8 +21,8 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                                 <NavLink
                                     key={item.linkName}
                                     to={item.linkName}
-                                    className={({ isActive }) =>
-                                        `inline-flex items-center px-1 pt-1 text-sm font-medium no-underline ${
+                                    className={({isActive}) =>
+                                        `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium no-underline ${
                                             isActive
                                                 ? 'border-green-600 text-green-900'
                                                 : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
@@ -91,10 +91,10 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                                 <NavLink
                                     key={item.linkName}
                                     to={item.linkName}
-                                    className={({ isActive }) =>
+                                    className={({isActive}) =>
                                         `block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
                                             isActive
-                                                ? 'border-green-600 text-green-900'
+                                                ? 'border-green-600 text-green-900 bg-green-50'
                                                 : 'border-transparent text-green-700 hover:border-green-300 hover:bg-green-50 hover:text-green-800'
                                         }`
                                     }

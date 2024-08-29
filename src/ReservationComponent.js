@@ -6,6 +6,8 @@ import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
 
+axios.defaults.withCredentials = true;
+
 const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);

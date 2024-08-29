@@ -70,7 +70,7 @@ function App() {
                                     isLoggedIn={isLoggedIn}
                                     username={username}
                                     onLogout={logout}
-                                    roomCalendarLink={config[`${service.linkName}CalendarLink`]} // Используем linkName для динамической подстановки ссылки на календарь
+                                    roomCalendarLink={config[`${service.linkName}CalendarLink`]}
                                     service={service}
                                 />
                             }

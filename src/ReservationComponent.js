@@ -95,7 +95,7 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}
             options: reservationTypes,
             validation: (value) => !!value
         },
-        additionalServices === [] ?
+        additionalServices.length === 0 ?
             {} : {
                 name: 'additionalServices',
                 type: 'checkbox',

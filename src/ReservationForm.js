@@ -1,8 +1,19 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 const ReservationForm = ({ formFields, onSubmit }) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        // Initialize formData with default values
+        const initialData = formFields.reduce((acc, field) => {
+            if (field.defaultValue !== undefined) {
+                acc[field.name] = field.defaultValue;
+            }
+            return acc;
+        }, {});
+        setFormData(initialData);
+    }, [formFields]);
 
     const validateField = useCallback((field, value) => {
         if (field.validation && !field.validation(value)) {
@@ -29,20 +40,16 @@ const ReservationForm = ({ formFields, onSubmit }) => {
         }
 
         setFormData(prevData => {
-            const newData = type === 'checkbox'
+            return type === 'checkbox'
                 ? {
                     ...prevData,
                     [name]: checked
                         ? [...(prevData[name] || []), value]
                         : (prevData[name] || []).filter(item => item !== value),
                 }
-                : { ...prevData, [name]: updatedValue };
-
-
-
-            return newData;
+                : {...prevData, [name]: updatedValue};
         });
-    }, [ validateField]);
+    }, [validateField]);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();

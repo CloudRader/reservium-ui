@@ -25,7 +25,7 @@ const useAuth = () => {
             navigate('/');
         } catch (error) {
             console.error('Error during login:', error);
-            navigate('/login');
+            navigate('/');
         }
     }, [navigate]);
 
@@ -34,7 +34,7 @@ const useAuth = () => {
         setUsername(null);
         setUserRoles({ active_member: false, section_head: false });
         localStorage.removeItem('userName');
-        navigate('/login');
+        navigate('/');
     }, [navigate]);
 
     useEffect(() => {

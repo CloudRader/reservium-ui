@@ -141,7 +141,7 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}
                         {errorMessages.general &&
                             <div className="alert alert-danger mt-4">{errorMessages.general}</div>
                         }
-                <div className="w-full bg-white shadow-md overflow-hidden p-6">
+                <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
                         <GoogleCalendar googleCalendars={roomCalendarLinks}/>
                 </div>
             </div>

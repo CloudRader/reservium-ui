@@ -5,7 +5,6 @@ import config from "./Config";
 
 axios.defaults.withCredentials = true;
 
-// Custom hook for authentication
 const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
@@ -23,9 +22,10 @@ const useAuth = () => {
                 section_head: userInfo.section_head
             });
             localStorage.setItem('userName', username);
-            // navigate('/');
+            navigate('/');
         } catch (error) {
             console.error('Error during login:', error);
+            navigate('/login');
         }
     }, [navigate]);
 
@@ -34,20 +34,33 @@ const useAuth = () => {
         setUsername(null);
         setUserRoles({ active_member: false, section_head: false });
         localStorage.removeItem('userName');
-    }, []);
+        navigate('/login');
+    }, [navigate]);
 
     useEffect(() => {
-        const storedUserName = localStorage.getItem('userName');
-        if (storedUserName) {
-            setIsLoggedIn(true);
-            setUsername(storedUserName);
-        }
-    }, []);
+        const checkAuth = async () => {
+            const storedUserName = localStorage.getItem('userName');
+            if (storedUserName) {
+                try {
+                    const userInfo = await getUserInfo();
+                    setIsLoggedIn(true);
+                    setUsername(storedUserName);
+                    setUserRoles({
+                        active_member: userInfo.active_member,
+                        section_head: userInfo.section_head
+                    });
+                } catch (error) {
+                    console.error('Error verifying authentication:', error);
+                    logout();
+                }
+            }
+        };
+        checkAuth();
+    }, [logout]);
 
     return { isLoggedIn, username, userRoles, login, logout };
 };
 
-// Utility functions for API calls
 const sendCodeToServer = async (code, state) => {
     const response = await axios.get(`${config.serverURL}/users/callback`, {
         params: { code, state }
@@ -60,10 +73,10 @@ const getUserInfo = async () => {
     return response.data;
 };
 
-// Login component
 const Login = () => {
     const location = useLocation();
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -71,8 +84,11 @@ const Login = () => {
         const state = params.get('state');
         if (code) {
             login(code, state);
+        } else {
+            // Redirect to the external login page
+            window.location.href = `${config.serverURL}/users/login`;
         }
-    }, [location, login]);
+    }, [location, login, navigate]);
 
     return null;
 };

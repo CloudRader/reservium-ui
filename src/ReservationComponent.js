@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
 import axios from 'axios';
 import GoogleCalendar from './GoogleCalendar';
 import ReservationForm from './ReservationForm';
@@ -8,7 +8,7 @@ import config from "./Config";
 
 axios.defaults.withCredentials = true;
 
-const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
+const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
@@ -16,8 +16,8 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
 
     useEffect(() => {
         if (service) {
-            setReservationTypes(service.reservation_types?.map(name => ({ value: name, label: name })) || []);
-            setAdditionalServices(service.mini_services?.map(name => ({ value: name, label: name })) || []);
+            setReservationTypes(service.reservation_types?.map(name => ({value: name, label: name})) || []);
+            setAdditionalServices(service.mini_services?.map(name => ({value: name, label: name})) || []);
         }
     }, [service]);
 
@@ -95,13 +95,14 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             options: reservationTypes,
             validation: (value) => !!value
         },
-        {
-            name: 'additionalServices',
-            type: 'checkbox',
-            labelText: 'Additional Services',
-            labelColor: 'text-primary',
-            options: additionalServices,
-        },
+        additionalServices === [] ?
+            {} : {
+                name: 'additionalServices',
+                type: 'checkbox',
+                labelText: 'Additional Services',
+                labelColor: 'text-primary',
+                options: additionalServices,
+            },
     ], [reservationTypes, additionalServices]);
 
     const handleSubmit = useCallback((formData) => {
@@ -112,23 +113,23 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                     setErrorMessages({});
                 } else {
                     setSuccessMessage('');
-                    setErrorMessages({ general: `Error creating reservation. ${response.data.message}` });
+                    setErrorMessages({general: `Error creating reservation. ${response.data.message}`});
                 }
             })
             .catch(error => {
                 setSuccessMessage('');
                 setErrorMessages(error.response?.status === 401
-                    ? { auth: 'Authentication failed. Please log in again.' }
-                    : { general: 'Error creating reservation, try again later.' });
+                    ? {auth: 'Authentication failed. Please log in again.'}
+                    : {general: 'Error creating reservation, try again later.'});
             });
     }, []);
 
     if (!isLoggedIn) {
-        return <LoginInfo />;
+        return <LoginInfo/>;
     }
 
     if (errorMessages.auth) {
-        return <Logout onLogout={onLogout} />;
+        return <Logout onLogout={onLogout}/>;
     }
 
     return (
@@ -139,7 +140,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             />
             {successMessage && <div className="alert alert-success">{successMessage}</div>}
             {errorMessages.general && <div className="alert alert-danger">{errorMessages.general}</div>}
-            <GoogleCalendar googleCalendars={roomCalendarLinks} />
+            <GoogleCalendar googleCalendars={roomCalendarLinks}/>
         </div>
     );
 };

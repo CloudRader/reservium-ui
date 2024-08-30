@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-const ReservationForm = ({ formFields, onSubmit, onTypeChange }) => {
+const ReservationForm = ({ formFields, onSubmit }) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -38,13 +38,11 @@ const ReservationForm = ({ formFields, onSubmit, onTypeChange }) => {
                 }
                 : { ...prevData, [name]: updatedValue };
 
-            if (field.name === 'type' && onTypeChange) {
-                onTypeChange({ value: updatedValue });
-            }
+
 
             return newData;
         });
-    }, [onTypeChange, validateField]);
+    }, [ validateField]);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();

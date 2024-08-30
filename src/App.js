@@ -56,7 +56,7 @@ function App() {
 
         if(isLoggedIn) fetchData();
 
-    }, [isLoggedIn, username, userRoles]);
+    }, [isLoggedIn, username, userRoles, navigate]);
 
     return (
         <div>

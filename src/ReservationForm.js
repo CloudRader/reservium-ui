@@ -136,8 +136,7 @@ const ReservationForm = ({ formFields, onSubmit }) => {
     }, [formData, handleChange]);
 
     return (
-        <div className="max-w-7xl">
-            <div className="bg-gradient-to-r from-green-50 to-green-100 shadow-md rounded-lg p-6">
+            <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md rounded-lg p-6">
                 <h2 className="text-2xl font-bold text-green-800 mb-6">Reservation Form</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {formFields.map((field) => (
@@ -159,7 +158,6 @@ const ReservationForm = ({ formFields, onSubmit }) => {
                     </button>
                 </form>
             </div>
-        </div>
     );
 };
 

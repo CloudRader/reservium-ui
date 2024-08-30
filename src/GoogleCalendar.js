@@ -28,14 +28,13 @@ function Calendar({ googleCalendars }) {
             hour12: false
         });
 
-        return  new bootstrap.Popover(info.el, {
+        return new bootstrap.Popover(info.el, {
             title: event.title,
             placement: "auto",
             trigger: "hover",
             customClass: "popoverStyle",
             content: `
                 <p><strong>Reservation time:</strong><br>${startTime} - ${endTime}</p>
-                <p><strong>Test:</strong><br>${event.extendedProps.color}</p>
                 <p><strong>Description:</strong><br>${(event.extendedProps.description || 'N/A').replace(/\n/g, '<br>')}</p>
             `,
             html: true,

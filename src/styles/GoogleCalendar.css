@@ -13,22 +13,17 @@ a {
   margin: 0 auto;
   border: 1px solid #ccc;
   padding: 10px;
+  /*padding: 0;*/
 }
 
-.fc {
-  height: 100%; /* Make FullCalendar take full height of its container */
-}
+/*.fc {*/
+/*  height: 100%; !* Make FullCalendar take full height of its container *!*/
+/*}*/
 
-/* Remove any border or padding from the calendar container */
-.calendar-container {
-  border: none;
-  padding: 0;
-}
-
-/* Adjust the FullCalendar styles */
-.fc .fc-view-harness {
-  height: calc(100% - 50px) !important; /* Adjust based on your toolbar height */
-}
+/*!* Adjust the FullCalendar styles *!*/
+/*.fc .fc-view-harness {*/
+/*  height: calc(100% - 50px) !important; !* Adjust based on your toolbar height *!*/
+/*}*/
 
 
 .fc .fc-toolbar {

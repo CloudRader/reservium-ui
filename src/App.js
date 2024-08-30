@@ -45,13 +45,12 @@ function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
     const loginUrl = `${config.serverURL}/users/login`;
     const [services, setServices] = useState([]);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
             const data = await getReservationServiceData();
             setServices(data);
-            navigate('/');
         }
 
         if(isLoggedIn) fetchData();
@@ -86,6 +85,8 @@ function App() {
                     ))}
 
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
+
+                {/*<Route path='/' element={<HomePage onLogout={logout} />} />*/}
 
                 {/*// if section role === "manager" he have this */}
                 <Route path='/create-new-calendar' element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />} />

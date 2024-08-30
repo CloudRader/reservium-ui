@@ -5,6 +5,7 @@ const ReservationForm = ({ formFields, onSubmit }) => {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
+        // Initialize formData with default values
         const initialData = formFields.reduce((acc, field) => {
             if (field.defaultValue !== undefined) {
                 acc[field.name] = field.defaultValue;
@@ -25,28 +26,35 @@ const ReservationForm = ({ formFields, onSubmit }) => {
         const { name, value, type, checked } = e.target;
         let updatedValue = value;
 
+        if (field.type === 'time') {
+            // Ensure the value is in HH:MM format
+            const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+            if (!timeRegex.test(value)) {
+                // If not in correct format, don't update the state
+                return;
+            }
+        }
+
         if (field.type === 'date' || field.type === 'time') {
             const error = validateField(field, value);
-            setErrors(prevErrors => error
-                ? { ...prevErrors, [name]: error }
-                : { ...prevErrors, [name]: undefined }
-            );
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [name]: error
+            }));
             if (error) return;
         }
 
-        if (field.type === 'time') {
-            updatedValue = `${value}:00`;
-        }
-
         setFormData(prevData => {
-            return type === 'checkbox'
-                ? {
+            if (type === 'checkbox') {
+                return {
                     ...prevData,
                     [name]: checked
                         ? [...(prevData[name] || []), value]
                         : (prevData[name] || []).filter(item => item !== value),
-                }
-                : {...prevData, [name]: updatedValue};
+                };
+            } else {
+                return {...prevData, [name]: updatedValue};
+            }
         });
     }, [validateField]);
 

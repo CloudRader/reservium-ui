@@ -44,7 +44,7 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}
             type: 'time',
             labelText: 'Start Time',
             labelColor: 'text-success',
-            defaultValue: '09:00',
+            defaultValue: '17:00',
             validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
         },
         {
@@ -63,7 +63,7 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}
             type: 'time',
             labelText: 'End Time',
             labelColor: 'text-success',
-            defaultValue: '17:00',
+            defaultValue: '20:00',
             validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
         },
         {

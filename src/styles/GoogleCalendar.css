@@ -2,11 +2,6 @@
   z-index: 99999 !important;
 }
 
-a {
-  color: #212529 !important;
-  text-decoration: none;
-}
-
 .calendar-container {
   height: 100%;
   width: 100%;
@@ -34,11 +29,6 @@ a {
   background-color: #e9ecef;
 }
 
-.fc .fc-button-active {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #ffffff;
-}
 
 .fc .fc-daygrid-event {
   font-size: 0.8em;
@@ -49,7 +39,7 @@ a {
 }
 
 .fc-daygrid-day-frame {
-  min-height: 100px;
+  min-height: 150px; /* Increased from 100px to 150px */
 }
 
 .fc th {
@@ -71,8 +61,11 @@ a {
   font-weight: bold;
 }
 
-.fc-list-event-dot {
-  border-color: #007bff;
+
+/* Remove blue color and text decoration */
+.fc a {
+  color: inherit !important;
+  text-decoration: none !important;
 }
 
 @media (max-width: 768px) {

@@ -53,7 +53,7 @@ function Calendar({ googleCalendars }) {
                 }}
                 nextDayThreshold='08:00:00'
                 height="auto"
-                aspectRatio={1.35}
+                aspectRatio={1.1}
                 dayMaxEventRows={3}
                 fixedWeekCount={false}
                 firstDay={1}

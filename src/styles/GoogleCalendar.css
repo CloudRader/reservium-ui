@@ -18,6 +18,7 @@
 .fc .fc-toolbar-title {
   font-size: 1.5em;
   font-weight: bold;
+  color: black;
 }
 
 .fc .fc-button {
@@ -30,7 +31,6 @@
   background-color: #e9ecef;
 }
 
-
 .fc .fc-daygrid-event {
   font-size: 0.8em;
   padding: 2px 4px;
@@ -40,13 +40,14 @@
 }
 
 .fc-daygrid-day-frame {
-  min-height: 150px; /* Increased from 100px to 150px */
+  min-height: 150px;
 }
 
 .fc th {
   padding: 10px 0;
   font-weight: bold;
   text-transform: uppercase;
+  color: black;
 }
 
 .fc-day-today {
@@ -62,11 +63,23 @@
   font-weight: bold;
 }
 
-
-/* Remove blue color and text decoration */
-.fc a {
+/* More specific selectors to override Bootstrap styles */
+.fc a,
+.fc a:link,
+.fc a:visited,
+.fc a:hover,
+.fc a:active,
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number,
+.fc-daygrid-day-top a {
   color: black !important;
   text-decoration: none !important;
+}
+
+/* Ensure event text is visible on colored backgrounds */
+.fc-event-title,
+.fc-event-time {
+  color: #fff !important;
 }
 
 a {
@@ -82,4 +95,19 @@ a {
   .fc .fc-toolbar-title {
     margin-bottom: 0.5em;
   }
+}
+
+/* Additional rules to ensure all text is black */
+.fc,
+.fc table,
+.fc td,
+.fc th,
+.fc-scrollgrid,
+.fc-view-harness {
+  color: black;
+}
+
+/* Override any remaining Bootstrap styles */
+.fc .btn-primary {
+  color: #fff !important; /* Keep button text white for contrast */
 }

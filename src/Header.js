@@ -12,25 +12,27 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
         <header className="bg-green-100 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex justify-between items-center h-16">
-                    <div className="flex-shrink-0">
-                        <span className="text-2xl font-bold text-green-800">Buben Club</span>
-                    </div>
-                    <div className="hidden sm:flex sm:ml-6 sm:space-x-8">
-                        {services.map((item) => (
-                            <NavLink
-                                key={item.linkName}
-                                to={item.linkName}
-                                className={({isActive}) =>
-                                    `flex flex-col items-center justify-center px-1 pt-1 pb-1 text-sm font-medium no-underline border-b-2 ${
-                                        isActive
-                                            ? 'border-green-600 text-green-900'
-                                            : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
-                                    }`
-                                }
-                            >
-                                {item.serviceName}
-                            </NavLink>
-                        ))}
+                    <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                            <span className="text-2xl font-bold text-green-800">Buben Club</span>
+                        </div>
+                        <div className="hidden sm:flex sm:ml-6 sm:space-x-8">
+                            {services.map((item) => (
+                                <NavLink
+                                    key={item.linkName}
+                                    to={item.linkName}
+                                    className={({isActive}) =>
+                                        `inline-flex items-center px-1 border-b-2 text-sm font-medium no-underline ${
+                                            isActive
+                                                ? 'border-green-600 text-green-900'
+                                                : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
+                                        }`
+                                    }
+                                >
+                                    {item.serviceName}
+                                </NavLink>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="hidden sm:flex sm:items-center ">

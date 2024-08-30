@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Route, Routes, } from 'react-router-dom';
+import {Route, Routes, useNavigate,} from 'react-router-dom';
 import Header from './Header';
 import ReservationComponent from "./ReservationComponent";
 import config from "./Config";
@@ -10,6 +10,7 @@ import Logout from "./Logout";
 import axios from 'axios';
 import Footer from "./Footer";
 
+// todo REWORK WITH BACKEND
 function RedirectToExternal({ url }) {
     useEffect(() => {
         window.location.href = url;
@@ -17,6 +18,7 @@ function RedirectToExternal({ url }) {
     return null;
 }
 
+// todo TO LOGIN
 async function getReservationServiceData() {
     try {
         const response = await axios.get(`${config.serverURL}/reservation_services/`);
@@ -32,7 +34,6 @@ async function getReservationServiceData() {
 
         console.log("result", result);
         return result;
-
     } catch (error) {
         console.log('Error fetching reservation service data:', error);
         return [];
@@ -44,13 +45,17 @@ function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
     const loginUrl = `${config.serverURL}/users/login`;
     const [services, setServices] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
             const data = await getReservationServiceData();
             setServices(data);
+            navigate('/');
         }
+
         if(isLoggedIn) fetchData();
+
     }, [isLoggedIn, username, userRoles]);
 
     return (

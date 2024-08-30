@@ -23,10 +23,9 @@ const useAuth = () => {
                 section_head: userInfo.section_head
             });
             localStorage.setItem('userName', username);
-            navigate('/');
+            // navigate('/');
         } catch (error) {
             console.error('Error during login:', error);
-            // Handle login error (e.g., show error message to user)
         }
     }, [navigate]);
 

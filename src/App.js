@@ -19,7 +19,7 @@ function RedirectToExternal({ url }) {
 
 async function getReservationServiceData() {
     try {
-        const response = await axios.get(`${config.domenServer}/reservation_services/`);
+        const response = await axios.get(`${config.serverURL}/reservation_services/`);
         const data = response.data;
         const result = data.map(info => {
             return {
@@ -42,7 +42,7 @@ async function getReservationServiceData() {
 
 function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
-    const loginUrl = `${config.domenServer}/users/login`;
+    const loginUrl = `${config.serverURL}/users/login`;
     const [services, setServices] = useState([]);
 
     useEffect(() => {

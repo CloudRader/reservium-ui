@@ -50,14 +50,14 @@ const useAuth = () => {
 
 // Utility functions for API calls
 const sendCodeToServer = async (code, state) => {
-    const response = await axios.get(`${config.domenServer}/users/callback`, {
+    const response = await axios.get(`${config.serverURL}/users/callback`, {
         params: { code, state }
     });
     return response.data.username;
 };
 
 const getUserInfo = async () => {
-    const response = await axios.get(`${config.domenServer}/users/me`);
+    const response = await axios.get(`${config.serverURL}/users/me`);
     return response.data;
 };
 

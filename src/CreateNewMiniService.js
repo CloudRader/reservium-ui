@@ -22,7 +22,7 @@ const CreateNewMiniService = ({isLoggedIn, username}) => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(`${config.domenServer}/mini_services/create_mini_service?username=${username}`, formData)
+        axios.post(`${config.serverURL}/mini_services/create_mini_service?username=${username}`, formData)
             .then(response => {
                 if (response.status === 201) {
                     console.log(response);

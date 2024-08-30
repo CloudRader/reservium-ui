@@ -4,7 +4,7 @@ import config from './Config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginInfo from "./LoginInfo";
 
-const CreateNewCalendar = ({ isLoggedIn, onLogout, username }) => {
+const CreateNewCalendar = ({ isLoggedIn, username }) => {
     const [formFields, setFormFields] = useState([]);
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ const CreateNewCalendar = ({ isLoggedIn, onLogout, username }) => {
 
     useEffect(() => {
         if (selectedType) {
-            axios.get(`${config.domenServer}/mini_services/alias/${selectedType}`)
+            axios.get(`${config.serverURL}/mini_services/alias/${selectedType}`)
                 .then(response => {
                     const data = response.data;
                     const newAdditionalServices = data.map(service => ({ value: service.name, label: service.name }));
@@ -41,8 +41,8 @@ const CreateNewCalendar = ({ isLoggedIn, onLogout, username }) => {
 
     useEffect(() => {
         if (selectedType) {
-            // axios.get(`${config.domenServer}/calendars/alias/${selectedType}`)
-            axios.get(`${config.domenServer}/calendars/`)
+            // axios.get(`${config.serverURL}/calendars/alias/${selectedType}`)
+            axios.get(`${config.serverURL}/calendars/`)
                 .then(response => {
                     const data = response.data;
                     const newOptions = data
@@ -330,8 +330,8 @@ const CreateNewCalendar = ({ isLoggedIn, onLogout, username }) => {
             }
         };
 
-        axios.post(`${config.domenServer}/calendars/create_calendar?username=${username}`, requestData)
-            .then((response) => {
+        axios.post(`${config.serverURL}/calendars/create_calendar?username=${username}`, requestData)
+            .then(() => {
                 setSuccessMessage('Calendar created successfully!');
                 setErrorMessage('');
             })

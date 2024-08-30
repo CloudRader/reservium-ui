@@ -1,19 +1,15 @@
 import React from "react";
-import FullCalendar from "@fullcalendar/react"
-import dayGridPlugin from "@fullcalendar/daygrid"
-import timeGridPlugin from "@fullcalendar/timegrid"
-import interactionPlugin from "@fullcalendar/interaction"
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import listPlugin from '@fullcalendar/list';
-import * as bootstrap from "bootstrap"
+import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./styles/GoogleCalendar.css"
 import config from "./Config";
 
-
-
 function Calendar({ googleCalendars }) {
-
     const eventDidMount = (info) => {
         const event = info.event;
 
@@ -45,22 +41,20 @@ function Calendar({ googleCalendars }) {
         clickInfo.jsEvent.preventDefault();
     };
 
-
-    return(
+    return (
         <div className="calendar-container">
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin, listPlugin]}
                 initialView={'dayGridMonth'}
-                headerToolbar={
-                    {
-                        start: 'today prev,next',
-                        center: 'title',
-                        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-                    }
-                }
+                headerToolbar={{
+                    start: 'today prev,next',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+                }}
                 nextDayThreshold='08:00:00'
-                contentHeight={640}
-                dayMaxEventRows={2}
+                height="auto"
+                aspectRatio={1.35}
+                dayMaxEventRows={3}
                 fixedWeekCount={false}
                 firstDay={1}
                 googleCalendarApiKey={config.googleCalendarApiKey}
@@ -83,7 +77,7 @@ function Calendar({ googleCalendars }) {
                 navLinks={true}
             />
         </div>
-    )
+    );
 }
 
-export default Calendar
+export default Calendar;

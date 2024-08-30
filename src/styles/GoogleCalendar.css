@@ -8,30 +8,79 @@ a {
 }
 
 .calendar-container {
-  height: 100%;  /* Set the width of the container */
-  width: 100%;  /* Set the width of the container */
-  margin: 0 auto; /* Center the container horizontally */
-  /*border: 1px solid #ccc; !* Optional: Add a border around the container *!*/
-  /*padding: 10px; !* Optional: Add some padding inside the container *!*/
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
 }
 
 .fc .fc-toolbar {
   font-size: 0.9em;
+  margin-bottom: 1em !important;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.fc .fc-button {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #495057;
+}
+
+.fc .fc-button:hover {
+  background-color: #e9ecef;
+}
+
+.fc .fc-button-active {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
 }
 
 .fc .fc-daygrid-event {
-  font-size: 0.8em; /* Adjust the font size as needed */
-  padding: 2px;     /* Adjust the padding as needed */
-  margin: 1px 0;    /* Adjust the margin as needed */
-  line-height: 1.2;
-}
-
-/* Make each cell a perfect square */
-.fc-daygrid-day {
-  position: relative;
+  font-size: 0.8em;
+  padding: 2px 4px;
+  margin: 1px 0;
+  line-height: 1.3;
+  border-radius: 3px;
 }
 
 .fc-daygrid-day-frame {
-  height: 0;
-  /*padding-bottom: 100%; !* This makes the height equal to the width *!*/
+  min-height: 100px;
+}
+
+.fc th {
+  padding: 10px 0;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.fc-day-today {
+  background-color: #f8f9fa !important;
+}
+
+.fc-event {
+  border: none;
+  padding: 2px 4px;
+}
+
+.fc-event-title {
+  font-weight: bold;
+}
+
+.fc-list-event-dot {
+  border-color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+  }
+
+  .fc .fc-toolbar-title {
+    margin-bottom: 0.5em;
+  }
 }

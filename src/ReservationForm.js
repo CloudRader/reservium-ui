@@ -137,7 +137,7 @@ const ReservationForm = ({ formFields, onSubmit }) => {
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-gradient-to-r from-green-50 to-green-100 shadow-md rounded-lg p-6">
+            <div className="bg-gradient-to-r from-green-50 to-green-100 shadow-md rounded-lg ">
                 <h2 className="text-2xl font-bold text-green-800 mb-6">Reservation Form</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {formFields.map((field) => (

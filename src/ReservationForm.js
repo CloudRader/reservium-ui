@@ -13,6 +13,8 @@ const ReservationForm = ({ formFields, onSubmit }) => {
             return acc;
         }, {});
         setFormData(initialData);
+        console.log('set data first time ')
+
     }, [formFields]);
 
     const validateField = useCallback((field, value) => {
@@ -43,7 +45,7 @@ const ReservationForm = ({ formFields, onSubmit }) => {
             }));
             if (error) return;
         }
-
+        console.log('set data second1111 time ')
         setFormData(prevData => {
             if (type === 'checkbox') {
                 return {

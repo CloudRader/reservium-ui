@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Routes, useNavigate,} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import Header from './Header';
 import ReservationComponent from "./ReservationComponent";
 import config from "./Config";
@@ -31,8 +31,6 @@ async function getReservationServiceData() {
                 mini_services: info.mini_services.map(mini_service => mini_service.name),
             };
         });
-
-        console.log("result", result);
         return result;
     } catch (error) {
         console.log('Error fetching reservation service data:', error);
@@ -45,14 +43,12 @@ function App() {
     const { isLoggedIn, username, userRoles, logout } = useAuth();
     const loginUrl = `${config.serverURL}/users/login`;
     const [services, setServices] = useState([]);
-    // const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
             const data = await getReservationServiceData();
             setServices(data);
         }
-
         if(isLoggedIn) fetchData();
 
     }, [isLoggedIn, username, userRoles]);

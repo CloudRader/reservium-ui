@@ -57,6 +57,13 @@ function App() {
         <div>
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={logout} services={services} />
             <Routes>
+                {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
+                <Route path='/login' element={<RedirectToExternal url={loginUrl} />} />
+                {/* send it to back-end for session get data from back and make components*/}
+                <Route path='/logined' element={<Login />} />
+                {/*then go here as default page*/}
+                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout} roomCalendarLinks={config.clubCalendarLinks} service={services[0]} />} />
+
                 {services
                     .map(service => (
                         <Route
@@ -72,12 +79,12 @@ function App() {
                             }
                         />
                     ))}
-                <Route path='/login' element={<RedirectToExternal url={loginUrl} />} />
-                <Route path='/logined' element={<Login />} />
+
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
-                <Route path='/create-new-calendar' element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
-                <Route path='/create-new-miniservice' element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} onLogout={logout} />} />
-                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout} roomCalendarLinks={config.clubCalendarLinks} service={services[0]} />} />
+
+                {/*// if section role === "manager" he have this */}
+                <Route path='/create-new-calendar' element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />} />
+                <Route path='/create-new-miniservice' element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />} />
             </Routes>
             <Footer/>
         </div>

@@ -7,7 +7,7 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import listPlugin from '@fullcalendar/list';
 import * as bootstrap from "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./GoogleCalendar.css"
+import "./styles/GoogleCalendar.css"
 import config from "./Config";
 
 

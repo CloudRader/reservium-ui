@@ -5,7 +5,6 @@ const ReservationForm = ({ formFields, onSubmit }) => {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        // Initialize formData with default values
         const initialData = formFields.reduce((acc, field) => {
             if (field.defaultValue !== undefined) {
                 acc[field.name] = field.defaultValue;

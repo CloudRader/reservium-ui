@@ -8,11 +8,28 @@ a {
 }
 
 .calendar-container {
-  /*width: 80%;  !* Set the width of the container *!*/
-  margin: 0 auto; /* Center the container horizontally */
-  border: 1px solid #ccc; /* Optional: Add a border around the container */
-  padding: 10px; /* Optional: Add some padding inside the container */
+  width: 100%; /* Make it take full width of its container */
+  height: 100%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
+
+.fc {
+  height: 100%; /* Make FullCalendar take full height of its container */
+}
+
+/* Remove any border or padding from the calendar container */
+.calendar-container {
+  border: none;
+  padding: 0;
+}
+
+/* Adjust the FullCalendar styles */
+.fc .fc-view-harness {
+  height: calc(100% - 50px) !important; /* Adjust based on your toolbar height */
+}
+
 
 .fc .fc-toolbar {
   font-size: 0.9em;

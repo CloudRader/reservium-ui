@@ -135,16 +135,21 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col lg:flex-row gap-8">
-                <div className="w-full lg:w-1/2">
-                    <ReservationForm
-                        formFields={formFields}
-                        onSubmit={handleSubmit}
-                    />
-                    {successMessage && <div className="alert alert-success mt-4">{successMessage}</div>}
-                    {errorMessages.general && <div className="alert alert-danger mt-4">{errorMessages.general}</div>}
+                <div className="w-full lg:w-1/3 bg-white rounded-lg shadow-md overflow-hidden">
+                    <div className="p-6">
+                        <ReservationForm
+                            formFields={formFields}
+                            onSubmit={handleSubmit}
+                        />
+                        {successMessage && <div className="alert alert-success mt-4">{successMessage}</div>}
+                        {errorMessages.general &&
+                            <div className="alert alert-danger mt-4">{errorMessages.general}</div>}
+                    </div>
                 </div>
-                <div className="w-full lg:w-1/2">
-                    <GoogleCalendar googleCalendars={roomCalendarLinks}/>
+                <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden">
+                    <div className="p-6">
+                        <GoogleCalendar googleCalendars={roomCalendarLinks}/>
+                    </div>
                 </div>
             </div>
         </div>

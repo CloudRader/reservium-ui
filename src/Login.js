@@ -34,6 +34,7 @@ const useAuth = () => {
         setUsername(null);
         setUserRoles({ active_member: false, section_head: false });
         localStorage.removeItem('userName');
+        // TODO make request to server to logout
         navigate('/');
     }, [navigate]);
 

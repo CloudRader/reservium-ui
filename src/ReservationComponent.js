@@ -99,11 +99,11 @@ const ReservationComponent = ({isLoggedIn, onLogout, roomCalendarLinks, service}
             },
         ];
 
-        if (additionalServices.length > 0) {
+        if (additionalServices.length > 0) { // TODO fix it
             baseFields.push({
                 name: 'additionalServices',
                 type: 'checkbox',
-                labelText: 'Additional Services',
+                labelText: 'Additionals',
                 labelColor: 'text-primary',
                 options: additionalServices,
             });

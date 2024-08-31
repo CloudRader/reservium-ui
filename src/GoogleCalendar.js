@@ -5,36 +5,35 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import listPlugin from '@fullcalendar/list';
-import * as bootstrap from "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Popover } from '@/components/ui/popover';
+import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import config from "./Config";
 
-function Calendar({ googleCalendars }) {
+const Calendar = ({ googleCalendars }) => {
     const eventDidMount = (info) => {
         const event = info.event;
-
         const startTime = event.start.toLocaleString([], {
             year: 'numeric', month: 'numeric', day: 'numeric',
             hour: 'numeric', minute: 'numeric',
             hour12: false
         });
-
         const endTime = event.end.toLocaleString([], {
             hour: 'numeric', minute: 'numeric',
             hour12: false
         });
 
-        return new bootstrap.Popover(info.el, {
-            title: event.title,
-            placement: "auto",
-            trigger: "hover",
-            customClass: "popoverStyle",
-            content: `
-                <p><strong>Reservation time:</strong><br>${startTime} - ${endTime}</p>
-                <p><strong>Description:</strong><br>${(event.extendedProps.description || 'N/A').replace(/\n/g, '<br>')}</p>
-            `,
-            html: true,
-        });
+        return (
+            <Popover>
+                <PopoverTrigger asChild>
+                    <div>{info.el}</div>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                    <h3 className="font-bold mb-2">{event.title}</h3>
+                    <p className="mb-2"><strong>Reservation time:</strong><br />{startTime} - {endTime}</p>
+                    <p><strong>Description:</strong><br />{(event.extendedProps.description || 'N/A').split('\n').map((line, i) => <React.Fragment key={i}>{line}<br /></React.Fragment>)}</p>
+                </PopoverContent>
+            </Popover>
+        );
     };
 
     const handleEventClick = (clickInfo) => {
@@ -42,7 +41,7 @@ function Calendar({ googleCalendars }) {
     };
 
     return (
-        <div className="calendar-container">
+        <div className="h-full w-full mx-auto font-sans text-black">
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin, listPlugin]}
                 initialView={'dayGridMonth'}
@@ -75,6 +74,7 @@ function Calendar({ googleCalendars }) {
                 }}
                 eventClick={handleEventClick}
                 navLinks={true}
+                className="fc-theme-standard"
             />
         </div>
     );

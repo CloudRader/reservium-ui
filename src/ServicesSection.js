@@ -7,7 +7,6 @@ const ServiceButton = ({ children }) => (
 );
 
 const ServicesSection = () => {
-    // TODO: Replace with actual services from backend
     const services = [
         "Membership", "Club room", "Study room", "Grill", "Storage room", "Games",
         "Sport", "Internet", "Events"

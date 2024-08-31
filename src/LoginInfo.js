@@ -1,23 +1,37 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import { AlertCircle } from 'lucide-react';
+import ServicesSection from "./ServicesSection";
 
 const LoginInfo = () => {
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="border-2 border-green-800 bg-white rounded-lg p-3 flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
-                <div className="flex items-center text-green-800">
-                    <AlertCircle className="w-8 h-8 mr-4" />
-                    <span className="text-lg font-medium">Please log in to make reservations</span>
+    <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
+        <div
+            className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
+            <div className="w-full md:w-1/2 lg:w-5/12 mb-8 md:mb-0 md:flex md:flex-col">
+                <div className="bg-white p-6 md:p-8 text-center flex-grow flex flex-col justify-center">
+                    {/*<AlertCircle className="w-8 h-8 mr-4"/>*/}
+                    <h2 className="text-2xl font-semibold text-green-700 mb-6">Please log in to make reservations.</h2>
+                    {/*<p className="text-lg font-medium text-green-700 mb-8">Please log in to make reservations.</p>*/}
+                    <div>
+                        <NavLink
+                            to="/login"
+                            className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                        >
+                            Log in
+                        </NavLink>
+                    </div>
                 </div>
-                <NavLink
-                    to="/login"
-                    className="px-6 py-3 bg-green-800 text-white font-medium text-lg rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 shadow-md"
-                > Log in
-                </NavLink>
+            </div>
+            <div className="w-full md:w-1/2 lg:w-7/12 md:flex md:flex-col">
+                <ServicesSection/>
             </div>
         </div>
-    );
+    </div>
+)
+    ;
 };
 
 export default LoginInfo;
+
+

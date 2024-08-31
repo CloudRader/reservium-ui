@@ -13,9 +13,8 @@ const ReservationForm = ({ formFields, onSubmit }) => {
             return acc;
         }, {});
         setFormData(initialData);
-        console.log('set data first time ')
-
     }, [formFields]);
+
 
     const validateField = useCallback((field, value) => {
         if (field.validation && !field.validation(value)) {

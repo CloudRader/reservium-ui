@@ -5,6 +5,7 @@ import ReservationForm from './ReservationForm';
 import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
+import ServicesSection from "./ServicesSection";
 
 axios.defaults.withCredentials = true;
 

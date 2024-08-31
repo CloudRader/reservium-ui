@@ -9,6 +9,7 @@ import {Login, useAuth} from "./Login";
 import Logout from "./Logout";
 import axios from 'axios';
 import Footer from "./Footer";
+import NotFoundPage from "./NotFoundPage";
 
 // todo REWORK WITH BACKEND
 function RedirectToExternal({ url }) {
@@ -81,6 +82,7 @@ function App() {
                     ))}
 
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
+                <Route path="*" element={<NotFoundPage />} />
 
                 {/*<Route path='/' element={<HomePage onLogout={logout} />} />*/}
 

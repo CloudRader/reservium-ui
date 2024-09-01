@@ -97,7 +97,7 @@ function App() {
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
                                     // roomCalendarLinks={config.clubCalendarLinks}
-                                    roomCalendarLinks={calendars.service.linkName} // TODO too slow
+                                    roomCalendarLinks={calendars[service.linkName]} // TODO too slow
                                     service={service}
                                 />
                             }

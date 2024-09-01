@@ -12,8 +12,12 @@ const LoginHandler = () => {
             try {
                 axios.defaults.withCredentials = true;
                 const response = await axios.get(loginUrl);
-                if (response.data)
-                    window.location.href = response.data;
+                if (response.data) {
+                    const newWindow = window.open(response.data, '_self');
+                    if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                        alert('Please allow popups for this site.');
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching login URL:', error);
                 navigate('/');

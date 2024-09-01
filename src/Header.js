@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import bubenLogo from "./assets/buben_logo.svg";
 
 const Header = ({ username, isLoggedIn, onLogout, services }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +15,8 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                 <nav className="flex justify-between items-center h-16">
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
-                            <span className="text-2xl font-bold text-green-800">Buben Club</span>
+                            <span className="text-2xl  mr-2 font-bold text-green-800">Buben Club</span>
+                            <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11 inline-block"/>
                         </div>
                         <div className="hidden sm:flex sm:ml-6 sm:space-x-8">
                             {services.map((item) => (
@@ -39,12 +41,10 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                         {isLoggedIn ? (
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm font-medium text-green-700">{username}</span>
-                                <button
-                                    onClick={onLogout}
+                                <NavLink
                                     className="no-underline inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                >
-                                    Log out
-                                </button>
+                                    to="/logout" >Log out
+                                </NavLink>
                             </div>
                         ) : (
                             <NavLink

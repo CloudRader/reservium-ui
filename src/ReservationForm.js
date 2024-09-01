@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 
-const ReservationForm = ({ formFields, onSubmit, onReservationTypeChange }) => {
+const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservationTypeChange }) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -137,29 +137,49 @@ const ReservationForm = ({ formFields, onSubmit, onReservationTypeChange }) => {
         }
     }, [formData, handleChange]);
 
+    const renderFields = () => {
+        return formFields.map((field) => (
+            <div key={field.name}>
+                {renderField(field)}
+            </div>
+        ));
+    };
+
+    const renderAdditionalServices = () => {
+        if (additionalServices.length === 0) return null;
+
+        return (
+            <div>
+                <label className="block text-sm font-medium text-primary mb-1">
+                    Additionals
+                </label>
+                <div className="space-y-2">
+                    {additionalServices.map((service) => (
+                        <div key={service.value} className="flex items-center">
+                            <input
+                                type="checkbox"
+                                name="additionalServices"
+                                value={service.value}
+                                checked={formData.additionalServices?.includes(service.value)}
+                                onChange={handleChange}
+                                className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+                            />
+                            <label className="text-sm text-green-700">
+                                {service.label}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    };
+
     return (
-        <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-green-800 mb-6">Reservation Form</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                {formFields.map((field) => (
-                    <div key={field.name}>
-                        <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
-                            {field.labelText}
-                        </label>
-                        {renderField(field)}
-                        {errors[field.name] && (
-                            <p className="text-red-600 text-sm mt-1">{errors[field.name]}</p>
-                        )}
-                    </div>
-                ))}
-                <button
-                    type="submit"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                >
-                    Submit Reservation
-                </button>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit}>
+            {renderFields()}
+            {renderAdditionalServices()}
+            <button type="submit">Submit</button>
+        </form>
     );
 };
 

@@ -124,7 +124,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
         }
 
         return baseFields;
-    }, [getTomorrowDate, reservationTypes, additionalServices]);
+    }, [getTomorrowDate, reservationTypes, additionalServices, reservationType]);
 
     const handleSubmit = useCallback((formData) => {
         axios.post(`${config.serverURL}/events/create_event`, formData)

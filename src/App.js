@@ -111,7 +111,7 @@ function App() {
 
                 {/*<Route path='/' element={<HomePage onLogout={logout} />} />*/}
 
-                {/*// if section role === "manager" he have this */}
+                {/*// if section role === "manager" show this */}
                 <Route path='/create-new-calendar'
                        element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username}/>}/>
                 <Route path='/create-new-miniservice'

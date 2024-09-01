@@ -5,6 +5,7 @@ import ReservationForm from './ReservationForm';
 import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
+import AdaptiveCalendar from "./MobileGoogleCalendar";
 
 axios.defaults.withCredentials = true;
 
@@ -155,7 +156,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                     onReservationTypeChange={handleReservationTypeChange}
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
-                    <GoogleCalendar googleCalendars={roomCalendarLinks}/>
+                    <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
                 </div>
             </div>
             {successMessage &&

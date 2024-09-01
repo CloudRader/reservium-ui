@@ -29,8 +29,7 @@ async function getReservationServiceData() {
         }));
 
         const calendars = data.reduce((acc, info) => {
-            const calendarLinks = [];
-                info.calendars.reduce((calAcc, calendar) => {
+            acc[`${info.alias}`] =  info.calendars.reduce((calAcc, calendar) => {
                 calAcc["googleCalendarId"] = calendar.id;
                 calAcc["className"] = calendar.reservation_type;
                 calAcc["backgroundColor"] = calendar.color;
@@ -38,7 +37,6 @@ async function getReservationServiceData() {
                 return calAcc;
             }, {});
 
-            acc[`${info.alias}`] = calendarLinks;
             return acc;
         }, {});
 
@@ -97,7 +95,7 @@ function App() {
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
                                     // roomCalendarLinks={config.clubCalendarLinks}
-                                    roomCalendarLinks={calendars[service.linkName]} // TODO too slow
+                                    roomCalendarLinks={calendars[service.linkName]}
                                     service={service}
                                 />
                             }

@@ -154,15 +154,15 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                     onSubmit={handleSubmit}
                     onReservationTypeChange={handleReservationTypeChange}
                 />
-                {successMessage &&
-                    <div className="alert alert-success mt-4">{successMessage}</div>}
-                {errorMessages.general &&
-                    <div className="alert alert-danger mt-4">{errorMessages.general}</div>
-                }
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
                     <GoogleCalendar googleCalendars={roomCalendarLinks}/>
                 </div>
             </div>
+            {successMessage &&
+                <div className="alert alert-success mt-4">{successMessage}</div>}
+            {errorMessages.general &&
+                <div className="alert alert-danger mt-4">{errorMessages.general}</div>
+            }
         </div>
     );
 };

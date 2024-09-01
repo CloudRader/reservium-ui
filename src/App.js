@@ -28,9 +28,9 @@ async function getReservationServiceData() {
         });
         const calendars = data.map(info => {
             return {
-                linkName: info.alias,
-                calendarsIds: info.calendars.map(calendar => calendar.id),
-                calendarsColor: info.calendars.map(calendar => calendar.color),
+                className: info.alias, // TODO problem
+                googleCalendarId: info.calendars.map(calendar => calendar.id),
+                backgroundColor: info.calendars.map(calendar => calendar.color),
             }
         });
         return {
@@ -109,7 +109,7 @@ function App() {
                                 <ReservationComponent
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
-                                    roomCalendarLinks={calendars.find(calendar => calendar.linkName === service.linkName)} // TODO too slow
+                                    roomCalendarLinks={calendars.find(calendar => calendar.className === service.linkName)} // TODO too slow
                                     service={service}
                                 />
                             }

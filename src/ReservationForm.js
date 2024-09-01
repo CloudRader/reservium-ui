@@ -46,19 +46,33 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
 
         if(field.name === 'type') onReservationTypeChange(value);
 
-        setFormData(prevData => {
-            if (type === 'checkbox') {
-                return {
-                    ...prevData,
-                    [name]: checked
-                        ? [...(prevData[name] || []), value]
-                        : (prevData[name] || []).filter(item => item !== value),
-                };
+        // setFormData(prevData => {
+        //     if (type === 'checkbox') {
+        //         return {
+        //             ...prevData,
+        //             [name]: checked
+        //                 ? [...(prevData[name] || []), value]
+        //                 : (prevData[name] || []).filter(item => item !== value),
+        //         };
+        //     } else {
+        //         return {...prevData, [name]: updatedValue};
+        //     }
+        // });
+    // }, [validateField]);
+        if (type === 'checkbox') {
+            updatedValue = formData[name] || [];
+            if (checked) {
+                updatedValue = [...updatedValue, value];
             } else {
-                return {...prevData, [name]: updatedValue};
+                updatedValue = updatedValue.filter(item => item !== value);
             }
-        });
-    }, [validateField]);
+        }
+
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: updatedValue
+        }));
+    }, [formData, validateField, onReservationTypeChange]);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
@@ -140,28 +154,20 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
     const renderAdditionalServices = () => {
         if (additionalServices.length === 0) return null;
 
+        const additionalServicesField = {
+            name: 'additionalServices',
+            type: 'checkbox',
+            labelText: 'Additionals',
+            labelColor: 'text-green-700',
+            options: additionalServices
+        };
+
         return (
             <div>
                 <label className="block text-sm font-medium text-green-700 mb-1">
-                    Additionals
+                    {additionalServicesField.labelText}
                 </label>
-                <div className="space-y-2">
-                    {additionalServices.map((service) => (
-                        <div key={service.value} className="flex items-center">
-                            <input
-                                type="checkbox"
-                                name="additionalServices"
-                                value={service.value}
-                                checked={formData.additionalServices?.includes(service.value)}
-                                onChange={handleChange}
-                                className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
-                            />
-                            <label className="text-sm text-green-700">
-                                {service.label}
-                            </label>
-                        </div>
-                    ))}
-                </div>
+                {renderField(additionalServicesField)}
             </div>
         );
     };

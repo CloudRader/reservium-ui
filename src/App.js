@@ -12,13 +12,6 @@ import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
 
-// todo REWORK WITH BACKEND
-function RedirectToExternal({url}) {
-    useEffect(() => {
-        window.location.href = url;
-    }, [url]);
-    return null;
-}
 
 // todo TO LOGIN
 async function getReservationServiceData() {
@@ -30,7 +23,6 @@ async function getReservationServiceData() {
                 linkName: info.alias,
                 serviceName: info.name,
                 reservation_types: info.calendars.map(calendar => calendar.reservation_type),
-
                 mini_services: info.mini_services.map(mini_service => mini_service.name),
             }
         });
@@ -93,8 +85,6 @@ function App() {
 
     }, [isLoggedIn, username, userRoles]);
 
-    // get loginUrl and  redirect user to new is link
-
     return (
         <div>
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={logout}
@@ -125,7 +115,7 @@ function App() {
                             }
                         />
                     ))}
-
+                {/*TODO call back end */}
                 <Route path='/logout' element={<Logout onLogout={logout}/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
 

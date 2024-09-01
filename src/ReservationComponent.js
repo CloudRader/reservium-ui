@@ -6,7 +6,6 @@ import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
 import ServicesSection from "./ServicesSection";
-import AdaptiveCalendar from "./MobileGoogleCalendar";
 
 axios.defaults.withCredentials = true;
 
@@ -109,7 +108,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                     <div className="alert alert-danger mt-4">{errorMessages.general}</div>
                 }
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
-                    <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
+                    <GoogleCalendar googleCalendars={roomCalendarLinks}/>
                 </div>
             </div>
         </div>

@@ -34,7 +34,6 @@ const useAuth = () => {
         setUsername(null);
         setUserRoles({ active_member: false, section_head: false });
         localStorage.removeItem('userName');
-        // TODO make request to server to logout
         navigate('/');
     }, [navigate]);
 
@@ -86,8 +85,7 @@ const Login = () => {
         if (code) {
             login(code, state);
         } else {
-            // Redirect to the external login page
-            window.location.href = `${config.serverURL}/users/login`;
+           navigate('/test');
         }
     }, [location, login, navigate]);
 

@@ -109,10 +109,10 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             labelText: 'Type of Reservation',
             labelColor: 'text-primary',
             options: reservationTypes,
-            defaultValue: reservationType || "Select Type",
+            // defaultValue: reservationType || "Select Type",
             validation: (value) => !!value
         },
-    ], [getTomorrowDate, reservationTypes, reservationType]);
+    ], [getTomorrowDate, reservationTypes]);
 
     const handleSubmit = useCallback((formData) => {
         axios.post(`${config.serverURL}/events/create_event`, formData)

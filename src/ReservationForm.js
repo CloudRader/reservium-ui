@@ -142,7 +142,7 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
 
         return (
             <div>
-                <label className="block text-sm font-medium text-primary mb-1">
+                <label className="block text-sm font-medium text-green-700 mb-1">
                     Additionals
                 </label>
                 <div className="space-y-2">
@@ -170,7 +170,7 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
     return (
         <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold text-green-800 mb-6">Reservation Form</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
                 {formFields.map((field) => (
                     <div key={field.name}>
                         <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">

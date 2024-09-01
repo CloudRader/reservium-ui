@@ -2,14 +2,14 @@ import React from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from '@fullcalendar/list';
 import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
-import listPlugin from '@fullcalendar/list';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import config from "./Config";
 
-function Calendar({ googleCalendars }) {
+function AdaptiveCalendar({ googleCalendars }) {
     const eventDidMount = (info) => {
         const event = info.event;
 
@@ -34,7 +34,7 @@ function Calendar({ googleCalendars }) {
         return new bootstrap.Popover(info.el, {
             title: event.title,
             placement: "auto",
-            trigger: "hover",
+            trigger: "click",
             customClass: "popoverStyle",
             content: `
                 <p><strong>Reservation time:</strong><br>${startTime} - ${endTime}</p>
@@ -50,15 +50,40 @@ function Calendar({ googleCalendars }) {
 
     return (
         <div className="calendar-container">
+            <style>
+                {`
+                    @media (max-width: 768px) {
+                        .fc .fc-toolbar-title { font-size: 1.2em; }
+                        .fc .fc-button { background-color: #4CAF50; border-color: #4CAF50; }
+                        .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }
+                        .fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); }
+                        .fc-theme-standard .fc-list-day-cushion { background-color: #f0f0f0; }
+                        .fc .fc-list-event:hover td { background-color: #f5f5f5; }
+                    }
+                `}
+            </style>
             <FullCalendar
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin, listPlugin]}
-                initialView={'dayGridMonth'}
+                plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
+                initialView="dayGridMonth"
                 headerToolbar={{
-                    start: 'today prev,next',
+                    start: 'prev,next today',
                     center: 'title',
                     end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
                 }}
-                nextDayThreshold='08:00:00'
+                views={{
+                    dayGridMonth: {
+                        buttonText: 'Month',
+                    },
+                    timeGridWeek: {
+                        buttonText: 'Week',
+                    },
+                    timeGridDay: {
+                        buttonText: 'Day',
+                    },
+                    listWeek: {
+                        buttonText: 'List',
+                    },
+                }}
                 height="auto"
                 aspectRatio={1.1}
                 dayMaxEventRows={3}
@@ -82,9 +107,16 @@ function Calendar({ googleCalendars }) {
                 }}
                 eventClick={handleEventClick}
                 navLinks={true}
+                windowResize={(view) => {
+                    if (window.innerWidth < 768) {
+                        view.calendar.changeView('listWeek');
+                    } else {
+                        view.calendar.changeView('dayGridMonth');
+                    }
+                }}
             />
         </div>
     );
 }
 
-export default Calendar;
+export default AdaptiveCalendar;

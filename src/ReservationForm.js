@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 
-const ReservationForm = ({ formFields, onSubmit }) => {
+const ReservationForm = ({ formFields, onSubmit, onReservationTypeChange }) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -35,7 +35,6 @@ const ReservationForm = ({ formFields, onSubmit }) => {
                 return;
             }
         }
-
         if (field.type === 'date' || field.type === 'time') {
             const error = validateField(field, value);
             setErrors(prevErrors => ({
@@ -44,7 +43,9 @@ const ReservationForm = ({ formFields, onSubmit }) => {
             }));
             if (error) return;
         }
-        console.log('set data second1111 time ')
+
+        if(field.name === 'type') onReservationTypeChange(value);
+
         setFormData(prevData => {
             if (type === 'checkbox') {
                 return {

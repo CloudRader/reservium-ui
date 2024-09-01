@@ -63,7 +63,7 @@ function AdaptiveCalendar({ googleCalendars }) {
                 `}
             </style>
             <FullCalendar
-                plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
+                plugins={[listPlugin, interactionPlugin, googleCalendarPlugin]}
                 initialView="dayGridMonth"
                 headerToolbar={{
                     start: 'prev,next today',
@@ -107,13 +107,13 @@ function AdaptiveCalendar({ googleCalendars }) {
                 }}
                 eventClick={handleEventClick}
                 navLinks={true}
-                windowResize={(view) => {
-                    if (window.innerWidth < 768) {
-                        view.calendar.changeView('listWeek');
-                    } else {
-                        view.calendar.changeView('dayGridMonth');
-                    }
-                }}
+                // windowResize={(view) => {
+                //     if (window.innerWidth < 768) {
+                //         view.calendar.changeView('listWeek');
+                //     } else {
+                //         view.calendar.changeView('dayGridMonth');
+                //     }
+                // }}
             />
         </div>
     );

@@ -26,7 +26,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
         if (reservationType && service) {
             const selectedType = service.reservation_types.find(type => type === reservationType);
             if (selectedType) {
-                const calendarId = service.calendar_id;
+                const calendarId = service.calendarIds[selectedType];
                 axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`)
                     .then(response => {
                         setAdditionalServices(response.data.map(service => ({ value: service, label: service })));

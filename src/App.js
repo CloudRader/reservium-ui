@@ -19,12 +19,15 @@ async function getReservationServiceData() {
         const response = await axios.get(`${config.serverURL}/reservation_services/`);
         const data = response.data;
         const services = data.map(info => {
-            return {
+            return data.map(info => ({
                 linkName: info.alias,
                 serviceName: info.name,
                 reservation_types: info.calendars.map(calendar => calendar.reservation_type),
-                mini_services: info.mini_services.map(mini_service => mini_service.name),
-            }
+                calendarIds: info.calendars.reduce((acc, calendar) => {
+                    acc[calendar.reservation_type] = calendar.id;
+                    return acc;
+                }, {})
+            }));
         });
         const calendars = data.map(info => {
             return {

@@ -97,7 +97,7 @@ function App() {
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout}
-                                                               roomCalendarLinks={config.googleCalendarsClubRoom}
+                                                               roomCalendarLinks={config.clubCalendarLinks}
                                                                service={services[0]}/>}/>
 
                 {services
@@ -109,7 +109,8 @@ function App() {
                                 <ReservationComponent
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
-                                    roomCalendarLinks={calendars.find(calendar => calendar.className === service.linkName)} // TODO too slow
+                                    roomCalendarLinks={config.clubCalendarLinks}
+                                    // roomCalendarLinks={calendars.find(calendar => calendar.className === service.linkName)} // TODO too slow
                                     service={service}
                                 />
                             }

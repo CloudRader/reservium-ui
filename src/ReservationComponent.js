@@ -5,7 +5,6 @@ import ReservationForm from './ReservationForm';
 import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
-import ServicesSection from "./ServicesSection";
 
 axios.defaults.withCredentials = true;
 
@@ -24,9 +23,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
 
     useEffect(() => {
         if (reservationType && service) {
-            const selectedType = service.reservation_types.find(type => type === reservationType);
-            if (selectedType) {
-                const calendarId = service.calendarIds[selectedType];
+                const calendarId = service.calendarIds[reservationType];
                 axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`)
                     .then(response => {
                         setAdditionalServices(response.data.map(service => ({ value: service, label: service })));
@@ -35,7 +32,6 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                         console.error('Error fetching additional services:', error);
                         setAdditionalServices([]);
                     });
-            }
         }
     }, [reservationType, service]);
 
@@ -112,6 +108,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                 labelText: 'Type of Reservation',
                 labelColor: 'text-primary',
                 options: reservationTypes,
+                defaultValue: reservationType ? reservationType : "Select Type",
                 validation: (value) => !!value
             },
         ];

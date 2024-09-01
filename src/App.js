@@ -97,7 +97,7 @@ function App() {
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout}
-                                                               roomCalendarLinks={calendars[0]}
+                                                               roomCalendarLinks={config.googleCalendarsClubRoom}
                                                                service={services[0]}/>}/>
 
                 {services

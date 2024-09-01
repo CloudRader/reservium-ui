@@ -56,7 +56,6 @@ async function getReservationServiceData() {
 
 function App() {
     const {isLoggedIn, username, userRoles, logout} = useAuth();
-    const loginUrl = `${config.serverURL}/users/login`;
     const [services, setServices] = useState([]);
     const [calendars, setCalendars] = useState([]);
 
@@ -78,7 +77,7 @@ function App() {
             <Routes>
                 {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
                 {/*<Route path='/login' element={<RedirectToExternal url={loginUrl} />} />*/}
-                <Route path='/login' element={<LoginHandler loginUrl={loginUrl}/>}/>
+                <Route path='/login' element={<LoginHandler/>}/>
                 {/* send it to back-end for session get data from back and make components*/}
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}

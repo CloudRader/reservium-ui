@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import config from "./Config";
-
 axios.defaults.withCredentials = true;
+
 
 const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,6 +60,8 @@ const useAuth = () => {
 
     return { isLoggedIn, username, userRoles, login, logout };
 };
+
+
 
 const sendCodeToServer = async (code, state) => {
     const response = await axios.get(`${config.serverURL}/users/callback`, {

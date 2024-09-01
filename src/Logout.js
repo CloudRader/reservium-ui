@@ -10,14 +10,9 @@ function Logout({ onLogout }) {
     useEffect(() => {
         const fetchLoginUrl = async () => {
             try {
-                const response = await axios.get(`${config.serverURL}/users/logout`);
-                if (response.data) {
-                   console.log(response.data)
-                } else {
-                    console.error('Empty response from server');
-                }
+                await axios.get(`${config.serverURL}/users/logout`);
             } catch (error) {
-                console.error('Error fetching login URL:', error);
+                console.error('Error while log out', error);
             }
         };
         fetchLoginUrl();

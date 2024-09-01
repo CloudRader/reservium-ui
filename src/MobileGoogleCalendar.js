@@ -78,7 +78,7 @@ function AdaptiveCalendar({ googleCalendars }) {
             </style>
             {isSmallScreen ? (
                 <FullCalendar
-                    plugins={[listPlugin, interactionPlugin, googleCalendarPlugin]}
+                    plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
                     initialView="listWeek"
                     headerToolbar={{
                         start: 'prev,next today',

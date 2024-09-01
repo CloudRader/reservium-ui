@@ -2,112 +2,36 @@
   z-index: 99999 !important;
 }
 
+a {
+  color: #212529 !important;
+  text-decoration: none;
+}
+
 .calendar-container {
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-  color: black;
+  width: 850px;  /* Set the width of the container */
+  height: 720px; /* Set the height of the container */
+  margin: 0 auto; /* Center the container horizontally */
+  border: 1px solid #ccc; /* Optional: Add a border around the container */
+  padding: 10px; /* Optional: Add some padding inside the container */
 }
 
 .fc .fc-toolbar {
   font-size: 0.9em;
-  margin-bottom: 1em !important;
-}
-
-.fc .fc-toolbar-title {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: black;
-}
-
-.fc .fc-button {
-  background-color: #f8f9fa;
-  border-color: #dee2e6;
-  color: #16A34A;
-}
-
-.fc .fc-button:hover {
-  background-color: #e9ecef;
 }
 
 .fc .fc-daygrid-event {
-  font-size: 0.8em;
-  padding: 2px 4px;
-  margin: 1px 0;
-  line-height: 1.3;
-  border-radius: 3px;
+  font-size: 0.8em; /* Adjust the font size as needed */
+  padding: 2px;     /* Adjust the padding as needed */
+  margin: 1px 0;    /* Adjust the margin as needed */
+  line-height: 1.2;
+}
+
+/* Make each cell a perfect square */
+.fc-daygrid-day {
+  position: relative;
 }
 
 .fc-daygrid-day-frame {
-  min-height: 150px;
-}
-
-.fc th {
-  padding: 10px 0;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: black;
-}
-
-.fc-day-today {
-  background-color: #f8f9fa !important;
-}
-
-.fc-event {
-  border: none;
-  padding: 2px 4px;
-}
-
-.fc-event-title {
-  font-weight: bold;
-}
-
-/* More specific selectors to override Bootstrap styles */
-.fc a,
-.fc a:link,
-.fc a:visited,
-.fc a:hover,
-.fc a:active,
-.fc-col-header-cell-cushion,
-.fc-daygrid-day-number,
-.fc-daygrid-day-top a {
-  color: black !important;
-  text-decoration: none !important;
-}
-
-/* Ensure event text is visible on colored backgrounds */
-.fc-event-title,
-.fc-event-time {
-  color: #fff !important;
-}
-
-a {
-  color: black;
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .fc .fc-toolbar {
-    flex-direction: column;
-  }
-
-  .fc .fc-toolbar-title {
-    margin-bottom: 0.5em;
-  }
-}
-
-/* Additional rules to ensure all text is black */
-.fc,
-.fc table,
-.fc td,
-.fc th,
-.fc-scrollgrid,
-.fc-view-harness {
-  color: black;
-}
-
-/* Override any remaining Bootstrap styles */
-.fc .btn-primary {
-  color: #fff !important; /* Keep button text white for contrast */
+  height: 0;
+  /*padding-bottom: 100%; !* This makes the height equal to the width *!*/
 }

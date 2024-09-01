@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -10,6 +10,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import config from "./Config";
 
 function AdaptiveCalendar({ googleCalendars }) {
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const eventDidMount = (info) => {
         const event = info.event;
 
@@ -62,59 +76,92 @@ function AdaptiveCalendar({ googleCalendars }) {
                     }
                 `}
             </style>
-            <FullCalendar
-                plugins={[listPlugin, interactionPlugin, googleCalendarPlugin]}
-                initialView="dayGridMonth"
-                headerToolbar={{
-                    start: 'prev,next today',
-                    center: 'title',
-                    end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-                }}
-                views={{
-                    dayGridMonth: {
-                        buttonText: 'Month',
-                    },
-                    timeGridWeek: {
-                        buttonText: 'Week',
-                    },
-                    timeGridDay: {
-                        buttonText: 'Day',
-                    },
-                    listWeek: {
-                        buttonText: 'List',
-                    },
-                }}
-                height="auto"
-                aspectRatio={1.1}
-                dayMaxEventRows={3}
-                fixedWeekCount={false}
-                firstDay={1}
-                googleCalendarApiKey={config.googleCalendarApiKey}
-                eventSources={googleCalendars}
-                eventDidMount={eventDidMount}
-                eventTimeFormat={{
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    omitZeroMinute: true,
-                    hour12: false,
-                }}
-                slotLabelFormat={{
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    omitZeroMinute: false,
-                    meridiem: false,
-                    hour12: false,
-                }}
-                eventClick={handleEventClick}
-                navLinks={true}
-                // windowResize={(view) => {
-                //     if (window.innerWidth < 768) {
-                //         view.calendar.changeView('listWeek');
-                //     } else {
-                //         view.calendar.changeView('dayGridMonth');
-                //     }
-                // }}
-            />
+            {isSmallScreen ? (
+                <FullCalendar
+                    plugins={[listPlugin, interactionPlugin, googleCalendarPlugin]}
+                    initialView="listWeek"
+                    headerToolbar={{
+                        start: 'prev,next today',
+                        center: 'title',
+                        end: 'listWeek',
+                    }}
+                    views={{
+                        listWeek: {
+                            buttonText: 'List',
+                        },
+                    }}
+                    height="auto"
+                    aspectRatio={1.1}
+                    dayMaxEventRows={3}
+                    fixedWeekCount={false}
+                    firstDay={1}
+                    googleCalendarApiKey={config.googleCalendarApiKey}
+                    eventSources={googleCalendars}
+                    eventDidMount={eventDidMount}
+                    eventTimeFormat={{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        omitZeroMinute: true,
+                        hour12: false,
+                    }}
+                    slotLabelFormat={{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: false,
+                        hour12: false,
+                    }}
+                    eventClick={handleEventClick}
+                    navLinks={true}
+                />
+            ) : (
+                <FullCalendar
+                    plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
+                    initialView="dayGridMonth"
+                    headerToolbar={{
+                        start: 'prev,next today',
+                        center: 'title',
+                        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+                    }}
+                    views={{
+                        dayGridMonth: {
+                            buttonText: 'Month',
+                        },
+                        timeGridWeek: {
+                            buttonText: 'Week',
+                        },
+                        timeGridDay: {
+                            buttonText: 'Day',
+                        },
+                        listWeek: {
+                            buttonText: 'List',
+                        },
+                    }}
+                    height="auto"
+                    aspectRatio={1.1}
+                    dayMaxEventRows={3}
+                    fixedWeekCount={false}
+                    firstDay={1}
+                    googleCalendarApiKey={config.googleCalendarApiKey}
+                    eventSources={googleCalendars}
+                    eventDidMount={eventDidMount}
+                    eventTimeFormat={{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        omitZeroMinute: true,
+                        hour12: false,
+                    }}
+                    slotLabelFormat={{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: false,
+                        hour12: false,
+                    }}
+                    eventClick={handleEventClick}
+                    navLinks={true}
+                />
+            )}
         </div>
     );
 }

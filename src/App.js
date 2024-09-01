@@ -29,7 +29,8 @@ async function getReservationServiceData() {
         }));
 
         const calendars = data.reduce((acc, info) => {
-            acc[`${info.alias}`] =  info.calendars.reduce((calAcc, calendar) => {
+            acc[`${info.alias}`] =  info.calendars.map((calendar) => {
+                const calAcc = {};
                 calAcc["googleCalendarId"] = calendar.id;
                 calAcc["className"] = calendar.reservation_type;
                 calAcc["backgroundColor"] = calendar.color;

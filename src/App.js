@@ -13,63 +13,47 @@ import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
 
 
-// todo TO LOGIN
 async function getReservationServiceData() {
     try {
         const response = await axios.get(`${config.serverURL}/reservation_services/`);
         const data = response.data;
-        const services = data.map(info => {
-            return {
-                linkName: info.alias,
-                serviceName: info.name,
-                reservation_types: info.calendars.map(calendar => calendar.reservation_type),
-                calendarIds: info.calendars.reduce((acc, calendar) => {
-                    acc[calendar.reservation_type] = calendar.id;
-                    return acc;
-                }, {})
-            }});
-        const calendars = data.map(info => {
-            return {
-                googleCalendarId: info.calendars.map(calendar => calendar.id),
-                className: info.alias, // TODO problem
-                backgroundColor: info.calendars.map(calendar => calendar.color),
-                borderColor: info.calendars.map(calendar => calendar.color),
-            }
-        });
+
+        const services = data.map(info => ({
+            linkName: info.alias,
+            serviceName: info.name,
+            reservation_types: info.calendars.map(calendar => calendar.reservation_type),
+            calendarIds: info.calendars.reduce((acc, calendar) => {
+                acc[calendar.reservation_type] = calendar.id;
+                return acc;
+            }, {})
+        }));
+
+        const calendars = data.reduce((acc, info) => {
+            const calendarLinks = [];
+                info.calendars.reduce((calAcc, calendar) => {
+                calAcc["googleCalendarId"] = calendar.id;
+                calAcc["className"] = calendar.reservation_type;
+                calAcc["backgroundColor"] = calendar.color;
+                calAcc["borderColor"] = calendar.color;
+                return calAcc;
+            }, {});
+
+            acc[`${info.alias}`] = calendarLinks;
+            return acc;
+        }, {});
+
         return {
             services: services,
             calendars: calendars
-        }
+        };
     } catch (error) {
         console.log('Error fetching reservation service data:', error);
         return {
             services: [],
-            calendars: []
+            calendars: {}
         };
     }
 }
-
-async function getCalendarsData() {
-    try {
-        const response = await axios.get(`${config.serverURL}/reservation_services/`);
-        const data = response.data;
-        return data.map(info => {
-            return {
-                linkName: info.alias,
-                serviceName: info.name,
-                reservation_types: info.calendars.map(calendar => calendar.reservation_type),
-
-                mini_services: info.mini_services.map(mini_service => mini_service.name),
-                calendarsIds: info.calendars.map(calendar => calendar.id),
-                calendarsColor: info.calendars.map(calendar => calendar.color),
-            };
-        });
-    } catch (error) {
-        console.log('Error fetching reservation service data:', error);
-        return [];
-    }
-}
-
 
 function App() {
     const {isLoggedIn, username, userRoles, logout} = useAuth();
@@ -101,7 +85,7 @@ function App() {
                 {/*then go here as default page*/}
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout}
                                                                roomCalendarLinks={calendars[0]}
-                                                               service={services[0]}/>}/>
+                                                               service={calendars.club}/>}/>
 
                 {services
                     .map(service => (
@@ -113,7 +97,7 @@ function App() {
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
                                     // roomCalendarLinks={config.clubCalendarLinks}
-                                    roomCalendarLinks={calendars.find(calendar => calendar.className === service.linkName)} // TODO too slow
+                                    roomCalendarLinks={calendars.service.linkName} // TODO too slow
                                     service={service}
                                 />
                             }

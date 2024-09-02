@@ -68,8 +68,6 @@ function AdaptiveCalendar({ googleCalendars }) {
                     @media {
                         .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
                      
-                        
-                        
                         fc .fc-button-primary {
                           background-color: #16A34A; /* Your desired active button background color */
                           border-color: #16A34A; /* Your desired active button border color */

@@ -84,7 +84,7 @@ function App() {
                 {/*then go here as default page*/}
                 <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout}
                                                                roomCalendarLinks={calendars[0]}
-                                                               service={calendars.club}/>}/>
+                                                               service={calendars["club"]}/>}/>
 
                 {services
                     .map(service => (

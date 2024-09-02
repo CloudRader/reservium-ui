@@ -65,8 +65,12 @@ function AdaptiveCalendar({ googleCalendars }) {
         <div className="calendar-container">
             <style>
                 {`
+                    .a {
+                        color: #212529 !important;
+                        text-decoration: none;
+                    }
                     @media {
-                        .fc .fc-col-header-cell-cushion .fc-daygrid-day-number { color: black; }
+                        .fc .fc-col-header-cell-cushion .fc-daygrid-day-number { color: black; text-decoration: none; }
                         .fc-daygrid-day-frame { color: black; }
                         fc .fc-button-primary {
                           background-color: #16A34A; /* Your desired active button background color */

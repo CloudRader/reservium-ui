@@ -133,7 +133,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                     ? { auth: 'Authentication failed. Please log in again.' }
                     : { general: 'Error creating reservation, try again later.' });
             });
-    }, []);
+    }, [navigate]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);

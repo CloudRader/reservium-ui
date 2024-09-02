@@ -11,7 +11,7 @@ import axios from 'axios';
 import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
-
+axios.defaults.withCredentials = true;
 
 async function getReservationServiceData() {
     try {

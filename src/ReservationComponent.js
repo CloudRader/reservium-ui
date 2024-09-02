@@ -158,13 +158,14 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
+                    {successMessage &&
+                        <div className="alert alert-success mt-4">{successMessage}</div>}
+                    {/*// delete this*/}
+                    {errorMessages.general &&
+                        <div className="alert alert-danger mt-4">{errorMessages.general}</div>
+                    }
                 </div>
             </div>
-            {successMessage &&
-                <div className="alert alert-success mt-4">{successMessage}</div>}
-            {errorMessages.general &&
-                <div className="alert alert-danger mt-4">{errorMessages.general}</div>
-            }
         </div>
     );
 };

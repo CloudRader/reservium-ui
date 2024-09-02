@@ -27,16 +27,10 @@ function AdaptiveCalendar({ googleCalendars }) {
     const eventDidMount = (info) => {
         const event = info.event;
 
-        // Check if title is not approved
         if (event.title.toLowerCase().includes("not approved")) {
             // Set gray color to event
             info.el.style.backgroundColor = 'gray';
             info.el.style.borderColor = 'darkgray';
-        }
-        if (event.title.toLowerCase().includes("cleaning after party")) {
-            // Set gray color to event
-            info.el.style.backgroundColor = 'yellow';
-            info.el.style.borderColor = 'yellow';
         }
 
         const startTime = event.start.toLocaleString([], {
@@ -53,7 +47,7 @@ function AdaptiveCalendar({ googleCalendars }) {
         return new bootstrap.Popover(info.el, {
             title: event.title,
             placement: "auto",
-            trigger: "click",
+            trigger: "hover",
             customClass: "popoverStyle",
             content: `
                 <p><strong>Reservation time:</strong><br>${startTime} - ${endTime}</p>
@@ -71,7 +65,7 @@ function AdaptiveCalendar({ googleCalendars }) {
         <div className="calendar-container">
             <style>
                 {`
-                    @media (max-width: 768px) {
+                    @media  {
                         .fc .fc-toolbar-title { font-size: 1.2em; }
                         .fc .fc-button { background-color: #4CAF50; border-color: #4CAF50; }
                         .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }

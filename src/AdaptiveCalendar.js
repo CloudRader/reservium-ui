@@ -68,7 +68,8 @@ function AdaptiveCalendar({ googleCalendars }) {
                     @media {
                         
                         .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
-                        
+                        .div .fc .fc-event-tittle { color: #212529 !important; text-decoration: none; }
+                        .div  .fc-event-tittle { color: #212520 !important; text-decoration: none; }
                         .fc .fc-daygrid-day-top {  color: #212529 !important; text-decoration: none; }
                         .fc .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
                         

@@ -120,6 +120,7 @@ function AdaptiveCalendar({ googleCalendars }) {
                     dayMaxEventRows={3}
                     fixedWeekCount={false}
                     firstDay={1}
+                    textColor="#212529"
                     googleCalendarApiKey={config.googleCalendarApiKey}
                     eventSources={googleCalendars}
                     eventDidMount={eventDidMount}
@@ -176,6 +177,7 @@ function AdaptiveCalendar({ googleCalendars }) {
                         omitZeroMinute: true,
                         hour12: false,
                     }}
+                    eventTextColor="#212529"
                     slotLabelFormat={{
                         hour: '2-digit',
                         minute: '2-digit',

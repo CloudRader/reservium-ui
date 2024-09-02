@@ -6,9 +6,9 @@ const NotFoundPage = () => {
     const location = useLocation();
     const {state} = location; // Access the state passed via navigation
 
-    const response = JSON.parse(serverResponse);
-    // Check if the message matches the specific condition
+    const response = JSON.parse(state);
     const isTooManyPeopleMessage = response.message.includes("Too many people!");
+
     const link = "https://wiki.buk.cvut.cz/cs/club-zone/club-room";
 
     return (
@@ -53,10 +53,3 @@ const NotFoundPage = () => {
 };
 
 export default NotFoundPage;
-
-<div className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
-    <div className="w-full md:w-1/2 lg:w-5/12 mb-8 md:mb-0 md:flex md:flex-col">
-        Now reservation is waiting for approval. For this type of reservation (more than 10 people) you will need to get
-        additional confirmation. More information here: {link}. Server response {serverResponse}
-    </div>
-</div>

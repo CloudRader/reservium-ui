@@ -66,14 +66,8 @@ function AdaptiveCalendar({ googleCalendars }) {
             <style>
                 {`
                     @media {
-                        
                         .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
-                        .div .fc .fc-event-tittle { color: #212529 !important; text-decoration: none; }
-                        .div  .fc-event-tittle { color: #212520 !important; text-decoration: none; }
-                        .fc .fc-daygrid-day-top {  color: #212529 !important; text-decoration: none; }
-                        .fc .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
-                        
-                        .fc  { color: #212529 !important; text-decoration: none; }
+                     
                         
                         
                         fc .fc-button-primary {
@@ -82,14 +76,6 @@ function AdaptiveCalendar({ googleCalendars }) {
                           color: white; /* Your desired active button text color */
                         }
                         
-                        .fc .fc-button-primary:hover {
-                          background-color: #16A34A; /* Your desired active button hover background color */
-                          border-color: #16A34A; /* Your desired active button hover border color */
-                        }
-                        
-                        .fc .fc-button-primary:focus {
-                          box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); /* Your desired active button focus shadow */
-                        }
                         
                         .fc .fc-button-primary.fc-button-active {
                           background-color: white; /* Your desired active button active background color */
@@ -104,6 +90,14 @@ function AdaptiveCalendar({ googleCalendars }) {
                         .fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); }
                         .fc-theme-standard .fc-list-day-cushion { background-color: #f0f0f0; }
                         .fc .fc-list-event:hover td { background-color: #f5f5f5; }
+                        
+                        
+                        .fc .fc-event-tittle { color: #212520 !important; text-decoration: none; }
+                        .fc-event-tittle { color: #212520 !important; text-decoration: none; }
+                        .fc .fc-daygrid-day-top {  color: #212529 !important; text-decoration: none; }
+                        .fc .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
+                        
+                        .fc  { color: #212529 !important; text-decoration: none; }
                     }
                 `}
             </style>

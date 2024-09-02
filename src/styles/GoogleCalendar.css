@@ -15,6 +15,12 @@ a {
 .fc .fc-button { background-color: #16A34A; border-color: #16A34A; }
 .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }
 
-.fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); }
+.fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(132, 241, 148, 0.5); }
 .fc-theme-standard .fc-list-day-cushion { background-color: #f0f0f0; }
 .fc .fc-list-event:hover td { background-color: #f5f5f5; }
+
+.fc .fc-button.fc-button-active {
+  background-color: #3e8e41 !important;  /* Change background color when active */
+  border-color: #3e8e41 !important;      /* Change border color when active */
+  color: white !important;               /* Change text color when active */
+}

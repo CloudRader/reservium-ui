@@ -22,7 +22,7 @@ const useAuth = () => {
                 section_head: userInfo.section_head
             });
             localStorage.setItem('userName', username);
-            navigate('/');
+            navigate('/club'); // redirect here
         } catch (error) {
             console.error('Error during login:', error);
             navigate('/');

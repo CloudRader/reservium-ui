@@ -69,6 +69,7 @@ function AdaptiveCalendar({ googleCalendars }) {
                         .fc .fc-toolbar-title { font-size: 1.4em; }
                         .fc .fc-button { background-color: #16A34A; border-color: #16A34A; }
                         .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }
+                        .fc .fc-button:active { background-color: white; border-color: #45a049; }
                         .fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); }
                         .fc-theme-standard .fc-list-day-cushion { background-color: #f0f0f0; }
                         .fc .fc-list-event:hover td { background-color: #f5f5f5; }

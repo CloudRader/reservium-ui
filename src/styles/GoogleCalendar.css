@@ -7,31 +7,31 @@ a {
   text-decoration: none;
 }
 
-.calendar-container {
-  width: 850px;  /* Set the width of the container */
-  height: 720px; /* Set the height of the container */
-  margin: 0 auto; /* Center the container horizontally */
-  border: 1px solid #ccc; /* Optional: Add a border around the container */
-  padding: 10px; /* Optional: Add some padding inside the container */
-}
+/*.calendar-container {*/
+/*  width: 850px;  !* Set the width of the container *!*/
+/*  height: 720px; !* Set the height of the container *!*/
+/*  margin: 0 auto; !* Center the container horizontally *!*/
+/*  border: 1px solid #ccc; !* Optional: Add a border around the container *!*/
+/*  padding: 10px; !* Optional: Add some padding inside the container *!*/
+/*}*/
 
 .fc .fc-toolbar {
   font-size: 0.9em;
 }
 
-.fc .fc-daygrid-event {
-  font-size: 0.8em; /* Adjust the font size as needed */
-  padding: 2px;     /* Adjust the padding as needed */
-  margin: 1px 0;    /* Adjust the margin as needed */
-  line-height: 1.2;
-}
+/*.fc .fc-daygrid-event {*/
+/*  font-size: 0.8em; !* Adjust the font size as needed *!*/
+/*  padding: 2px;     !* Adjust the padding as needed *!*/
+/*  margin: 1px 0;    !* Adjust the margin as needed *!*/
+/*  line-height: 1.2;*/
+/*}*/
 
-/* Make each cell a perfect square */
-.fc-daygrid-day {
-  position: relative;
-}
+/*!* Make each cell a perfect square *!*/
+/*.fc-daygrid-day {*/
+/*  position: relative;*/
+/*}*/
 
-.fc-daygrid-day-frame {
-  height: 0;
-  /*padding-bottom: 100%; !* This makes the height equal to the width *!*/
-}
+/*.fc-daygrid-day-frame {*/
+/*  height: 0;*/
+/*  !*padding-bottom: 100%; !* This makes the height equal to the width *!*!*/
+/*}*/

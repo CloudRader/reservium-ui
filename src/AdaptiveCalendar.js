@@ -62,9 +62,44 @@ function AdaptiveCalendar({ googleCalendars }) {
         clickInfo.jsEvent.preventDefault();
     };
 
-
     return (
         <div className="calendar-container">
+            <style>
+                {`
+                    @media {
+                        .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
+                     
+                        fc .fc-button-primary {
+                          background-color: #16A34A; /* Your desired active button background color */
+                          border-color: #16A34A; /* Your desired active button border color */
+                          color: white; /* Your desired active button text color */
+                        }
+                        
+                        
+                        .fc .fc-button-primary.fc-button-active {
+                          background-color: white; /* Your desired active button active background color */
+                          border-color: #16A34A; /* Your desired active button active border color */
+                          color: #16A34A; /* Your desired active button active text color */
+                        }
+                        
+                        .fc .fc-toolbar-title { font-size: 1.4em; }
+                        .fc .fc-button { background-color: #16A34A; border-color: #16A34A; }
+                        .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }
+                   
+                        .fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); }
+                        .fc-theme-standard .fc-list-day-cushion { background-color: #f0f0f0; }
+                        .fc .fc-list-event:hover td { background-color: #f5f5f5; }
+                        
+                        
+                        .fc .fc-event-tittle { color: #212520 !important; text-decoration: none; }
+                        .fc-event-tittle { color: #212520 !important; text-decoration: none; }
+                        .fc .fc-daygrid-day-top {  color: #212529 !important; text-decoration: none; }
+                        .fc .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
+                        
+                        .fc  { color: #212529 !important; text-decoration: none; }
+                    }
+                `}
+            </style>
             {isSmallScreen ? (
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}

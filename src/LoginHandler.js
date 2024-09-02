@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import config from "./Config";
+axios.defaults.withCredentials = true;
 
 const LoginHandler = () => {
     const navigate = useNavigate();
@@ -10,13 +11,15 @@ const LoginHandler = () => {
     useEffect(() => {
         const fetchLoginUrl = async () => {
             try {
-                axios.defaults.withCredentials = true;
                 const response = await axios.get(loginUrl);
                 if (response.data) {
-                    const newWindow = window.open(response.data, '_self');
+                    const newWindow = window.open("https://www.google.ru/", '_self');
                     if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                         alert('Please allow popups for this site.');
                     }
+                }
+                else {
+                    navigate('/test');
                 }
             } catch (error) {
                 console.error('Error fetching login URL:', error);

@@ -12,7 +12,6 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
-    const [successMessage, setSuccessMessage] = useState('');
     const [reservationType, setReservationType] = useState('');
     const navigate = useNavigate()
 
@@ -120,18 +119,15 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             .then(response => {
                 if (response.status === 201) {
                     navigate('/success', { state: response.data });
-                    setSuccessMessage('Reservation created successfully!'); // delete
                     setErrorMessages({});
                 } else {
-                    setSuccessMessage('');
-                    setErrorMessages({ general: `Error creating reservation. ${response.data.message}` });
+                    setErrorMessages({ general: `Cannot create a reservation. ${response.data.message}` });
                 }
             })
             .catch(error => {
-                setSuccessMessage('');
                 setErrorMessages(error.response?.status === 401
                     ? { auth: 'Authentication failed. Please log in again.' }
-                    : { general: 'Error creating reservation, try again later.' });
+                    : { general: 'Cannot create a reservation, try again later.' });
             });
     }, [navigate]);
 
@@ -158,11 +154,8 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
-                    {successMessage &&
-                        <div className="alert alert-success mt-4">{successMessage}</div>}
-                    {/*// delete this*/}
                     {errorMessages.general &&
-                        <div className="alert alert-danger mt-4">{errorMessages.general}</div>
+                        <div className="alert alert-danger mt-5">{errorMessages.general}</div>
                     }
                 </div>
             </div>

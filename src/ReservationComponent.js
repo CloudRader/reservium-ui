@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
-import GoogleCalendar from './GoogleCalendar';
 import ReservationForm from './ReservationForm';
 import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
-import AdaptiveCalendar from "./MobileGoogleCalendar";
+import AdaptiveCalendar from "./AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
 axios.defaults.withCredentials = true;
 

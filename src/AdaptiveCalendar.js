@@ -66,12 +66,33 @@ function AdaptiveCalendar({ googleCalendars }) {
             <style>
                 {`
                     @media {
-                        .a .fc { color: black; text-decoration: none; }
-                        .fc .fc-col-header-cell-cushion { background-color: #16A34A; }
+                        .fc .fc-col-header-cell-cushion .fc-daygrid-day-number { color: black; }
+                        .fc-daygrid-day-frame { color: black; }
+                        fc .fc-button-primary {
+                          background-color: #16A34A; /* Your desired active button background color */
+                          border-color: #16A34A; /* Your desired active button border color */
+                          color: white; /* Your desired active button text color */
+                        }
+                        
+                        .fc .fc-button-primary:hover {
+                          background-color: #45a049; /* Your desired active button hover background color */
+                          border-color: #45a049; /* Your desired active button hover border color */
+                        }
+                        
+                        .fc .fc-button-primary:focus {
+                          box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); /* Your desired active button focus shadow */
+                        }
+                        
+                        .fc .fc-button-primary.fc-button-active {
+                          background-color: white; /* Your desired active button active background color */
+                          border-color: #45a049; /* Your desired active button active border color */
+                          color: #16A34A; /* Your desired active button active text color */
+                        }
+                        
                         .fc .fc-toolbar-title { font-size: 1.4em; }
                         .fc .fc-button { background-color: #16A34A; border-color: #16A34A; }
                         .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }
-                        .fc .fc-button-active { background-color: white; border-color: #45a049; }
+                   
                         .fc .fc-button:focus { box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); }
                         .fc-theme-standard .fc-list-day-cushion { background-color: #f0f0f0; }
                         .fc .fc-list-event:hover td { background-color: #f5f5f5; }

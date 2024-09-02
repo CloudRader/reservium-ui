@@ -6,7 +6,7 @@ import LoginInfo from "./LoginInfo";
 import Logout from "./Logout";
 import config from "./Config";
 import AdaptiveCalendar from "./MobileGoogleCalendar";
-
+import {useNavigate} from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
@@ -15,6 +15,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
     const [errorMessages, setErrorMessages] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [reservationType, setReservationType] = useState('');
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (service) {
@@ -119,7 +120,8 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
         axios.post(`${config.serverURL}/events/create_event`, formData)
             .then(response => {
                 if (response.status === 201) {
-                    setSuccessMessage('Reservation created successfully!');
+                    navigate('/success', { state: response.data });
+                    setSuccessMessage('Reservation created successfully!'); // delete
                     setErrorMessages({});
                 } else {
                     setSuccessMessage('');

@@ -11,6 +11,7 @@ import axios from 'axios';
 import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
+import SuccesPage from "./SuccesPage";
 axios.defaults.withCredentials = true;
 
 async function getReservationServiceData() {
@@ -94,21 +95,19 @@ function App() {
                                 <ReservationComponent
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
-                                    // roomCalendarLinks={config.clubCalendarLinks}
                                     roomCalendarLinks={calendars[service.linkName]}
                                     service={service}
                                 />
                             }
                         />
                     ))}
-                {/*TODO call back end */}
+
                 <Route path='/logout' element={<Logout onLogout={logout}/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
 
-                <Route path="/success" element={<NotFoundPage/>}/>
-                {/*TODO AFTER SUBMIT*/}
+                <Route path="/success" element={<SuccesPage />}/>
 
-                {/*<Route path='/' element={<HomePage onLogout={logout} />} />*/}
+                {/*<Route path='/' element={<HomePage />} />*/}
 
                 {/*// if section role === "manager" show this */}
                 <Route path='/create-new-calendar'

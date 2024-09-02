@@ -66,12 +66,14 @@ function AdaptiveCalendar({ googleCalendars }) {
             <style>
                 {`
                     @media {
-                        .a { color: #212529 !important; text-decoration: none; }
-                        .fc  { color: #212529 !important; text-decoration: none; }
                         
                         .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
                         
-                        ,fc .fc-daygrid-day-number {  color: #212529 !important; text-decoration: none; }
+                        .fc .fc-daygrid-day-top {  color: #212529 !important; text-decoration: none; }
+                        .fc .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
+                        
+                        .fc  { color: #212529 !important; text-decoration: none; }
+                        
                         
                         fc .fc-button-primary {
                           background-color: #16A34A; /* Your desired active button background color */

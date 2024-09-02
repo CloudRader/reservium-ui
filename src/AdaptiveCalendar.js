@@ -33,6 +33,11 @@ function AdaptiveCalendar({ googleCalendars }) {
             info.el.style.backgroundColor = 'gray';
             info.el.style.borderColor = 'darkgray';
         }
+        if (event.title.toLowerCase().includes("Cleaning after party")) {
+            // Set gray color to event
+            info.el.style.backgroundColor = 'yellow';
+            info.el.style.borderColor = 'yellow';
+        }
 
         const startTime = event.start.toLocaleString([], {
             year: 'numeric', month: 'numeric', day: 'numeric',

@@ -33,7 +33,7 @@ function AdaptiveCalendar({ googleCalendars }) {
             info.el.style.backgroundColor = 'gray';
             info.el.style.borderColor = 'darkgray';
         }
-        if (event.title.toLowerCase().includes("Cleaning after party")) {
+        if (event.title.toLowerCase().includes("cleaning after party")) {
             // Set gray color to event
             info.el.style.backgroundColor = 'yellow';
             info.el.style.borderColor = 'yellow';

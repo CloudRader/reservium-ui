@@ -66,13 +66,17 @@ function AdaptiveCalendar({ googleCalendars }) {
             <style>
                 {`
                     @media {
+                        .a { color: #212529 !important; text-decoration: none; }
+                        .fc  { color: #212529 !important; text-decoration: none; }
+                        
                         .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
-                        .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
+                        
+                        ,fc .fc-daygrid-day-number {  color: #212529 !important; text-decoration: none; }
                         
                         fc .fc-button-primary {
                           background-color: #16A34A; /* Your desired active button background color */
                           border-color: #16A34A; /* Your desired active button border color */
-                          color: #16A34A; /* Your desired active button text color */
+                          color: white; /* Your desired active button text color */
                         }
                         
                         .fc .fc-button-primary:hover {
@@ -85,7 +89,7 @@ function AdaptiveCalendar({ googleCalendars }) {
                         }
                         
                         .fc .fc-button-primary.fc-button-active {
-                          background-color: #16A34A; /* Your desired active button active background color */
+                          background-color: white; /* Your desired active button active background color */
                           border-color: #16A34A; /* Your desired active button active border color */
                           color: #16A34A; /* Your desired active button active text color */
                         }

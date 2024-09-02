@@ -14,7 +14,7 @@ const ServicesSection = () => {
 
     return (
         <div className="bg-green-700 p-7 py-12 h-full flex flex-col">
-            <h2 className="text-white text-2xl mb-6">What we have</h2>
+            <h2 className="text-white text-2xl mb-6">What else do we have</h2>
             <div className="flex-grow overflow-y-auto">
                 <div className="flex flex-wrap">
                     {services.map((service, index) => (

@@ -65,22 +65,19 @@ function AdaptiveCalendar({ googleCalendars }) {
         <div className="calendar-container">
             <style>
                 {`
-                    .a {
-                        color: #212529 !important;
-                        text-decoration: none;
-                    }
                     @media {
-                        .fc .fc-col-header-cell-cushion .fc-daygrid-day-number { color: black; text-decoration: none; }
-                        .fc-daygrid-day-frame { color: black; }
+                        .fc .fc-col-header-cell-cushion { color: #212529 !important; text-decoration: none; }
+                        .fc-daygrid-day-frame {  color: #212529 !important; text-decoration: none; }
+                        
                         fc .fc-button-primary {
                           background-color: #16A34A; /* Your desired active button background color */
                           border-color: #16A34A; /* Your desired active button border color */
-                          color: white; /* Your desired active button text color */
+                          color: #16A34A; /* Your desired active button text color */
                         }
                         
                         .fc .fc-button-primary:hover {
-                          background-color: #45a049; /* Your desired active button hover background color */
-                          border-color: #45a049; /* Your desired active button hover border color */
+                          background-color: #16A34A; /* Your desired active button hover background color */
+                          border-color: #16A34A; /* Your desired active button hover border color */
                         }
                         
                         .fc .fc-button-primary:focus {
@@ -88,8 +85,8 @@ function AdaptiveCalendar({ googleCalendars }) {
                         }
                         
                         .fc .fc-button-primary.fc-button-active {
-                          background-color: white; /* Your desired active button active background color */
-                          border-color: #45a049; /* Your desired active button active border color */
+                          background-color: #16A34A; /* Your desired active button active background color */
+                          border-color: #16A34A; /* Your desired active button active border color */
                           color: #16A34A; /* Your desired active button active text color */
                         }
                         

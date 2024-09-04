@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import ReservationForm from './ReservationForm';
-import LoginInfo from "./LoginInfo";
+import LoginInfoPage from "./LoginInfoPage";
 import Logout from "./Logout";
 import config from "./Config";
 import AdaptiveCalendar from "./AdaptiveCalendar";
@@ -136,7 +136,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
     }, []);
 
     if (!isLoggedIn) {
-        return <LoginInfo />;
+        return <LoginInfoPage />;
     }
 
     if (errorMessages.auth) {

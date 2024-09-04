@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 import ServicesSection from "./ServicesSection";
 
-const LoginInfo = () => {
+const LoginInfoPage = () => {
     return (
         <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
             <div
@@ -29,6 +29,6 @@ const LoginInfo = () => {
     )
 };
 
-export default LoginInfo;
+export default LoginInfoPage;
 
 

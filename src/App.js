@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Header from './Header';
-import ReservationComponent from "./ReservationComponent";
+import ReservationPage from "./ReservationPage";
 import config from "./Config";
 import CreateNewCalendar from "./CreateNewCalendar";
 import CreateNewMiniService from "./CreateNewMiniService";
@@ -82,7 +82,7 @@ function App() {
                 {/* send it to back-end for session get data from back and make components*/}
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
-                <Route path='/' element={<ReservationComponent isLoggedIn={isLoggedIn} onLogout={logout}
+                <Route path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
                                                                roomCalendarLinks={calendars[0]}
                                                                service={calendars["club"]}/>}/>
 
@@ -92,7 +92,7 @@ function App() {
                             key={service.linkName}
                             path={`/${service.linkName}`}
                             element={
-                                <ReservationComponent
+                                <ReservationPage
                                     isLoggedIn={isLoggedIn}
                                     onLogout={logout}
                                     roomCalendarLinks={calendars[service.linkName]}

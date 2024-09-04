@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import config from "./Config";
-import LoginInfo from "./LoginInfo";
+import LoginInfoPage from "./LoginInfoPage";
 
 const CreateNewMiniService = ({isLoggedIn, username}) => {
     const [formData, setFormData] = useState({
@@ -86,7 +86,7 @@ const CreateNewMiniService = ({isLoggedIn, username}) => {
                     {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
                     {errorMessage && <div className="alert alert-danger mt-3">{errorMessage}</div>}
                 </div>) : (
-                <LoginInfo/>
+                <LoginInfoPage/>
             )}
         </>
     );

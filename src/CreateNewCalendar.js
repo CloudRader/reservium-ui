@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import config from './Config';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginInfo from "./LoginInfo";
+import LoginInfoPage from "./LoginInfoPage";
 
 const CreateNewCalendar = ({ isLoggedIn, username }) => {
     const [formFields, setFormFields] = useState([]);
@@ -438,7 +438,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                     </form>
                 </div>
             ) : (
-                <LoginInfo />
+                <LoginInfoPage />
             )}
         </div>
     );

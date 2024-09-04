@@ -30,8 +30,9 @@ function AdaptiveCalendar({ googleCalendars }) {
 
         if (event.title.toLowerCase().includes("not approved")) {
             // Set gray color to event
-            // info.el.style.backgroundColor = 'gray';
+            // info.el.style.backgroundColor = 'gray'; // TODO to config color for not approved events
             info.el.style.borderColor = 'darkgray';
+            info.el.style.cssText = 'border-color: rgb(146, 34, 167); background-color: darkgray';
         }
 
         const startTime = event.start.toLocaleString([], {

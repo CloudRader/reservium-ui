@@ -22,9 +22,6 @@ FROM nginx:stable-alpine
 # Copy the built files from the build stage
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy the custom Nginx configuration file
-COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
-
 # Expose the port Nginx is listening on (default is 80)
 EXPOSE 3000
 

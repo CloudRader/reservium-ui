@@ -7,7 +7,7 @@ import LoginInfo from "./LoginInfo";
 const CreateNewCalendar = ({ isLoggedIn, username }) => {
     const [formFields, setFormFields] = useState([]);
     const [formData, setFormData] = useState({});
-    const [errors, setErrors] = useState({});
+    // const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -408,9 +408,9 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                             onChange={(e) => handleChange(e, field)}
                         />
                     )}
-                    {errors[field.name] && (
-                        <div className="text-danger">{errors[field.name]}</div>
-                    )}
+                    {/*{errors[field.name] && (*/}
+                    {/*    <div className="text-danger">{errors[field.name]}</div>*/}
+                    {/*)}*/}
                 </div>
             );
         });

@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {useState} from 'react';
+import {NavLink} from 'react-router-dom';
 import bubenLogo from "./assets/buben_logo.svg";
 
-const Header = ({ username, isLoggedIn, onLogout, services }) => {
+const Header = ({username, isLoggedIn, onLogout, services}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+
     return (
         <header className="bg-green-100 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <nav className="flex justify-between items-center h-16">
-                    <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                            <span className="text-2xl  mr-2 font-bold text-green-800">Buben Club</span>
-                            <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11 inline-block"/>
-                        </div>
-                        <div className="hidden sm:flex sm:ml-6 sm:space-x-8">
+                <nav className="flex justify-between items-center h-16 text-green-800">
+                    <div className="flex items-center space-x-2">
+                        <NavLink to="/" className="flex items-center text-green-800 no-underline">
+                            <span className="text-2xl font-bold mr-1">Buben Club</span>
+                            <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11"/>
+                        </NavLink>
+
+
+                        <div className="space-x-6">
                             {services.map((item) => (
                                 <NavLink
                                     key={item.linkName}
                                     to={item.linkName}
                                     className={({isActive}) =>
-                                        `inline-flex items-center px-1 border-b-2 text-sm font-medium no-underline ${
+                                        `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
                                             isActive
                                                 ? 'border-green-600 text-green-900'
-                                                : 'border-transparent text-green-700 hover:border-green-300 hover:text-green-800'
+                                                : 'border-transparent hover:border-green-300 hover:text-green-600'
                                         }`
                                     }
                                 >
@@ -36,27 +39,27 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                             ))}
                         </div>
                     </div>
-
-                    <div className="hidden sm:flex sm:items-center ">
+                    <div className="hidden sm:flex sm:items-center">
                         {isLoggedIn ? (
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm font-medium text-green-700">{username}</span>
                                 <NavLink
                                     className="no-underline inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                    to="/logout" >Log out
+                                    to="/logout"
+                                >
+                                    Log out
                                 </NavLink>
                             </div>
                         ) : (
                             <NavLink
                                 to="/login"
-                                className="no-underline inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                className="no-underline text-green-800 inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Log in
                             </NavLink>
                         )}
                     </div>
 
-                    {/* Mobile menu button */}
                     <div className="sm:hidden flex items-center">
                         <button
                             onClick={toggleMenu}
@@ -124,10 +127,12 @@ const Header = ({ username, isLoggedIn, onLogout, services }) => {
                             )}
                         </div>
                     </div>
-                )}
+                )
+                }
             </div>
         </header>
-    );
+    )
+        ;
 };
 
 export default Header;

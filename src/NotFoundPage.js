@@ -5,7 +5,7 @@ import ServicesSection from './ServicesSection';
 const NotFoundPage = () => {
     return (
         <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
-            <div className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
+            <div className="container  mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
                 <div className="w-full md:w-1/2 lg:w-5/12 mb-8 md:mb-0 md:flex md:flex-col">
                     <div className="bg-white p-6 md:p-8 text-center flex-grow flex flex-col justify-center">
                         <h1 className="text-4xl font-bold text-green-800 mb-4">404</h1>

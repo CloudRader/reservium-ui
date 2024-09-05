@@ -2,8 +2,8 @@
   z-index: 99999 !important;
 }
 
-.fc a {
-  color: #212529 !important;
+a {
+  color: #212529;
   text-decoration: none;
 }
 
@@ -11,7 +11,7 @@
   font-size: 0.9em;
 }
 
-.fc .fc-toolbar-title { font-size: 1.4em; }
+.fc .fc-toolbar-title { font-size: 1.3em; }
 .fc .fc-button { background-color: #16A34A; border-color: #16A34A; }
 .fc .fc-button:hover { background-color: #45a049; border-color: #45a049; }
 
@@ -22,4 +22,12 @@
 .fc .fc-button.fc-button-active {
   background-color: #166534 !important;  /* Change background color when active */
   border-color: #AAD5BC !important;      /* Change border color when active */
+}
+
+.calendar-container.mobile {
+  padding-bottom: 60px; /* Adjust this value as needed */
+}
+
+.calendar-container.mobile .fc-header-toolbar {
+  margin-bottom: 1.5em !important;
 }

@@ -5,48 +5,33 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
-import * as bootstrap from "bootstrap";
+import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import config from "./Config";
 import "./styles/AdaptiveCalendar.module.css";
 
+const SMALL_SCREEN_BREAKPOINT = 768;
+
 function AdaptiveCalendar({ googleCalendars }) {
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth < 768);
-        };
-
+        const handleResize = () => setIsSmallScreen(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
         window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const eventDidMount = (info) => {
-        const event = info.event;
+        const { event, el } = info;
 
         if (event.title.toLowerCase().includes("not approved")) {
-            // Set gray color to event
-            // info.el.style.backgroundColor = 'gray'; // TODO to config color for not approved events
-            info.el.style.borderColor = 'darkgray';
-            info.el.style.cssText = 'border-color: rgb(146, 34, 167); background-color: darkgray';
+            el.style.cssText = 'border-color: rgb(146, 34, 167); background-color: darkgray';
         }
 
-        const startTime = event.start.toLocaleString([], {
-            year: 'numeric', month: 'numeric', day: 'numeric',
-            hour: 'numeric', minute: 'numeric',
-            hour12: false
-        });
+        const startTime = formatDateTime(event.start);
+        const endTime = formatTime(event.end);
 
-        const endTime = event.end.toLocaleString([], {
-            hour: 'numeric', minute: 'numeric',
-            hour12: false
-        });
-
-        return new bootstrap.Popover(info.el, {
+        return new Popover(el, {
             title: event.title,
             placement: "auto",
             trigger: "hover",
@@ -59,102 +44,73 @@ function AdaptiveCalendar({ googleCalendars }) {
         });
     };
 
-    const handleEventClick = (clickInfo) => {
-        clickInfo.jsEvent.preventDefault();
+    const handleEventClick = (clickInfo) => clickInfo.jsEvent.preventDefault();
+
+    const commonCalendarProps = {
+        plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin],
+        height: "auto",
+        aspectRatio: 1.1,
+        dayMaxEventRows: 3,
+        fixedWeekCount: false,
+        firstDay: 1,
+        googleCalendarApiKey: config.googleCalendarApiKey,
+        eventSources: googleCalendars,
+        eventDidMount,
+        eventTimeFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: true, hour12: false },
+        slotLabelFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: false, meridiem: false, hour12: false },
+        eventClick: handleEventClick,
+        navLinks: true,
+    };
+
+    const mobileCalendarProps = {
+        ...commonCalendarProps,
+        initialView: "listWeek",
+        headerToolbar: {
+            start: 'prev,next',
+            center: 'title',
+            end: 'listWeek',
+        },
+        views: {
+            listWeek: { buttonText: 'List' },
+        },
+    };
+
+    const desktopCalendarProps = {
+        ...commonCalendarProps,
+        initialView: "dayGridMonth",
+        headerToolbar: {
+            start: 'prev,next today',
+            center: 'title',
+            end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+        },
+        views: {
+            dayGridMonth: { buttonText: 'Month' },
+            timeGridWeek: { buttonText: 'Week' },
+            timeGridDay: { buttonText: 'Day' },
+            listWeek: { buttonText: 'List' },
+        },
     };
 
     return (
-        <div className="calendar-container">
-            {isSmallScreen ? (
-                <FullCalendar
-                    plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
-                    initialView="listWeek"
-                    headerToolbar={{
-                        start: 'prev,next today',
-                        center: 'title',
-                        end: 'listWeek',
-                    }}
-                    views={{
-                        listWeek: {
-                            buttonText: 'List',
-                        },
-                    }}
-                    height="auto"
-                    aspectRatio={1.1}
-                    dayMaxEventRows={3}
-                    fixedWeekCount={false}
-                    firstDay={1}
-                    textColor="#212529"
-                    googleCalendarApiKey={config.googleCalendarApiKey}
-                    eventSources={googleCalendars}
-                    eventDidMount={eventDidMount}
-                    eventTimeFormat={{
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        omitZeroMinute: true,
-                        hour12: false,
-                    }}
-                    slotLabelFormat={{
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        omitZeroMinute: false,
-                        meridiem: false,
-                        hour12: false,
-                    }}
-                    eventClick={handleEventClick}
-                    navLinks={true}
-                />
-            ) : (
-                <FullCalendar
-                    plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
-                    initialView="dayGridMonth"
-                    headerToolbar={{
-                        start: 'prev,next today',
-                        center: 'title',
-                        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-                    }}
-                    views={{
-                        dayGridMonth: {
-                            buttonText: 'Month',
-                        },
-                        timeGridWeek: {
-                            buttonText: 'Week',
-                        },
-                        timeGridDay: {
-                            buttonText: 'Day',
-                        },
-                        listWeek: {
-                            buttonText: 'List',
-                        },
-                    }}
-                    height="auto"
-                    aspectRatio={1.1}
-                    dayMaxEventRows={3}
-                    fixedWeekCount={false}
-                    firstDay={1}
-                    googleCalendarApiKey={config.googleCalendarApiKey}
-                    eventSources={googleCalendars}
-                    eventDidMount={eventDidMount}
-                    eventTimeFormat={{
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        omitZeroMinute: true,
-                        hour12: false,
-                    }}
-                    eventTextColor="#212529"
-                    slotLabelFormat={{
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        omitZeroMinute: false,
-                        meridiem: false,
-                        hour12: false,
-                    }}
-                    eventClick={handleEventClick}
-                    navLinks={true}
-                />
-            )}
+        <div className={`calendar-container ${isSmallScreen ? 'mobile' : ''}`}>
+            <FullCalendar {...(isSmallScreen ? mobileCalendarProps : desktopCalendarProps)} />
         </div>
     );
+}
+
+function formatDateTime(date) {
+    return date.toLocaleString([], {
+        year: 'numeric', month: 'numeric', day: 'numeric',
+        hour: 'numeric', minute: 'numeric',
+        hour12: false
+    });
+}
+
+function formatTime(date) {
+    return date.toLocaleString([], {
+        hour: 'numeric', minute: 'numeric',
+        hour12: false
+    });
 }
 
 export default AdaptiveCalendar;

@@ -2,7 +2,7 @@
   z-index: 99999 !important;
 }
 
-a {
+.fc a {
   color: #212529 !important;
   text-decoration: none;
 }

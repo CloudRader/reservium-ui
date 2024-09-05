@@ -8,7 +8,7 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import config from "./Config";
-import "./styles/GoogleCalendar.css";
+import "./styles/AdaptiveCalendar.module.css";
 
 function AdaptiveCalendar({ googleCalendars }) {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);

@@ -87,14 +87,14 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             type: 'text',
             labelText: 'Purpose',
             labelColor: 'text-success',
-            validation: (value) => !!value,
+            validation: (value) => /^[a-zA-Z.]+$/.test(value),
         },
         {
             name: 'guests',
             type: 'number',
             labelText: 'Number of Guests',
             labelColor: 'text-success',
-            validation: (value) => value > 0 && value < 40,
+            validation: (value) => value > 0 && value < 50,
         },
         {
             name: 'email',
@@ -109,7 +109,6 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             labelText: 'Type of Reservation',
             labelColor: 'text-primary',
             options: reservationTypes,
-            // defaultValue: reservationType || "Select Type",
             validation: (value) => !!value
         },
     ], [getTomorrowDate, reservationTypes]);

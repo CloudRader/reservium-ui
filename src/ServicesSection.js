@@ -1,15 +1,24 @@
 import React from 'react';
 
-const ServiceButton = ({ children }) => (
-    <button className="px-4 py-2 my-2 mr-2 text-white border border-white rounded-full hover:bg-white/20 transition-colors duration-300 whitespace-nowrap">
+const ServiceButton = ({ children , href }) => (
+    <a
+        href={href}
+        className="px-4 py-2 my-2 mr-2 no-underline text-white border border-white rounded-full hover:bg-white/20 transition-colors duration-300 whitespace-nowrap">
         {children}
-    </button>
+    </a>
 );
 
 const ServicesSection = () => {
     const services = [
-        "Membership", "Club room", "Study room", "Grill", "Storage room", "Games",
-        "Sport", "Internet", "Events"
+        { name: "Membership", url: "https://wiki.buk.cvut.cz/en/for-members/membership" },
+        { name: "Club room", url: "https://wiki.buk.cvut.cz/en/club-zone/club-room" },
+        { name: "Study room", url: "https://wiki.buk.cvut.cz/en/club-zone/study-room" },
+        { name: "Grill", url: "https://wiki.buk.cvut.cz/en/club-zone/grill" },
+        { name: "Storage room", url: "https://wiki.buk.cvut.cz/en/club-zone/luggage-room" },
+        { name: "Games", url: "https://wiki.buk.cvut.cz/en/club-zone/board-games" },
+        { name: "Sport", url: "https://wiki.buk.cvut.cz/en/club-zone/sport" },
+        { name: "Internet", url: "https://wiki.buk.cvut.cz/en/for-members/internet" },
+        { name: "Events", url: "https://www.instagram.com/bubenklub/" }
     ];
 
     return (
@@ -18,7 +27,9 @@ const ServicesSection = () => {
             <div className="flex-grow overflow-y-auto">
                 <div className="flex flex-wrap">
                     {services.map((service, index) => (
-                        <ServiceButton key={index}>{service}</ServiceButton>
+                        <ServiceButton key={index} href={service.url}>
+                            {service.name}
+                        </ServiceButton>
                     ))}
                 </div>
             </div>

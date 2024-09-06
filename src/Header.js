@@ -18,8 +18,6 @@ const Header = ({username, isLoggedIn, onLogout, services}) => {
                             <span className="text-2xl font-bold mr-1">Buben Club</span>
                             <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11"/>
                         </NavLink>
-
-
                         <div className="space-x-6">
                             {services.map((item) => (
                                 <NavLink
@@ -52,7 +50,7 @@ const Header = ({username, isLoggedIn, onLogout, services}) => {
                         ) : (
                             <NavLink
                                 to="/login"
-                                className="no-underline text-green-800 inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                className="no-underline text-white inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Log in
                             </NavLink>

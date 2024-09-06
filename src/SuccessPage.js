@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import ServicesSection from './ServicesSection';
 import config from './Config';
 
-const NotFoundPage = () => {
+const SuccessPage = () => {
     const location = useLocation();
     const { state } = location;
     let isTooManyPeopleMessage = false;
@@ -81,4 +81,4 @@ const NotFoundPage = () => {
     );
 };
 
-export default NotFoundPage;
+export default SuccessPage;

@@ -90,7 +90,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             type: 'text',
             labelText: 'Purpose',
             labelColor: 'text-success',
-            validation: (value) => /^[a-zA-Z.]+$/.test(value),
+            validation: (value) => !!value && /^[a-zA-Z.]+$/.test(value),
         },
         {
             name: 'guests',

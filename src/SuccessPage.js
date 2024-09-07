@@ -14,7 +14,7 @@ const SuccessPage = () => {
         const response = JSON.stringify(message, null, 2);
         isTooManyPeopleMessage = response.includes("Too many people");
         isNightTimeMessage = response.includes("Night time");
-        managerMail = contactMail;
+        managerMail = JSON.stringify(contactMail);
     }
 
     return (

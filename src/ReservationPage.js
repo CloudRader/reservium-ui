@@ -150,7 +150,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <WarningMessage contactMail={contactMail} />
+            {contactMail && <WarningMessage contactMail={contactMail} />}
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
                     formFields={formFields}

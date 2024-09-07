@@ -132,7 +132,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     ? { auth: 'Authentication failed. Please log in again.' }
                     : { general: 'Cannot create a reservation, try again later.' });
             });
-    }, [navigate]);
+    }, [navigate, service.contact_mail]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);

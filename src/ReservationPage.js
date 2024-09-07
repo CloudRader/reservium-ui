@@ -6,9 +6,10 @@ import Logout from "./Logout";
 import config from "./Config";
 import AdaptiveCalendar from "./AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
+import WarningMessage from "./WarningMessage";
 axios.defaults.withCredentials = true;
 
-const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
+const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
     const [reservationTypes, setReservationTypes] = useState([]);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
@@ -94,7 +95,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
             type: 'number',
             labelText: 'Number of Guests',
             labelColor: 'text-success',
-            validation: (value) => value > 0 && value < 50,
+            validation: (value) => value > 0 && value < 51,
         },
         {
             name: 'email',
@@ -117,7 +118,10 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
         axios.post(`${config.serverURL}/events/create_event`, formData)
             .then(response => {
                 if (response.status === 201) {
-                    navigate('/success', { state: response.data });
+                    navigate('/success', { state: {
+                            ...response.data,
+                            contactMail: service.contact_mail,
+                        }});
                     setErrorMessages({});
                 } else {
                     setErrorMessages({ general: `Cannot create a reservation. ${response.data.message}` });
@@ -144,6 +148,7 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <WarningMessage contact_mail={service.contact_mail}/>
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
                     formFields={formFields}
@@ -162,4 +167,4 @@ const ReservationComponent = ({ isLoggedIn, onLogout, roomCalendarLinks, service
     );
 };
 
-export default ReservationComponent;
+export default ReservationPage;

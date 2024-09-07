@@ -1,32 +1,41 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import ServicesSection from './ServicesSection';
 import config from './Config';
 
 const SuccessPage = () => {
     const location = useLocation();
-    const { state } = location;
+    const {state} = location;
     let isTooManyPeopleMessage = false;
     let isNightTimeMessage = false;
-    let response = "";
+    let managerMail = "";
     if (state) {
-        response = JSON.stringify(state, null, 2);
+        const {message, contactMail} = state;
+        const response = JSON.stringify(message, null, 2);
         isTooManyPeopleMessage = response.includes("Too many people");
         isNightTimeMessage = response.includes("Night time");
+        managerMail = contactMail;
     }
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
             {isTooManyPeopleMessage ? (
-                <div className="container mx-auto px-4 py-6 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
+                <div
+                    className="container mx-auto px-4 py-6 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
                     <div className="w-full mb-8 md:mb-0 md:flex md:flex-col">
                         <div className="bg-white p-6 md:p-8 text-center flex-grow flex flex-col justify-center">
-                            <h1 className="text-4xl font-bold text-green-800 mb-4">Now reservation is waiting for approval</h1>
+                            <h1 className="text-3xl font-bold text-green-800 mb-4">You need to confirm your
+                                reservation</h1>
                             <p className="text-l md:text-xl text-green-700">
-                                If you are reserving for more than 10 (15 for grill) people, you must fill out the registration form for the event and send it by e-mail to the Head of Dormitory {config.headOfDormitoryEmail}, to the manager of this room {config.managerEmail} 5 working days before the reservation date. You can get the form from the manager {config.managerEmail}.
+                                If you are reserving for more than 10 (15 for grill) people, you must fill out the
+                                registration form for the event and send it by e-mail to the Head of
+                                Dormitory {config.headOfDormitoryEmail} and to the manager of this room {managerMail} 5
+                                working days before the reservation date. You can get the form from the
+                                manager {managerMail}.
                             </p>
                             <div className="pb-2">
-                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer" className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer"
+                                   className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     More information
                                 </a>
                             </div>
@@ -34,7 +43,8 @@ const SuccessPage = () => {
                                 Or you can print it out by yourself:
                             </p>
                             <div className="pb-2">
-                                <a href={config.reservationFormLink} target="_blank" rel="noopener noreferrer" className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <a href={config.reservationFormLink} target="_blank" rel="noopener noreferrer"
+                                   className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     Registration form
                                 </a>
                             </div>
@@ -42,15 +52,20 @@ const SuccessPage = () => {
                     </div>
                 </div>
             ) : isNightTimeMessage ? (
-                <div className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
+                <div
+                    className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
                     <div className="w-full mb-8 md:mb-0 md:flex md:flex-col">
                         <div className="bg-white p-6 md:p-8 text-center flex-grow flex flex-col justify-center">
-                            <h1 className="text-4xl font-bold text-green-800 mb-4">Now reservation is waiting for approval</h1>
+                            <h1 className="text-4xl font-bold text-green-800 mb-4">You need to confirm your
+                                reservation</h1>
                             <p className="text-l md:text-xl text-green-700 mb-8">
-                                For night time reservation you must get additional confirmation by email from the manager. Write email to {config.managerEmail}, with your reservation details. More information here:
+                                For night time reservation you must get additional confirmation by email from the
+                                manager. Write email to {managerMail}, with your reservation details. More information
+                                here:
                             </p>
                             <div>
-                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer" className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer"
+                                   className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     INFO
                                 </a>
                             </div>
@@ -58,22 +73,26 @@ const SuccessPage = () => {
                     </div>
                 </div>
             ) : (
-                <div className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
+                <div
+                    className="container mx-auto px-4 py-8 md:py-16 lg:py-52 flex flex-col md:flex-row items-stretch justify-between">
                     <div className="w-full md:w-1/2 lg:w-5/12 mb-8 md:mb-0 md:flex md:flex-col">
                         <div className="bg-white p-6 md:p-8 text-center flex-grow flex flex-col justify-center">
-                            <h1 className="text-4xl font-bold text-green-800 mb-4">Reservation was made successfully</h1>
+                            <h1 className="text-4xl font-bold text-green-800 mb-4">Reservation was made
+                                successfully</h1>
                             <p className="text-l md:text-xl text-green-700 mb-8">
-                                Now you can see it in the calendar. Please read the terms of use of the spaces on our wiki page.
+                                Now you can see it in the calendar. Please read the terms of use of the spaces on our
+                                wiki page.
                             </p>
                             <div>
-                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer" className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer"
+                                   className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     READ
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div className="w-full md:w-1/2 lg:w-7/12 md:flex md:flex-col">
-                        <ServicesSection />
+                        <ServicesSection/>
                     </div>
                 </div>
             )}

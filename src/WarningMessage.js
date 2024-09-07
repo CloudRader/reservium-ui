@@ -1,7 +1,7 @@
 import React from 'react';
 import config from "./Config";
 
-const WarningMessage = (contactMail) => {
+const WarningMessage = ({contactMail}) => {
     const email = typeof contactMail === 'string' ? contactMail : JSON.stringify(contactMail);
     return (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">

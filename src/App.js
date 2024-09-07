@@ -11,7 +11,7 @@ import axios from 'axios';
 import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
-import SuccesPage from "./SuccesPage";
+import SuccessPage from "./SuccessPage";
 axios.defaults.withCredentials = true;
 
 async function getReservationServiceData() {
@@ -22,6 +22,7 @@ async function getReservationServiceData() {
         const services = data.map(info => ({
             linkName: info.alias,
             serviceName: info.name,
+            contact_mail: info.contact_mail,
             reservation_types: info.calendars.map(calendar => calendar.reservation_type),
             calendarIds: info.calendars.reduce((acc, calendar) => {
                 acc[calendar.reservation_type] = calendar.id;
@@ -77,14 +78,13 @@ function App() {
                     services={services}/>
             <Routes>
                 {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
-                {/*<Route path='/login' element={<RedirectToExternal url={loginUrl} />} />*/}
                 <Route path='/login' element={<LoginHandler/>}/>
                 {/* send it to back-end for session get data from back and make components*/}
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
                 <Route path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
                                                                roomCalendarLinks={calendars[0]}
-                                                               service={calendars["club"]}/>}/>
+                                                               service={services["club"]}/>}/>
 
                 {services
                     .map(service => (
@@ -105,7 +105,7 @@ function App() {
                 <Route path='/logout' element={<Logout onLogout={logout}/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
 
-                <Route path="/success" element={<SuccesPage />}/>
+                <Route path="/success" element={<SuccessPage />}/>
 
                 {/*<Route path='/' element={<HomePage />} />*/}
 

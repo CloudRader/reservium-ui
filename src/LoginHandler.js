@@ -13,9 +13,7 @@ const LoginHandler = () => {
             try {
                 const response = await axios.get(loginUrl);
                 if (response.data) {
-                    // alert('try to redirect to is');
                     window.location.href = response.data;
-                    // alert('all good.');
                 }
             } catch (error) {
                 alert('Error fetching login URL:' + error);
@@ -23,7 +21,6 @@ const LoginHandler = () => {
                 // navigate('/');
             }
         };
-
         fetchLoginUrl();
     }, [loginUrl, navigate]);
 

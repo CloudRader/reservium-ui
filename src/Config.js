@@ -4,7 +4,7 @@ const config = {
     reservationFormLink :  "https://drive.google.com/file/d/1GeEh4cKlcBzspV-AzsG_ag_WfVVgXl1X/view?usp=sharing",
     reservationInfoLink :  "https://wiki.buk.cvut.cz/en/club-zone/club-room#reservation-system",
     wikiInfoLink :  "https://wiki.buk.cvut.cz/en/club-zone/",
-    managerEmail: "artem.kuznetsov@buk.cvut.cz",
-    headOfDormitoryEmail: "Dana.Mencikova@cvut.cz"
+    headOfDormitoryEmail: "Dana.Mencikova@cvut.cz",
+    feedBackEmail: "provoz@buk.cvut.cz"
 };
 export default config;

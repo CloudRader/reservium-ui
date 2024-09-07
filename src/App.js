@@ -60,17 +60,24 @@ function App() {
     const {isLoggedIn, username, userRoles, logout} = useAuth();
     const [services, setServices] = useState([]);
     const [calendars, setCalendars] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
             const {services, calendars} = await getReservationServiceData();
             setServices(services);
             setCalendars(calendars);
+            setIsLoading(false);
         }
 
         if (isLoggedIn) fetchData();
 
-    }, [isLoggedIn, username, userRoles]);
+    }, [isLoggedIn, userRoles]);
+
+
+    if (isLoading && isLoggedIn) {
+        return <div>Loading...</div>; // or a more sophisticated loading component
+    }
 
     return (
         <div>

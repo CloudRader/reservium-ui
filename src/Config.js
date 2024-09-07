@@ -5,6 +5,7 @@ const config = {
     reservationInfoLink :  "https://wiki.buk.cvut.cz/en/club-zone/club-room#reservation-system",
     wikiInfoLink :  "https://wiki.buk.cvut.cz/en/club-zone/",
     headOfDormitoryEmail: "Dana.Mencikova@cvut.cz",
+    contactMail: "provoz@buk.cvut.cz",
     feedBackEmail: "provoz@buk.cvut.cz"
 };
 export default config;

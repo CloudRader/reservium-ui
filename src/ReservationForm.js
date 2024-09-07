@@ -46,19 +46,6 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
 
         if(field.name === 'type') onReservationTypeChange(value);
 
-        // setFormData(prevData => {
-        //     if (type === 'checkbox') {
-        //         return {
-        //             ...prevData,
-        //             [name]: checked
-        //                 ? [...(prevData[name] || []), value]
-        //                 : (prevData[name] || []).filter(item => item !== value),
-        //         };
-        //     } else {
-        //         return {...prevData, [name]: updatedValue};
-        //     }
-        // });
-    // }, [validateField]);
         if (type === 'checkbox') {
             updatedValue = formData[name] || [];
             if (checked) {

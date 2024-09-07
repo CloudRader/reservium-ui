@@ -14,11 +14,13 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
     const [additionalServices, setAdditionalServices] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
     const [reservationType, setReservationType] = useState('');
+    const [contactMail, setContactMail] = useState(config.contactMail);
     const navigate = useNavigate()
 
     useEffect(() => {
         if (service) {
             setReservationTypes(service.reservation_types?.map(name => ({ value: name, label: name })) || []);
+            setContactMail(service?.contact_mail);
         }
     }, [service]);
 
@@ -120,7 +122,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                 if (response.status === 201) {
                     navigate('/success', { state: {
                             ...response.data,
-                            contactMail: service.contact_mail,
+                            contactMail: contactMail,
                         }});
                     setErrorMessages({});
                 } else {
@@ -132,7 +134,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     ? { auth: 'Authentication failed. Please log in again.' }
                     : { general: 'Cannot create a reservation, try again later.' });
             });
-    }, [navigate, service.contact_mail]);
+    }, [navigate, contactMail]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);
@@ -146,13 +148,9 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         return <Logout onLogout={onLogout} />;
     }
 
-    if (!service) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <WarningMessage contact_mail={service.contact_mail}/>
+            <WarningMessage contactMail={contactMail} />
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
                     formFields={formFields}

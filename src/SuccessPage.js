@@ -11,10 +11,12 @@ const SuccessPage = () => {
     let managerMail = "";
     if (state) {
         const {message, contactMail} = state;
-        const response = JSON.stringify(message, null, 2);
-        isTooManyPeopleMessage = response.includes("Too many people");
-        isNightTimeMessage = response.includes("Night time");
-        managerMail = JSON.stringify(contactMail);
+        if (message) {
+            const response = JSON.stringify(message, null, 2);
+            isTooManyPeopleMessage = response.includes("Too many people");
+            isNightTimeMessage = response.includes("Night time");
+            managerMail = JSON.stringify(contactMail);
+        }
     }
 
     return (

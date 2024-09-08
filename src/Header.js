@@ -15,10 +15,10 @@ const Header = ({username, isLoggedIn, onLogout, services}) => {
                 <nav className="flex justify-between items-center h-16 text-green-800">
                     <div className="flex items-center space-x-2">
                         <NavLink key="club" to="club" className="flex items-center text-green-800 no-underline">
-                            <span className="text-2xl font-bold mr-1">Buben Club</span>
+                            <span className="text-2xl font-bold mr-2">Buben Club</span>
                             <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11"/>
                         </NavLink>
-                        <div className="hidden sm:flex space-x-8">
+                        <div className="hidden sm:flex space-x-9">
                             {services.map((item) => (
                                 <NavLink
                                     key={item.linkName}

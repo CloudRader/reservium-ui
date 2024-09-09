@@ -90,7 +90,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             type: 'text',
             labelText: 'Purpose',
             labelColor: 'text-success',
-            validation: (value) => !!value && /^[a-zA-Z .]+$/.test(value),
+            validation: (value) => !!value && /^[a-zA-Z .\-_+()&!]+$/.test(value),
         },
         {
             name: 'guests',
@@ -131,7 +131,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             })
             .catch(error => {
                 setErrorMessages(error.response?.status === 401
-                    ? { auth: 'Authentication failed. Please log in again.' }
+                    ? { auth: 'Authentication failed. Please log out and log in again.' }
                     : { general: 'Cannot create a reservation, try again later.' });
             });
     }, [navigate, contactMail]);

@@ -89,7 +89,7 @@ function App() {
                 {/* send it to back-end for session get data from back and make components*/}
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
-                <Route path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
+                <Route key='' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
                                                                roomCalendarLinks={calendars[0]}
                                                                service={services["club"]}/>}/>
 

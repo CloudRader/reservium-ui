@@ -72,7 +72,7 @@ function App() {
 
         if (isLoggedIn) fetchData();
 
-    }, [isLoggedIn, userRoles]);
+    }, [isLoggedIn]);
 
 
     if (isLoading && isLoggedIn) {

@@ -90,8 +90,8 @@ function App() {
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
                 <Route key='' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
-                                                               roomCalendarLinks={calendars[0]}
-                                                               service={services["club"]}/>}/>
+                                                               roomCalendarLinks={calendars["club"]}
+                                                               service={services[0]}/>}/>
 
                 {services
                     .map(service => (

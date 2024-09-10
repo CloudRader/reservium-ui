@@ -1,15 +1,7 @@
 import React from 'react';
 import config from "./Config";
 
-const WarningMessage = ({contactMail, space}) => {
-    let wikiLink = "";
-    if(space === "grill") {
-        wikiLink = config.wikiInfoLink + "grill";
-    }
-    else {
-        wikiLink = config.wikiInfoLink + space + "-room";
-    }
-
+const WarningMessage = ({contactMail, wikiLink}) => {
     return (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 mb-2" role="alert">
             <p className="font-bold">This is a beta version of the site</p>

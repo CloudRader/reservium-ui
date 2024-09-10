@@ -123,7 +123,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     navigate('/success', { state: {
                             ...response.data,
                             contactMail: contactMail,
-                            space: service.linkName
+                            wikiLink: service.wikiLink
                         }});
                     setErrorMessages({});
                 } else {
@@ -151,7 +151,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <WarningMessage contactMail={contactMail} space={service.linkName} />
+            <WarningMessage contactMail={contactMail} wikiLink={service.wikiLink} />
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
                     formFields={formFields}

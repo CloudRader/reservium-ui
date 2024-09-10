@@ -11,19 +11,14 @@ const SuccessPage = () => {
     let managerMail = "";
     let wikiLink = "";
     if (state) {
-        const {message, contactMail, space} = state;
+        const {message, contactMail, wikiLink} = state;
         if (message) {
             const response = JSON.stringify(message, null, 2);
             isTooManyPeopleMessage = response.includes("Too many people");
             isNightTimeMessage = response.includes("Night time");
             managerMail = JSON.stringify(contactMail);
         }
-        if(space === "grill") {
-            wikiLink = config.wikiInfoLink + "grill";
-        }
-        else {
-            wikiLink = config.wikiInfoLink + space + "-room";
-        }
+
     }
 
     return (

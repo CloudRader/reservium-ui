@@ -20,6 +20,7 @@ async function getReservationServiceData() {
         const data = response.data;
 
         const services = data.map(info => ({
+            wikiLink: info.web,
             linkName: info.alias,
             serviceName: info.name,
             contact_mail: info.contact_mail,

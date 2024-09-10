@@ -9,13 +9,20 @@ const SuccessPage = () => {
     let isTooManyPeopleMessage = false;
     let isNightTimeMessage = false;
     let managerMail = "";
+    let wikiLink = "";
     if (state) {
-        const {message, contactMail} = state;
+        const {message, contactMail, space} = state;
         if (message) {
             const response = JSON.stringify(message, null, 2);
             isTooManyPeopleMessage = response.includes("Too many people");
             isNightTimeMessage = response.includes("Night time");
             managerMail = JSON.stringify(contactMail);
+        }
+        if(space === "grill") {
+            wikiLink = config.wikiInfoLink + "grill";
+        }
+        else {
+            wikiLink = config.wikiInfoLink + space + "-room";
         }
     }
 
@@ -29,20 +36,18 @@ const SuccessPage = () => {
                             <h1 className="text-3xl font-bold text-green-800 mb-4">You need to confirm your
                                 reservation</h1>
                             <p className="text-l md:text-xl text-green-700">
-                                If you are reserving for more than 10 (15 for grill) people, you must fill out the
-                                registration form for the event and send it by e-mail to the Head of
-                                Dormitory {config.headOfDormitoryEmail} and to the manager of this room {managerMail} 5
-                                working days before the reservation date. You can get the form from the
-                                manager {managerMail}.
+                                If you are reserving for more than 10 (15 for grill) people, you must fill out a registration form and
+                                email it to the Head of Dormitory ({config.headOfDormitoryEmail}), with the manager ({managerMail})
+                                in CC (Carbon Copy), at least 5 business days before the event.
                             </p>
                             <div className="pb-2">
-                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer"
+                                <a href={wikiLink} target="_blank" rel="noopener noreferrer"
                                    className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     More information
                                 </a>
                             </div>
                             <p className="text-l md:text-xl text-green-700">
-                                Or you can print it out by yourself:
+                                The registration form can be obtained by contacting the room manager at {managerMail} or through the button bellow.:
                             </p>
                             <div className="pb-2">
                                 <a href={config.reservationFormLink} target="_blank" rel="noopener noreferrer"
@@ -66,7 +71,7 @@ const SuccessPage = () => {
                                 here:
                             </p>
                             <div>
-                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer"
+                                <a href={wikiLink} target="_blank" rel="noopener noreferrer"
                                    className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     INFO
                                 </a>
@@ -82,11 +87,11 @@ const SuccessPage = () => {
                             <h1 className="text-4xl font-bold text-green-800 mb-4">Reservation was made
                                 successfully</h1>
                             <p className="text-l md:text-xl text-green-700 mb-8">
-                                Now you can see it in the calendar. Please read the terms of use of the spaces on our
+                                Now you can see it in the calendar. Read the terms of use of the spaces on our
                                 wiki page.
                             </p>
                             <div>
-                                <a href={config.reservationInfoLink} target="_blank" rel="noopener noreferrer"
+                                <a href={wikiLink} target="_blank" rel="noopener noreferrer"
                                    className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     READ
                                 </a>

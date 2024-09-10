@@ -11,14 +11,14 @@ const SuccessPage = () => {
     let managerMail = "";
     let wikiLink = "";
     if (state) {
-        const {message, contactMail, wikiLink} = state;
+        const {message, contactMail, link} = state;
         if (message) {
             const response = JSON.stringify(message, null, 2);
             isTooManyPeopleMessage = response.includes("Too many people");
             isNightTimeMessage = response.includes("Night time");
             managerMail = JSON.stringify(contactMail);
         }
-
+        wikiLink = link;
     }
 
     return (

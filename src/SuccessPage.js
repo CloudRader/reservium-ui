@@ -6,7 +6,7 @@ import config from './Config';
 const SuccessPage = () => {
     const location = useLocation();
     const {state} = location;
-    let maxPeopleAmount = 10;
+    let maxPeopleMessage = "";
     let isTooManyPeopleMessage = false;
     let isNightTimeMessage = false;
     let managerMail = "";
@@ -15,10 +15,10 @@ const SuccessPage = () => {
         const {message, contactMail, wikiLink} = state;
         if (message) {
             const response = JSON.stringify(message, null, 2);
-            isTooManyPeopleMessage = response.includes("Too many people");
+            isTooManyPeopleMessage = response.includes("more than");
             isNightTimeMessage = response.includes("Night time");
             managerMail = JSON.stringify(contactMail);
-            if(managerMail.includes("grill") ) maxPeopleAmount = 5;
+            maxPeopleMessage = response;
         }
         linkOnWiki = wikiLink;
     }
@@ -33,7 +33,7 @@ const SuccessPage = () => {
                             <h1 className="text-3xl font-bold text-green-800 mb-4">You need to confirm your
                                 reservation</h1>
                             <p className="text-l md:text-xl text-green-700">
-                                If you are reserving for more than {maxPeopleAmount} people, you must fill out a registration form and
+                                If you are reserving for {maxPeopleMessage}, you must fill out a registration form and
                                 email it to the Head of Dormitory ({config.headOfDormitoryEmail}), with the manager ({managerMail})
                                 in CC (Carbon Copy), at least 5 business days before the event.
                             </p>

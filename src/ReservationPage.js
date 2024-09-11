@@ -7,6 +7,7 @@ import config from "./Config";
 import AdaptiveCalendar from "./AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
 import WarningMessage from "./WarningMessage";
+import {ErrorMobileModal} from "./ErrorMobileModal";
 axios.defaults.withCredentials = true;
 
 const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
@@ -15,7 +16,20 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
     const [errorMessages, setErrorMessages] = useState({});
     const [reservationType, setReservationType] = useState('');
     const [contactMail, setContactMail] = useState(config.contactMail);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate()
+
+    setErrorMessages({});
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 1024);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
 
     useEffect(() => {
         if (service) {
@@ -128,12 +142,15 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     setErrorMessages({});
                 } else {
                     setErrorMessages({ general: `Cannot create a reservation. ${response.data.message}` });
+                    if (isMobile) setIsModalOpen(true);
                 }
             })
             .catch(error => {
-                setErrorMessages(error.response?.status === 401
+                const errorMessage = error.response?.status === 401
                     ? { auth: 'Authentication failed. Please log out and log in again.' }
-                    : { general: 'Cannot create a reservation, try again later.' });
+                    : { general: 'Cannot create a reservation, try again later.' };
+                setErrorMessages(errorMessage);
+                if (isMobile && errorMessage.general) setIsModalOpen(true);
             });
     }, [navigate, contactMail]);
 
@@ -160,12 +177,20 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     onReservationTypeChange={handleReservationTypeChange}
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
+                    {isMobile && errorMessages.general &&
+                        <div className="alert alert-danger mt-5">{errorMessages.general}</div>
+                    }
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
-                    {errorMessages.general &&
+                    {!isMobile && errorMessages.general &&
                         <div className="alert alert-danger mt-5">{errorMessages.general}</div>
                     }
                 </div>
             </div>
+            <ErrorMobileModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                message={errorMessages.general}
+            />
         </div>
     );
 };

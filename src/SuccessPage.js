@@ -6,19 +6,21 @@ import config from './Config';
 const SuccessPage = () => {
     const location = useLocation();
     const {state} = location;
+    let maxPeopleAmount = 10;
     let isTooManyPeopleMessage = false;
     let isNightTimeMessage = false;
     let managerMail = "";
-    let wikiLink = "";
+    let linkOnWiki = "";
     if (state) {
-        const {message, contactMail, link} = state;
+        const {message, contactMail, wikiLink} = state;
         if (message) {
             const response = JSON.stringify(message, null, 2);
             isTooManyPeopleMessage = response.includes("Too many people");
             isNightTimeMessage = response.includes("Night time");
             managerMail = JSON.stringify(contactMail);
+            if(managerMail.includes("grill") ) maxPeopleAmount = 5;
         }
-        wikiLink = link;
+        linkOnWiki = wikiLink;
     }
 
     return (
@@ -31,12 +33,12 @@ const SuccessPage = () => {
                             <h1 className="text-3xl font-bold text-green-800 mb-4">You need to confirm your
                                 reservation</h1>
                             <p className="text-l md:text-xl text-green-700">
-                                If you are reserving for more than 10 (15 for grill) people, you must fill out a registration form and
+                                If you are reserving for more than {maxPeopleAmount} people, you must fill out a registration form and
                                 email it to the Head of Dormitory ({config.headOfDormitoryEmail}), with the manager ({managerMail})
                                 in CC (Carbon Copy), at least 5 business days before the event.
                             </p>
                             <div className="pb-2">
-                                <a href={wikiLink} target="_blank" rel="noopener noreferrer"
+                                <a href={linkOnWiki} target="_blank" rel="noopener noreferrer"
                                    className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     More information
                                 </a>
@@ -66,7 +68,7 @@ const SuccessPage = () => {
                                 here:
                             </p>
                             <div>
-                                <a href={wikiLink} target="_blank" rel="noopener noreferrer"
+                                <a href={linkOnWiki} target="_blank" rel="noopener noreferrer"
                                    className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     INFO
                                 </a>
@@ -86,7 +88,7 @@ const SuccessPage = () => {
                                 wiki page.
                             </p>
                             <div>
-                                <a href={wikiLink} target="_blank" rel="noopener noreferrer"
+                                <a href={linkOnWiki} target="_blank" rel="noopener noreferrer"
                                    className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     READ
                                 </a>

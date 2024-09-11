@@ -20,8 +20,6 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate()
 
-    setErrorMessages({});
-
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1024);

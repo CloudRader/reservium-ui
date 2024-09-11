@@ -18,7 +18,7 @@ const SuccessPage = () => {
             isTooManyPeopleMessage = response.includes("more than");
             isNightTimeMessage = response.includes("Night time");
             managerMail = JSON.stringify(contactMail);
-            maxPeopleMessage = response;
+            maxPeopleMessage = response.replace(/"/g, '');
         }
         linkOnWiki = wikiLink;
     }

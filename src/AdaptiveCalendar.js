@@ -71,7 +71,7 @@ function AdaptiveCalendar({ googleCalendars }) {
             end: 'listWeek',
         },
         views: {
-            listWeek: { buttonText: 'List' },
+            listWeek: { buttonText: 'list'},
         },
     };
 

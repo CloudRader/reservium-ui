@@ -177,9 +177,6 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     onReservationTypeChange={handleReservationTypeChange}
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
-                    {isMobile && errorMessages.general &&
-                        <div className="alert alert-danger mt-5">{errorMessages.general}</div>
-                    }
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
                     {!isMobile && errorMessages.general &&
                         <div className="alert alert-danger mt-5">{errorMessages.general}</div>

@@ -33,6 +33,8 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         if (service) {
             setReservationTypes(service.reservation_types?.map(name => ({ value: name, label: name })) || []);
             setContactMail(service?.contact_mail);
+            setErrorMessages({});
+            if (isMobile) setIsModalOpen(false);
         }
     }, [service]);
 

@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import bubenLogo from "./assets/buben_logo.svg";
 
 const Header = ({username, isLoggedIn, onLogout, services}) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(true);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);

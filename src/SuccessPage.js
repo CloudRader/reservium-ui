@@ -33,9 +33,7 @@ const SuccessPage = () => {
                             <h1 className="text-3xl font-bold text-green-800 mb-4">You need to confirm your
                                 reservation</h1>
                             <p className="text-l md:text-xl text-green-700">
-                                If you are reserving for {maxPeopleMessage}, you must fill out a registration form and
-                                email it to the Head of Dormitory ({config.headOfDormitoryEmail}), with the manager ({managerMail})
-                                in CC (Carbon Copy), at least 5 business days before the event.
+                                If you are reserving for {maxPeopleMessage}, you must fill out a registration form and email it to the Head of Dormitory ({config.headOfDormitoryEmail}), with the manager ({managerMail}) in CC (Carbon Copy), at least 5 business days before the event.
                             </p>
                             <div className="pb-2">
                                 <a href={linkOnWiki} target="_blank" rel="noopener noreferrer"
@@ -44,7 +42,7 @@ const SuccessPage = () => {
                                 </a>
                             </div>
                             <p className="text-l md:text-xl text-green-700">
-                                The registration form can be obtained by contacting the room manager at {managerMail} or through the button bellow.:
+                                The registration form can be obtained by contacting the room manager at {managerMail} or through the button bellow:
                             </p>
                             <div className="pb-2">
                                 <a href={config.reservationFormLink} target="_blank" rel="noopener noreferrer"
@@ -63,8 +61,7 @@ const SuccessPage = () => {
                             <h1 className="text-4xl font-bold text-green-800 mb-4">You need to confirm your
                                 reservation</h1>
                             <p className="text-l md:text-xl text-green-700 mb-8">
-                                For night time reservation you must get additional confirmation by email from the
-                                manager. Write email to {managerMail}, with your reservation details. More information
+                                For night time reservation you must get additional confirmation by email from the manager. Write email to {managerMail}, with your reservation details. More information
                                 here:
                             </p>
                             <div>

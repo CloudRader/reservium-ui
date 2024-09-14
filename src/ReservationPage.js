@@ -152,7 +152,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                 setErrorMessages(errorMessage);
                 if (isMobile && errorMessage.general) setIsModalOpen(true);
             });
-    }, [navigate, contactMail, isMobile]);
+    }, [navigate, contactMail, isMobile,service.wikiLink]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);

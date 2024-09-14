@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 
-const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservationTypeChange }) => {
+const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservationTypeChange, isSubmitting}) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -178,9 +178,14 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
                 {renderAdditionalServices()}
                 <button
                     type="submit"
-                    className="w-100 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    disabled={isSubmitting}
+                    className={`w-100 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
+                        isSubmitting
+                            ? 'bg-green-400 cursor-not-allowed'
+                            : 'bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                    }`}
                 >
-                    Submit Reservation
+                    {isSubmitting ? 'Submitting...' : 'Submit Reservation'}
                 </button>
             </form>
         </div>

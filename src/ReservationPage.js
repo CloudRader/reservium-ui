@@ -6,8 +6,10 @@ import Logout from "./Logout";
 import config from "./Config";
 import AdaptiveCalendar from "./AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
+import { useMutation, useQuery } from 'react-query';
 import WarningMessage from "./WarningMessage";
 import {ErrorMobileModal} from "./ErrorMobileModal";
+import PulsatingLoader from "./Components/PulsatingLoader";
 axios.defaults.withCredentials = true;
 
 const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) => {
@@ -28,7 +30,6 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-
     useEffect(() => {
         if (service) {
             setReservationTypes(service.reservation_types?.map(name => ({ value: name, label: name })) || []);
@@ -36,23 +37,30 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             setErrorMessages({});
             if (isMobile) setIsModalOpen(false);
         }
-    }, [service,isMobile]);
+    }, [service, isMobile]);
+
+    const { data: additionalServicesData } = useQuery(
+        ['additionalServices', reservationType, service],
+        async () => {
+            if (!reservationType || !service) return [];
+            const calendarId = service.calendarIds[reservationType];
+            const response = await axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`);
+            return response.data.map(service => ({ value: service, label: service }));
+        },
+        {
+            enabled: !!reservationType && !!service,
+            onError: (error) => {
+                console.error('Error fetching additional services:', error);
+                return [];
+            }
+        }
+    );
 
     useEffect(() => {
-        if (reservationType && service) {
-            const calendarId = service.calendarIds[reservationType];
-            axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`)
-                .then(response => {
-                    setAdditionalServices(response.data.map(service => ({ value: service, label: service })));
-                })
-                .catch(error => {
-                    console.error('Error fetching additional services:', error);
-                    setAdditionalServices([]);
-                });
-        } else {
-            setAdditionalServices([]);
+        if (additionalServicesData) {
+            setAdditionalServices(additionalServicesData);
         }
-    }, [reservationType, service]);
+    }, [additionalServicesData]);
 
     const getTomorrowDate = useCallback(() => {
         const tomorrow = new Date();
@@ -130,29 +138,41 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         },
     ], [getTomorrowDate, reservationTypes]);
 
-    const handleSubmit = useCallback((formData) => {
-        axios.post(`${config.serverURL}/events/create_event`, formData)
-            .then(response => {
+
+    const mutation = useMutation(
+        (formData) => axios.post(`${config.serverURL}/events/create_event`, formData),
+        {
+            onSuccess: (response) => {
                 if (response.status === 201) {
-                    navigate('/success', { state: {
+                    navigate('/success', {
+                        state: {
                             ...response.data,
-                            contactMail: contactMail,
+                            contactMail: service.contact_mail,
                             wikiLink: service.wikiLink
-                        }});
+                        }
+                    });
                     setErrorMessages({});
                 } else {
-                    setErrorMessages({ general: `Cannot create a reservation. ${response.data.message}` });
-                    if (isMobile) setIsModalOpen(true);
+                    handleError({ general: `Cannot create a reservation. ${response.data.message}` });
                 }
-            })
-            .catch(error => {
+            },
+            onError: (error) => {
                 const errorMessage = error.response?.status === 401
                     ? { auth: 'Authentication failed. Please log out and log in again.' }
                     : { general: 'Cannot create a reservation, try again later.' };
-                setErrorMessages(errorMessage);
-                if (isMobile && errorMessage.general) setIsModalOpen(true);
-            });
-    }, [navigate, contactMail, isMobile]);
+                handleError(errorMessage);
+            }
+        }
+    );
+
+    const handleError = useCallback((errorMessage) => {
+        setErrorMessages(errorMessage);
+        if (isMobile && errorMessage.general) setIsModalOpen(true);
+    }, [isMobile]);
+
+    const handleSubmit = useCallback((formData) => {
+        mutation.mutate(formData);
+    }, [mutation]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);
@@ -175,6 +195,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     additionalServices={additionalServices}
                     onSubmit={handleSubmit}
                     onReservationTypeChange={handleReservationTypeChange}
+                    isSubmitting={mutation.isLoading}
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
@@ -183,6 +204,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     }
                 </div>
             </div>
+            {mutation.isLoading && <PulsatingLoader />}
             <ErrorMobileModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

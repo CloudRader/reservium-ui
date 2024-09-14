@@ -18,7 +18,7 @@ const Header = ({username, isLoggedIn, onLogout, services}) => {
                             <span className="text-2xl font-bold mr-2">Buben Club</span>
                             <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11"/>
                         </NavLink>
-                        <div className="hidden sm:flex space-x-9">
+                        <div className="ml-3 hidden sm:flex space-x-9">
                             {services.map((item) => (
                                 <NavLink
                                     key={item.linkName}

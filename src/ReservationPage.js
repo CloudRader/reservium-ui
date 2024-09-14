@@ -36,7 +36,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             setErrorMessages({});
             if (isMobile) setIsModalOpen(false);
         }
-    }, [service]);
+    }, [service,isMobile]);
 
     useEffect(() => {
         if (reservationType && service) {
@@ -152,7 +152,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                 setErrorMessages(errorMessage);
                 if (isMobile && errorMessage.general) setIsModalOpen(true);
             });
-    }, [navigate, contactMail]);
+    }, [navigate, contactMail, isMobile]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);

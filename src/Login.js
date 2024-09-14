@@ -87,7 +87,7 @@ const Login = () => {
         if (code) {
             login(code, state);
         } else {
-           navigate('/test');
+            console.error('Did not get params from IS:');
         }
     }, [location, login, navigate]);
 

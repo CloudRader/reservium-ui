@@ -104,7 +104,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             type: 'text',
             labelText: 'Purpose',
             labelColor: 'text-success',
-            validation: (value) => !!value && /^[a-zA-Z .\-_+()&!]+$/.test(value),
+            validation: (value) => !!value && value.length > 100,
         },
         {
             name: 'guests',
@@ -177,9 +177,6 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
                     onReservationTypeChange={handleReservationTypeChange}
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
-                    {/*{!isMobile && errorMessages.general &&*/}
-                    {/*    <div className="alert alert-danger">{errorMessages.general}</div>*/}
-                    {/*}*/}
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
                     {!isMobile && errorMessages.general &&
                         <div className="alert alert-danger mt-5">{errorMessages.general}</div>

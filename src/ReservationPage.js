@@ -160,6 +160,16 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         }
     );
 
+    const handleError = useCallback((errorMessage) => {
+        setErrorMessages(errorMessage);
+        if (isMobile && errorMessage.general) setIsModalOpen(true);
+    }, [isMobile]);
+
+    const handleSubmit = useCallback((formData) => {
+        mutation.mutate(formData);
+    }, [mutation]);
+
+    //
     // const handleSubmit = useCallback((formData) => {
     //     axios.post(`${config.serverURL}/events/create_event`, formData)
     //         .then(response => {
@@ -183,16 +193,6 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
     //             if (isMobile && errorMessage.general) setIsModalOpen(true);
     //         });
     // }, [navigate, contactMail, isMobile]);
-
-
-    const handleError = useCallback((errorMessage) => {
-        setErrorMessages(errorMessage);
-        if (isMobile && errorMessage.general) setIsModalOpen(true);
-    }, [isMobile]);
-
-    const handleSubmit = useCallback((formData) => {
-        mutation.mutate(formData);
-    }, [mutation]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);

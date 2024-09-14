@@ -12,7 +12,10 @@ import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
 import SuccessPage from "./SuccessPage";
+import { QueryClient, QueryClientProvider } from 'react-query';
 axios.defaults.withCredentials = true;
+
+const queryClient = new QueryClient();
 
 async function getReservationServiceData() {
     try {
@@ -76,7 +79,7 @@ function App() {
     }, [isLoggedIn]);
 
 
-    if (isLoading && isLoggedIn) {
+    if (isLoading && isLoggedIn) { // change logic here TodO
         return <div>Loading...</div>; // or a more sophisticated loading component
     }
 
@@ -84,6 +87,7 @@ function App() {
         <div>
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles} onLogout={logout}
                     services={services}/>
+            <QueryClientProvider client={queryClient}>
             <Routes>
                 {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
                 <Route path='/login' element={<LoginHandler/>}/>
@@ -123,6 +127,8 @@ function App() {
                 <Route path='/create-new-miniservice'
                        element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username}/>}/>
             </Routes>
+            </QueryClientProvider>
+
             <Footer/>
         </div>
     );

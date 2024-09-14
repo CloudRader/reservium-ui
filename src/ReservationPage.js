@@ -104,7 +104,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             type: 'text',
             labelText: 'Purpose',
             labelColor: 'text-success',
-            validation: (value) => !!value && value.length > 100,
+            validation: (value) => !!value && value.length < 150,
         },
         {
             name: 'guests',

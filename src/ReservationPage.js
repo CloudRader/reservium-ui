@@ -6,7 +6,7 @@ import Logout from "./Logout";
 import config from "./Config";
 import AdaptiveCalendar from "./AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import WarningMessage from "./WarningMessage";
 import {ErrorMobileModal} from "./ErrorMobileModal";
 import PulsatingLoader from "./Components/PulsatingLoader";
@@ -30,6 +30,7 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+
     useEffect(() => {
         if (service) {
             setReservationTypes(service.reservation_types?.map(name => ({ value: name, label: name })) || []);
@@ -37,30 +38,24 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             setErrorMessages({});
             if (isMobile) setIsModalOpen(false);
         }
-    }, [service, isMobile]);
-
-    const { data: additionalServicesData } = useQuery(
-        ['additionalServices', reservationType, service],
-        async () => {
-            if (!reservationType || !service) return [];
-            const calendarId = service.calendarIds[reservationType];
-            const response = await axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`);
-            return response.data.map(service => ({ value: service, label: service }));
-        },
-        {
-            enabled: !!reservationType && !!service,
-            onError: (error) => {
-                console.error('Error fetching additional services:', error);
-                return [];
-            }
-        }
-    );
+    }, [service,isMobile]);
 
     useEffect(() => {
-        if (additionalServicesData) {
-            setAdditionalServices(additionalServicesData);
+        if (reservationType && service) {
+            const calendarId = service.calendarIds[reservationType];
+            axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`)
+                .then(response => {
+                    setAdditionalServices(response.data.map(service => ({ value: service, label: service })));
+                })
+                .catch(error => {
+                    console.error('Error fetching additional services:', error);
+                    setAdditionalServices([]);
+                });
+        } else {
+            setAdditionalServices([]);
         }
-    }, [additionalServicesData]);
+    }, [reservationType, service]);
+
 
     const getTomorrowDate = useCallback(() => {
         const tomorrow = new Date();
@@ -164,6 +159,31 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
             }
         }
     );
+
+    // const handleSubmit = useCallback((formData) => {
+    //     axios.post(`${config.serverURL}/events/create_event`, formData)
+    //         .then(response => {
+    //             if (response.status === 201) {
+    //                 navigate('/success', { state: {
+    //                         ...response.data,
+    //                         contactMail: contactMail,
+    //                         wikiLink: service.wikiLink
+    //                     }});
+    //                 setErrorMessages({});
+    //             } else {
+    //                 setErrorMessages({ general: `Cannot create a reservation. ${response.data.message}` });
+    //                 if (isMobile) setIsModalOpen(true);
+    //             }
+    //         })
+    //         .catch(error => {
+    //             const errorMessage = error.response?.status === 401
+    //                 ? { auth: 'Authentication failed. Please log out and log in again.' }
+    //                 : { general: 'Cannot create a reservation, try again later.' };
+    //             setErrorMessages(errorMessage);
+    //             if (isMobile && errorMessage.general) setIsModalOpen(true);
+    //         });
+    // }, [navigate, contactMail, isMobile]);
+
 
     const handleError = useCallback((errorMessage) => {
         setErrorMessages(errorMessage);

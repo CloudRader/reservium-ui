@@ -128,7 +128,6 @@ function App() {
                        element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username}/>}/>
             </Routes>
             </QueryClientProvider>
-
             <Footer/>
         </div>
     );

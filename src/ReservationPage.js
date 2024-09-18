@@ -169,30 +169,6 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service }) =
         mutation.mutate(formData);
     }, [mutation]);
 
-    //
-    // const handleSubmit = useCallback((formData) => {
-    //     axios.post(`${config.serverURL}/events/create_event`, formData)
-    //         .then(response => {
-    //             if (response.status === 201) {
-    //                 navigate('/success', { state: {
-    //                         ...response.data,
-    //                         contactMail: contactMail,
-    //                         wikiLink: service.wikiLink
-    //                     }});
-    //                 setErrorMessages({});
-    //             } else {
-    //                 setErrorMessages({ general: `Cannot create a reservation. ${response.data.message}` });
-    //                 if (isMobile) setIsModalOpen(true);
-    //             }
-    //         })
-    //         .catch(error => {
-    //             const errorMessage = error.response?.status === 401
-    //                 ? { auth: 'Authentication failed. Please log out and log in again.' }
-    //                 : { general: 'Cannot create a reservation, try again later.' };
-    //             setErrorMessages(errorMessage);
-    //             if (isMobile && errorMessage.general) setIsModalOpen(true);
-    //         });
-    // }, [navigate, contactMail, isMobile]);
 
     const handleReservationTypeChange = useCallback((value) => {
         setReservationType(value);

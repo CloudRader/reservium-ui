@@ -14,6 +14,7 @@ import NotFoundPage from "./NotFoundPage";
 import LoginHandler from "./LoginHandler";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
+import PulsatingLoader from "./Components/PulsatingLoader";
 
 axios.defaults.withCredentials = true;
 
@@ -29,9 +30,8 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-
     if (isLoading) {
-        return <div>Loading...</div>; // or a more sophisticated loading component
+        return <PulsatingLoader />;
     }
 
     return (

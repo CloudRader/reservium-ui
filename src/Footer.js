@@ -23,9 +23,6 @@ const Footer = () => {
                                     member</a>
                                 <a href="https://wiki.buk.cvut.cz/cs/home" target="_blank" rel="noopener noreferrer"
                                    className="text-green-600 hover:text-green-800 block no-underline">Wiki</a>
-                                <a href="https://wiki.buk.cvut.cz/cs/club-zone/club-room" target="_blank"
-                                   rel="noopener noreferrer"
-                                   className="text-green-600 hover:text-green-800 block no-underline">FAQ</a>
                                 <a href="https://linktr.ee/bubenklub" target="_blank" rel="noopener noreferrer"
                                    className="text-green-600 hover:text-green-800 block no-underline">Links</a>
                             </div>

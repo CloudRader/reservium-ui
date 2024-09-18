@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useMutation } from 'react-query';
+import {useMutation, useQuery} from 'react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import config from "../Config";
@@ -7,7 +7,6 @@ import config from "../Config";
 axios.defaults.withCredentials = true;
 export const useReservationLogic = (isLoggedIn, onLogout, roomCalendarLinks, service) => {
     const [reservationTypes, setReservationTypes] = useState([]);
-    const [additionalServices, setAdditionalServices] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
     const [reservationType, setReservationType] = useState('');
     const [contactMail, setContactMail] = useState(config.contactMail);
@@ -32,21 +31,26 @@ export const useReservationLogic = (isLoggedIn, onLogout, roomCalendarLinks, ser
         }
     }, [service, isMobile]);
 
-    useEffect(() => {
-        if (reservationType && service) {
-            const calendarId = service.calendarIds[reservationType];
-            axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`)
-                .then(response => {
-                    setAdditionalServices(response.data.map(service => ({ value: service, label: service })));
-                })
-                .catch(error => {
-                    console.error('Error fetching additional services:', error);
-                    setAdditionalServices([]);
-                });
-        } else {
-            setAdditionalServices([]);
+    // Fetch additional services using useQuery
+    const fetchAdditionalServices = async (calendarId) => {
+        const response = await axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`);
+        return response.data.map(service => ({ value: service, label: service }));
+    };
+
+    let calendarId;
+    if (reservationType && service)
+        calendarId = service?.calendarIds?.[reservationType];
+
+    const { data: additionalServices = [], error: additionalServicesError, isLoading } = useQuery(
+        ['additionalServices', calendarId],
+        () => fetchAdditionalServices(calendarId),
+        {
+            enabled: !!calendarId, // Only fetch if calendarId is truthy
+            onError: (error) => {
+                console.error('Error fetching additional services:', error);
+            }
         }
-    }, [reservationType, service]);
+    );
 
     const getTomorrowDate = useCallback(() => {
         const tomorrow = new Date();
@@ -55,8 +59,75 @@ export const useReservationLogic = (isLoggedIn, onLogout, roomCalendarLinks, ser
     }, []);
 
     const formFields = useMemo(() => [
-        // ... (same as in the original component)
+        {
+            name: 'startDate',
+            type: 'date',
+            labelText: 'Start Date',
+            labelColor: 'text-success',
+            defaultValue: getTomorrowDate(),
+            validation: (value) => {
+                const year = new Date(value).getFullYear();
+                return year > 2023 && year < 3000;
+            }
+        },
+        {
+            name: 'startTime',
+            type: 'time',
+            labelText: 'Start Time',
+            labelColor: 'text-success',
+            defaultValue: '17:00',
+            validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
+        },
+        {
+            name: 'endDate',
+            type: 'date',
+            labelText: 'End Date',
+            labelColor: 'text-success',
+            defaultValue: getTomorrowDate(),
+            validation: (value) => {
+                const year = new Date(value).getFullYear();
+                return year > 2023 && year < 3000;
+            }
+        },
+        {
+            name: 'endTime',
+            type: 'time',
+            labelText: 'End Time',
+            labelColor: 'text-success',
+            defaultValue: '20:00',
+            validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
+        },
+        {
+            name: 'purpose',
+            type: 'text',
+            labelText: 'Purpose',
+            labelColor: 'text-success',
+            validation: (value) => !!value && value.length < 150,
+        },
+        {
+            name: 'guests',
+            type: 'number',
+            labelText: 'Number of Guests',
+            labelColor: 'text-success',
+            validation: (value) => value > 0 && value < 101,
+        },
+        {
+            name: 'email',
+            type: 'email',
+            labelText: 'Email',
+            labelColor: 'text-primary',
+            validation: (value) => /\S+@\S+\.\S+/.test(value),
+        },
+        {
+            name: 'type',
+            type: 'select',
+            labelText: 'Type of Reservation',
+            labelColor: 'text-primary',
+            options: reservationTypes,
+            validation: (value) => !!value
+        },
     ], [getTomorrowDate, reservationTypes]);
+
 
     const mutation = useMutation(
         (formData) => axios.post(`${config.serverURL}/events/create_event`, formData),

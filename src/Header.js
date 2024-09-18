@@ -13,7 +13,7 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
         <header className="bg-green-100 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex justify-between items-center h-16 text-green-800">
-                    <div className="flex items-center space-x-2 w-full lg:w-1/2">
+                    <div className="flex items-center space-x-2 w-full lg:w-1/3">
                         <NavLink key="club" to="club" className="flex items-center text-green-800 no-underline w-full">
                             <span className="text-2xl font-bold mr-2">Buben Club</span>
                             <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11"/>
@@ -21,20 +21,19 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                         <div className="hidden sm:flex space-x-9 flex-grow justify-end">
                             {services.map((item) => (
                                 (item.public || userRoles.isActive) ? (
-                                <NavLink
-                                    key={item.linkName}
-                                    to={item.linkName}
-                                    className={({isActive}) =>
-                                        `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
-                                            isActive
-                                                ? 'border-green-600 text-green-900'
-                                                : 'border-transparent hover:border-green-300 hover:text-green-600'
-                                        }`
-                                    }
-                                >
-                                    {item.serviceName}
-                                </NavLink>)
-                                    : null
+                                    <NavLink
+                                        key={item.linkName}
+                                        to={item.linkName}
+                                        className={({isActive}) =>
+                                            `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
+                                                isActive
+                                                    ? 'border-green-600 text-green-900'
+                                                    : 'border-transparent hover:border-green-300 hover:text-green-600'
+                                            }`
+                                        }>
+                                        {item.serviceName}
+                                    </NavLink>
+                                ) : null
                             ))}
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 # Build stage
-FROM node:alpine as build
+FROM node:20-alpine as build
 
 # Set working directory
 WORKDIR /app
@@ -10,7 +10,7 @@ RUN npm install
 
 # Copy all application files and build the app
 COPY . .
-RUN npm run build
+RUN npm run build --production
 
 # Production stage
 FROM nginx:stable-alpine

@@ -108,7 +108,7 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                         <div className="border-t border-green-200 pt-4 pb-3">
                             {isLoggedIn ? (
                                 <div className="flex items-center px-5 space-x-4">
-                                    <span className="text-sm font-medium text-green-700">Welcome, {username}</span>
+                                    <span className="text-sm font-medium text-green-700">{username}</span>
                                     <button
                                         onClick={onLogout}
                                         className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

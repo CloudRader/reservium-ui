@@ -14,6 +14,8 @@ import LoginHandler from "./LoginHandler";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
 import PulsatingLoader from "./Components/PulsatingLoader";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient();
 

@@ -27,6 +27,7 @@ async function getReservationServiceData() {
             linkName: info.alias,
             serviceName: info.name,
             contact_mail: info.contact_mail,
+            public: info.public,
             reservation_types: info.calendars.map(calendar => calendar.reservation_type),
             calendarIds: info.calendars.reduce((acc, calendar) => {
                 acc[calendar.reservation_type] = calendar.id;
@@ -94,7 +95,7 @@ function App() {
                 {/* send it to back-end for session get data from back and make components*/}
                 <Route path='/logined' element={<Login/>}/>
                 {/*then go here as default page*/}
-                <Route key='' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
+                <Route key='/' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
                                                                roomCalendarLinks={calendars["club"]}
                                                                service={services[0]}/>}/>
 

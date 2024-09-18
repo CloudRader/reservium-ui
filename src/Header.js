@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import bubenLogo from "./assets/buben_logo.svg";
 
-const Header = ({username, isLoggedIn, onLogout, services}) => {
+const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
 
     const toggleMenu = () => {
@@ -20,6 +20,7 @@ const Header = ({username, isLoggedIn, onLogout, services}) => {
                         </NavLink>
                         <div className="hidden sm:flex space-x-9 flex-grow justify-end">
                             {services.map((item) => (
+                                (item.public || userRoles.isActive) ? (
                                 <NavLink
                                     key={item.linkName}
                                     to={item.linkName}
@@ -32,7 +33,8 @@ const Header = ({username, isLoggedIn, onLogout, services}) => {
                                     }
                                 >
                                     {item.serviceName}
-                                </NavLink>
+                                </NavLink>)
+                                    : null
                             ))}
                         </div>
                     </div>

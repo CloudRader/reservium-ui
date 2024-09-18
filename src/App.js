@@ -27,7 +27,7 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-    if (isLoading) {
+    if (isLoading && !isLoggedIn) {
         return <PulsatingLoader />;
     }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from 'react-query';
-import axios from 'axios';
 
 import Header from './Header';
 import ReservationPage from "./ReservationPage";
@@ -15,8 +14,6 @@ import LoginHandler from "./LoginHandler";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
 import PulsatingLoader from "./Components/PulsatingLoader";
-
-axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient();
 

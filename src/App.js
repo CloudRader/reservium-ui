@@ -13,7 +13,6 @@ import NotFoundPage from "./NotFoundPage";
 import LoginToIS from "./LoginToIS";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
-import PulsatingLoader from "./Components/PulsatingLoader";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -31,10 +30,6 @@ function AppContent() {
     const {services, calendars} = data || {services: [], calendars: {}};
     console.log(services);
     console.log(isLoggedIn);
-
-    if (!services.length && !isLoggedIn) {
-        return <PulsatingLoader/>;
-    }
 
     return (
         <>

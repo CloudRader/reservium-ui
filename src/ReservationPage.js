@@ -66,9 +66,11 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
     if (!isLoggedIn) {
         return <LoginInfoPage/>;
     }
-
-    if (errorMessages.auth) {
+    else if(errorMessages.auth) {
         return <Logout onLogout={onLogout}/>;
+    }
+    else if(!service) {
+        return <PulsatingLoader/>;
     }
 
     return (

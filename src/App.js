@@ -60,7 +60,7 @@ function AppContent() {
                         />
                     ))}
                     <Route index element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
-                                                                      roomCalendarLinks={calendars[services[0].linkName]}
+                                                                      roomCalendarLinks={calendars[services[0]?.linkName]}
                                                                       service={services[0]}/>}/>
 
 

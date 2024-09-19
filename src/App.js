@@ -20,7 +20,7 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const {isLoggedIn, username, userRoles} = useAuth();
+    const {isLoggedIn, username} = useAuth();
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {

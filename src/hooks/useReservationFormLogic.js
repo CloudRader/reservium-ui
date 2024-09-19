@@ -104,6 +104,13 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         setFormData(initialData);
     }, [formFields]);
 
+    useEffect(() => {
+        setFormData(prevData => ({
+            ...prevData,
+            additionalServices: []
+        }));
+    }, [reservationType]);
+
 
     const { data: additionalServices = [] } = useQuery(
         ['additionalServices', reservationType, calendarIds[reservationType]],
@@ -147,8 +154,8 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
             setReservationType(value);
         }
 
-        if (type === 'checkbox') {
-            updatedValue = formData[name] || [];
+        if (type === 'checkbox' && name === 'additionalServices') {
+            updatedValue = formData.additionalServices || [];
             if (checked) {
                 updatedValue = [...updatedValue, value];
             } else {

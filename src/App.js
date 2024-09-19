@@ -29,14 +29,13 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-    if (isLoading) {
+    if (isLoading && !isLoggedIn) {
         return <PulsatingLoader />;
     }
 
     return (
         <>
             <Header isLoggedIn={isLoggedIn} username={username}
-                    onLogout={logout}
                     services={services}/>
                 <Routes>
                     {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
@@ -52,14 +51,14 @@ function AppContent() {
                             element={
                                 <ReservationPage
                                     isLoggedIn={isLoggedIn}
-                                    onLogout={logout}
+
                                     roomCalendarLinks={calendars[service.linkName]}
                                     service={service}
                                 />
                             }
                         />
                     ))}
-                    <Route index element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
+                    <Route index element={<ReservationPage isLoggedIn={isLoggedIn}
                                                                       roomCalendarLinks={calendars[services[0]?.linkName]}
                                                                       service={services[0]}/>}/>
 

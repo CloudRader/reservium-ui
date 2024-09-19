@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import ReservationForm from './ReservationForm2';
 import LoginInfoPage from "./LoginInfoPage";
@@ -33,9 +33,9 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
         if (service) {
             setContactMail(service?.contact_mail);
             setErrorMessages({});
-            if (isMobile) setIsModalOpen(false);
+            setIsModalOpen(false);
         }
-    }, [service, isMobile]);
+    }, [service]);
 
 
     const mutation = useMutation(

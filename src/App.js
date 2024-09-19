@@ -32,7 +32,7 @@ function AppContent() {
     console.log(services);
     console.log(isLoggedIn);
 
-    if (!services.length) {
+    if (!services.length && !isLoggedIn) {
         return <PulsatingLoader/>;
     }
 

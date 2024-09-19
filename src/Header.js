@@ -85,13 +85,13 @@ const Header = ({username, isLoggedIn, services}) => {
                 {/* Mobile dropdown menu */}
                 {isMenuOpen && (
                     <div className="sm:hidden">
-                        <div className="pt-2 pb-3 flex flex-col space-y-1">
+                        <div className="flex flex-col items-center space-y-2 py-2">
                             {services.map((item) => (
                                 <NavLink
                                     key={item.linkName}
                                     to={item.linkName}
                                     className={({isActive}) =>
-                                        `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
+                                        `w-full text-center text-green-800 items-center border-b-2 font-medium no-underline transition-colors duration-200 ${
                                             isActive
                                                 ? 'border-green-600 text-green-900'
                                                 : 'border-transparent hover:border-green-300 hover:text-green-600'
@@ -104,10 +104,10 @@ const Header = ({username, isLoggedIn, services}) => {
                         <div className="border-t border-green-200 pt-4 pb-3">
                             {isLoggedIn ? (
                                 <div className="flex items-center px-5 space-x-4">
-                                    <span className="text-sm font-medium text-green-700">{username}</span>
+                                    <span className="font-medium text-green-700">{username}</span>
                                     <NavLink
                                         to={'/logout'}
-                                        className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">>
+                                        className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                         Log out
                                     </NavLink>
                                 </div>

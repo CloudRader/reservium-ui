@@ -30,7 +30,7 @@ const useAuth = () => {
                 section_head: userInfo.section_head
             });
             localStorage.setItem('userName', username);
-            navigate('/');
+            navigate('/club');
         } catch (error) {
             console.error('Error during login:', error);
             navigate('/');
@@ -59,12 +59,16 @@ const useAuth = () => {
                     });
                 } catch (error) {
                     console.error('Error verifying authentication:', error);
-                    logout();
+                    setIsLoggedIn(false);
+                    setUsername(null);
+                    setUserRoles({ active_member: false, section_head: false });
+                    localStorage.removeItem('userName');
+                    navigate('/');
                 }
             }
         };
         checkAuth();
-    }, [logout]);
+    }, [navigate]);
 
     return { isLoggedIn, username, userRoles, login, logout };
 };

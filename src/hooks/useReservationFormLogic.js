@@ -109,7 +109,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
             ...prevData,
             additionalServices: []
         }));
-    }, [reservationType]);
+    }, [reservationType, reservationTypes]);
 
 
     const { data: additionalServices = [] } = useQuery(
@@ -152,6 +152,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
 
         if (field.name === 'type') {
             setReservationType(value);
+
         }
 
         if (type === 'checkbox' && name === 'additionalServices') {

@@ -20,7 +20,7 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const {isLoggedIn, username, userRoles, logout} = useAuth();
+    const {isLoggedIn, username, userRoles} = useAuth();
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {
@@ -29,6 +29,7 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
     console.log(services);
+    console.log(isLoading);
     console.log(isLoggedIn);
 
     return (
@@ -63,7 +64,7 @@ function AppContent() {
                 }/>
 
 
-                <Route path='/logout' element={<Logout onLogout={logout}/>}/>
+                <Route path='/logout' element={<Logout/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
 
                 <Route path="/success" element={<SuccessPage/>}/>

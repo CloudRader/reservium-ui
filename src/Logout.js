@@ -2,9 +2,11 @@ import {  useEffect } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import axios from "axios";
 import config from "./Config";
+import {useAuth} from "./LoginToBackend";
 axios.defaults.withCredentials = true;
 
-function Logout({ onLogout }) {
+function Logout() {
+    const {logout} = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,8 +19,8 @@ function Logout({ onLogout }) {
         };
         fetchLoginUrl();
 
-        onLogout();
-    }, [onLogout, navigate]);
+        logout();
+    }, [logout, navigate]);
 
     return null;
 }

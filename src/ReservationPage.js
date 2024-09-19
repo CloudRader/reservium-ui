@@ -14,7 +14,6 @@ import PulsatingLoader from "./Components/PulsatingLoader";
 axios.defaults.withCredentials = true;
 
 const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
-    const [reservationTypes, setReservationTypes] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
     const [contactMail, setContactMail] = useState(config.contactMail);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
@@ -32,7 +31,6 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
 
     useEffect(() => {
         if (service) {
-            setReservationTypes(service.reservation_types?.map(name => ({value: name, label: name})) || []);
             setContactMail(service?.contact_mail);
             setErrorMessages({});
             if (isMobile) setIsModalOpen(false);
@@ -92,7 +90,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
                     onSubmit={handleSubmit}
                     isSubmitting={mutation.isLoading}
                     calendarIds={service.calendarIds}
-                    reservationTypes={reservationTypes}
+                    reservationTypes={service.reservation_types?.map(name => ({value: name, label: name})) || []}
                 />
                 <div className="w-full bg-white shadow-md overflow-hidden p-6 no-underline">
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>

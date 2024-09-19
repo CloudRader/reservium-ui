@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import bubenLogo from "./assets/buben_logo.svg";
 
-const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
+const Header = ({username, isLoggedIn, services}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
 
     const toggleMenu = () => {
@@ -40,15 +40,15 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm font-medium text-green-700">{username}</span>
                                 <NavLink
+                                    to={'/logout'}
                                     className="no-underline inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                    to="/logout"
                                 >
                                     Log out
                                 </NavLink>
                             </div>
                         ) : (
                             <NavLink
-                                to="/login"
+                                to={'/login'}
                                 className="no-underline text-white inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Log in
@@ -85,7 +85,7 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                 {/* Mobile dropdown menu */}
                 {isMenuOpen && (
                     <div className="sm:hidden">
-                        <div className="pt-2 pb-3 space-y-1">
+                        <div className="pt-2 pb-3 flex flex-col space-y-1">
                             {services.map((item) => (
                                 <NavLink
                                     key={item.linkName}
@@ -105,25 +105,22 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                             {isLoggedIn ? (
                                 <div className="flex items-center px-5 space-x-4">
                                     <span className="text-sm font-medium text-green-700">{username}</span>
-                                    <button
-                                        onClick={onLogout}
-                                        className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                    >
+                                    <NavLink
+                                        to={'/logout'}
+                                        className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">>
                                         Log out
-                                    </button>
+                                    </NavLink>
                                 </div>
                             ) : (
                                 <NavLink
                                     to="/login"
-                                    className="block w-full text-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                >
+                                    className="block w-full text-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     Log in
                                 </NavLink>
                             )}
                         </div>
                     </div>
-                )
-                }
+                )}
             </div>
         </header>
     )

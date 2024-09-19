@@ -29,13 +29,13 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-    if (isLoading && !isLoggedIn) {
+    if (isLoading) {
         return <PulsatingLoader />;
     }
 
     return (
         <>
-            <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles}
+            <Header isLoggedIn={isLoggedIn} username={username}
                     onLogout={logout}
                     services={services}/>
                 <Routes>
@@ -44,9 +44,6 @@ function AppContent() {
                     {/* send it to back-end for session get data from back and make components*/}
                     <Route path='/logined' element={<Login/>}/>
                     {/*then go here as default page*/}
-                    <Route key='/' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
-                                                                      roomCalendarLinks={calendars["club"]}
-                                                                      service={services[0]}/>}/>
 
                     {services.map(service => (
                         <Route
@@ -62,6 +59,10 @@ function AppContent() {
                             }
                         />
                     ))}
+                    <Route index element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
+                                                                      roomCalendarLinks={calendars[services[0].linkName]}
+                                                                      service={services[0]}/>}/>
+
 
                     <Route path='/logout' element={<Logout onLogout={logout}/>}/>
                     <Route path="*" element={<NotFoundPage/>}/>

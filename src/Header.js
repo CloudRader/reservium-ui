@@ -20,20 +20,18 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                         </NavLink>
                         <div className="hidden sm:flex space-x-9 flex-grow justify-end">
                             {services.map((item) => (
-                                (item.public || userRoles.active_member) ? (
-                                    <NavLink
-                                        key={item.linkName}
-                                        to={item.linkName}
-                                        className={({isActive}) =>
-                                            `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
-                                                isActive
-                                                    ? 'border-green-600 text-green-900'
-                                                    : 'border-transparent hover:border-green-300 hover:text-green-600'
-                                            }`
-                                        }>
-                                        {item.serviceName}
-                                    </NavLink>
-                                ) : null
+                                <NavLink
+                                    key={item.linkName}
+                                    to={item.linkName}
+                                    className={({isActive}) =>
+                                        `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
+                                            isActive
+                                                ? 'border-green-600 text-green-900'
+                                                : 'border-transparent hover:border-green-300 hover:text-green-600'
+                                        }`
+                                    }>
+                                    {item.serviceName}
+                                </NavLink>
                             ))}
                         </div>
                     </div>
@@ -89,20 +87,18 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                     <div className="sm:hidden">
                         <div className="pt-2 pb-3 space-y-1">
                             {services.map((item) => (
-                                (item.public || userRoles.active_member) ? (
-                                    <NavLink
-                                        key={item.linkName}
-                                        to={item.linkName}
-                                        className={({isActive}) =>
-                                            `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
-                                                isActive
-                                                    ? 'border-green-600 text-green-900'
-                                                    : 'border-transparent hover:border-green-300 hover:text-green-600'
-                                            }`
-                                        }>
-                                        {item.serviceName}
-                                    </NavLink>
-                                ) : null
+                                <NavLink
+                                    key={item.linkName}
+                                    to={item.linkName}
+                                    className={({isActive}) =>
+                                        `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
+                                            isActive
+                                                ? 'border-green-600 text-green-900'
+                                                : 'border-transparent hover:border-green-300 hover:text-green-600'
+                                        }`
+                                    }>
+                                    {item.serviceName}
+                                </NavLink>
                             ))}
                         </div>
                         <div className="border-t border-green-200 pt-4 pb-3">

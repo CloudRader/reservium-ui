@@ -15,7 +15,6 @@ axios.defaults.withCredentials = true;
 
 const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
     const [errorMessages, setErrorMessages] = useState({});
-    const [contactMail, setContactMail] = useState(config.contactMail);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate()
@@ -27,15 +26,6 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-
-    useEffect(() => {
-        if (service) {
-            setContactMail(service?.contact_mail);
-            setErrorMessages({});
-            setIsModalOpen(false);
-        }
-    }, [service]);
 
 
     const mutation = useMutation(
@@ -73,7 +63,6 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
         if (isMobile && errorMessage.general) setIsModalOpen(true);
     }, [isMobile]);
 
-
     if (!isLoggedIn) {
         return <LoginInfoPage/>;
     }
@@ -84,7 +73,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <WarningMessage contactMail={contactMail} wikiLink={service.wikiLink}/>
+            <WarningMessage contactMail={service?.contact_mail} wikiLink={service?.wikiLink}/>
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
                     onSubmit={handleSubmit}

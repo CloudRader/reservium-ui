@@ -10,7 +10,7 @@ RUN npm install
 
 # Copy all application files and build the app
 COPY . .
-RUN npm run build --production
+RUN npm run build
 
 # Production stage
 FROM nginx:stable-alpine

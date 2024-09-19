@@ -4,7 +4,15 @@ import axios from 'axios';
 import config from "./Config";
 axios.defaults.withCredentials = true;
 
+const sendCodeToServer = async (code, state) => {
+    const response = await axios.get(`${config.serverURL}/users/callback`, { params: { code, state }});
+    return response.data.username;
+};
 
+const getUserInfo = async () => {
+    const response = await axios.get(`${config.serverURL}/users/me`);
+    return response.data;
+};
 const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
@@ -22,7 +30,7 @@ const useAuth = () => {
                 section_head: userInfo.section_head
             });
             localStorage.setItem('userName', username);
-            navigate('/club'); // redirect here
+            navigate('/');
         } catch (error) {
             console.error('Error during login:', error);
             navigate('/');
@@ -61,21 +69,10 @@ const useAuth = () => {
     return { isLoggedIn, username, userRoles, login, logout };
 };
 
-
-
-const sendCodeToServer = async (code, state) => {
-    const response = await axios.get(`${config.serverURL}/users/callback`, {
-        params: { code, state }
-    });
-    return response.data.username;
-};
-
-const getUserInfo = async () => {
-    const response = await axios.get(`${config.serverURL}/users/me`);
-    return response.data;
-};
-
-const Login = () => {
+/*
+ * This component is get params from url and send it to backend.
+ */
+const LoginToBackend = () => {
     const location = useLocation();
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -84,7 +81,7 @@ const Login = () => {
         const params = new URLSearchParams(location.search);
         const code = params.get('code');
         const state = params.get('state');
-        if (code) {
+        if (code && state) {
             login(code, state);
         } else {
             console.error('Did not get params from IS:');
@@ -94,4 +91,4 @@ const Login = () => {
     return null;
 };
 
-export { useAuth, Login };
+export { useAuth, LoginToBackend };

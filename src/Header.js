@@ -85,16 +85,16 @@ const Header = ({username, isLoggedIn, services}) => {
                 {/* Mobile dropdown menu */}
                 {isMenuOpen && (
                     <div className="sm:hidden">
-                        <div className="flex flex-col items-center space-y-2 py-2">
+                        <div className="pt-2 pb-3 space-y-1">
                             {services.map((item) => (
                                 <NavLink
                                     key={item.linkName}
                                     to={item.linkName}
                                     className={({isActive}) =>
-                                        `w-full text-center text-green-800 items-center border-b-2 font-medium no-underline transition-colors duration-200 ${
+                                        `block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
                                             isActive
-                                                ? 'border-green-600 text-green-900'
-                                                : 'border-transparent hover:border-green-300 hover:text-green-600'
+                                                ? 'border-green-600 text-green-900 bg-green-50'
+                                                : 'border-transparent text-green-700 hover:border-green-300 hover:bg-green-50 hover:text-green-800'
                                         }`
                                     }>
                                     {item.serviceName}

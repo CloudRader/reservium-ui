@@ -35,10 +35,14 @@ function AppContent() {
 
     const renderRoutes = () => (
         <Routes>
-            <Route path='/login' element={<LoginToIS />} />
-            <Route path='/logined' element={<LoginToBackend />} />
+            {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
+            <Route path='/login' element={<LoginToIS/>}/>
+            {/* send it to back-end for session get data from back and make components*/}
+            <Route path='/logined' element={<LoginToBackend/>}/>
+            {/*then go here as default page*/}
             <Route path='/logout' element={<Logout />} />
             <Route path="/success" element={<SuccessPage />} />
+            <Route path="/login_info" element={<LoginInfoPage />} />
 
             {isLoggedIn ? (
                 <>
@@ -68,10 +72,22 @@ function AppContent() {
                     } />
                 </>
             ) : (
-                <Route path="*" element={<Navigate to="/login" replace />} />
+                <Route path="*" element={<Navigate to="/login_info" replace />} />
             )}
 
             <Route path="*" element={<NotFoundPage />} />
+            {/*{userRoles.includes("manager") && (*/}
+            {/*    <>*/}
+            {/*        <Route*/}
+            {/*            path='/create-new-calendar'*/}
+            {/*            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}*/}
+            {/*        />*/}
+            {/*        <Route*/}
+            {/*            path='/create-new-miniservice'*/}
+            {/*            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}*/}
+            {/*        />*/}
+            {/*    </>*/}
+            {/*)}*/}
         </Routes>
     );
 

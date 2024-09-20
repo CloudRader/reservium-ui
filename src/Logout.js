@@ -20,8 +20,7 @@ function Logout() {
                 // Call the client-side logout function
                 await logout();
 
-                // Navigate to login page
-                navigate('/login');
+                navigate('/login_info');
             } catch (error) {
                 console.error('Error during logout:', error);
                 setError('An error occurred during logout. Please try again.');

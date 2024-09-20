@@ -9,34 +9,37 @@ import Header from "./Header";
 import Footer from "./Footer";
 import {fetchReservationData, useReservationData} from "./hooks/useReservationData";
 import {QueryClient, QueryClientProvider} from "react-query";
-
+import LoginToIS from "./LoginToIS";
+import {LoginToBackend} from "./LoginToBackend";
+import Logout from "./Logout";
+import SuccessPage from "./SuccessPage";
 const queryClient = new QueryClient();
 
-// function AppRoutes() {
-//     const { isLoggedIn, login, logout } = useAuth();
-//
-//     return (
-//         <Routes>
-//             <Route path="/login" element={<LoginToIS />} />
-//             <Route path="/logined" element={<LoginToBackend login={login} />} />
-//             <Route path="/logout" element={<Logout logout={logout} />} />
-//             <Route path="/success" element={<SuccessPage />} />
-//             <Route
-//                 path="/login_info"
-//                 element={isLoggedIn ? <Navigate to="/" replace /> : <LoginInfoPage />}
-//             />
-//             <Route
-//                 path="/*"
-//                 element={isLoggedIn ? <AppContent /> : <Navigate to="/login_info" replace />}
-//             />
-//         </Routes>
-//     );
-// }
+function AppRoutes() {
+    const { isLoggedIn, login, logout } = useAuth();
+
+    return (
+        <Routes>
+            <Route path="/login" element={<LoginToIS />} />
+            <Route path="/logined" element={<LoginToBackend login={login} />} />
+            <Route path="/logout" element={<Logout logout={logout} />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route
+                path="/login_info"
+                element={isLoggedIn ? <Navigate to="/" replace /> : <LoginInfoPage />}
+            />
+            <Route
+                path="/*"
+                element={isLoggedIn ? <AppContent /> : <Navigate to="/login_info" replace />}
+            />
+        </Routes>
+    );
+}
 
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-                <AppContent />
+                <AppRoutes />
         </QueryClientProvider>
     );
 }
@@ -47,9 +50,8 @@ const Loader = () => (
     </div>
 );
 
-
 function AppContent() {
-    const [authState, setAuthState] = useState('initial'); // 'initial', 'checking', 'authenticated', 'unauthenticated'
+    const [authState, setAuthState] = useState('initial');
     const [userData, setUserData] = useState(null);
     const [servicesData, setServicesData] = useState(null);
     const { logout } = useAuth();
@@ -61,7 +63,6 @@ function AppContent() {
                 const response = await axios.get(`${config.serverURL}/users/me`);
                 setUserData(response.data);
                 setAuthState('authenticated');
-                // Fetch services data after authentication
                 await fetchServicesData();
             } catch (error) {
                 console.error('Authentication error:', error);
@@ -94,7 +95,7 @@ function AppContent() {
     }
 
     const renderRoutes = () => (
-        <Routes>
+        <>
             {servicesData && servicesData.services.map(service => (
                 <Route
                     key={service.linkName}
@@ -120,7 +121,7 @@ function AppContent() {
                 )
             } />
             <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        </>
     );
 
     return (

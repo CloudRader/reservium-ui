@@ -5,9 +5,8 @@ import { useAuth } from './hooks/useAuth';
 /*
  * This component is get params from url and send it to backend.
  */
-const LoginToBackend = () => {
+const LoginToBackend = ({ login }) => {
     const location = useLocation();
-    const { login } = useAuth();
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);

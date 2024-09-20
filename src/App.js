@@ -20,7 +20,7 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const { isLoggedIn, username, userRoles, logout, isLoading: isAuthLoading, isError: isAuthError, error: authError } = useAuth();
+    const { isLoggedIn, username, userRoles, login, logout, isLoading: isAuthLoading, isError: isAuthError, error: authError } = useAuth();
     const { data, isLoading: isDataLoading, isError: isDataError } = useReservationData(isLoggedIn);
 
     if (isAuthLoading) {
@@ -38,9 +38,9 @@ function AppContent() {
             {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
             <Route path='/login' element={<LoginToIS/>}/>
             {/* send it to back-end for session get data from back and make components*/}
-            <Route path='/logined' element={<LoginToBackend/>}/>
+            <Route path='/logined' element={<LoginToBackend login={login}/>}/>
             {/*then go here as default page*/}
-            <Route path='/logout' element={<Logout />} />
+            <Route path='/logout' element={<Logout logout={logout} />} />
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/login_info" element={<LoginInfoPage />} />
 

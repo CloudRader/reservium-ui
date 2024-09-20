@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import config from "./Config";
-import { useAuth } from "./hooks/useAuth";
 
 axios.defaults.withCredentials = true;
 
-function Logout() {
-    const { logout } = useAuth();
+function Logout({logout}) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
 
@@ -20,7 +18,7 @@ function Logout() {
                 // Call the client-side logout function
                 await logout();
 
-                navigate('/login_info');
+                navigate('/');
             } catch (error) {
                 console.error('Error during logout:', error);
                 setError('An error occurred during logout. Please try again.');

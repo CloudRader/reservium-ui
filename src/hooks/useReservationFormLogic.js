@@ -10,10 +10,21 @@ const fetchAdditionalServices = async (calendarId) => {
 };
 
 const useReservationFormLogic = (calendarIds, reservationTypes) => {
-    // State management
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
     const [reservationType, setReservationType] = useState('');
+
+    let { data: additionalServices = [] } = useQuery(
+        ['additionalServices', reservationType, calendarIds[reservationType]],
+        () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
+        {
+            enabled: !!reservationType && !!calendarIds[reservationType],
+            keepPreviousData: false,
+            onError: (error) => {
+                console.error('Error fetching additional services:', error);
+            }
+        }
+    );
 
     const getTomorrowDate = useCallback(() => {
         const tomorrow = new Date();
@@ -104,23 +115,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         setFormData(initialData);
     }, [formFields]);
 
-    useEffect(() => {
-        additionalServices = [];
-        setReservationType('');
-    }, [reservationTypes]);
 
-
-    let { data: additionalServices = [] } = useQuery(
-        ['additionalServices', reservationType, calendarIds[reservationType]],
-        () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
-        {
-            enabled: !!reservationType && !!calendarIds[reservationType],
-            keepPreviousData: true,
-            onError: (error) => {
-                console.error('Error fetching additional services:', error);
-            }
-        }
-    );
 
     const validateField = useCallback((field, value) => {
         if (field.validation && !field.validation(value)) {

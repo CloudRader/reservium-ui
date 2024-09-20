@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from "../Config";
 
 axios.defaults.withCredentials = true;
-async function fetchReservationData() {
+export async function fetchReservationData() {
     const response = await axios.get(`${config.serverURL}/reservation_services/`);
     const data = response.data;
 
@@ -30,12 +30,11 @@ async function fetchReservationData() {
         return acc;
     }, {});
 
-    return { services, calendars };
+    return {services, calendars};
 }
 
-export function useReservationData(isLoggedIn) {
+export function useReservationData() {
     return useQuery('reservationData', fetchReservationData, {
-        enabled: isLoggedIn,
         staleTime: Infinity, // This data doesn't change often, so we can cache it indefinitely
         cacheTime: 1000 * 60 * 60, // Cache for 1 hour
     });

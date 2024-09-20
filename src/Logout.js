@@ -2,7 +2,7 @@ import {  useEffect } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import axios from "axios";
 import config from "./Config";
-import {useAuth} from "./LoginToBackend";
+import {useAuth} from "./hooks/useAuth";
 axios.defaults.withCredentials = true;
 
 function Logout() {

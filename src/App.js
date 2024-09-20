@@ -6,7 +6,8 @@ import Header from './Header';
 import ReservationPage from "./ReservationPage";
 // import CreateNewCalendar from "./CreateNewCalendar";
 // import CreateNewMiniService from "./CreateNewMiniService";
-import {LoginToBackend, useAuth} from "./LoginToBackend";
+import {LoginToBackend} from "./LoginToBackend";
+import {useAuth} from "./hooks/useAuth";
 import Logout from "./Logout";
 import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
@@ -14,20 +15,38 @@ import LoginToIS from "./LoginToIS";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
 import axios from "axios";
+import LoginInfoPage from "./LoginInfoPage";
 
 axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const {isLoggedIn, username} = useAuth();
-    const {data, isLoading, isError} = useReservationData(isLoggedIn);
+    const { isLoggedIn, username, userRoles, logout, isLoading: isAuthLoading, isError: isAuthError, error: authError } = useAuth();
+    const { data, isLoading: isDataLoading, isError: isDataError } = useReservationData(isLoggedIn);
 
-    if (isError) {
+    // Combined loading state
+    if (isAuthLoading || (isLoggedIn && isDataLoading)) {
+        return <div>Loading...</div>;
+    }
+
+    // Auth error state
+    if (isAuthError) {
+        return <div>Authentication Error: {authError.message}</div>;
+    }
+
+    // Not logged in state
+    if (!isLoggedIn) {
+        return <LoginInfoPage />;
+    }
+
+    // Data fetch error state
+    if (isDataError) {
         return <div>Error loading data. Please try again later.</div>;
     }
 
     const {services, calendars} = data || {services: [], calendars: {}};
+
     console.log(services);
     console.log(isLoading);
     console.log(isLoggedIn);

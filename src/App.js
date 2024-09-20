@@ -16,7 +16,7 @@ import SuccessPage from "./SuccessPage";
 const queryClient = new QueryClient();
 
 function AppRoutes() {
-    const { isLoggedIn, login, logout } = useAuth();
+    const { login, logout } = useAuth();
 
     return (
         <Routes>
@@ -26,11 +26,11 @@ function AppRoutes() {
             <Route path="/success" element={<SuccessPage />} />
             <Route
                 path="/login_info"
-                element={isLoggedIn ? <Navigate to="/" replace /> : <LoginInfoPage />}
+                element={localStorage.getItem('userName') ? <Navigate to="/" replace /> : <LoginInfoPage />}
             />
             <Route
                 path="/*"
-                element={isLoggedIn ? <AppContent /> : <Navigate to="/login_info" replace />}
+                element={localStorage.getItem('userName') ? <AppContent /> : <Navigate to="/login_info" replace />}
             />
         </Routes>
     );
@@ -54,7 +54,6 @@ function AppContent() {
     const [authState, setAuthState] = useState('initial');
     const [userData, setUserData] = useState(null);
     const [servicesData, setServicesData] = useState(null);
-    const { logout } = useAuth();
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -63,6 +62,7 @@ function AppContent() {
                 const response = await axios.get(`${config.serverURL}/users/me`);
                 setUserData(response.data);
                 setAuthState('authenticated');
+                localStorage.setItem('userName', response.data.username);
                 await fetchServicesData();
             } catch (error) {
                 console.error('Authentication error:', error);

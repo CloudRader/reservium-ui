@@ -1,6 +1,5 @@
 import {  useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
 
 /*
  * This component is get params from url and send it to backend.

@@ -47,9 +47,6 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-    console.log(services);
-    console.log(isLoading);
-    console.log(isLoggedIn);
 
     return (
         <>

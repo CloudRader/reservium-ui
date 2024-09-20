@@ -52,7 +52,7 @@ export const useAuth = () => {
         setUsername(null);
         localStorage.removeItem('userName');
         queryClient.removeQueries('userAuth');
-        navigate('/');
+        navigate('/'); // logininfo TODO
     }, [navigate, queryClient]);
 
     const isLoggedIn = !!username && !!userInfo;

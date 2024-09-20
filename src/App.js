@@ -71,7 +71,7 @@ function AppContent() {
 
         const fetchServicesData = async () => {
             try {
-                const data = fetchReservationData();
+                const data = await fetchReservationData();
                 setServicesData(data);
             } catch (error) {
                 console.error('Error fetching services:', error);

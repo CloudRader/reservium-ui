@@ -14,18 +14,6 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
     const [errors, setErrors] = useState({});
     const [reservationType, setReservationType] = useState('');
 
-    let { data: additionalServices = [] } = useQuery(
-        ['additionalServices', reservationType, calendarIds[reservationType]],
-        () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
-        {
-            enabled: !!reservationType && !!calendarIds[reservationType],
-            keepPreviousData: false,
-            onError: (error) => {
-                console.error('Error fetching additional services:', error);
-            }
-        }
-    );
-
     const getTomorrowDate = useCallback(() => {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -115,7 +103,17 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         setFormData(initialData);
     }, [formFields]);
 
-
+    let { data: additionalServices = [] } = useQuery(
+        ['additionalServices', reservationType, calendarIds[reservationType]],
+        () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
+        {
+            enabled: !!reservationType && !!calendarIds[reservationType],
+            keepPreviousData: false,
+            onError: (error) => {
+                console.error('Error fetching additional services:', error);
+            }
+        }
+    );
 
     const validateField = useCallback((field, value) => {
         if (field.validation && !field.validation(value)) {
@@ -123,6 +121,13 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         }
         return null;
     }, []);
+
+    useEffect(() => {
+        setFormData(prevData => ({
+            ...prevData,
+            additionalServices: []
+        }));
+    }, [reservationType]);
 
     const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;

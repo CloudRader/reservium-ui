@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import {  useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import config from "../Config";
@@ -10,10 +10,10 @@ const sendCodeToServer = async (code, state) => {
     return response.data.username;
 };
 
-const getUserInfo = async () => {
-    const response = await axios.get(`${config.serverURL}/users/me`);
-    return response.data;
-};
+// const getUserInfo = async () => {
+//     const response = await axios.get(`${config.serverURL}/users/me`);
+//     return response.data;
+// };
 
 export const useAuth = () => {
     const [username, setUsername] = useState(localStorage.getItem('userName') || null);
@@ -22,7 +22,11 @@ export const useAuth = () => {
 
     const { data: userInfo, isLoading, isError, error } = useQuery(
         'userAuth',
-        getUserInfo,
+        async () => {
+            if (!username) return null;
+            const response = await axios.get(`${config.serverURL}/users/me`);
+            return response.data;
+        },
         {
             enabled: !!username,
             staleTime: 20 * 60 * 1000, // 20 minutes
@@ -30,7 +34,6 @@ export const useAuth = () => {
             onError: () => {
                 setUsername(null);
                 localStorage.removeItem('userName');
-                navigate('/');
             }
         }
     );
@@ -50,22 +53,32 @@ export const useAuth = () => {
 
     const logout = useCallback(async () => {
         try {
-            // Clear local state and storage
+            await axios.get(`${config.serverURL}/users/logout`);
+        } catch (error) {
+            console.error('Error during server logout:', error);
+        } finally {
             setUsername(null);
             localStorage.removeItem('userName');
-            queryClient.removeQueries('userAuth');
-            queryClient.clear(); // Clear all queries
-        } catch (error) {
-            console.error('Error during client-side logout:', error);
-            throw error; // Propagate the error
+            queryClient.clear();
+            navigate('/');
         }
-    }, [queryClient]);
+    }, [navigate, queryClient]);
+
 
     const isLoggedIn = !!username && !!userInfo;
+
+    useEffect(() => {
+        if (!isLoggedIn && username) {
+            logout();
+        }
+    }, [isLoggedIn, username, logout]);
+
     const userRoles = userInfo ? {
         active_member: userInfo.active_member,
         section_head: userInfo.section_head
     } : { active_member: false, section_head: false };
+
+
 
     return { isLoggedIn, username, userRoles, login, logout, isLoading, isError, error };
 };

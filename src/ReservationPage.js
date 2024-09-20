@@ -63,15 +63,15 @@ const ReservationPage = ({isLoggedIn, roomCalendarLinks, service}) => {
         if (isMobile && errorMessage.general) setIsModalOpen(true);
     }, [isMobile]);
 
-    if (!isLoggedIn) {
-        return <LoginInfoPage/>;
-    }
-    else if(errorMessages.auth) {
-        return <Logout/>;
-    }
-    else if(!service) {
-        return <PulsatingLoader/>;
-    }
+    // if (!isLoggedIn) {
+    //     return <LoginInfoPage/>;
+    // }
+    // else if(errorMessages.auth) {
+    //     return <Logout/>;
+    // // }
+    // else if(!service) {
+    //     return <PulsatingLoader/>;
+    // }
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

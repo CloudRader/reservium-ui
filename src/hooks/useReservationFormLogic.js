@@ -105,11 +105,11 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
     }, [formFields]);
 
     useEffect(() => {
-        setReservationType("")
+        additionalServices = [];
     }, [reservationTypes]);
 
 
-    const { data: additionalServices = [] } = useQuery(
+    let { data: additionalServices = [] } = useQuery(
         ['additionalServices', reservationType, calendarIds[reservationType]],
         () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
         {

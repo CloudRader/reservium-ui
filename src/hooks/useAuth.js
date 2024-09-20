@@ -48,12 +48,18 @@ export const useAuth = () => {
         }
     }, [navigate, queryClient]);
 
-    const logout = useCallback(() => {
-        setUsername(null);
-        localStorage.removeItem('userName');
-        queryClient.removeQueries('userAuth');
-        navigate('/'); // logininfo TODO
-    }, [navigate, queryClient]);
+    const logout = useCallback(async () => {
+        try {
+            // Clear local state and storage
+            setUsername(null);
+            localStorage.removeItem('userName');
+            queryClient.removeQueries('userAuth');
+            queryClient.clear(); // Clear all queries
+        } catch (error) {
+            console.error('Error during client-side logout:', error);
+            throw error; // Propagate the error
+        }
+    }, [queryClient]);
 
     const isLoggedIn = !!username && !!userInfo;
     const userRoles = userInfo ? {

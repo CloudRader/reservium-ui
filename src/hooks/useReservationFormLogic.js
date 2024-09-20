@@ -106,6 +106,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
 
     useEffect(() => {
         additionalServices = [];
+        setReservationType('');
     }, [reservationTypes]);
 
 

@@ -5,7 +5,7 @@ import config from "../Config";
 axios.defaults.withCredentials = true;
 
 
-export const useAuth = () => {
+export const useAuth = (clientStatus) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
     const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
@@ -49,7 +49,9 @@ export const useAuth = () => {
                         active_member: userInfo.active_member,
                         section_head: userInfo.section_head
                     });
+                    clientStatus = "authorized";
                 } catch (error) {
+                    clientStatus = "unauthorized";
                     console.error('Error verifying authentication:', error);
                     logout();
                 }

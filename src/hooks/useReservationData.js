@@ -33,8 +33,9 @@ export async function fetchReservationData() {
     return {services, calendars};
 }
 
-export function useReservationData() {
+export function useReservationData(isLoggedIn) {
     return useQuery('reservationData', fetchReservationData, {
+        enabled: isLoggedIn, // Only run the query if isLoggedIn is true
         staleTime: Infinity, // This data doesn't change often, so we can cache it indefinitely
         cacheTime: 1000 * 60 * 60, // Cache for 1 hour
     });

@@ -64,7 +64,6 @@ const ReservationPage = ({isLoading, isLoggedIn, onLogout, roomCalendarLinks, se
     }, [isMobile]);
 
 
-
     if (!isLoggedIn) {
         return <LoginInfoPage />;
     }

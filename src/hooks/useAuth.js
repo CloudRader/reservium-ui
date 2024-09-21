@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import config from "./Config";
+import config from "../Config";
 axios.defaults.withCredentials = true;
 
 
-const useAuth = () => {
+export const useAuth = (clientStatus, setClientStatus) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
     const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
@@ -25,6 +25,7 @@ const useAuth = () => {
             navigate('/club'); // redirect here
         } catch (error) {
             console.error('Error during login:', error);
+            setClientStatus("unauthorized");
             navigate('/');
         }
     }, [navigate]);
@@ -49,19 +50,21 @@ const useAuth = () => {
                         active_member: userInfo.active_member,
                         section_head: userInfo.section_head
                     });
+                    setClientStatus("authorized");
                 } catch (error) {
+                    setClientStatus("unauthorized");
                     console.error('Error verifying authentication:', error);
                     logout();
                 }
+            }else {
+                setClientStatus("unauthorized");
             }
         };
         checkAuth();
-    }, [logout]);
+    }, [logout, clientStatus]);
 
     return { isLoggedIn, username, userRoles, login, logout };
 };
-
-
 
 const sendCodeToServer = async (code, state) => {
     const response = await axios.get(`${config.serverURL}/users/callback`, {
@@ -74,24 +77,3 @@ const getUserInfo = async () => {
     const response = await axios.get(`${config.serverURL}/users/me`);
     return response.data;
 };
-
-const Login = () => {
-    const location = useLocation();
-    const { login } = useAuth();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const code = params.get('code');
-        const state = params.get('state');
-        if (code) {
-            login(code, state);
-        } else {
-            console.error('Did not get params from IS:');
-        }
-    }, [location, login, navigate]);
-
-    return null;
-};
-
-export { useAuth, Login };

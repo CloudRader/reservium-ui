@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import bubenLogo from "./assets/buben_logo.svg";
 
-const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
+const Header = ({username, isLoggedIn, services}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
 
     const toggleMenu = () => {
@@ -20,20 +20,18 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                         </NavLink>
                         <div className="hidden sm:flex space-x-9 flex-grow justify-end">
                             {services.map((item) => (
-                                (item.public || userRoles.active_member) ? (
-                                    <NavLink
-                                        key={item.linkName}
-                                        to={item.linkName}
-                                        className={({isActive}) =>
-                                            `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
-                                                isActive
-                                                    ? 'border-green-600 text-green-900'
-                                                    : 'border-transparent hover:border-green-300 hover:text-green-600'
-                                            }`
-                                        }>
-                                        {item.serviceName}
-                                    </NavLink>
-                                ) : null
+                                <NavLink
+                                    key={item.linkName}
+                                    to={item.linkName}
+                                    className={({isActive}) =>
+                                        `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
+                                            isActive
+                                                ? 'border-green-600 text-green-900'
+                                                : 'border-transparent hover:border-green-300 hover:text-green-600'
+                                        }`
+                                    }>
+                                    {item.serviceName}
+                                </NavLink>
                             ))}
                         </div>
                     </div>
@@ -42,15 +40,15 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm font-medium text-green-700">{username}</span>
                                 <NavLink
+                                    to={'/logout'}
                                     className="no-underline inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                    to="/logout"
                                 >
                                     Log out
                                 </NavLink>
                             </div>
                         ) : (
                             <NavLink
-                                to="/login"
+                                to={'/login'}
                                 className="no-underline text-white inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Log in
@@ -89,45 +87,40 @@ const Header = ({username, userRoles, isLoggedIn, onLogout, services}) => {
                     <div className="sm:hidden">
                         <div className="pt-2 pb-3 space-y-1">
                             {services.map((item) => (
-                                (item.public || userRoles.active_member) ? (
-                                    <NavLink
-                                        key={item.linkName}
-                                        to={item.linkName}
-                                        className={({isActive}) =>
-                                            `inline-flex text-green-800 items-center h-11 border-b-2 text-sm font-medium no-underline ${
-                                                isActive
-                                                    ? 'border-green-600 text-green-900'
-                                                    : 'border-transparent hover:border-green-300 hover:text-green-600'
-                                            }`
-                                        }>
-                                        {item.serviceName}
-                                    </NavLink>
-                                ) : null
+                                <NavLink
+                                    key={item.linkName}
+                                    to={item.linkName}
+                                    className={({isActive}) =>
+                                        `block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                                            isActive
+                                                ? 'border-green-600 text-green-900 bg-green-50'
+                                                : 'border-transparent text-green-700 hover:border-green-300 hover:bg-green-50 hover:text-green-800'
+                                        }`
+                                    }>
+                                    {item.serviceName}
+                                </NavLink>
                             ))}
                         </div>
                         <div className="border-t border-green-200 pt-4 pb-3">
                             {isLoggedIn ? (
                                 <div className="flex items-center px-5 space-x-4">
-                                    <span className="text-sm font-medium text-green-700">{username}</span>
-                                    <button
-                                        onClick={onLogout}
-                                        className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                    >
+                                    <span className="font-medium text-green-700">{username}</span>
+                                    <NavLink
+                                        to={'/logout'}
+                                        className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                         Log out
-                                    </button>
+                                    </NavLink>
                                 </div>
                             ) : (
                                 <NavLink
                                     to="/login"
-                                    className="block w-full text-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                >
+                                    className="block w-full text-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-green-600 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     Log in
                                 </NavLink>
                             )}
                         </div>
                     </div>
-                )
-                }
+                )}
             </div>
         </header>
     )

@@ -4,17 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import config from "./Config";
 axios.defaults.withCredentials = true;
 
-const LoginHandler = () => {
+/**
+ * Gets the login URL from the server and redirects the user to it.
+ */
+const LoginToIS = () => {
     const navigate = useNavigate();
-    const loginUrl = `${config.serverURL}/users/login`;
 
     useEffect(() => {
         const fetchLoginUrl = async () => {
             try {
-                const response = await axios.get(loginUrl);
-                if (response.data) {
-                    window.location.href = response.data;
-                }
+                const response = await axios.get(`${config.serverURL}/users/login`);
+                window.location.href = response?.data;
             } catch (error) {
                 alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);
@@ -22,8 +22,8 @@ const LoginHandler = () => {
             }
         };
         fetchLoginUrl();
-    }, [loginUrl, navigate]);
+    }, [navigate]);
 
 };
 
-export default LoginHandler;
+export default LoginToIS;

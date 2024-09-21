@@ -1,88 +1,90 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from 'react-query';
-
 import Header from './Header';
 import ReservationPage from "./ReservationPage";
 // import CreateNewCalendar from "./CreateNewCalendar";
 // import CreateNewMiniService from "./CreateNewMiniService";
-import {Login, useAuth} from "./Login";
+import {LoginToBackend} from "./LoginToBackend";
 import Logout from "./Logout";
 import Footer from "./Footer";
 import NotFoundPage from "./NotFoundPage";
-import LoginHandler from "./LoginHandler";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
 import PulsatingLoader from "./Components/PulsatingLoader";
 import axios from "axios";
+import LoginToIS from "./LoginToIS";
+import {useAuth} from './hooks/useAuth';
+
 axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const {isLoggedIn, username, userRoles, logout} = useAuth();
+    const [clientStatus, setClientStatus] = useState("waitForAuthorize");
+    const {isLoggedIn, username, userRoles, logout} = useAuth(clientStatus,setClientStatus);
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    const {services, calendars} = data || {services: [], calendars: {}};
 
-    if (isLoading && !isLoggedIn) {
-        return <PulsatingLoader />;
+    if(clientStatus === "waitForAuthorize" || isLoading) {
+        return <PulsatingLoader/>;
     }
+
+    const {services, calendars} = data || {services: [], calendars: {}};
 
     return (
         <>
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles}
                     onLogout={logout}
                     services={services}/>
-                <Routes>
-                    {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
-                    <Route path='/login' element={<LoginHandler/>}/>
-                    {/* send it to back-end for session get data from back and make components*/}
-                    <Route path='/logined' element={<Login/>}/>
-                    {/*then go here as default page*/}
-                    <Route key='/' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
-                                                                      roomCalendarLinks={calendars["club"]}
-                                                                      service={services[0]}/>}/>
+            <Routes>
+                {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
+                <Route path='/login' element={<LoginToIS/>}/>
+                {/* send it to back-end for session get data from back and make components*/}
+                <Route path='/logined' element={<LoginToBackend/>}/>
+                {/*then go here as default page*/}
+                <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
+                                                                    isLoggedIn={isLoggedIn} onLogout={logout}
+                                                                  roomCalendarLinks={calendars["club"]}
+                                                                  service={services[0]}/>}/>
+                {services.map(service => (
+                    <Route
+                        key={service.linkName}
+                        path={`/${service.linkName}`}
+                        element={<ReservationPage
+                            isLoading={isLoading}
+                            isLoggedIn={isLoggedIn}
+                            onLogout={logout}
+                            roomCalendarLinks={calendars[service.linkName]}
+                            service={service}
+                        />}
+                    />
+                ))}
 
-                    {services.map(service => (
-                        <Route
-                            key={service.linkName}
-                            path={`/${service.linkName}`}
-                            element={
-                                <ReservationPage
-                                    isLoggedIn={isLoggedIn}
-                                    onLogout={logout}
-                                    roomCalendarLinks={calendars[service.linkName]}
-                                    service={service}
-                                />
-                            }
-                        />
-                    ))}
+                <Route path='/logout' element={<Logout onLogout={logout}/>}/>
+                <Route path="*" element={<NotFoundPage/>}/>
 
-                    <Route path='/logout' element={<Logout onLogout={logout}/>}/>
-                    <Route path="*" element={<NotFoundPage/>}/>
+                <Route path="/success" element={<SuccessPage/>}/>
 
-                    <Route path="/success" element={<SuccessPage/>}/>
+                {/*<Route path='/' element={<HomePage />} />*/}
 
-                    {/*<Route path='/' element={<HomePage />} />*/}
-
-                    {/*{userRoles.includes("manager") && (*/}
-                    {/*    <>*/}
-                    {/*        <Route*/}
-                    {/*            path='/create-new-calendar'*/}
-                    {/*            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}*/}
-                    {/*        />*/}
-                    {/*        <Route*/}
-                    {/*            path='/create-new-miniservice'*/}
-                    {/*            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}*/}
-                    {/*        />*/}
-                    {/*    </>*/}
-                    {/*)}*/}
-                </Routes>
+                {/*{userRoles.includes("manager") && (*/}
+                {/*    <>*/}
+                {/*        <Route*/}
+                {/*            path='/create-new-calendar'*/}
+                {/*            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}*/}
+                {/*        />*/}
+                {/*        <Route*/}
+                {/*            path='/create-new-miniservice'*/}
+                {/*            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}*/}
+                {/*        />*/}
+                {/*    </>*/}
+                {/*)}*/}
+            </Routes>
             <Footer/>
         </>
     );
@@ -91,8 +93,9 @@ function AppContent() {
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <AppContent />
+            <AppContent/>
         </QueryClientProvider>
     );
 }
+
 export default App;

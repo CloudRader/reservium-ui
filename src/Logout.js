@@ -24,3 +24,4 @@ function Logout({ onLogout }) {
 }
 
 export default Logout;
+

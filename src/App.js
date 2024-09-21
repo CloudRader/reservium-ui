@@ -22,7 +22,7 @@ const queryClient = new QueryClient();
 
 function AppContent() {
     const [clientStatus, setClientStatus] = useState("waitForAuthorize");
-    const {isLoggedIn, username, userRoles, logout} = useAuth(setClientStatus);
+    const {isLoggedIn, username, userRoles, logout} = useAuth(clientStatus,setClientStatus);
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {

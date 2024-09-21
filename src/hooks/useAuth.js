@@ -5,7 +5,7 @@ import config from "../Config";
 axios.defaults.withCredentials = true;
 
 
-export const useAuth = (setClientStatus) => {
+export const useAuth = (clientStatus, setClientStatus) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
     const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
@@ -22,9 +22,11 @@ export const useAuth = (setClientStatus) => {
                 section_head: userInfo.section_head
             });
             localStorage.setItem('userName', username);
+            setClientStatus("authorized");
             navigate('/club'); // redirect here
         } catch (error) {
             console.error('Error during login:', error);
+            setClientStatus("unauthorized");
             navigate('/');
         }
     }, [navigate]);
@@ -34,6 +36,7 @@ export const useAuth = (setClientStatus) => {
         setUsername(null);
         setUserRoles({ active_member: false, section_head: false });
         localStorage.removeItem('userName');
+        setClientStatus("unauthorized");
         navigate('/');
     }, [navigate]);
 
@@ -58,7 +61,7 @@ export const useAuth = (setClientStatus) => {
             }
         };
         checkAuth();
-    }, [logout]);
+    }, [logout, clientStatus]);
 
     return { isLoggedIn, username, userRoles, login, logout };
 };

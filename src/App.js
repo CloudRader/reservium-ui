@@ -30,9 +30,9 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-    // if (isLoading && !isLoggedIn) {
-    //     return <PulsatingLoader/>;
-    // }
+    if (isLoading && !isLoggedIn) {
+        return <PulsatingLoader/>;
+    }
 
     return (
         <>

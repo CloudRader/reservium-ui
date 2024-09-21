@@ -30,9 +30,6 @@ function AppContent() {
 
     const {services, calendars} = data || {services: [], calendars: {}};
 
-    if (isLoading && !isLoggedIn) {
-        return <PulsatingLoader/>;
-    }
 
     return (
         <>
@@ -45,7 +42,8 @@ function AppContent() {
                 {/* send it to back-end for session get data from back and make components*/}
                 <Route path='/logined' element={<LoginToBackend/>}/>
                 {/*then go here as default page*/}
-                <Route key='/' path='/' element={<ReservationPage isLoggedIn={isLoggedIn} onLogout={logout}
+                <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
+                                                                    isLoggedIn={isLoggedIn} onLogout={logout}
                                                                   roomCalendarLinks={calendars["club"]}
                                                                   service={services[0]}/>}/>
                 {services.map(service => (
@@ -53,6 +51,7 @@ function AppContent() {
                         key={service.linkName}
                         path={`/${service.linkName}`}
                         element={<ReservationPage
+                            isLoading={isLoading}
                             isLoggedIn={isLoggedIn}
                             onLogout={logout}
                             roomCalendarLinks={calendars[service.linkName]}

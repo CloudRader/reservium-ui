@@ -13,7 +13,7 @@ import PulsatingLoader from "./Components/PulsatingLoader";
 
 axios.defaults.withCredentials = true;
 
-const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
+const ReservationPage = ({isLoading, isLoggedIn, onLogout, roomCalendarLinks, service}) => {
     const [errorMessages, setErrorMessages] = useState({});
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,9 +73,9 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
         return <Logout onLogout={onLogout} />;
     }
 
-    // if(!service) {
-    //     return <PulsatingLoader/>;
-    // }
+    if(isLoading) {
+        return <PulsatingLoader/>;
+    }
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

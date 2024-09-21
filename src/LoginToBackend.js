@@ -1,11 +1,15 @@
-import {  useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
+import {useAuth} from './hooks/useAuth';
 
 /*
  * This component is get params from url and send it to backend.
  */
-const LoginToBackend = ({ login }) => {
+
+export const LoginToBackend = () => {
     const location = useLocation();
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -16,9 +20,7 @@ const LoginToBackend = ({ login }) => {
         } else {
             console.error('Did not get params from IS:');
         }
-    }, [location, login]);
+    }, [location, login, navigate]);
 
     return null;
 };
-
-export {  LoginToBackend };

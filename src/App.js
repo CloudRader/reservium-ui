@@ -28,8 +28,11 @@ function AppContent() {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    const {services, calendars} = data || {services: [], calendars: {}};
+    if(isLoading) {
+        return <PulsatingLoader/>;
+    }
 
+    const {services, calendars} = data || {services: [], calendars: {}};
 
     return (
         <>

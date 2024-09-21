@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Header from './Header';
@@ -21,8 +21,8 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    let clientStatus = "waitForAuthorize";
-    const {isLoggedIn, username, userRoles, logout} = useAuth(clientStatus);
+    const [clientStatus, setClientStatus] = useState("waitForAuthorize");
+    const {isLoggedIn, username, userRoles, logout} = useAuth(setClientStatus);
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {

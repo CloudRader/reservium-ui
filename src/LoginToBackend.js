@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useAuth} from './hooks/useAuth';
 
 /*
  * This component is get params from url and send it to backend.
  */
 
-export const LoginToBackend = () => {
+export const LoginToBackend = ({login}) => {
     const location = useLocation();
-    const { login } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {

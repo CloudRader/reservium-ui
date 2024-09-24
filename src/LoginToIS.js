@@ -15,13 +15,13 @@ const LoginToIS = () => {
             try {
                 axios.defaults.withCredentials = true;
                 const response = await axios.get(`${config.serverURL}/users/login`, { cache: 'no-store' });
-
+                alert('Error fetching login URL:' + error);
                 window.location.href = response.data;
 
             } catch (error) {
-                alert('Error fetching login URL:' + error);
+                // alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);
-                setTimeout(() => navigate('/'), 5000);
+                setTimeout(() => navigate('/'), 10);
             }
         };
         fetchLoginUrl();

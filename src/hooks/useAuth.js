@@ -1,15 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useState, useEffect, useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import config from "../Config";
+
 axios.defaults.withCredentials = true;
 
 
-export const useAuth = (clientStatus, setClientStatus) => {
+export const useAuth = () => {
     const [authState, setAuthState] = useState('initializing'); // 'initializing', 'checking', 'authenticated', 'unauthenticated'
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
-    const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
+    const [userRoles, setUserRoles] = useState({active_member: false, section_head: false});
     const navigate = useNavigate();
 
     const login = useCallback(async (code, state) => {
@@ -28,7 +29,6 @@ export const useAuth = (clientStatus, setClientStatus) => {
             navigate('/club'); // redirect here
         } catch (error) {
             console.error('Error during login:', error);
-            setClientStatus("unauthorized");
             setAuthState('unauthenticated');
             navigate('/');
         }
@@ -37,11 +37,11 @@ export const useAuth = (clientStatus, setClientStatus) => {
     const logout = useCallback(() => {
         setIsLoggedIn(false);
         setUsername(null);
-        setUserRoles({ active_member: false, section_head: false });
+        setUserRoles({active_member: false, section_head: false});
         setAuthState('unauthenticated');
         localStorage.removeItem('userName');
-        navigate('/');
-    }, [navigate]);
+        // navigate('/');
+    }, []);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -56,29 +56,25 @@ export const useAuth = (clientStatus, setClientStatus) => {
                         active_member: userInfo.active_member,
                         section_head: userInfo.section_head
                     });
-                    setClientStatus("authorized");
                     setAuthState('authenticated');
                 } catch (error) {
-                    setClientStatus("unauthorized");
                     setAuthState('unauthorized');
                     console.error('Error verifying authentication:', error);
                     logout();
                 }
-            }
-            else {
-                setClientStatus("unauthorized");
+            } else {
                 setAuthState('unauthenticated');
             }
         };
         checkAuth();
-    }, [logout, clientStatus]);
+    }, [logout]);
 
-    return {login, isLoggedIn, username, userRoles,  logout };
+    return {login, isLoggedIn, username, userRoles, logout, authState};
 };
 
 const sendCodeToServer = async (code, state) => {
     const response = await axios.get(`${config.serverURL}/users/callback`, {
-        params: { code, state }
+        params: {code, state}
     });
     return response.data.username;
 };

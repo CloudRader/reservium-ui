@@ -29,7 +29,7 @@ function AppContent() {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    if (authState === 'initializing' || authState === 'checking' || isLoading) {
+    if (authState === undefined || authState === 'initializing' || authState === 'checking' || isLoading) {
         return <PulsatingLoader />;
     }
 

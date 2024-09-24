@@ -21,17 +21,16 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const [clientStatus, setClientStatus] = useState("waitForAuthorize");
-    const {isLoggedIn, username, userRoles, logout} = useAuth(clientStatus,setClientStatus);
+    // const [clientStatus, setClientStatus] = useState("waitForAuthorize");
+    const {isLoggedIn, username, userRoles, logout, authState} = useAuth(clientStatus,setClientStatus);
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-
-    if(clientStatus === "waitForAuthorize" || isLoading) {
-        return <PulsatingLoader/>;
+    if (authState === 'initializing' || authState === 'checking' || dataLoading) {
+        return <PulsatingLoader />;
     }
 
     const {services, calendars} = data || {services: [], calendars: {}};
@@ -45,12 +44,9 @@ function AppContent() {
                 {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
                 <Route path='/login' element={<LoginToIS/>}/>
                 {/* send it to back-end for session get data from back and make components*/}
-                <Route path='/logined' element={<LoginToBackend/>}/>
+                <Route path='/logined' element={<LoginToBackend login={login}/>}/>
                 {/*then go here as default page*/}
-                <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
-                                                                    isLoggedIn={isLoggedIn} onLogout={logout}
-                                                                  roomCalendarLinks={calendars["club"]}
-                                                                  service={services[0]}/>}/>
+
                 {services.map(service => (
                     <Route
                         key={service.linkName}
@@ -64,6 +60,11 @@ function AppContent() {
                         />}
                     />
                 ))}
+
+                <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
+                                                                  isLoggedIn={isLoggedIn} onLogout={logout}
+                                                                  roomCalendarLinks={calendars["club"]}
+                                                                  service={services[0]}/>}/>
 
                 <Route path='/logout' element={<Logout onLogout={logout}/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>

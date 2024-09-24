@@ -4,6 +4,17 @@ import axios from 'axios';
 import config from "../Config";
 
 axios.defaults.withCredentials = true;
+const sendCodeToServer = async (code, state) => {
+    const response = await axios.get(`${config.serverURL}/users/callback`, {
+        params: {code, state}
+    });
+    return response.data.username;
+};
+
+const getUserInfo = async () => {
+    const response = await axios.get(`${config.serverURL}/users/me`);
+    return response.data;
+};
 
 
 export const useAuth = () => {
@@ -70,16 +81,4 @@ export const useAuth = () => {
     }, [logout]);
 
     return {login, isLoggedIn, username, userRoles, logout, authState};
-};
-
-const sendCodeToServer = async (code, state) => {
-    const response = await axios.get(`${config.serverURL}/users/callback`, {
-        params: {code, state}
-    });
-    return response.data.username;
-};
-
-const getUserInfo = async () => {
-    const response = await axios.get(`${config.serverURL}/users/me`);
-    return response.data;
 };

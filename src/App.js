@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Header from './Header';
@@ -21,15 +21,14 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const [clientStatus, setClientStatus] = useState("waitForAuthorize");
-    const {login, isLoggedIn, username, userRoles, logout, authState} = useAuth(clientStatus,setClientStatus);
+    const {login, isLoggedIn, username, userRoles, logout, authState} = useAuth();
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    if (authState === undefined || authState === 'initializing' || authState === 'checking' || isLoading) {
+    if (authState === 'initializing' || authState === 'checking' || isLoading) {
         return <PulsatingLoader />;
     }
 

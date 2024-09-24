@@ -10,18 +10,18 @@ axios.defaults.withCredentials = true;
 const LoginToIS = () => {
     const navigate = useNavigate();
 
-    useEffect(() => {
+    useEffect(async () => {
         const fetchLoginUrl = async () => {
             try {
                 const response = await axios.get(`${config.serverURL}/users/login`);
-                window.location.href = response?.data;
+                window.location.href = response.data;
             } catch (error) {
                 // alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);
                 // navigate('/');
             }
         };
-        fetchLoginUrl();
+        await fetchLoginUrl();
     }, [navigate]);
 
 };

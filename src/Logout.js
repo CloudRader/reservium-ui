@@ -2,6 +2,7 @@ import {  useEffect } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import axios from "axios";
 import config from "./Config";
+import LoginInfoPage from "./LoginInfoPage";
 axios.defaults.withCredentials = true;
 
 function Logout({ onLogout }) {
@@ -20,7 +21,7 @@ function Logout({ onLogout }) {
         onLogout();
     }, [onLogout, navigate]);
 
-    return null;
+    return <LoginInfoPage />;
 }
 
 export default Logout;

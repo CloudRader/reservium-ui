@@ -21,15 +21,15 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    // const [clientStatus, setClientStatus] = useState("waitForAuthorize");
-    const {isLoggedIn, username, userRoles, logout, authState} = useAuth(clientStatus,setClientStatus);
+    const [clientStatus, setClientStatus] = useState("waitForAuthorize");
+    const {login, isLoggedIn, username, userRoles, logout, authState} = useAuth(clientStatus,setClientStatus);
     const {data, isLoading, isError} = useReservationData(isLoggedIn);
 
     if (isError) {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    if (authState === 'initializing' || authState === 'checking' || dataLoading) {
+    if (authState === 'initializing' || authState === 'checking' || isLoading) {
         return <PulsatingLoader />;
     }
 

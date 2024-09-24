@@ -73,7 +73,7 @@ export const useAuth = (clientStatus, setClientStatus) => {
         checkAuth();
     }, [logout, clientStatus]);
 
-    return { isLoggedIn, username, userRoles, login, logout };
+    return {login, isLoggedIn, username, userRoles,  logout };
 };
 
 const sendCodeToServer = async (code, state) => {

@@ -14,7 +14,22 @@ const LoginToIS = () => {
         const fetchLoginUrl = async () => {
             try {
                 const response = await axios.get(`${config.serverURL}/users/login`);
-                window.location.href = response.data;
+                const loginUrl = response.data;
+
+                const loginWindow = window.open(loginUrl, '_blank', 'noopener,noreferrer');
+
+                if (loginWindow) {
+                    // // Poll to check if the login window is closed
+                    // const checkWindowClosed = setInterval(() => {
+                    //     if (loginWindow.closed) {
+                    //         clearInterval(checkWindowClosed);
+                    //         navigate('/logined');
+                    //     }
+                    // }, 1000);
+                } else {
+                    // If window.open fails, fall back to redirection
+                    window.location.href = loginUrl;
+                }
             } catch (error) {
                 // alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);

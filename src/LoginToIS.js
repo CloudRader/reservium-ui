@@ -10,14 +10,12 @@ import config from "./Config";
 const LoginToIS = () => {
     const navigate = useNavigate();
 
-    useEffect( () => {
+    useEffect(() => {
         const fetchLoginUrl = async () => {
             try {
                 axios.defaults.withCredentials = true;
-                const response = await axios.get(`${config.serverURL}/users/login`, { cache: 'no-store' });
-                alert('Error fetching login URL:' + error);
+                const response = await axios.get(`${config.serverURL}/users/login`, {cache: 'no-store'});
                 window.location.href = response.data;
-
             } catch (error) {
                 // alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);

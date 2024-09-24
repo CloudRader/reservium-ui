@@ -16,7 +16,7 @@ const LoginToIS = () => {
                 const response = await axios.get(`${config.serverURL}/users/login`);
                 window.location.href = response?.data;
             } catch (error) {
-                alert('Error fetching login URL:' + error);
+                // alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);
                 // navigate('/');
             }

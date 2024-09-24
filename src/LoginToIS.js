@@ -10,7 +10,7 @@ import config from "./Config";
 const LoginToIS = () => {
     const navigate = useNavigate();
 
-    useEffect(async () => {
+    useEffect( () => {
         const fetchLoginUrl = async () => {
             try {
                 axios.defaults.withCredentials = true;

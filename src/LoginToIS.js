@@ -18,9 +18,9 @@ const LoginToIS = () => {
                 window.location.href = response.data;
 
             } catch (error) {
-                // alert('Error fetching login URL:' + error);
+                alert('Error fetching login URL:' + error);
                 console.error('Error fetching login URL:', error);
-                navigate('/');
+                setTimeout(() => navigate('/club'), 1000);
             }
         };
         await fetchLoginUrl();

@@ -72,7 +72,6 @@ const ReservationPage = ({isLoading, isLoggedIn, onLogout, roomCalendarLinks, se
         return <Logout onLogout={onLogout} />;
     }
 
-
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <WarningMessage contactMail={service?.contact_mail} wikiLink={service?.wikiLink}/>
@@ -92,11 +91,12 @@ const ReservationPage = ({isLoading, isLoggedIn, onLogout, roomCalendarLinks, se
                 </div>
             </div>
             {mutation.isLoading && <PulsatingLoader/>}
-            <ErrorMobileModal
-                isOpen={isModalOpen}
+            { isModalOpen ?
+                <ErrorMobileModal
                 onClose={() => setIsModalOpen(false)}
-                message={errorMessages.general}
-            />
+                message={errorMessages.general}/>
+            : null
+            }
         </div>
     );
 };

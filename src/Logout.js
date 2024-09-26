@@ -1,7 +1,7 @@
 import {  useEffect } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import axios from "axios";
-import config from "./Config";
+import config from "./Constants";
 import LoginInfoPage from "./LoginInfoPage";
 axios.defaults.withCredentials = true;
 

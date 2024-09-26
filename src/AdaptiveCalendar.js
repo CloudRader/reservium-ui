@@ -7,7 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import config from "./Config";
+import config from "./Constants";
 import styles from "./styles/AdaptiveCalendar.module.css";
 
 const SMALL_SCREEN_BREAKPOINT = 768;
@@ -91,11 +91,11 @@ function AdaptiveCalendar({ googleCalendars }) {
         },
     };
 
+
     return (
         <div className={`${styles['calendar-container']} ${isSmallScreen ? styles['mobile'] : ''}`}>
             <FullCalendar {...(isSmallScreen ? mobileCalendarProps : desktopCalendarProps)} />
-        </div>
-    );
+        </div> );
 }
 
 function formatDateTime(date) {

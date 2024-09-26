@@ -1,90 +1,15 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
+import useReservationFormLogic from './hooks/useReservationFormLogic';
 
-const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservationTypeChange, isSubmitting}) => {
-    const [formData, setFormData] = useState({});
-    const [errors, setErrors] = useState({});
-
-    useEffect(() => {
-        // Initialize formData with default values
-        const initialData = formFields.reduce((acc, field) => {
-            if (field.defaultValue !== undefined) {
-                acc[field.name] = field.defaultValue;
-            }
-            return acc;
-        }, {});
-        setFormData(initialData);
-    }, [formFields]);
-
-
-    const validateField = useCallback((field, value) => {
-        if (field.validation && !field.validation(value)) {
-            return `Invalid value for ${field.labelText}`;
-        }
-        return null;
-    }, []);
-
-    const handleChange = useCallback((e, field) => {
-        const { name, value, type, checked } = e.target;
-        let updatedValue = value;
-
-        if (field.type === 'time') {
-            // Ensure the value is in HH:MM format
-            const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-            if (!timeRegex.test(value)) {
-                // If not in correct format, don't update the state
-                return;
-            }
-        }
-        if (field.type === 'date' || field.type === 'time') {
-            const error = validateField(field, value);
-            setErrors(prevErrors => ({
-                ...prevErrors,
-                [name]: error
-            }));
-            if (error) return;
-        }
-
-        if(field.name === 'type') onReservationTypeChange(value);
-
-        if (type === 'checkbox') {
-            updatedValue = formData[name] || [];
-            if (checked) {
-                updatedValue = [...updatedValue, value];
-            } else {
-                updatedValue = updatedValue.filter(item => item !== value);
-            }
-        }
-
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: updatedValue
-        }));
-    }, [formData, validateField, onReservationTypeChange]);
-
-    const handleSubmit = useCallback((e) => {
-        e.preventDefault();
-
-        const validationErrors = formFields.reduce((acc, field) => {
-            const error = validateField(field, formData[field.name]);
-            if (error) acc[field.name] = error;
-            return acc;
-        }, {});
-
-        setErrors(validationErrors);
-
-        if (Object.keys(validationErrors).length === 0) {
-            const payload = {
-                start_datetime: `${formData.startDate}T${formData.startTime}`,
-                end_datetime: `${formData.endDate}T${formData.endTime}`,
-                purpose: formData.purpose,
-                guests: parseInt(formData.guests, 10),
-                reservation_type: formData.type,
-                email: formData.email,
-                additional_services: formData.additionalServices || [],
-            };
-            onSubmit(payload);
-        }
-    }, [formData, formFields, onSubmit, validateField]);
+const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes }) => {
+    const {
+        formFields,
+        additionalServices,
+        formData,
+        errors,
+        handleChange,
+        handleSubmit,
+    } = useReservationFormLogic( calendarIds, reservationTypes);
 
     const renderField = useCallback((field) => {
         const commonProps = {
@@ -138,7 +63,7 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
         }
     }, [formData, handleChange]);
 
-    const renderAdditionalServices = () => {
+    const renderAdditionalServices = useCallback(() => {
         if (additionalServices.length === 0) return null;
 
         const additionalServicesField = {
@@ -157,13 +82,12 @@ const ReservationForm = ({ formFields, additionalServices, onSubmit, onReservati
                 {renderField(additionalServicesField)}
             </div>
         );
-    };
-
+    }, [additionalServices, renderField]);
 
     return (
         <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6">
             <h2 className="text-2xl font-bold text-green-800 mb-6">Reservation Form</h2>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={(e) => handleSubmit(e, onSubmit)} className="space-y-5">
                 {formFields.map((field) => (
                     <div key={field.name}>
                         <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">

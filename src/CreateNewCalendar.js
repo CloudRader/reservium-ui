@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import config from './Config';
+import config from './Constants';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginInfoPage from "./LoginInfoPage";
 

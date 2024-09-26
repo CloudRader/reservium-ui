@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 import axios from 'axios';
-import config from "../Config";
+import config from "../Constants";
 
 export async function fetchReservationData() {
     axios.defaults.withCredentials = true;

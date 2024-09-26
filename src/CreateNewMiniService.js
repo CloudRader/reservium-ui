@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import config from "./Config";
+import config from "./Constants";
 import LoginInfoPage from "./LoginInfoPage";
 
 const CreateNewMiniService = ({isLoggedIn, username}) => {

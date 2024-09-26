@@ -29,7 +29,7 @@ function AppContent() {
     }
 
     if (authState === 'initializing' || authState === 'checking' || isLoading) {
-        return <PulsatingLoader />;
+        return <PulsatingLoader/>;
     }
 
     const {services, calendars} = data || {services: [], calendars: {}};
@@ -93,7 +93,7 @@ function AppContent() {
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <AppContent/>
+        <AppContent/>
         </QueryClientProvider>
     );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import config from '../Config';
+import config from '../Constants';
 
 // axios.defaults.withCredentials = true;
 const fetchAdditionalServices = async (calendarId) => {

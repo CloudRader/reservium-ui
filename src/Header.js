@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import bubenLogo from "./assets/buben_logo.svg";
+import ThemeToggle from "./Components/ThemeToggle";
 
 const Header = ({username, isLoggedIn, services}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -14,7 +15,7 @@ const Header = ({username, isLoggedIn, services}) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex justify-between items-center h-16 text-green-800">
                     <div className="flex items-center space-x-2">
-                        <NavLink key="club" to="/club" className="flex items-center text-green-800 no-underline ">
+                        <NavLink key="club" to="/club" className="w-60 flex items-center text-green-800 no-underline ">
                             <span className="text-2xl font-bold mr-2">Buben Club</span>
                             <img src={bubenLogo} alt="Buben Club Logo" className="w-11 h-11"/>
                         </NavLink>
@@ -36,6 +37,7 @@ const Header = ({username, isLoggedIn, services}) => {
                         </div>
                     </div>
                     <div className="hidden sm:flex sm:items-center">
+                        <ThemeToggle />
                         {isLoggedIn ? (
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm font-medium text-green-700">{username}</span>

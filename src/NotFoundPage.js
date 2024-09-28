@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ServicesSection from './ServicesSection';
+import ServicesSection from './Components/ServicesSection';
 
 const NotFoundPage = () => {
     return (

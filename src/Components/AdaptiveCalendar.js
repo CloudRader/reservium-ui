@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -7,12 +7,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import config from "./Constants";
-import styles from "./styles/AdaptiveCalendar.module.css";
+import config from "../Constants";
+import styles from "../styles/AdaptiveCalendar.module.css";
 
 const SMALL_SCREEN_BREAKPOINT = 768;
 
-function AdaptiveCalendar({ googleCalendars }) {
+function AdaptiveCalendar({ googleCalendars, setDate }) {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
 
     useEffect(() => {
@@ -46,6 +46,11 @@ function AdaptiveCalendar({ googleCalendars }) {
 
     const handleEventClick = (clickInfo) => clickInfo.jsEvent.preventDefault();
 
+    const handleDateClick = useCallback((clickInfo) => {
+        const selectedDate = new Date(clickInfo.date);
+        setDate(selectedDate.toISOString().split('T')[0]);
+    }, [setDate]);
+
     const commonCalendarProps = {
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin],
         height: "auto",
@@ -60,6 +65,7 @@ function AdaptiveCalendar({ googleCalendars }) {
         slotLabelFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: false, meridiem: false, hour12: false },
         eventClick: handleEventClick,
         navLinks: true,
+        dateClick: handleDateClick,
     };
 
     const mobileCalendarProps = {

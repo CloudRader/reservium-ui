@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import bubenLogo from "./assets/buben_logo.svg";
-import ThemeToggle from "./Components/ThemeToggle";
+import bubenLogo from "../assets/buben_logo.svg";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = ({username, isLoggedIn, services}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);

@@ -1,5 +1,5 @@
 import React from 'react';
-import bubenLogo from './assets/buben_logo.svg';
+import bubenLogo from '../assets/buben_logo.svg';
 
 const Footer = () => {
     return (

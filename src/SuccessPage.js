@@ -1,6 +1,6 @@
 import React from 'react';
 import {useLocation} from 'react-router-dom';
-import ServicesSection from './ServicesSection';
+import ServicesSection from './Components/ServicesSection';
 import config from './Constants';
 
 const SuccessPage = () => {

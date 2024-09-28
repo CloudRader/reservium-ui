@@ -1,5 +1,5 @@
 import React from 'react';
-import config from "./Constants";
+import config from "../Constants";
 
 const WarningMessage = ({contactMail, wikiLink}) => {
     return (

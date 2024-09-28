@@ -1,13 +1,13 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from 'react-query';
-import Header from './Header';
+import Header from './Components/Header';
 import ReservationPage from "./ReservationPage";
 // import CreateNewCalendar from "./CreateNewCalendar";
 // import CreateNewMiniService from "./CreateNewMiniService";
 import {LoginToBackend} from "./LoginToBackend";
 import Logout from "./Logout";
-import Footer from "./Footer";
+import Footer from "./Components/Footer";
 import NotFoundPage from "./NotFoundPage";
 import SuccessPage from "./SuccessPage";
 import {useReservationData} from './hooks/useReservationData';

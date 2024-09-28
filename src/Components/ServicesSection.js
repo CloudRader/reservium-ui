@@ -1,5 +1,5 @@
 import React from 'react';
-import {services} from './Constants';
+import {services} from '../Constants';
 const ServiceButton = ({ children , href }) => (
     <a
         href={href}

@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import config from "./Constants";
-
+import PulsatingLoader from "./Components/PulsatingLoader";
 
 /**
  * Gets the login URL from the server and redirects the user to it.
@@ -24,6 +24,8 @@ const LoginToIS = () => {
         };
         fetchLoginUrl();
     }, [navigate]);
+
+    return <PulsatingLoader/>
 
 };
 

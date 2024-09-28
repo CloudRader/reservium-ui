@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
-import useReservationFormLogic from './hooks/useReservationFormLogic';
+import React, {useCallback, useEffect} from 'react';
+import useReservationFormLogic from '../hooks/useReservationFormLogic';
 
-const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes }) => {
+const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes, selectedDate }) => {
     const {
         formFields,
         additionalServices,
@@ -9,7 +9,12 @@ const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes
         errors,
         handleChange,
         handleSubmit,
+        setDate
     } = useReservationFormLogic( calendarIds, reservationTypes);
+
+    useEffect(() => {
+        setDate(selectedDate);
+    }, [setDate, selectedDate]);
 
     const renderField = useCallback((field) => {
         const commonProps = {

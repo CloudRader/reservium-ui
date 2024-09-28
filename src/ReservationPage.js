@@ -1,22 +1,23 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
-import ReservationForm from './ReservationForm';
+import ReservationForm from './Components/ReservationForm';
 import LoginInfoPage from "./LoginInfoPage";
 import Logout from "./Logout";
 import config from "./Constants";
-import AdaptiveCalendar from "./AdaptiveCalendar";
+import AdaptiveCalendar from "./Components/AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
 import {useMutation} from 'react-query';
-import WarningMessage from "./WarningMessage";
-import {ErrorMobileModal} from "./ErrorMobileModal";
+import WarningMessage from "./Components/WarningMessage";
+import {ErrorMobileModal} from "./Components/ErrorMobileModal";
 import PulsatingLoader from "./Components/PulsatingLoader";
 
 axios.defaults.withCredentials = true;
 
-const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service}) => {
+const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
     const [errorMessages, setErrorMessages] = useState({});
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState();
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -65,11 +66,11 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service}) =>
 
 
     if (!isLoggedIn) {
-        return <LoginInfoPage />;
+        return <LoginInfoPage/>;
     }
 
     if (errorMessages.auth) {
-        return <Logout onLogout={onLogout} />;
+        return <Logout onLogout={onLogout}/>;
     }
 
     return (
@@ -81,9 +82,10 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service}) =>
                     isSubmitting={mutation.isLoading}
                     calendarIds={service?.calendarIds}
                     reservationTypes={service.reservation_types?.map(name => ({value: name, label: name})) || []}
+                    selectedDate={selectedDate}
                 />
-                <div className="w-full bg-white dark:!bg-green-50 shadow-md overflow-hidden p-6 no-underline">
-                    <AdaptiveCalendar googleCalendars={roomCalendarLinks}/>
+                <div className="w-full bg-white dark:!bg-grey-50 shadow-md overflow-hidden p-6 no-underline">
+                    <AdaptiveCalendar googleCalendars={roomCalendarLinks} setDate={setSelectedDate}/>
                     {!isMobile &&
                         errorMessages.general &&
                         <div className="alert alert-danger mt-5">{errorMessages.general}</div>
@@ -91,11 +93,11 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service}) =>
                 </div>
             </div>
             {mutation.isLoading && <PulsatingLoader/>}
-            { isModalOpen ?
+            {isModalOpen ?
                 <ErrorMobileModal
-                onClose={() => setIsModalOpen(false)}
-                message={errorMessages.general}/>
-            : null
+                    onClose={() => setIsModalOpen(false)}
+                    message={errorMessages.general}/>
+                : null
             }
         </div>
     );

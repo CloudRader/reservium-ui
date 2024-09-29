@@ -65,7 +65,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
             type: 'text',
             labelText: 'Purpose',
             labelColor: 'text-success',
-            validation: (value) => !!value && value.length < 150,
+            validation: (value) => !!value && value.length < 50,
         },
         {
             name: 'guests',

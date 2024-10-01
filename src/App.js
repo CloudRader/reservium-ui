@@ -35,7 +35,7 @@ function AppContent() {
     const {services, calendars} = data || {services: [], calendars: {}};
 
     return (
-        <div className=" dark:!bg-grey-50 ">
+        <div className=" dark:!bg-slate-400 ">
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles}
                     onLogout={logout}
                     services={services}/>

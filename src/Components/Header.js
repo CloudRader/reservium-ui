@@ -37,7 +37,7 @@ const Header = ({username, isLoggedIn, services}) => {
                         </div>
                     </div>
                     <div className="hidden sm:flex sm:items-center">
-                        <ThemeToggle />
+                        {/*<ThemeToggle />*/}
                         {isLoggedIn ? (
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm font-medium text-green-700">{username}</span>

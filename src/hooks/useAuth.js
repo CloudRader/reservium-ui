@@ -1,18 +1,18 @@
 import {useState, useEffect, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import config from "../Constants";
+import constants from "../Constants";
 
 axios.defaults.withCredentials = true;
 const sendCodeToServer = async (code, state) => {
-    const response = await axios.get(`${config.serverURL}/users/callback`, {
+    const response = await axios.get(`${constants.serverURL}/users/callback`, {
         params: {code, state}
     });
     return response.data.username;
 };
 
 const getUserInfo = async () => {
-    const response = await axios.get(`${config.serverURL}/users/me`);
+    const response = await axios.get(`${constants.serverURL}/users/me`);
     return response.data;
 };
 

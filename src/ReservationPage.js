@@ -3,7 +3,7 @@ import axios from 'axios';
 import ReservationForm from './Components/ReservationForm';
 import LoginInfoPage from "./LoginInfoPage";
 import Logout from "./Logout";
-import config from "./Constants";
+import constants from "./Constants";
 import AdaptiveCalendar from "./Components/AdaptiveCalendar";
 import {useNavigate} from "react-router-dom";
 import {useMutation} from 'react-query';
@@ -30,7 +30,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
 
 
     const mutation = useMutation(
-        (formData) => axios.post(`${config.serverURL}/events/create_event`, formData),
+        (formData) => axios.post(`${constants.serverURL}/events/create_event`, formData),
         {
             onSuccess: (response) => {
                 if (response.status === 201) {

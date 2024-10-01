@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import config from './Constants';
+import constants from './Constants';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginInfoPage from "./LoginInfoPage";
 
@@ -19,7 +19,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
 
     useEffect(() => {
         if (selectedType) {
-            axios.get(`${config.serverURL}/mini_services/alias/${selectedType}`)
+            axios.get(`${constants.serverURL}/mini_services/alias/${selectedType}`)
                 .then(response => {
                     const data = response.data;
                     const newAdditionalServices = data.map(service => ({ value: service.name, label: service.name }));
@@ -41,8 +41,8 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
 
     useEffect(() => {
         if (selectedType) {
-            // axios.get(`${config.serverURL}/calendars/alias/${selectedType}`)
-            axios.get(`${config.serverURL}/calendars/`)
+            // axios.get(`${constants.serverURL}/calendars/alias/${selectedType}`)
+            axios.get(`${constants.serverURL}/calendars/`)
                 .then(response => {
                     const data = response.data;
                     const newOptions = data
@@ -330,7 +330,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
             }
         };
 
-        axios.post(`${config.serverURL}/calendars/create_calendar?username=${username}`, requestData)
+        axios.post(`${constants.serverURL}/calendars/create_calendar?username=${username}`, requestData)
             .then(() => {
                 setSuccessMessage('Calendar created successfully!');
                 setErrorMessage('');

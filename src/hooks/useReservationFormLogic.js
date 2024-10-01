@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import config from '../Constants';
+import constants from '../Constants';
 
 // axios.defaults.withCredentials = true;
 const fetchAdditionalServices = async (calendarId) => {
-    const response = await axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`);
+    const response = await axios.get(`${constants.serverURL}/calendars/mini_services/${calendarId}`);
     return response.data.map(service => ({ value: service, label: service }));
 };
 

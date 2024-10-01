@@ -1,7 +1,7 @@
 import React from 'react';
 import {useLocation} from 'react-router-dom';
 import ServicesSection from './Components/ServicesSection';
-import config from './Constants';
+import constants from './Constants';
 
 const SuccessPage = () => {
     const location = useLocation();
@@ -34,7 +34,7 @@ const SuccessPage = () => {
                                     reservation</h1>
                                 <p className="text-l md:text-xl text-green-700">
                                     If you are reserving for {maxPeopleMessage}, you must fill out a registration form and
-                                    email it to the Head of Dormitory ({config.headOfDormitoryEmail}), with the manager
+                                    email it to the Head of Dormitory ({constants.headOfDormitoryEmail}), with the manager
                                     ({managerMail}) in CC (Carbon Copy), at least 5 business days before the event.
                                 </p>
                                 <div className="pb-2">
@@ -48,7 +48,7 @@ const SuccessPage = () => {
                                     through the button bellow:
                                 </p>
                                 <div className="pb-2">
-                                    <a href={config.reservationFormLink} target="_blank" rel="noopener noreferrer"
+                                    <a href={constants.reservationFormLink} target="_blank" rel="noopener noreferrer"
                                        className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                         Registration form
                                     </a>

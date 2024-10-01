@@ -7,7 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import config from "../Constants";
+import constants from "../Constants";
 import styles from "../styles/AdaptiveCalendar.module.css";
 
 const SMALL_SCREEN_BREAKPOINT = 768;
@@ -58,7 +58,7 @@ function AdaptiveCalendar({ googleCalendars, setDate }) {
         dayMaxEventRows: 3,
         fixedWeekCount: false,
         firstDay: 1,
-        googleCalendarApiKey: config.googleCalendarApiKey,
+        googleCalendarApiKey: constants.googleCalendarApiKey,
         eventSources: googleCalendars,
         eventDidMount,
         eventTimeFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: true, hour12: false },

@@ -64,11 +64,8 @@ const SuccessPage = () => {
                                     <h1 className="text-4xl dark:!text-white font-bold text-green-800 mb-4">You need to confirm your
                                         reservation</h1>
                                     <p className="text-l dark:!text-white md:text-xl text-green-700 mb-8">
-                                        For night time reservation you must get additional confirmation by email from
-                                        the
-                                        manager. Write email to {managerMail}, with your reservation details. More
-                                        information
-                                        here:
+                                        For night time reservation you must get additional confirmation from the manager. You will receive this confirmation via email. In case you do not receive a reply within a few days, you may contact the manager directly at {managerMail}, with your reservation details.
+                                        More information here:
                                     </p>
                                     <div>
                                         <a href={linkOnWiki} target="_blank" rel="noopener noreferrer"

@@ -46,7 +46,7 @@ function AppContent() {
                 <Route path='/logined' element={<LoginToBackend login={login}/>}/>
                 {/*then go here as default page*/}
 
-                {services.map(service => (
+                {services && services.map(service => (
                     <Route
                         key={service.linkName}
                         path={`/${service.linkName}`}

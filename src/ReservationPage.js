@@ -74,7 +74,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
     }
 
     return (
-        <div className="max-w-7xl dark:!bg-green-50 mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl dark:!bg-grey-50 mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <WarningMessage contactMail={service?.contact_mail} wikiLink={service?.wikiLink}/>
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
@@ -84,7 +84,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
                     reservationTypes={service.reservation_types?.map(name => ({value: name, label: name})) || []}
                     selectedDate={selectedDate}
                 />
-                <div className="w-full bg-white dark:!bg-grey-50 shadow-md overflow-hidden p-6 no-underline">
+                <div className="w-full dark:!bg-grey-50 shadow-md overflow-hidden p-6 no-underline">
                     <AdaptiveCalendar googleCalendars={roomCalendarLinks} setDate={setSelectedDate}/>
                     {!isMobile &&
                         errorMessages.general &&

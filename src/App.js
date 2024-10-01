@@ -35,7 +35,7 @@ function AppContent() {
     const {services, calendars} = data || {services: [], calendars: {}};
 
     return (
-        <>
+        <div className=" dark:!bg-grey-50 ">
             <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles}
                     onLogout={logout}
                     services={services}/>
@@ -86,7 +86,7 @@ function AppContent() {
                 {/*)}*/}
             </Routes>
             <Footer/>
-        </>
+        </div>
     );
 }
 

@@ -34,3 +34,16 @@ a {
 :global( .fc .fc-toolbar-title) {
   font-size: 17px;
 }
+
+/* Mobile-specific styles */
+@media screen and (max-width: 768px) {
+  :global(.fc .fc-toolbar.fc-header-toolbar) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  :global(.fc .fc-toolbar-title) {
+    font-size: 1em;
+  }
+}

@@ -85,7 +85,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         } else {
             // For other views, keep the clicked time and add 4 hours
             start = selectedDate.toDate();
-            end = selectedDate.toDate();
+            end = selectedDate.add(4, 'hours').toDate();
         }
 
         setSelectedSlot({
@@ -136,7 +136,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         headerToolbar: {
             start: 'prev,next',
             center: 'title',
-            end: 'listWeek, timeGridDay',
+            end: 'listWeek,timeGridDay',
         },
         views: {
             listWeek: {

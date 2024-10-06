@@ -84,7 +84,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
                     reservationTypes={service.reservation_types?.map(name => ({value: name, label: name})) || []}
                     selectedSlot={selectedSlot}
                 />
-                <div className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden ${isMobile ? '' : 'p-6'} no-underline`}>
+                <div className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden ${isMobile ? 'p-1' : 'p-6'} no-underline`}>
                     <AdaptiveCalendar
                         googleCalendars={roomCalendarLinks}
                         setSelectedSlot={setSelectedSlot}

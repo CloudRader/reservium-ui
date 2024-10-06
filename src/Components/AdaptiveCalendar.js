@@ -39,7 +39,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         let endTime = '21:00';
         if(event.start) {
             startTime = formatDateTime(event.start);
-            endTime = formatTime(event?.end);
+            endTime = formatTime(event.end || event.start);
         }
 
         return new Popover(el, {
@@ -157,6 +157,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
 }
 
 function formatDateTime(date) {
+    if (!date) return 'N/A';
     return date.toLocaleString([], {
         year: 'numeric', month: 'numeric', day: 'numeric',
         hour: 'numeric', minute: 'numeric',
@@ -165,6 +166,7 @@ function formatDateTime(date) {
 }
 
 function formatTime(date) {
+    if (!date) return 'N/A';
     return date.toLocaleString([], {
         hour: 'numeric', minute: 'numeric',
         hour12: false

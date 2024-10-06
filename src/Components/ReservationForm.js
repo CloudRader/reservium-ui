@@ -17,7 +17,7 @@ const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes
         if (selectedSlot) {
             setFormField('startDate', moment(selectedSlot.start).format('YYYY-MM-DD'));
             setFormField('startTime', moment(selectedSlot.start).format('HH:mm'));
-            setFormField('endDate', moment(selectedSlot.end).format('HH:mm'));
+            setFormField('endDate', moment(selectedSlot.end).format('YYYY-MM-DD'));
             setFormField('endTime', moment(selectedSlot.end).format('HH:mm'));
         }
     }, [selectedSlot, setFormField]);

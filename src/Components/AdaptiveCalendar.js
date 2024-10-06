@@ -76,19 +76,29 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
 
     const handleDateClick = useCallback((clickInfo) => {
         const selectedDate = moment(clickInfo.date);
-        const start = selectedDate.toDate();
-        const end = selectedDate.add(4, 'hours').toDate();
+        let start, end;
+
+        if (clickInfo.view.type === 'dayGridMonth') {
+            // For month view, set start to 17:00 and end to 22:00
+            start = selectedDate.clone().hour(17).minute(0).second(0).millisecond(0).toDate();
+            end = selectedDate.clone().hour(22).minute(0).second(0).millisecond(0).toDate();
+        } else {
+            // For other views, keep the clicked time and add 4 hours
+            start = selectedDate.toDate();
+            end = selectedDate.toDate();
+        }
+
         setSelectedSlot({
             start,
             end,
-            allDay: clickInfo.allDay
+            allDay: false
         });
         setSelectedEvent({
             id: 'selected-slot',
             title: 'Selected Slot',
             start,
             end,
-            allDay: clickInfo.allDay,
+            allDay: false,
             extendedProps: { isSelectedSlot: true }
         });
     }, [setSelectedSlot]);

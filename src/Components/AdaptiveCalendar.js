@@ -31,6 +31,10 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             el.style.cssText = 'border-color: rgb(146, 34, 167); background-color: darkgray';
         }
 
+        if (event.extendedProps.isSelectedSlot) {
+            el.style.cssText = 'background-color: rgba(0, 128, 255, 0.3); border: 2px solid rgb(0, 128, 255);';
+        }
+
         let startTime = '17:00';
         let endTime = '21:00';
         if(event.start) {
@@ -121,7 +125,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         headerToolbar: {
             start: 'prev,next',
             center: 'title',
-            end: 'listWeek,timeGridDay',
+            end: 'listWeek, timeGridDay',
         },
         views: {
             listWeek: { buttonText: 'list'},

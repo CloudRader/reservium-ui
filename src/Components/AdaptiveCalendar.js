@@ -31,8 +31,12 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             el.style.cssText = 'border-color: rgb(146, 34, 167); background-color: darkgray';
         }
 
-        const startTime = formatDateTime(event.start);
-        const endTime = formatTime(event.end);
+        let startTime = '17:00';
+        let endTime = '21:00';
+        if(event.start) {
+            startTime = formatDateTime(event.start);
+            endTime = formatTime(event?.end);
+        }
 
         return new Popover(el, {
             title: event.title,
@@ -41,7 +45,6 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             customClass: "popoverStyle",
             content: `
                 <p><strong>Reservation time:</strong><br>${startTime} - ${endTime}</p>
-                <p><strong>Description:</strong><br>${(event.extendedProps.description || 'N/A').replace(/\n/g, '<br>')}</p>
             `,
             html: true,
         });
@@ -57,6 +60,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             allDay: selectInfo.allDay
         });
         setSelectedEvent({
+            id: 'selected-slot',
             title: 'Selected Slot',
             start,
             end,
@@ -75,6 +79,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             allDay: clickInfo.allDay
         });
         setSelectedEvent({
+            id: 'selected-slot',
             title: 'Selected Slot',
             start,
             end,
@@ -91,8 +96,15 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         fixedWeekCount: false,
         firstDay: 1,
         googleCalendarApiKey: constants.googleCalendarApiKey,
-        eventSources: googleCalendars,
-        events: [selectedEvent].filter(Boolean),
+        eventSources: [
+            ...googleCalendars,
+            {
+                events: (info, successCallback) => {
+                    const events = selectedEvent ? [selectedEvent] : [];
+                    successCallback(events);
+                }
+            }
+        ],
         eventDidMount,
         eventTimeFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: true, hour12: false },
         slotLabelFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: false, meridiem: false, hour12: false },

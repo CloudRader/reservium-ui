@@ -16,7 +16,7 @@ const SMALL_SCREEN_BREAKPOINT = 768;
 
 function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
-    const [selectedSlotDisplay, setSelectedSlotDisplay] = useState(null);
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
     useEffect(() => {
         const handleResize = () => setIsSmallScreen(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
@@ -56,9 +56,12 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             end,
             allDay: selectInfo.allDay
         });
-        setSelectedSlotDisplay({
-            date: moment(start).format('MMMM D, YYYY'),
-            time: `${moment(start).format('HH:mm')} - ${moment(end).format('HH:mm')}`
+        setSelectedEvent({
+            title: 'Selected Slot',
+            start,
+            end,
+            allDay: selectInfo.allDay,
+            extendedProps: { isSelectedSlot: true }
         });
     }, [setSelectedSlot]);
 
@@ -71,9 +74,12 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             end,
             allDay: clickInfo.allDay
         });
-        setSelectedSlotDisplay({
-            date: moment(start).format('MMMM D, YYYY'),
-            time: `${moment(start).format('HH:mm')} - ${moment(end).format('HH:mm')}`
+        setSelectedEvent({
+            title: 'Selected Slot',
+            start,
+            end,
+            allDay: clickInfo.allDay,
+            extendedProps: { isSelectedSlot: true }
         });
     }, [setSelectedSlot]);
 
@@ -85,7 +91,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         fixedWeekCount: false,
         firstDay: 1,
         googleCalendarApiKey: constants.googleCalendarApiKey,
-        eventSources: googleCalendars,
+        events: [...googleCalendars, selectedEvent].filter(Boolean),
         eventDidMount,
         eventTimeFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: true, hour12: false },
         slotLabelFormat: { hour: '2-digit', minute: '2-digit', omitZeroMinute: false, meridiem: false, hour12: false },
@@ -128,12 +134,6 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
 
     return (
         <div className={`${styles['calendar-container']} ${isSmallScreen ? styles['mobile'] : ''}`}>
-            {selectedSlotDisplay && (
-                <div className="bg-blue-100 p-2 mb-4 rounded-md text-center">
-                    <p className="font-semibold">{selectedSlotDisplay.date}</p>
-                    <p>{selectedSlotDisplay.time}</p>
-                </div>
-            )}
             <FullCalendar {...(isSmallScreen ? mobileCalendarProps : desktopCalendarProps)} />
         </div>
     );

@@ -16,6 +16,7 @@ const SMALL_SCREEN_BREAKPOINT = 768;
 
 function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
+    const [selectedSlotDisplay, setSelectedSlotDisplay] = useState(null);
 
     useEffect(() => {
         const handleResize = () => setIsSmallScreen(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
@@ -55,6 +56,10 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             end,
             allDay: selectInfo.allDay
         });
+        setSelectedSlotDisplay({
+            date: moment(start).format('MMMM D, YYYY'),
+            time: `${moment(start).format('HH:mm')} - ${moment(end).format('HH:mm')}`
+        });
     }, [setSelectedSlot]);
 
     const handleDateClick = useCallback((clickInfo) => {
@@ -65,6 +70,10 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             start,
             end,
             allDay: clickInfo.allDay
+        });
+        setSelectedSlotDisplay({
+            date: moment(start).format('MMMM D, YYYY'),
+            time: `${moment(start).format('HH:mm')} - ${moment(end).format('HH:mm')}`
         });
     }, [setSelectedSlot]);
 
@@ -117,11 +126,17 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
         },
     };
 
-
     return (
         <div className={`${styles['calendar-container']} ${isSmallScreen ? styles['mobile'] : ''}`}>
+            {selectedSlotDisplay && (
+                <div className="bg-blue-100 p-2 mb-4 rounded-md text-center">
+                    <p className="font-semibold">{selectedSlotDisplay.date}</p>
+                    <p>{selectedSlotDisplay.time}</p>
+                </div>
+            )}
             <FullCalendar {...(isSmallScreen ? mobileCalendarProps : desktopCalendarProps)} />
-        </div> );
+        </div>
+    );
 }
 
 function formatDateTime(date) {

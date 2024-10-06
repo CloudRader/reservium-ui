@@ -49,6 +49,7 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             customClass: "popoverStyle",
             content: `
                 <p><strong>Reservation time:</strong><br>${startTime} - ${endTime}</p>
+                <p><strong>Description:</strong><br>${(event.extendedProps.description || 'N/A').replace(/\n/g, '<br>')}</p>
             `,
             html: true,
         });
@@ -128,10 +129,18 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             end: 'listWeek, timeGridDay',
         },
         views: {
-            listWeek: { buttonText: 'list'},
-            timeGridDay: { buttonText: 'day' },
+            listWeek: {
+                buttonText: 'list',
+                selectable: false,  // Disable selection in list view
+                dateClick: handleDateClick,  // Enable date clicking in list view
+            },
+            timeGridDay: {
+                buttonText: 'day',
+                selectable: true,  // Enable selection in day view
+            },
         },
     };
+
 
     const desktopCalendarProps = {
         ...commonCalendarProps,
@@ -164,7 +173,6 @@ function formatDateTime(date) {
         hour12: false
     });
 }
-
 function formatTime(date) {
     if (!date) return 'N/A';
     return date.toLocaleString([], {

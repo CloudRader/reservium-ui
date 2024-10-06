@@ -168,11 +168,10 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         }));
     }, [formData, validateField]);
 
-    const setDate = useCallback((date) => {
+    const setFormField = useCallback((fieldName, value) => {
         setFormData(prevData => ({
             ...prevData,
-            startDate: date,
-            endDate: date
+            [fieldName]: value
         }));
     }, []);
 
@@ -208,7 +207,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         errors,
         handleChange,
         handleSubmit,
-        setDate
+        setFormField,
     };
 };
 

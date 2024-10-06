@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect} from 'react';
 import useReservationFormLogic from '../hooks/useReservationFormLogic';
+import moment from 'moment';
 
-const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes, selectedDate }) => {
+const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes, selectedSlot}) => {
     const {
         formFields,
         additionalServices,
@@ -9,12 +10,16 @@ const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes
         errors,
         handleChange,
         handleSubmit,
-        setDate
+        setFormField,
     } = useReservationFormLogic( calendarIds, reservationTypes);
 
     useEffect(() => {
-        setDate(selectedDate);
-    }, [setDate, selectedDate]);
+        if (selectedSlot) {
+            setFormField('date', moment(selectedSlot.start).format('YYYY-MM-DD'));
+            setFormField('startTime', moment(selectedSlot.start).format('HH:mm'));
+            setFormField('endTime', moment(selectedSlot.end).format('HH:mm'));
+        }
+    }, [selectedSlot, setFormField]);
 
     const renderField = useCallback((field) => {
         const commonProps = {

@@ -17,7 +17,7 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
     const [errorMessages, setErrorMessages] = useState({});
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDate, setSelectedDate] = useState();
+    const [selectedSlot, setSelectedSlot] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -82,10 +82,13 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
                     isSubmitting={mutation.isLoading}
                     calendarIds={service?.calendarIds}
                     reservationTypes={service.reservation_types?.map(name => ({value: name, label: name})) || []}
-                    selectedDate={selectedDate}
+                    selectedSlot={selectedSlot}
                 />
                 <div className="w-full dark:!bg-slate-400 shadow-md overflow-hidden p-6 no-underline">
-                    <AdaptiveCalendar googleCalendars={roomCalendarLinks} setDate={setSelectedDate}/>
+                    <AdaptiveCalendar
+                        googleCalendars={roomCalendarLinks}
+                        setSelectedSlot={setSelectedSlot}
+                    />
                     {!isMobile &&
                         errorMessages.general &&
                         <div className="alert alert-danger mt-5">{errorMessages.general}</div>

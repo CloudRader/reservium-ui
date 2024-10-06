@@ -9,10 +9,12 @@ import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import constants from "../Constants";
 import styles from "../styles/AdaptiveCalendar.module.css";
+import moment from 'moment';
+
 
 const SMALL_SCREEN_BREAKPOINT = 768;
 
-function AdaptiveCalendar({ googleCalendars, setDate }) {
+function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
 
     useEffect(() => {
@@ -46,10 +48,25 @@ function AdaptiveCalendar({ googleCalendars, setDate }) {
 
     const handleEventClick = (clickInfo) => clickInfo.jsEvent.preventDefault();
 
+    const handleDateSelect = useCallback((selectInfo) => {
+        const { start, end } = selectInfo;
+        setSelectedSlot({
+            start,
+            end,
+            allDay: selectInfo.allDay
+        });
+    }, [setSelectedSlot]);
+
     const handleDateClick = useCallback((clickInfo) => {
-        const selectedDate = new Date(clickInfo.date);
-        setDate(selectedDate.toISOString().split('T')[0]);
-    }, [setDate]);
+        const selectedDate = moment(clickInfo.date);
+        const start = selectedDate.toDate();
+        const end = selectedDate.add(4, 'hours').toDate();
+        setSelectedSlot({
+            start,
+            end,
+            allDay: clickInfo.allDay
+        });
+    }, [setSelectedSlot]);
 
     const commonCalendarProps = {
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin],
@@ -66,6 +83,8 @@ function AdaptiveCalendar({ googleCalendars, setDate }) {
         eventClick: handleEventClick,
         navLinks: true,
         dateClick: handleDateClick,
+        selectable: true,
+        select: handleDateSelect,
     };
 
     const mobileCalendarProps = {
@@ -74,10 +93,11 @@ function AdaptiveCalendar({ googleCalendars, setDate }) {
         headerToolbar: {
             start: 'prev,next',
             center: 'title',
-            end: 'listWeek',
+            end: 'listWeek,timeGridDay',
         },
         views: {
             listWeek: { buttonText: 'list'},
+            timeGridDay: { buttonText: 'day' },
         },
     };
 

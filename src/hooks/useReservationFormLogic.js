@@ -5,8 +5,8 @@ import constants from '../Constants';
 import moment from "moment/moment";
 
 const fetchAdditionalServices = async (calendarId) => {
-    const response = await axios.get(`${constants.serverURL}/calendars/mini_services/${calendarId}`);
-    return response.data.map(service => ({ value: service, label: service }));
+    const { data } = await axios.get(`${constants.serverURL}/calendars/mini_services/${calendarId}`);
+    return data.map(service => ({ value: service, label: service }));
 };
 
 const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) => {

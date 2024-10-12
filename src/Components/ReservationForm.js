@@ -10,17 +10,9 @@ const ReservationForm = ({ onSubmit, isSubmitting, calendarIds, reservationTypes
         errors,
         handleChange,
         handleSubmit,
-        setFormField,
-    } = useReservationFormLogic( calendarIds, reservationTypes);
+    } = useReservationFormLogic( calendarIds, reservationTypes, selectedSlot);
 
-    useEffect(() => {
-        if (selectedSlot) {
-            setFormField('startDate', moment(selectedSlot.start).format('YYYY-MM-DD'));
-            setFormField('startTime', moment(selectedSlot.start).format('HH:mm'));
-            setFormField('endDate', moment(selectedSlot.end).format('YYYY-MM-DD'));
-            setFormField('endTime', moment(selectedSlot.end).format('HH:mm'));
-        }
-    }, [selectedSlot, setFormField]);
+
 
     const renderField = useCallback((field) => {
         const commonProps = {

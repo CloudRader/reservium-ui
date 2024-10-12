@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import constants from '../Constants';
+import moment from "moment/moment";
 
-// axios.defaults.withCredentials = true;
 const fetchAdditionalServices = async (calendarId) => {
     const response = await axios.get(`${constants.serverURL}/calendars/mini_services/${calendarId}`);
     return response.data.map(service => ({ value: service, label: service }));
 };
 
-const useReservationFormLogic = (calendarIds, reservationTypes) => {
+const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
     const [reservationType, setReservationType] = useState('');
@@ -109,9 +109,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         {
             enabled: !!reservationType && !!calendarIds[reservationType],
             keepPreviousData: false,
-            onError: (error) => {
-                console.error('Error fetching additional services:', error);
-            }
+            onError: (error) => console.error('Error fetching additional services:', error),
         }
     );
 
@@ -168,12 +166,19 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         }));
     }, [formData, validateField]);
 
-    const setFormField = useCallback((fieldName, value) => {
-        setFormData(prevData => ({
-            ...prevData,
-            [fieldName]: value
-        }));
-    }, []);
+    useEffect(() => {
+        if (selectedSlot) {
+            const start = moment(selectedSlot.start);
+            const end = moment(selectedSlot.end);
+            setFormData(prev => ({
+                ...prev,
+                startDate: start.format('YYYY-MM-DD'),
+                startTime: start.format('HH:mm'),
+                endDate: end.format('YYYY-MM-DD'),
+                endTime: end.format('HH:mm'),
+            }));
+        }
+    }, [selectedSlot]);
 
     const handleSubmit = useCallback((e, onSubmit) => {
         e.preventDefault();
@@ -207,7 +212,6 @@ const useReservationFormLogic = (calendarIds, reservationTypes) => {
         errors,
         handleChange,
         handleSubmit,
-        setFormField,
     };
 };
 

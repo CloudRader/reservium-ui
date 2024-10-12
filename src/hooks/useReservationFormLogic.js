@@ -21,7 +21,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) =>
     }, []);
 
     // Moving the initialFormFields definition before useState usage
-    const formFields  = useMemo(() => [
+    const mainFormFields  = useMemo(() => [
         {
             name: 'startDate',
             type: 'date',
@@ -81,7 +81,10 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) =>
             labelColor: 'text-primary',
             validation: (value) => /\S+@\S+\.\S+/.test(value),
         },
-        {
+    ], [getTomorrowDate]);
+
+    const reservationTypeFormField  = useMemo(() => [
+    {
             name: 'type',
             type: 'select',
             labelText: 'Type of Reservation',
@@ -89,8 +92,9 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) =>
             options: reservationTypes,
             validation: (value) => !!value
         },
-    ], [getTomorrowDate, reservationTypes]);
+    ], [reservationTypes]);
 
+    const formFields  = useMemo(() => [...mainFormFields, reservationTypeFormField], [mainFormFields, reservationTypeFormField]);
 
     // Initialize form data based on default values
     useEffect(() => {
@@ -113,19 +117,19 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) =>
         }
     );
 
-    const validateField = useCallback((field, value) => {
-        if (field.validation && !field.validation(value)) {
-            return `Invalid value for ${field.labelText}`;
-        }
-        return null;
-    }, []);
-
     useEffect(() => {
         setFormData(prevData => ({
             ...prevData,
             additionalServices: []
         }));
     }, [reservationType]);
+
+    const validateField = useCallback((field, value) => {
+        if (field.validation && !field.validation(value)) {
+            return `Invalid value for ${field.labelText}`;
+        }
+        return null;
+    }, []);
 
     const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;

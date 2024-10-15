@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {memo, useCallback, useEffect, useState} from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -11,18 +11,8 @@ import constants from "../Constants";
 import styles from "../styles/AdaptiveCalendar.module.css";
 import moment from 'moment';
 
-
-const SMALL_SCREEN_BREAKPOINT = 768;
-
-function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
+const AdaptiveCalendar = memo(({ isMobile, googleCalendars, setSelectedSlot }) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
-
-    useEffect(() => {
-        const handleResize = () => setIsSmallScreen(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     const eventDidMount = (info) => {
         const { event, el } = info;
@@ -35,8 +25,9 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
             el.style.cssText = 'background-color: rgba(0, 128, 255, 0.3); border: 2px solid rgb(0, 128, 255);';
         }
 
-        let startTime = '17:00';
-        let endTime = '21:00';
+        let startTime = String(constants.default_reservation_start_time) + ":00";
+        let endTime = String(constants.default_reservation_end_time) + ":00";
+
         if(event.start) {
             startTime = formatDateTime(event.start);
             endTime = formatTime(event.end || event.start);
@@ -80,8 +71,8 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
 
         if (clickInfo.view.type === 'dayGridMonth') {
             // For month view, set start to 17:00 and end to 22:00
-            start = selectedDate.clone().hour(17).minute(0).second(0).millisecond(0).toDate();
-            end = selectedDate.clone().hour(22).minute(0).second(0).millisecond(0).toDate();
+            start = selectedDate.clone().hour(constants.default_reservation_start_time).minute(0).second(0).millisecond(0).toDate();
+            end = selectedDate.clone().hour(constants.default_reservation_end_time).minute(0).second(0).millisecond(0).toDate();
         } else {
             // For other views, keep the clicked time and add 4 hours
             start = selectedDate.toDate();
@@ -169,11 +160,11 @@ function AdaptiveCalendar({ googleCalendars, setSelectedSlot }) {
     };
 
     return (
-        <div className={`${styles['calendar-container']} ${isSmallScreen ? styles['mobile'] : ''}`}>
-            <FullCalendar {...(isSmallScreen ? mobileCalendarProps : desktopCalendarProps)} />
+        <div className={`${styles['calendar-container']} ${isMobile ? styles['mobile'] : ''}`}>
+            <FullCalendar {...(isMobile ? mobileCalendarProps : desktopCalendarProps)} />
         </div>
     );
-}
+}) ;
 
 function formatDateTime(date) {
     if (!date) return 'N/A';

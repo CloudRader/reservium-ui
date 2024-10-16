@@ -216,7 +216,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
             const payload = preparePayload();
             onSubmit(payload);
         }
-    }, [validateForm, preparePayload]);
+    }, [validateForm, preparePayload, onSubmit]);
 
     return {
         formFields,

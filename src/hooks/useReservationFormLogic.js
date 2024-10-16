@@ -99,8 +99,8 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
     // Initialize form data based on default values
     useEffect(() => {
         const initialData = formFields.reduce((acc, field) => {
-            if (field.defaultValue !== undefined && initialData[field.name] === undefined) {
-                initialData[field.name] = field.defaultValue;
+            if (field.defaultValue !== undefined && acc[field.name] === undefined) {
+                acc[field.name] = field.defaultValue;
             }
             return acc;
         }, {});

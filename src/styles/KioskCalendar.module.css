@@ -1,0 +1,27 @@
+.kiosk-calendar-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+:global(.fc-event) {
+  cursor: default !important;
+}
+
+:global(.fc-event:hover) {
+  opacity: 0.8;
+}
+
+:global(.popoverStyle) {
+  z-index: 99999 !important;
+}
+
+:global(.fc-timegrid-now-indicator-line) {
+  border-color: #ff0000;
+  border-width: 2px;
+}
+
+:global(.fc-timegrid-now-indicator-arrow) {
+  border-color: #ff0000;
+  border-width: 5px;
+}

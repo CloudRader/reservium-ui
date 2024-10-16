@@ -15,6 +15,9 @@ import PulsatingLoader from "./Components/PulsatingLoader";
 import axios from "axios";
 import LoginToIS from "./LoginToIS";
 import {useAuth} from './hooks/useAuth';
+import CalendarView from "./ViewCalendarPage";
+import EditServices from "./Components/EditServices";
+import EditService from "./Components/EditService";
 
 axios.defaults.withCredentials = true;
 
@@ -36,9 +39,12 @@ function AppContent() {
 
     return (
         <div className=" dark:!bg-slate-400 ">
-            <Header isLoggedIn={isLoggedIn} username={username} userRoles={userRoles}
-                    onLogout={logout}
-                    services={services}/>
+            <Header isLoggedIn={true}
+                    username={username}
+                    services={services}
+                    // isManager={userRoles.includes("manager")}
+                    isManager={true}
+            />
             <Routes>
                 {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
                 <Route path='/login' element={<LoginToIS/>}/>
@@ -60,6 +66,17 @@ function AppContent() {
                     />
                 ))}
 
+                <Route path="/edit-services" element={<EditServices/>}/>
+                <Route path="/edit-service/1" element={<EditService/>}/>
+
+                {services && services.map(service => (
+                    <Route
+                        key={`/edit-service/${service.linkName}`}
+                        path={`/edit-service/${service.linkName}`}
+                        element={<EditService />}
+                    />
+                ))}
+
                 <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
                                                                   isLoggedIn={isLoggedIn} onLogout={logout}
                                                                   roomCalendarLinks={calendars["club"]}
@@ -70,20 +87,29 @@ function AppContent() {
 
                 <Route path="/success" element={<SuccessPage/>}/>
 
-                {/*<Route path='/' element={<HomePage />} />*/}
+                {services && services.map(service => (
+                    <Route
+                        key={"view" + service.linkName}
+                        path={`/view/${service.linkName}`}
+                        element={<CalendarView
+                            roomCalendarLinks={calendars[service.linkName]}/>}
+                    />
+                ))}
 
-                {/*{userRoles.includes("manager") && (*/}
-                {/*    <>*/}
-                {/*        <Route*/}
-                {/*            path='/create-new-calendar'*/}
-                {/*            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}*/}
-                {/*        />*/}
-                {/*        <Route*/}
-                {/*            path='/create-new-miniservice'*/}
-                {/*            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}*/}
-                {/*        />*/}
-                {/*    </>*/}
-                {/*)}*/}
+                <Route path='/' element={<HomePage />} />
+
+                {userRoles.includes("manager") && (
+                    <>
+                        <Route
+                            path='/create-new-calendar'
+                            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}
+                        />
+                        <Route
+                            path='/create-new-miniservice'
+                            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}
+                        />
+                    </>
+                )}
             </Routes>
             <Footer/>
         </div>
@@ -93,7 +119,7 @@ function AppContent() {
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-        <AppContent/>
+            <AppContent/>
         </QueryClientProvider>
     );
 }

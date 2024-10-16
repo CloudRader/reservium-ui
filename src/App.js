@@ -96,20 +96,18 @@ function AppContent() {
                     />
                 ))}
 
-                <Route path='/' element={<HomePage />} />
-
-                {userRoles.includes("manager") && (
-                    <>
-                        <Route
-                            path='/create-new-calendar'
-                            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}
-                        />
-                        <Route
-                            path='/create-new-miniservice'
-                            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}
-                        />
-                    </>
-                )}
+                {/*{userRoles.includes("manager") && (*/}
+                {/*    <>*/}
+                {/*        <Route*/}
+                {/*            path='/create-new-calendar'*/}
+                {/*            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}*/}
+                {/*        />*/}
+                {/*        <Route*/}
+                {/*            path='/create-new-miniservice'*/}
+                {/*            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}*/}
+                {/*        />*/}
+                {/*    </>*/}
+                {/*)}*/}
             </Routes>
             <Footer/>
         </div>

@@ -1,5 +1,5 @@
 const constants = {
-    serverURL: "https://api.reservation.buk.cvut.cz",
+    serverURL: "https://api.develop.reservation.buk.cvut.cz",
     headOfDormitoryEmail: "renata.prihodova@cvut.cz",
     googleCalendarApiKey: process.env['REACT_APP_GOOGLE_CALENDAR_API_KEY'],
     reservationFormLink : "https://drive.google.com/file/d/1GeEh4cKlcBzspV-AzsG_ag_WfVVgXl1X/view?usp=sharing",

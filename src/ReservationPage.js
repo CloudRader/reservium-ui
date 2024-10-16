@@ -1,69 +1,24 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import axios from 'axios';
+import React, {useState} from 'react';
 import ReservationForm from './Components/ReservationForm';
 import LoginInfoPage from "./LoginInfoPage";
 import Logout from "./Logout";
-import constants from "./Constants";
 import AdaptiveCalendar from "./Components/AdaptiveCalendar";
-import {useNavigate} from "react-router-dom";
-import {useMutation} from 'react-query';
 import WarningMessage from "./Components/WarningMessage";
 import {ErrorMobileModal} from "./Components/ErrorMobileModal";
 import PulsatingLoader from "./Components/PulsatingLoader";
-
-axios.defaults.withCredentials = true;
+import useSubmitLogic from "./hooks/useSubmitLogic";
+import Constants from "./Constants";
 
 const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
-    const [errorMessages, setErrorMessages] = useState({});
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT);
     const [selectedSlot, setSelectedSlot] = useState(null)
-    const navigate = useNavigate()
+    const {errorMessages,setErrorMessages, handleSubmit, isSubmitting} = useSubmitLogic(service);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 1024);
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-
-    const mutation = useMutation(
-        (formData) => axios.post(`${constants.serverURL}/events/create_event`, formData),
-        {
-            onSuccess: (response) => {
-                if (response.status === 201) {
-                    navigate('/success', {
-                        state: {
-                            ...response.data,
-                            contactMail: service.contact_mail,
-                            wikiLink: service.wikiLink
-                        }
-                    });
-                    setErrorMessages({});
-                } else {
-                    handleError({general: `Cannot create a reservation. ${response.data.message}`});
-                }
-            },
-            onError: (error) => {
-                const errorMessage = error.response?.status === 401
-                    ? {auth: 'Authentication failed. Please log out and log in again.'}
-                    : {general: 'Cannot create a reservation, try again later.'};
-                handleError(errorMessage);
-            }
-        }
-    );
-
-    const handleSubmit = useCallback((formData) => {
-        mutation.mutate(formData);
-    }, [mutation]);
-
-    const handleError = useCallback((errorMessage) => {
-        setErrorMessages(errorMessage);
-        if (isMobile && errorMessage.general) setIsModalOpen(true);
-    }, [isMobile]);
-
+    // useEffect(() => {
+    //     const handleResize = () => setisMobile(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
+    //     window.addEventListener('resize', handleResize);
+    //     return () => window.removeEventListener('resize', handleResize);
+    // }, []);
 
     if (!isLoggedIn) {
         return <LoginInfoPage/>;
@@ -75,33 +30,33 @@ const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => 
 
     return (
         <div className="max-w-7xl dark:!bg-slate-400 mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {isSubmitting && <PulsatingLoader/>}
+            {isMobile &&
+                errorMessages?.general &&
+                <ErrorMobileModal
+                    onClose={() => setErrorMessages({})}
+                    message={errorMessages.general}/>}
             <WarningMessage contactMail={service?.contact_mail} wikiLink={service?.wikiLink}/>
             <div className="flex flex-col lg:flex-row gap-8">
                 <ReservationForm
                     onSubmit={handleSubmit}
-                    isSubmitting={mutation.isLoading}
+                    isSubmitting={isSubmitting}
                     calendarIds={service?.calendarIds}
                     reservationTypes={service.reservation_types?.map(name => ({value: name, label: name})) || []}
                     selectedSlot={selectedSlot}
                 />
                 <div className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden ${isMobile ? 'p-1' : 'p-6'} no-underline`}>
                     <AdaptiveCalendar
+                        isMobile={isMobile}
                         googleCalendars={roomCalendarLinks}
                         setSelectedSlot={setSelectedSlot}
                     />
                     {!isMobile &&
-                        errorMessages.general &&
+                        errorMessages?.general &&
                         <div className="alert alert-danger mt-5">{errorMessages.general}</div>
                     }
                 </div>
             </div>
-            {mutation.isLoading && <PulsatingLoader/>}
-            {isModalOpen ?
-                <ErrorMobileModal
-                    onClose={() => setIsModalOpen(false)}
-                    message={errorMessages.general}/>
-                : null
-            }
         </div>
     );
 };

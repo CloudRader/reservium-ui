@@ -9,7 +9,7 @@ const ReservationForm = ({onSubmit, isSubmitting, calendarIds, reservationTypes,
         errors,
         handleChange,
         handleSubmit,
-    } = useReservationFormLogic(calendarIds, reservationTypes, selectedSlot);
+    } = useReservationFormLogic(calendarIds, reservationTypes, selectedSlot, onSubmit);
 
 
     const renderField = useCallback((field) => {
@@ -88,7 +88,7 @@ const ReservationForm = ({onSubmit, isSubmitting, calendarIds, reservationTypes,
     return (
         <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6">
             <h2 className="text-2xl font-bold text-green-800 mb-6">Reservation Form</h2>
-            <form onSubmit={(e) => handleSubmit(e, onSubmit)} className="space-y-5">
+            <form onSubmit={(e) => handleSubmit(e)} className="space-y-5">
                 {formFields.map((field) => (
                     <div key={field.name}>
                         <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">

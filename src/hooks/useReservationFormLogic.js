@@ -9,7 +9,7 @@ const fetchAdditionalServices = async (calendarId) => {
     return data.map(service => ({ value: service, label: service }));
 };
 
-const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) => {
+const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, onSubmit) => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
     const [reservationType, setReservationType] = useState('');
@@ -184,9 +184,9 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) =>
         }
     }, [selectedSlot]);
 
-    const handleSubmit = useCallback((e, onSubmit) => {
-        e.preventDefault();
 
+
+    const validateForm = useCallback(() => {
         const validationErrors = formFields.reduce((acc, field) => {
             const error = validateField(field, formData[field.name]);
             if (error) acc[field.name] = error;
@@ -194,20 +194,29 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot) =>
         }, {});
 
         setErrors(validationErrors);
+        return Object.keys(validationErrors).length === 0;
+    }, [formFields, formData, validateField]);
 
-        if (Object.keys(validationErrors).length === 0) {
-            const payload = {
-                start_datetime: `${formData.startDate}T${formData.startTime}`,
-                end_datetime: `${formData.endDate}T${formData.endTime}`,
-                purpose: formData.purpose,
-                guests: parseInt(formData.guests, 10),
-                reservation_type: formData.type,
-                email: formData.email,
-                additional_services: formData.additionalServices || [],
-            };
+    const preparePayload = useCallback(() => {
+        return {
+            start_datetime: `${formData.startDate}T${formData.startTime}`,
+            end_datetime: `${formData.endDate}T${formData.endTime}`,
+            purpose: formData.purpose,
+            guests: parseInt(formData.guests, 10),
+            reservation_type: formData.type,
+            email: formData.email,
+            additional_services: formData.additionalServices || [],
+        };
+    }, [formData]);
+
+    const handleSubmit = useCallback((e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            const payload = preparePayload();
             onSubmit(payload);
         }
-    }, [formData, formFields, validateField]);
+    }, [validateForm, preparePayload]);
 
     return {
         formFields,

@@ -145,6 +145,10 @@ function AppContent() {
                 {/*    // TODO add here all routs for manager*/}
                 {/*    <>*/}
                 <Route
+                    path='/add-service'
+                    element={<CreateNewCalendar username={username}/>}
+                />
+                <Route
                     path='/add-calendar'
                     element={<CreateNewCalendar username={username}/>}
                 />

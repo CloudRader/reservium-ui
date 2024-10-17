@@ -32,7 +32,7 @@ const EditTable = ({name, data, nameAtr, idAtr, editLink, addLink}) => {
                             </td>
                             <td className="py-3 px-4 text-center">
                                 <Link
-                                    to={editLink}
+                                    to={editLink + rowData[nameAtr]}
                                     className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded text-sm"
                                 >
                                     Edit

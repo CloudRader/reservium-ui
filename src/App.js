@@ -91,6 +91,10 @@ function AppContent() {
 
                 {/*DELETE IT USE FOR TEST*/}
                 <Route path="/edit-services" element={<EditServices services={services}/>}/>
+                {/*<Route*/}
+                {/*    path='/add-service'*/}
+                {/*    element={<CreateNewService username={username}/>}*/}
+                {/*/>*/}
 
                 {services && services.map(service => (
                     <>
@@ -103,7 +107,6 @@ function AppContent() {
                             />}
                         />
                         <Route
-                            key={'/edit-mini-services/' + service.linkName}
                             path={`/edit-mini-services/${service.linkName}`}
                             element={<EditMiniServices
                                 miniServices={miniServices[service.linkName]}
@@ -111,8 +114,7 @@ function AppContent() {
                             />}
                         />
                         <Route
-                            key={'/edit-service/' + service.linkName}
-                            path={`/edit-service/${service.linkName}`}
+                            path={`/edit-service/${service.serviceName}`}
                             element={<EditService
                                 serviceData={service}
                             />}
@@ -154,10 +156,7 @@ function AppContent() {
                 {/*{userRoles.includes("manager") && (*/}
                 {/*    // TODO add here all routs for manager*/}
                 {/*    <>*/}
-                <Route
-                    path='/add-service'
-                    element={<CreateNewCalendar username={username}/>}
-                />
+
 
                 {/*    </>*/}
                 {/*)}*/}

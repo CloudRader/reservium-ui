@@ -217,4 +217,33 @@ const EditService = () => {
     );
 };
 
+
+{/*<td className="py-3 px-12 text-right">*/
+}
+{/*    <button*/
+}
+{/*        className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded mr-2 text-sm"*/
+}
+{/*        onClick={() => navigate(`/edit-calendars/${service.id}`)}*/
+}
+{/*    >*/
+}
+{/*        Edit Calendars*/
+}
+{/*    </button>*/
+}
+{/*    <button*/
+}
+{/*        className="bg-purple-500 hover:bg-purple-600 text-white py-1 px-2 rounded text-sm"*/
+}
+{/*        onClick={() => navigate(`/edit-mini-services/${service.id}`)}*/
+}
+{/*    >*/
+}
+{/*        Edit Mini Services*/
+}
+{/*    </button>*/
+}
+{/*</td>*/
+}
 export default EditService;

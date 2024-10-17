@@ -6,15 +6,19 @@ import EditTable from "./EditTable";
 const EditMiniServices = ({serviceName, miniServices}) => {
 
     const mockcolumHeaders = [
-        'Calendar Id',
-        'className',
-        'backgroundColor',
-        'borderColor',
+        'Id',
+        'Name',
+        'Reservation_service_id',
         'Actions',
     ];
 
     return (
-        <EditTable name={'Mini Services'} data={miniServices} columHeaders={mockcolumHeaders} editLink={`/edit-mini-service/`} addLink={`/add-mini-service/${serviceName}`} />
+        <EditTable name={'Mini Services'}
+                   data={miniServices}
+                   columHeaders={mockcolumHeaders}
+                   editLink={`/edit-mini-service/`}
+                   addLink={`/add-mini-service/${serviceName}`}
+                   />
     );
 };
 

@@ -70,7 +70,7 @@ function AppContent() {
                 ))}
 
                 {/*DELETE IT USE FOR TEST*/}
-                <Route path="/edit-services" element={<EditServices/>}/>
+                <Route path="/edit-services" element={<EditServices services={services}/>}/>
                 <Route path="/edit-service/1" element={<EditService/>}/>
 
                 <Route path="/edit-mini-services/1" element={<EditMiniServices/>}/>

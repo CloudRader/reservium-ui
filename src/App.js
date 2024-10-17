@@ -89,8 +89,8 @@ function AppContent() {
                             />}
                         />
                         <Route
-                            key={'"/edit-mini-services/' + service.linkName}
-                            path={`"/edit-mini-services/${service.linkName}`}
+                            key={'/edit-mini-services/' + service.linkName}
+                            path={`/edit-mini-services/${service.linkName}`}
                             element={<EditMiniServices
                                 miniServices={miniServices[service.linkName]}
                                 serviceName={service.linkName}

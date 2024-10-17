@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import EditTable from "./EditTable";
 
 
@@ -10,6 +10,7 @@ const EditMiniServices = ({serviceName, miniServices}) => {
         'className',
         'backgroundColor',
         'borderColor',
+        'Actions',
     ];
 
     return (

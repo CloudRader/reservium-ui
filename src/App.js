@@ -118,6 +118,15 @@ function AppContent() {
                             />}
                         />
 
+                        <Route
+                            path={`/add-calendar/${service.linkName}`}
+                            element={<CreateNewCalendar username={username}/>}
+                        />
+                        <Route
+                            path={`/add-mini-service/${service.linkName}`}
+                            element={<CreateNewMiniService username={username}/>}
+                        />
+
                         {miniServices[service.linkName].map(miniService => (
                             <Route
                                 key={'/edit-mini-service/' + service.linkName}
@@ -138,6 +147,7 @@ function AppContent() {
                                 />}
                             />
                         ))}
+
                     </>
                 ))}
 
@@ -148,14 +158,7 @@ function AppContent() {
                     path='/add-service'
                     element={<CreateNewCalendar username={username}/>}
                 />
-                <Route
-                    path='/add-calendar'
-                    element={<CreateNewCalendar username={username}/>}
-                />
-                <Route
-                    path='/add-miniservice'
-                    element={<CreateNewMiniService username={username}/>}
-                />
+
                 {/*    </>*/}
                 {/*)}*/}
 

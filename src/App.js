@@ -131,7 +131,7 @@ function AppContent() {
                         {calendars[service.linkName].map(calendar => (
                             <Route
                                 key={'/edit-calendar/' + service.linkName}
-                                path={`/edit-calendar/${service.linkName}/${calendar.name}`}
+                                path={`/edit-calendar/${service.linkName}/${calendar.className}`}
                                 element={<EditCalendar
                                     serviceName={service.linkName}
                                     calendarData={calendar}

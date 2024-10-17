@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import UniversalLayout from "../UniversalLayout";
 
 const EditCalendar = () => {
     const { serviceId, calendarId } = useParams();
@@ -53,7 +54,7 @@ const EditCalendar = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto mt-8 p-6 bg-gradient-to-r from-green-50 to-green-100 rounded-lg shadow-md">
+        <UniversalLayout centerContent whiteBackGreenContentBackground >
             <h1 className="text-2xl font-bold text-green-800 mb-6">Edit Calendar: {calendar.reservation_type}</h1>
             <div className="bg-white p-4 rounded-lg shadow">
                 <div className="grid grid-cols-2 gap-4">
@@ -90,7 +91,7 @@ const EditCalendar = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </UniversalLayout >
     );
 };
 

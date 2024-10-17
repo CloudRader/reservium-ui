@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import UniversalLayout from "../UniversalLayout";
 
 const EditCalendars = () => {
     const [calendars, setCalendars] = useState([]);
@@ -18,11 +19,13 @@ const EditCalendars = () => {
     }, []);
 
     const handleCalendarClick = (calendarId) => {
-        navigate(`/edit-calendar/${serviceId}/${calendarId}`);
+        // TODO fix
+        // navigate(`/edit-calendar/${serviceId}/${calendarId}`);
+        navigate(`/edit-calendar/${calendarId}`);
     };
 
     return (
-        <div className="max-w-4xl mx-auto mt-8 p-6 bg-gradient-to-r from-green-50 to-green-100 rounded-lg shadow-md">
+        <UniversalLayout centerContent whiteBackGreenContentBackground >
             <h1 className="text-2xl font-bold text-green-800 mb-6">Edit Calendars</h1>
             <table className="w-full bg-white rounded-lg overflow-hidden">
                 <thead className="bg-green-200 text-green-700">
@@ -58,13 +61,15 @@ const EditCalendars = () => {
             </table>
             <div className="mt-6">
                 <Link
-                    to={`/add-calendar/${serviceId}`}
+                    // to={`/add-calendar/${serviceId}`}
+                    to={`/add-calendar/`}
+
                     className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
                     Add New Calendar
                 </Link>
             </div>
-        </div>
+        </UniversalLayout>
     );
 };
 

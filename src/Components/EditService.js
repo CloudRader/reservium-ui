@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import constants from "../Constants"; // Make sure to install axios: npm install axios
+import constants from "../Constants";
+import UniversalLayout from "../UniversalLayout"; // Make sure to install axios: npm install axios
 
 const mockService = {
     web: "http://example.com",
@@ -96,10 +97,10 @@ const EditService = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto mt-8 p-6 bg-gradient-to-r from-green-50 to-green-100 rounded-lg shadow-md">
+        <UniversalLayout centerContent whiteBackGreenContentBackground >
             <h1 className="text-2xl font-bold text-green-800 mb-6">Edit Service: {service.name}</h1>
             {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">{error}</div>}
-            <div className="bg-white p-4 rounded-lg shadow">
+            <div className="bg-white p-4 w-100 shadow">
                 {isEditing ? (
                     <form onSubmit={handleSubmit}>
                         <div className="grid grid-cols-2 gap-4">
@@ -212,7 +213,7 @@ const EditService = () => {
                     </>
                 )}
             </div>
-        </div>
+        </UniversalLayout>
     );
 };
 

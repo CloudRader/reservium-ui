@@ -21,6 +21,7 @@ import EditService from "./Components/EditService";
 import EditCalendars from "./Components/EditCalendars";
 import EditCalendar from "./Components/EditCalendar";
 import EditMiniServices from "./Components/EditMiniServices";
+import EditMiniService from "./Components/EditMiniService";
 
 axios.defaults.withCredentials = true;
 
@@ -38,7 +39,7 @@ function AppContent() {
         return <PulsatingLoader/>;
     }
 
-    const {services, calendars,miniServices} = data || {services: [], calendars: {} ,miniServices : {}};
+    const {services, calendars, miniServices} = data || {services: [], calendars: {} ,miniServices : {}};
 
     return (
         <div className=" dark:!bg-slate-400 ">
@@ -69,47 +70,6 @@ function AppContent() {
                     />
                 ))}
 
-                {/*DELETE IT USE FOR TEST*/}
-                <Route path="/edit-services" element={<EditServices services={services}/>}/>
-                <Route path="/edit-service/1" element={<EditService/>}/>
-
-                <Route path="/edit-mini-services/1" element={<EditMiniServices/>}/>
-
-                {/*<Route path="/edit-mini-service/1" element={<EditMiniService/>}/>*/}
-
-                <Route path="/edit-calendars/1" element={<EditCalendars/>}/>
-                {services && services.map(service => (
-                    <>
-                        <Route
-                            key={'/edit-calendars/' + service.linkName}
-                            path={`/edit-calendars/${service.linkName}`}
-                            element={<EditCalendars
-                                roomCalendarLinks={calendars[service.linkName]}
-                                serviceName={service.linkName}
-                            />}
-                        />
-                        <Route
-                            key={'/edit-mini-services/' + service.linkName}
-                            path={`/edit-mini-services/${service.linkName}`}
-                            element={<EditMiniServices
-                                miniServices={miniServices[service.linkName]}
-                                serviceName={service.linkName}
-                            />}
-                        />
-                    </>
-                ))}
-
-                <Route path="/edit-calendar/1" element={<EditCalendar/>}/>
-
-
-                {/*{services && services.map(service => (*/}
-                {/*    <Route*/}
-                {/*        key={`/edit-service/${service.linkName}`}*/}
-                {/*        path={`/edit-service/${service.linkName}`}*/}
-                {/*        element={<EditServicePage />}*/}
-                {/*    />*/}
-                {/*))}*/}
-
                 <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
                                                                   isLoggedIn={isLoggedIn} onLogout={logout}
                                                                   roomCalendarLinks={calendars["club"]}
@@ -129,6 +89,60 @@ function AppContent() {
                     />
                 ))}
 
+                {/*DELETE IT USE FOR TEST*/}
+                <Route path="/edit-services" element={<EditServices services={services}/>}/>
+
+                {services && services.map(service => (
+                    <>
+                        <Route
+                            key={'/edit-calendars/' + service.linkName}
+                            path={`/edit-calendars/${service.linkName}`}
+                            element={<EditCalendars
+                                roomCalendarLinks={calendars[service.linkName]}
+                                serviceName={service.linkName}
+                            />}
+                        />
+                        <Route
+                            key={'/edit-mini-services/' + service.linkName}
+                            path={`/edit-mini-services/${service.linkName}`}
+                            element={<EditMiniServices
+                                miniServices={miniServices[service.linkName]}
+                                serviceName={service.linkName}
+                            />}
+                        />
+                        <Route
+                            key={'/edit-service/' + service.linkName}
+                            path={`/edit-service/${service.linkName}`}
+                            element={<EditService
+                                serviceData={service}
+                            />}
+                        />
+
+                        {miniServices[service.linkName].map(miniService => (
+                            <Route
+                                key={'/edit-mini-service/' + service.linkName}
+                                path={`/edit-mini-service/${service.linkName}/${miniService.name}`}
+                                element={<EditMiniService
+                                    miniServices={miniServices[service.linkName]}
+                                    serviceName={service.linkName}
+                                    miniServiceData={miniService}
+                                />}
+                            />
+                        ))}
+                        {calendars[service.linkName].map(calendar => (
+                            <Route
+                                key={'/edit-calendar/' + service.linkName}
+                                path={`/edit-calendar/${service.linkName}/${calendar.name}`}
+                                element={<EditCalendar
+                                    roomCalendarLinks={calendars[service.linkName]}
+                                    serviceName={service.linkName}
+                                    calendarData={calendar}
+                                />}
+                            />
+                        ))}
+                    </>
+                ))}
+
                 {/*{userRoles.includes("manager") && (*/}
                 {/*    // TODO add here all routs for manager*/}
                 {/*    <>*/}
@@ -142,6 +156,7 @@ function AppContent() {
                 />
                 {/*    </>*/}
                 {/*)}*/}
+
             </Routes>
             <Footer/>
         </div>

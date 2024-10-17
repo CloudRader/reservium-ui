@@ -1,98 +1,109 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import UniversalLayout from "../UniversalLayout";
 
-const EditCalendar = () => {
-    const { serviceId, calendarId } = useParams();
-    const navigate = useNavigate();
-    const [calendar, setCalendar] = useState(null);
-
-    useEffect(() => {
-        // Fetch calendar data here based on serviceId and calendarId
-        // For now, we'll use mock data
-        const mockCalendar = {
-            id: calendarId,
-            reservation_type: "Type A",
-            max_people: 10,
-            color: "#00FF00",
-            collision_with_itself: true,
-            club_member_rules: {
-                night_time: true,
-                reservation_without_permission: true,
-                max_reservation_hours: 2,
-                in_advance_hours: 24,
-                in_advance_minutes: 0,
-                in_prior_days: 7
-            },
-            active_member_rules: {
-                night_time: false,
-                reservation_without_permission: false,
-                max_reservation_hours: 1,
-                in_advance_hours: 12,
-                in_advance_minutes: 0,
-                in_prior_days: 3
-            },
-            manager_rules: {
-                night_time: true,
-                reservation_without_permission: true,
-                max_reservation_hours: 4,
-                in_advance_hours: 48,
-                in_advance_minutes: 0,
-                in_prior_days: 14
-            },
-        };
-        setCalendar(mockCalendar);
-    }, [serviceId, calendarId]);
+const EditMiniServices = ({ miniServices, serviceName, miniServiceData }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedData, setEditedData] = useState(miniServiceData);
 
     const handleEdit = () => {
-        // Implement edit functionality
-        console.log("Edit calendar:", calendar);
+        setIsEditing(true);
     };
 
-    if (!calendar) {
-        return <div>Loading...</div>;
+    const handleSave = () => {
+        // Implement save functionality
+        console.log("Saving mini service:", editedData);
+        setIsEditing(false);
+        // In a real scenario, you would make an API call here to update the data
+        // and possibly update the parent component's state
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        setEditedData(miniServiceData); // Reset to original data
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    if (!miniServiceData) {
+        return <div>No data available</div>;
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground >
-            <h1 className="text-2xl font-bold text-green-800 mb-6">Edit Calendar: {calendar.reservation_type}</h1>
+        <UniversalLayout centerContent whiteBackGreenContentBackground>
+            <h1 className="text-2xl font-bold text-green-800 mb-6">
+                {isEditing ? 'Edit' : 'View'} Mini Service: {serviceName}
+            </h1>
             <div className="bg-white p-4 rounded-lg shadow">
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <h2 className="text-lg font-semibold text-green-700">Basic Information</h2>
-                        <p><strong>Reservation Type:</strong> {calendar.reservation_type}</p>
-                        <p><strong>Max People:</strong> {calendar.max_people}</p>
-                        <p><strong>Color:</strong> <span style={{color: calendar.color}}>{calendar.color}</span></p>
-                        <p><strong>Collision with itself:</strong> {calendar.collision_with_itself ? 'Yes' : 'No'}</p>
-                    </div>
-                    <div>
-                        <h2 className="text-lg font-semibold text-green-700">Club Member Rules</h2>
-                        <p><strong>Night time:</strong> {calendar.club_member_rules.night_time ? 'Yes' : 'No'}</p>
-                        <p><strong>Reservation without permission:</strong> {calendar.club_member_rules.reservation_without_permission ? 'Yes' : 'No'}</p>
-                        <p><strong>Max reservation hours:</strong> {calendar.club_member_rules.max_reservation_hours}</p>
-                        <p><strong>In advance hours:</strong> {calendar.club_member_rules.in_advance_hours}</p>
-                        <p><strong>In prior days:</strong> {calendar.club_member_rules.in_prior_days}</p>
-                    </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">ID</label>
+                    <input
+                        type="text"
+                        name="id"
+                        value={editedData.id}
+                        readOnly
+                        className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                    />
                 </div>
-                <div className="mt-4">
-                    <h2 className="text-lg font-semibold text-green-700">Active Member Rules</h2>
-                    {/* Display active member rules similar to club member rules */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={editedData.name}
+                        onChange={handleChange}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+                            isEditing ? 'bg-white' : 'bg-gray-100'
+                        }`}
+                    />
                 </div>
-                <div className="mt-4">
-                    <h2 className="text-lg font-semibold text-green-700">Manager Rules</h2>
-                    {/* Display manager rules similar to club member rules */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Reservation Service ID</label>
+                    <input
+                        type="text"
+                        name="reservationServiceId"
+                        value={editedData.reservationServiceId}
+                        onChange={handleChange}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+                            isEditing ? 'bg-white' : 'bg-gray-100'
+                        }`}
+                    />
                 </div>
-                <div className="mt-6 flex justify-end">
-                    <button
-                        onClick={handleEdit}
-                        className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                        Edit Calendar
-                    </button>
+                <div className="mt-6 flex justify-end space-x-3">
+                    {isEditing ? (
+                        <>
+                            <button
+                                onClick={handleSave}
+                                className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                            >
+                                Save
+                            </button>
+                            <button
+                                onClick={handleCancel}
+                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            >
+                                Cancel
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            onClick={handleEdit}
+                            className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                        >
+                            Edit Mini Service
+                        </button>
+                    )}
                 </div>
             </div>
-        </UniversalLayout >
+        </UniversalLayout>
     );
 };
 
-export default EditCalendar;
+export default EditMiniServices;

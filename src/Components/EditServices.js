@@ -3,17 +3,13 @@ import EditTable from "./EditTable";
 
 const EditServices = ({services}) => {
 
-    const mockcolumHeaders = [
-        'Id',
-        'Name',
-        'Reservation_service_id',
-        'Actions',
-    ];
+
 
     return (
         <EditTable name={'Services'}
                    data={services}
-                   columHeaders={mockcolumHeaders}
+                   nameAtr={'serviceName'}
+                   id={'linkName'}
                    editLink={`/edit-service/`}
                    addLink={`/add-service/`}
         />

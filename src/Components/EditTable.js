@@ -2,7 +2,13 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import UniversalLayout from "../UniversalLayout";
 
-const EditTable = ({name, columHeaders, data, editLink, addLink}) => {
+const EditTable = ({name, data, nameAtr, idAtr, editLink, addLink}) => {
+
+    // TODO rework
+    const columHeaders = [
+        'Name',
+        'Actions',
+    ];
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
@@ -20,13 +26,10 @@ const EditTable = ({name, columHeaders, data, editLink, addLink}) => {
                     </thead>
                     <tbody>
                     {data.map((rowData) => (
-                        // TODO fix keys
-                        <tr key={rowData.id} className="border-b border-green-100 hover:bg-green-50">
-                            {Object.values(rowData).map((data) => (
-                                <td key={data} className="py-3 px-4 text-green-700">
-                                    {data}
-                                </td>
-                            ))}
+                        <tr key={rowData[idAtr]} className="border-b border-green-100 hover:bg-green-50">
+                            <td key={rowData[nameAtr]} className="py-3 px-4 text-green-700">
+                                    {rowData[nameAtr]}
+                            </td>
                             <td className="py-3 px-4 text-center">
                                 <Link
                                     to={editLink}

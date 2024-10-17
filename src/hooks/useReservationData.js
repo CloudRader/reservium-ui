@@ -38,7 +38,6 @@ export async function fetchReservationData() {
         }));
         return acc;
     }, {});
-    console.log("test" + miniServices);
 
     return {services, calendars, miniServices};
 }

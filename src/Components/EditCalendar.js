@@ -1,37 +1,37 @@
 import React from 'react';
 import UniversalLayout from "../UniversalLayout";
 
-const mockCalendar = {
-    id: calendarId,
-    reservation_type: "Type A",
-    max_people: 10,
-    color: "#00FF00",
-    collision_with_itself: true,
-    club_member_rules: {
-        night_time: true,
-        reservation_without_permission: true,
-        max_reservation_hours: 2,
-        in_advance_hours: 24,
-        in_advance_minutes: 0,
-        in_prior_days: 7
-    },
-    active_member_rules: {
-        night_time: false,
-        reservation_without_permission: false,
-        max_reservation_hours: 1,
-        in_advance_hours: 12,
-        in_advance_minutes: 0,
-        in_prior_days: 3
-    },
-    manager_rules: {
-        night_time: true,
-        reservation_without_permission: true,
-        max_reservation_hours: 4,
-        in_advance_hours: 48,
-        in_advance_minutes: 0,
-        in_prior_days: 14
-    },
-};
+// const mockCalendar = {
+//     id: 1245,
+//     reservation_type: "Type A",
+//     max_people: 10,
+//     color: "#00FF00",
+//     collision_with_itself: true,
+//     club_member_rules: {
+//         night_time: true,
+//         reservation_without_permission: true,
+//         max_reservation_hours: 2,
+//         in_advance_hours: 24,
+//         in_advance_minutes: 0,
+//         in_prior_days: 7
+//     },
+//     active_member_rules: {
+//         night_time: false,
+//         reservation_without_permission: false,
+//         max_reservation_hours: 1,
+//         in_advance_hours: 12,
+//         in_advance_minutes: 0,
+//         in_prior_days: 3
+//     },
+//     manager_rules: {
+//         night_time: true,
+//         reservation_without_permission: true,
+//         max_reservation_hours: 4,
+//         in_advance_hours: 48,
+//         in_advance_minutes: 0,
+//         in_prior_days: 14
+//     },
+// };
 const EditCalendar = (serviceName, calendar) => {
     const handleEdit = () => {
         // Implement edit functionality

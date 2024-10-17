@@ -78,7 +78,7 @@ function AppContent() {
                 <Route path='/logout' element={<Logout onLogout={logout}/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
 
-                <Route path="/success" element={<SuccessPage/>}/>
+                <Route path='/success' element={<SuccessPage/>}/>
 
                 {services && services.map(service => (
                     <Route
@@ -126,11 +126,11 @@ function AppContent() {
 
                         <Route
                             path={`/add-calendar/${service.linkName}`}
-                            element={<CreateNewCalendar username={username}/>}
+                            element={<CreateNewCalendar serviceId={service.id}/>}
                         />
                         <Route
                             path={`/add-mini-service/${service.linkName}`}
-                            element={<CreateNewMiniService username={username}/>}
+                            element={<CreateNewMiniService serviceId={service.id} />}
                         />
 
                         {miniServices[service.linkName].map(miniService => (

@@ -13,6 +13,8 @@ export async function fetchReservationData() {
         serviceName: info.name,
         contact_mail: info.contact_mail,
         public: info.public,
+        deleted_at: info.deleted_at,
+        id: info.id,
         reservation_types: info.calendars.map(calendar => calendar.reservation_type),
         calendarIds: info.calendars.reduce((acc, calendar) => {
             acc[calendar.reservation_type] = calendar.id;

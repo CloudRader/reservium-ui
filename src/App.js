@@ -145,7 +145,7 @@ function AppContent() {
                                 path={`/edit-calendar/${service.linkName}/${calendar.className}`}
                                 element={<EditCalendar
                                     serviceName={service.linkName}
-                                    calendarData={calendar}
+                                    calendar={calendar}
                                 />}
                             />
                         ))}

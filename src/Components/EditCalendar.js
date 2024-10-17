@@ -1,9 +1,43 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import UniversalLayout from "../UniversalLayout";
+import axios from "axios";
+import constants from "../Constants";
 
-const EditCalendar = ({ serviceName, calendar }) => {
+axios.defaults.withCredentials = true;
+async function fetchCalendarData(calendar_id) {
+    try {
+        const response = await axios.get(`${constants.serverURL}/calendars/${calendar_id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch calendar data:', error);
+        throw error; // Re-throw to handle it in the component if needed
+    }
+}
+const EditCalendar = ({ serviceName, calendarBaseData }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [editedData, setEditedData] = useState(calendar);
+    const [editedData, setEditedData] = useState(null); // Changed from `calendar`
+    const [calendar, setCalendar] = useState(null);
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await fetchCalendarData(calendarBaseData.googleCalendarId);
+                setCalendar(data);
+                setEditedData(data); // Set editedData after fetching calendar data
+            } catch (err) {
+                setError(err.message); // Handle error
+            } finally {
+                setLoading(false); // Stop loading
+            }
+        };
+
+        fetchData();
+    }, [calendarBaseData.googleCalendarId]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -38,9 +72,6 @@ const EditCalendar = ({ serviceName, calendar }) => {
         }));
     };
 
-    if (!calendar) {
-        return <div>No data available</div>;
-    }
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>

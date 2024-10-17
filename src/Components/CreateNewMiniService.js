@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
 
-const CreateNewMiniService = ({username}) => {
+const CreateNewMiniService = ({ username }) => {
     const [formData, setFormData] = useState({
         name: '',
         service_alias: 'klub', // Default value set to 'klub'
@@ -13,13 +12,13 @@ const CreateNewMiniService = ({username}) => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value,
         }));
-
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(`${constants.serverURL}/mini_services/create_mini_service?username=${username}`, formData)
@@ -41,51 +40,59 @@ const CreateNewMiniService = ({username}) => {
             });
     };
 
-
     return (
         <UniversalLayout centerContent>
-        <div className="container">
-            <h1
-                className="my-4 text-center text-white"
-                style={{
-                    background: 'linear-gradient(to right, #00b894, #008e7a)',
-                    padding: '20px 0',
-                }}
-            >
-                Create new Mini Service
-            </h1>
-            <form onSubmit={handleSubmit} className="bg-light p-4 rounded">
-                <div className="form-group">
-                    <label htmlFor="name">Mini Service Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="service_alias">Service Alias</label>
-                    <select
-                        className="form-control"
-                        id="service_alias"
-                        name="service_alias"
-                        value={formData.service_alias}
-                        onChange={handleChange}>
-                        <option value="klub">Klub</option>
-                        <option value="stud">Stud</option>
-                        <option value="grill">Grill</option>
-                    </select>
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-            {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
-            {errorMessage && <div className="alert alert-danger mt-3">{errorMessage}</div>}
-        </div>
-            </UniversalLayout>
+            <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
+                <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
+                    Create New Mini Service
+                </h1>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-green-700 mb-1">
+                            Mini Service Name
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="service_alias" className="block text-sm font-medium text-green-700 mb-1">
+                            Service Alias
+                        </label>
+                        <select
+                            id="service_alias"
+                            name="service_alias"
+                            value={formData.service_alias}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        >
+                            <option value="klub">Klub</option>
+                            <option value="stud">Stud</option>
+                            <option value="grill">Grill</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    >
+                        Create Mini Service
+                    </button>
+                </form>
+
+                {successMessage && <div className="mt-3 p-2 bg-green-100 text-green-700 rounded">{successMessage}</div>}
+                {errorMessage && <div className="mt-3 p-2 bg-red-100 text-red-700 rounded">{errorMessage}</div>}
+            </div>
+        </UniversalLayout>
     );
 }
+
 export default CreateNewMiniService;

@@ -1,8 +1,8 @@
 import {  useEffect } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import axios from "axios";
-import constants from "./Constants";
-import LoginInfoPage from "./LoginInfoPage";
+import constants from "../Constants";
+import LoginInfoPage from "../pages/LoginInfoPage";
 axios.defaults.withCredentials = true;
 
 function Logout({ onLogout }) {

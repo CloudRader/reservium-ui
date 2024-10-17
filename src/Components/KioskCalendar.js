@@ -6,8 +6,8 @@ import listPlugin from '@fullcalendar/list';
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import constants from "./Constants";
-import styles from "./styles/KioskCalendar.module.css";
+import constants from "../Constants";
+import styles from "../styles/KioskCalendar.module.css";
 import moment from 'moment';
 
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds

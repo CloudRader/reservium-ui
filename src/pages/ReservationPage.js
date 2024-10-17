@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import ReservationForm from './Components/ReservationForm';
+import ReservationForm from '../Components/ReservationForm';
 import LoginInfoPage from "./LoginInfoPage";
-import Logout from "./Logout";
-import AdaptiveCalendar from "./Components/AdaptiveCalendar";
-import WarningMessage from "./Components/WarningMessage";
-import {ErrorMobileModal} from "./Components/ErrorMobileModal";
-import PulsatingLoader from "./Components/PulsatingLoader";
-import useSubmitLogic from "./hooks/useSubmitLogic";
-import Constants from "./Constants";
+import Logout from "../Components/Logout";
+import AdaptiveCalendar from "../Components/AdaptiveCalendar";
+import WarningMessage from "../Components/WarningMessage";
+import {ErrorMobileModal} from "../Components/ErrorMobileModal";
+import PulsatingLoader from "../Components/PulsatingLoader";
+import useSubmitLogic from "../hooks/useSubmitLogic";
+import Constants from "../Constants";
 
 const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT);

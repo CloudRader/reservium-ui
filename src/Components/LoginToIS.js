@@ -1,8 +1,8 @@
 import {useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-import constants from "./Constants";
-import PulsatingLoader from "./Components/PulsatingLoader";
+import constants from "../Constants";
+import PulsatingLoader from "./PulsatingLoader";
 
 /**
  * Gets the login URL from the server and redirects the user to it.

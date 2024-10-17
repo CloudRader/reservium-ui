@@ -1,7 +1,7 @@
 import React from 'react';
 import {useLocation} from 'react-router-dom';
-import ServicesSection from './Components/ServicesSection';
-import constants from './Constants';
+import ServicesSection from '../Components/ServicesSection';
+import constants from '../Constants';
 
 const SuccessPage = () => {
     const location = useLocation();

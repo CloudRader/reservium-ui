@@ -3,10 +3,10 @@ import axios from 'axios';
 import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
 
-const CreateNewMiniService = ({ username }) => {
+const CreateNewMiniService = ({servicesId}) => {
     const [formData, setFormData] = useState({
         name: '',
-        service_alias: 'klub', // Default value set to 'klub'
+        reservation_service_id: servicesId, // Default value set to 'klub'
     });
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -21,7 +21,7 @@ const CreateNewMiniService = ({ username }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(`${constants.serverURL}/mini_services/create_mini_service?username=${username}`, formData)
+        axios.post(`${constants.serverURL}/mini_services/create_mini_service`, formData)
             .then(response => {
                 if (response.status === 201) {
                     console.log(response);
@@ -61,22 +61,6 @@ const CreateNewMiniService = ({ username }) => {
                             required
                             className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="service_alias" className="block text-sm font-medium text-green-700 mb-1">
-                            Service Alias
-                        </label>
-                        <select
-                            id="service_alias"
-                            name="service_alias"
-                            value={formData.service_alias}
-                            onChange={handleChange}
-                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        >
-                            <option value="klub">Klub</option>
-                            <option value="stud">Stud</option>
-                            <option value="grill">Grill</option>
-                        </select>
                     </div>
                     <button
                         type="submit"

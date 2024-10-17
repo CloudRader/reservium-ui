@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
-
-const CreateNewCalendar = ({ username }) => {
+axios.defaults.withCredentials = true;
+const CreateNewCalendar = ({ serviceId }) => {
     const [formFields, setFormFields] = useState([]);
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
@@ -92,37 +92,12 @@ const CreateNewCalendar = ({ username }) => {
         }
     }, [googleCalendars]);
 
-
     useEffect(() => {
-        if (selectedType) {
-            axios.get(`${constants.serverURL}/mini_services/alias/${selectedType}`)
-                .then(response => {
-                    const data = response.data;
-                    const newAdditionalServices = data.map(service => ({value: service.name, label: service.name}));
-                    setAdditionalServices(newAdditionalServices);
-                    setErrFetchingAdditionalServices(false);
-                })
-                .catch(error => {
-                    console.error("Error fetching additional services:", error);
-                    setAdditionalServices([]);
-                    setErrFetchingAdditionalServices(true);
-                });
-            setFormData(prevData => ({
-                ...prevData,
-                collision_with_calendar: [],
-                mini_services: []
-            }));
-        }
-    }, [selectedType]);
-
-    useEffect(() => {
-        if (selectedType) {
             // axios.get(`${constants.serverURL}/calendars/alias/${selectedType}`)
             axios.get(`${constants.serverURL}/calendars/`)
                 .then(response => {
-                    const data = response.data;
-                    const newOptions = data
-                        .filter(calendar => calendar.service_alias === selectedType) // Filter out the elements that don't meet the condition
+                    const newOptions = response.data
+                        .filter(calendar => calendar.id === serviceId) // Filter out the elements that don't meet the condition
                         .map(calendar => ({value: calendar.calendar_id, label: calendar.event_name})); // Map the filtered elements to the desired format
                     setCollisionWithCalendarOptions(newOptions);
                     setErrFetchingTypeOfReservations(false);
@@ -131,8 +106,7 @@ const CreateNewCalendar = ({ username }) => {
                     console.error("Error fetching reservation types:", error);
                     setErrFetchingTypeOfReservations(true);
                 });
-        }
-    }, [selectedType]);
+    }, []);
 
     useEffect(() => {
         setFormFields([
@@ -155,21 +129,35 @@ const CreateNewCalendar = ({ username }) => {
                 ],
                 validation: (value) => !!value,
             },
-            errFetchingTypeOfReservations ? {type: "empty"} : {
-                name: 'collision_with_calendar',
+            {
+                name: 'more_than_max_people_with_permission',
                 type: 'checkbox',
-                labelText: 'Collision With Calendar',
+                sybType: 'oneCheckbox',
+                labelText: 'Allow More Than Max People With Permission',
                 labelColor: 'text-success',
-                options: collisionWithCalendarOptions,
-                validation: (value) => value,
+                options: [{value: 'true', label: 'True'}],
             },
-            errFetchingAdditionalServices ? {type: "empty"} : {
-                name: 'mini_services',
-                type: 'checkbox',
-                labelText: 'Mini Services',
+            {
+                name: 'color',
+                type: 'color',
+                labelText: 'Calendar Color',
                 labelColor: 'text-success',
-                options: additionalServices,
             },
+            // errFetchingTypeOfReservations ? {type: "empty"} : {
+            //     name: 'collision_with_calendar',
+            //     type: 'checkbox',
+            //     labelText: 'Collision With Calendar',
+            //     labelColor: 'text-success',
+            //     options: collisionWithCalendarOptions,
+            //     validation: (value) => value,
+            // },
+            // errFetchingAdditionalServices ? {type: "empty"} : {
+            //     name: 'mini_services',
+            //     type: 'checkbox',
+            //     labelText: 'Mini Services',
+            //     labelColor: 'text-success',
+            //     options: additionalServices,
+            // },
             {
                 name: 'collision_with_itself',
                 type: 'checkbox',
@@ -330,7 +318,11 @@ const CreateNewCalendar = ({ username }) => {
         e.preventDefault();
 
         const requestData = {
-            calendar_id: formData.calendar_id,
+            more_than_max_people_with_permission: !!(formData.more_than_max_people_with_permission && formData.more_than_max_people_with_permission.length > 0),
+            color: formData.color,
+
+            reservation_service_id: serviceId,
+            id: formData.calendar_id,
             service_alias: formData.service_alias,
             collision_with_calendar: formData.collision_with_calendar || [],
             mini_services: formData.mini_services || [],
@@ -338,6 +330,7 @@ const CreateNewCalendar = ({ username }) => {
             reservation_type: formData.reservation_type,
             event_name: formData.event_name,
             max_people: Number(formData.max_people) || 0,
+
             club_member_rules: {
                 night_time: !!(formData.club_night_time && formData.club_night_time.length > 0),
                 reservation_more_24_hours: !!(formData.club_reservation_more_24_hours && formData.club_reservation_more_24_hours.length > 0),
@@ -361,7 +354,7 @@ const CreateNewCalendar = ({ username }) => {
             }
         };
 
-        axios.post(`${constants.serverURL}/calendars/create_calendar?username=${username}`, requestData)
+        axios.post(`${constants.serverURL}/calendars/create_calendar`, requestData)
             .then(() => {
                 setSuccessMessage('Calendar created successfully!');
                 setErrorMessage('');
@@ -476,6 +469,14 @@ const CreateNewCalendar = ({ username }) => {
                             </div>
                         ))}
                     </div>
+                );
+            case 'color':
+                return (
+                    <input
+                        type="color"
+                        {...commonProps}
+                        className="h-10 w-full"
+                    />
                 );
             case 'empty':
                 return null;

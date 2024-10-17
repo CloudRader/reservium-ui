@@ -30,7 +30,17 @@ export async function fetchReservationData() {
         return acc;
     }, {});
 
-    return {services, calendars};
+    const miniServices = data.reduce((acc, info) => {
+        acc[`${info.alias}`] = info.mini_services.map((miniService) => ({
+            id: miniService.id,
+            name: miniService.name,
+            reservationServiceId: miniService.reservation_service_id,
+        }));
+        return acc;
+    }, {});
+    console.log("test" + miniServices);
+
+    return {services, calendars, miniServices};
 }
 
 export function useReservationData(isLoggedIn) {

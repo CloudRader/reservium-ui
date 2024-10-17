@@ -1,37 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import constants from "../Constants";
-import UniversalLayout from "../UniversalLayout"; // Make sure to install axios: npm install axios
+import UniversalLayout from "../UniversalLayout";
 
-const mockService = {
-    web: "http://example.com",
-    contact_mail: "contact@example.com",
-    public: true,
-    id: 1,
-    deleted_at: null,
-    name: "Example Service",
-    alias: "example",
-    calendars: [
-        {
-            id: "cal1",
-            reservation_type: "Type A",
-            max_people: 10,
-            // ... other calendar properties
-        }
-    ],
-    mini_services: [
-        {
-            id: "mini1",
-            name: "Mini Service 1",
-            // ... other mini service properties
-        }
-    ]
-};
-const EditService = () => {
-    const { serviceName } = useParams();
+const EditService = ({ service: initialService }) => {
     const navigate = useNavigate();
-    const [service, setService] = useState(mockService);
+    const [service, setService] = useState(initialService);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         web: '',
@@ -43,27 +18,17 @@ const EditService = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
-    // useEffect(() => {
-        // Fetch service data here based on serviceId
-    //     const fetchService = async () => {
-    //         try {
-    //             const response = await axios.get(`${constants.serverURL}/reservation_services/name/${serviceName}`);
-    //             setService(response.data);
-    //             setFormData({
-    //                 web: response.data.web,
-    //                 contact_mail: response.data.contact_mail,
-    //                 public: response.data.public,
-    //                 name: response.data.name,
-    //                 alias: response.data.alias,
-    //             });
-    //         } catch (err) {
-    //             setError('Failed to fetch service data');
-    //             console.error(err);
-    //         }
-    //     };
-    //
-    //     fetchService();
-    // }, [serviceName]);
+    useEffect(() => {
+        if (initialService) {
+            setFormData({
+                web: initialService.web,
+                contact_mail: initialService.contact_mail,
+                public: initialService.public,
+                name: initialService.name,
+                alias: initialService.alias,
+            });
+        }
+    }, [initialService]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -73,14 +38,13 @@ const EditService = () => {
         }));
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
         try {
-            const response = await axios.put(`/api/reservation_services/${service["id"]}`, formData);
+            const response = await axios.put(`${constants.serverURL}/reservation_services/${service.id}`, formData);
             setService(response.data);
             setIsEditing(false);
             setIsSubmitting(false);
@@ -91,13 +55,12 @@ const EditService = () => {
         }
     };
 
-
     if (!service) {
         return <div>Loading...</div>;
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground >
+        <UniversalLayout centerContent whiteBackGreenContentBackground>
             <h1 className="text-2xl font-bold text-green-800 mb-6">Edit Service: {service.name}</h1>
             {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">{error}</div>}
             <div className="bg-white p-4 w-100 shadow">
@@ -186,23 +149,24 @@ const EditService = () => {
                                 <p><strong>Alias:</strong> {service.alias}</p>
                             </div>
                             <div>
-                                <h2 className="text-lg font-semibold text-green-700">Calendars</h2>
-                                <ul>
-                                    {service.calendars.map(calendar => (
-                                        <li key={calendar.id}>{calendar.reservation_type} (Max: {calendar.max_people})</li>
-                                    ))}
-                                </ul>
+                                <h2 className="text-lg font-semibold text-green-700">Associated Items</h2>
+                                <p><strong>Calendars:</strong> {service.calendars?.length || 0}</p>
+                                <p><strong>Mini Services:</strong> {service.mini_services?.length || 0}</p>
                             </div>
                         </div>
-                        <div className="mt-4">
-                            <h2 className="text-lg font-semibold text-green-700">Mini Services</h2>
-                            <ul>
-                                {service.mini_services.map(miniService => (
-                                    <li key={miniService.id}>{miniService.name}</li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="mt-6 flex justify-end">
+                        <div className="mt-6 flex justify-end space-x-3">
+                            <button
+                                onClick={() => navigate(`/edit-calendars/${service.linkName}`)}
+                                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                                Edit Calendars
+                            </button>
+                            <button
+                                onClick={() => navigate(`/edit-mini-services/${service.linkName}`)}
+                                className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                            >
+                                Edit Mini Services
+                            </button>
                             <button
                                 onClick={() => setIsEditing(true)}
                                 className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -217,33 +181,4 @@ const EditService = () => {
     );
 };
 
-
-{/*<td className="py-3 px-12 text-right">*/
-}
-{/*    <button*/
-}
-{/*        className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded mr-2 text-sm"*/
-}
-{/*        onClick={() => navigate(`/edit-calendars/${service.id}`)}*/
-}
-{/*    >*/
-}
-{/*        Edit Calendars*/
-}
-{/*    </button>*/
-}
-{/*    <button*/
-}
-{/*        className="bg-purple-500 hover:bg-purple-600 text-white py-1 px-2 rounded text-sm"*/
-}
-{/*        onClick={() => navigate(`/edit-mini-services/${service.id}`)}*/
-}
-{/*    >*/
-}
-{/*        Edit Mini Services*/
-}
-{/*    </button>*/
-}
-{/*</td>*/
-}
 export default EditService;

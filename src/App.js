@@ -116,7 +116,7 @@ function AppContent() {
                         <Route
                             path={`/edit-service/${service.serviceName}`}
                             element={<EditService
-                                serviceData={service}
+                                service={service}
                             />}
                         />
 

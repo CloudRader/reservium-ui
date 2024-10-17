@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import constants from './Constants';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginInfoPage from "./LoginInfoPage";
+import constants from '../Constants';
+import UniversalLayout from "../UniversalLayout";
 
-const CreateNewCalendar = ({ isLoggedIn, username }) => {
+const CreateNewCalendar = ({ username }) => {
     const [formFields, setFormFields] = useState([]);
     const [formData, setFormData] = useState({});
-    // const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -16,13 +15,90 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
     const [collisionWithCalendarOptions, setCollisionWithCalendarOptions] = useState([]);
     const [errFetchingAdditionalServices, setErrFetchingAdditionalServices] = useState(true);
     const [errFetchingTypeOfReservations, setErrFetchingTypeOfReservations] = useState(true);
+    const [googleCalendars, setGoogleCalendars] = useState([]);
+    const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
+    const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
+    const [manualCalendarId, setManualCalendarId] = useState('');
+
+    const fetchGoogleCalendars = async () => {
+        setIsLoadingCalendars(true);
+        try {
+            const response = await axios.get(`${constants.serverURL}/calendars/google_calendars/`);
+            setGoogleCalendars(response.data);
+            setIsLoadingCalendars(false);
+            setCalendarIdInputType('select');
+        } catch (error) {
+            console.error('Error fetching Google Calendars:', error);
+            setErrorMessage('Failed to fetch Google Calendars');
+            setIsLoadingCalendars(false);
+        }
+    };
+
+    useEffect(() => {
+        setFormFields(prevFields => prevFields.map(field =>
+            field.name === 'calendar_id'
+                ? {
+                    ...field,
+                    type: calendarIdInputType === 'select' ? 'select' : 'text',
+                    options: calendarIdInputType === 'select' ? googleCalendars.map(calendar => ({
+                        value: calendar.id,
+                        label: calendar.summary
+                    })) : []
+                }
+                : field
+        ));
+    }, [calendarIdInputType, googleCalendars]);
+
+    const handleChange = (e, field) => {
+        const { name, value, type, checked } = e.target;
+
+        if (name === 'calendar_id' && calendarIdInputType === 'manual') {
+            setManualCalendarId(value);
+        }
+
+        setFormData(prevData => {
+            if (type === 'checkbox') {
+                const currentValues = prevData[name] || [];
+                if (checked) {
+                    return { ...prevData, [name]: [...currentValues, value] };
+                } else {
+                    return { ...prevData, [name]: currentValues.filter(item => item !== value) };
+                }
+            } else {
+                return { ...prevData, [name]: value };
+            }
+        });
+
+        if (field.name === 'service_alias') {
+            setSelectedType(value);
+        }
+    };
+
+    useEffect(() => {
+        // Update the calendar_id field in formFields when googleCalendars changes
+        if (googleCalendars.length > 0) {
+            setFormFields(prevFields => prevFields.map(field =>
+                field.name === 'calendar_id'
+                    ? {
+                        ...field,
+                        type: 'select',
+                        options: googleCalendars.map(calendar => ({
+                            value: calendar.id,
+                            label: calendar.summary
+                        }))
+                    }
+                    : field
+            ));
+        }
+    }, [googleCalendars]);
+
 
     useEffect(() => {
         if (selectedType) {
             axios.get(`${constants.serverURL}/mini_services/alias/${selectedType}`)
                 .then(response => {
                     const data = response.data;
-                    const newAdditionalServices = data.map(service => ({ value: service.name, label: service.name }));
+                    const newAdditionalServices = data.map(service => ({value: service.name, label: service.name}));
                     setAdditionalServices(newAdditionalServices);
                     setErrFetchingAdditionalServices(false);
                 })
@@ -47,7 +123,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                     const data = response.data;
                     const newOptions = data
                         .filter(calendar => calendar.service_alias === selectedType) // Filter out the elements that don't meet the condition
-                        .map(calendar => ({ value: calendar.calendar_id, label: calendar.event_name })); // Map the filtered elements to the desired format
+                        .map(calendar => ({value: calendar.calendar_id, label: calendar.event_name})); // Map the filtered elements to the desired format
                     setCollisionWithCalendarOptions(newOptions);
                     setErrFetchingTypeOfReservations(false);
                 })
@@ -73,13 +149,13 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                 labelText: 'Service Alias',
                 labelColor: 'text-success',
                 options: [
-                    { value: 'klub', label: 'Klub' },
-                    { value: 'stud', label: 'Stud' },
-                    { value: 'grill', label: 'Grill' },
+                    {value: 'klub', label: 'Klub'},
+                    {value: 'stud', label: 'Stud'},
+                    {value: 'grill', label: 'Grill'},
                 ],
                 validation: (value) => !!value,
             },
-            errFetchingTypeOfReservations ? { type: "empty" } : {
+            errFetchingTypeOfReservations ? {type: "empty"} : {
                 name: 'collision_with_calendar',
                 type: 'checkbox',
                 labelText: 'Collision With Calendar',
@@ -87,7 +163,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                 options: collisionWithCalendarOptions,
                 validation: (value) => value,
             },
-            errFetchingAdditionalServices ? { type: "empty" } : {
+            errFetchingAdditionalServices ? {type: "empty"} : {
                 name: 'mini_services',
                 type: 'checkbox',
                 labelText: 'Mini Services',
@@ -100,7 +176,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                 sybType: 'oneCheckbox',
                 labelText: 'Collision With Itself',
                 labelColor: 'text-success',
-                options: [{ value: 'true', label: 'True' }],
+                options: [{value: 'true', label: 'True'}],
                 validation: (value) => value,
             },
             {
@@ -135,7 +211,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                         sybType: 'oneCheckbox',
                         labelText: 'Night Time',
                         labelColor: 'text-success',
-                        options: [{ value: 'true', label: 'True' }],
+                        options: [{value: 'true', label: 'True'}],
                     },
                     {
                         name: 'club_reservation_more_24_hours',
@@ -143,7 +219,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                         sybType: 'oneCheckbox',
                         labelText: 'Reservation More Than 24 Hours',
                         labelColor: 'text-success',
-                        options: [{ value: 'true', label: 'True' }],
+                        options: [{value: 'true', label: 'True'}],
                     },
                     {
                         name: 'club_in_advance_hours',
@@ -176,7 +252,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                         sybType: 'oneCheckbox',
                         labelText: 'Night Time',
                         labelColor: 'text-success',
-                        options: [{ value: 'true', label: 'True' }],
+                        options: [{value: 'true', label: 'True'}],
                     },
                     {
                         name: 'active_reservation_more_24_hours',
@@ -184,7 +260,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                         sybType: 'oneCheckbox',
                         labelText: 'Reservation More Than 24 Hours',
                         labelColor: 'text-success',
-                        options: [{ value: 'true', label: 'True' }],
+                        options: [{value: 'true', label: 'True'}],
                     },
                     {
                         name: 'active_in_advance_hours',
@@ -217,7 +293,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                         sybType: 'oneCheckbox',
                         labelText: 'Night Time',
                         labelColor: 'text-success',
-                        options: [{ value: 'true', label: 'True' }],
+                        options: [{value: 'true', label: 'True'}],
                     },
                     {
                         name: 'manager_reservation_more_24_hours',
@@ -225,7 +301,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
                         sybType: 'oneCheckbox',
                         labelText: 'Reservation More Than 24 Hours',
                         labelColor: 'text-success',
-                        options: [{ value: 'true', label: 'True' }],
+                        options: [{value: 'true', label: 'True'}],
                     },
                     {
                         name: 'manager_in_advance_hours',
@@ -250,51 +326,6 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
         ]);
     }, [collisionWithCalendarOptions, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations]);
 
-    // const handleCheckboxChange = (e) => { todo delete
-    //     const { name, checked } = e.target;
-    //     setFormData(prevData => ({
-    //         ...prevData,
-    //         [name]: checked,
-    //     }));
-    // };
-    //
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData(prevData => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    // };
-    const handleChange = (e, field) => {
-        const { name, value, type, checked } = e.target;
-
-        setFormData(prevData => {
-            if (type === 'checkbox') {
-                const currentValues = prevData[name] || [];
-                if (checked) {
-                    return {
-                        ...prevData,
-                        [name]: [...currentValues, value],
-                    };
-                } else {
-                    return {
-                        ...prevData,
-                        [name]: currentValues.filter(item => item !== value),
-                    };
-                }
-            } else {
-                return {
-                    ...prevData,
-                    [name]: value,
-                };
-            }
-        });
-
-        if (field.name === 'service_alias') {
-            setSelectedType(value);
-        }
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -309,7 +340,7 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
             max_people: Number(formData.max_people) || 0,
             club_member_rules: {
                 night_time: !!(formData.club_night_time && formData.club_night_time.length > 0),
-                reservation_more_24_hours: !!(formData.club_reservation_more_24_hours  && formData.club_reservation_more_24_hours.length > 0),
+                reservation_more_24_hours: !!(formData.club_reservation_more_24_hours && formData.club_reservation_more_24_hours.length > 0),
                 in_advance_hours: Number(formData.club_in_advance_hours) || 0,
                 in_advance_minutes: Number(formData.club_in_advance_minutes) || 0,
                 in_advance_day: Number(formData.club_in_advance_day) || 0
@@ -342,106 +373,153 @@ const CreateNewCalendar = ({ isLoggedIn, username }) => {
             });
     };
 
-    const renderFormFields = (fields) =>
-        fields.map((field) => {
-            if (field.type === 'group') {
-                return (
-                    <div key={field.name} className="bg-light p-3 rounded mt-3">
-                        <h5 className={field.labelColor}>{field.labelText}</h5>
-                        {renderFormFields(field.fields)}
-                    </div>
-                );
-            }
-            if (field.type === 'empty') {
-                return null;
-            }
-            return (
-                <div className="form-group" key={field.name}>
-                    <label htmlFor={field.name} className={field.labelColor}>
-                        {field.labelText}
-                    </label>
-                    {field.type === 'checkbox' ? (
-                        field.options.map((option) => (
-                            <div key={option.value} className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name={field.name}
-                                    value={option.value}
-                                    id={`${field.name}-${option.value}`}
-                                    checked={
-                                        Array.isArray(formData[field.name])
-                                            ? formData[field.name].includes(option.value)
-                                            : formData[field.name] === option.value
-                                    }
+    const renderField = useCallback((field) => {
+        const commonProps = {
+            name: field.name,
+            value: formData[field.name] || '',
+            onChange: (e) => handleChange(e, field),
+            className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        };
 
-                                    onChange={(e) => handleChange(e, field)}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor={`${field.name}-${option.value}`}
-                                >
-                                    {option.label}
-                                </label>
-                            </div>
-                        ))
-                    ) : field.type === 'select' ? (
-                        <select
-                            className="form-control"
-                            name={field.name}
-                            value={formData[field.name] || ''}
-                            onChange={(e) => handleChange(e, field)}
+        if (field.name === 'calendar_id') {
+            return (
+                <div>
+                    <div className="flex space-x-2 mb-2">
+                        <button
+                            type="button"
+                            onClick={() => setCalendarIdInputType('manual')}
+                            className={`py-2 px-4 text-sm font-medium rounded-md ${
+                                calendarIdInputType === 'manual'
+                                    ? 'bg-green-600 text-white'
+                                    : 'bg-green-100 text-green-700'
+                            }`}
                         >
-                            <option value="">Select an option</option>
-                            {field.options.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
+                            Manual Input
+                        </button>
+                        <button
+                            type="button"
+                            onClick={fetchGoogleCalendars}
+                            disabled={isLoadingCalendars}
+                            className={`py-2 px-4 text-sm font-medium rounded-md ${
+                                calendarIdInputType === 'select'
+                                    ? 'bg-green-600 text-white'
+                                    : 'bg-green-100 text-green-700'
+                            } disabled:bg-green-300`}
+                        >
+                            {isLoadingCalendars ? 'Loading...' : 'Fetch Google Calendars'}
+                        </button>
+                    </div>
+                    {calendarIdInputType === 'manual' ? (
+                        <input
+                            type="text"
+                            {...commonProps}
+                            value={manualCalendarId}
+                            onChange={(e) => {
+                                setManualCalendarId(e.target.value);
+                                handleChange(e, field);
+                            }}
+                        />
+                    ) : (
+                        <select {...commonProps}>
+                            <option value="">Select a calendar</option>
+                            {googleCalendars.map((calendar) => (
+                                <option key={calendar.id} value={calendar.id}>
+                                    {calendar.summary}
                                 </option>
                             ))}
                         </select>
-                    ) : (
-                        <input
-                            type={field.type}
-                            className="form-control"
-                            name={field.name}
-                            value={formData[field.name] || ''}
-                            onChange={(e) => handleChange(e, field)}
-                        />
                     )}
-                    {/*{errors[field.name] && (*/}
-                    {/*    <div className="text-danger">{errors[field.name]}</div>*/}
-                    {/*)}*/}
                 </div>
             );
-        });
+        }
+
+        switch (field.type) {
+            case 'select':
+                return (
+                    <select {...commonProps}>
+                        <option value="">Select an option</option>
+                        {field.options.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                    </select>
+                );
+            case 'checkbox':
+                return (
+                    <div className="space-y-2">
+                        {field.options.map((option) => (
+                            <div key={option.value} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    {...commonProps}
+                                    value={option.value}
+                                    id={`${field.name}-${option.value}`}
+                                    checked={(formData[field.name] || []).includes(option.value)}
+                                    className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+                                />
+                                <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">
+                                    {option.label}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                );
+            case 'group':
+                return (
+                    <div className="space-y-3 bg-green-50 p-3 rounded-md">
+                        <h6 className="font-medium text-green-800">{field.labelText}</h6>
+                        {field.fields.map(subField => (
+                            <div key={subField.name}>
+                                <label className="block text-sm font-medium text-green-700 mb-1">
+                                    {subField.labelText}
+                                </label>
+                                {renderField(subField)}
+                            </div>
+                        ))}
+                    </div>
+                );
+            case 'empty':
+                return null;
+            default:
+                return (
+                    <input
+                        type={field.type}
+                        {...commonProps}
+                    />
+                );
+        }
+    }, [formData, handleChange, googleCalendars, isLoadingCalendars, fetchGoogleCalendars, calendarIdInputType, manualCalendarId]);
 
     return (
-        <div>
-            {isLoggedIn ? (
-                <div className="container">
-                    <h1
-                        className="my-4 text-center text-white"
-                        style={{
-                            background: 'linear-gradient(to right, #00b894, #008e7a)',
-                            padding: '20px 0',
-                        }}
+        <UniversalLayout centerContent>
+            <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
+                <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
+                    Create New Calendar
+                </h1>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    {formFields.map((field) => (
+                        <div key={field.name}>
+                            <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
+                                {field.labelText}
+                            </label>
+                            {renderField(field)}
+                            {errors[field.name] && (
+                                <p className="text-red-600 text-sm mt-1">{errors[field.name]}</p>
+                            )}
+                        </div>
+                    ))}
+                    <button
+                        type="submit"
+                        className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     >
-                        Create new Calendar
-                    </h1>
-                    <form onSubmit={handleSubmit} className="bg-light p-4 rounded">
-                        {renderFormFields(formFields)}
-                        <button type="submit" className="btn btn-secondary">
-                            Submit
-                        </button>
-                        {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
-                        {errorMessage && <div className="alert alert-danger mt-3">{errorMessage}</div>}
-                    </form>
-                </div>
-            ) : (
-                <LoginInfoPage />
-            )}
-        </div>
+                        Create Calendar
+                    </button>
+                </form>
+
+                {successMessage && <div className="mt-3 p-2 bg-green-100 text-green-700 rounded">{successMessage}</div>}
+                {errorMessage && <div className="mt-3 p-2 bg-red-100 text-red-700 rounded">{errorMessage}</div>}
+            </div>
+        </UniversalLayout>
     );
 };
-
 export default CreateNewCalendar;

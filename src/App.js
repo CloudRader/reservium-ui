@@ -2,22 +2,24 @@ import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Header from './Components/Header';
-import ReservationPage from "./ReservationPage";
-// import CreateNewCalendar from "./CreateNewCalendar";
-// import CreateNewMiniService from "./CreateNewMiniService";
-import {LoginToBackend} from "./LoginToBackend";
-import Logout from "./Logout";
+import ReservationPage from "./pages/ReservationPage";
+import CreateNewCalendar from "./Components/CreateNewCalendar";
+import CreateNewMiniService from "./Components/CreateNewMiniService";
+import {LoginToBackend} from "./Components/LoginToBackend";
+import Logout from "./Components/Logout";
 import Footer from "./Components/Footer";
-import NotFoundPage from "./NotFoundPage";
-import SuccessPage from "./SuccessPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import SuccessPage from "./pages/SuccessPage";
 import {useReservationData} from './hooks/useReservationData';
 import PulsatingLoader from "./Components/PulsatingLoader";
 import axios from "axios";
-import LoginToIS from "./LoginToIS";
+import LoginToIS from "./Components/LoginToIS";
 import {useAuth} from './hooks/useAuth';
-import CalendarView from "./ViewCalendarPage";
+import CalendarView from "./pages/ViewCalendarPage";
 import EditServices from "./Components/EditServices";
 import EditService from "./Components/EditService";
+import EditCalendars from "./Components/EditCalendars";
+import EditCalendar from "./Components/EditCalendar";
 
 axios.defaults.withCredentials = true;
 
@@ -66,16 +68,19 @@ function AppContent() {
                     />
                 ))}
 
+                {/*DELETE IT USE FOR TEST*/}
                 <Route path="/edit-services" element={<EditServices/>}/>
                 <Route path="/edit-service/1" element={<EditService/>}/>
+                <Route path="/edit-calendars/1" element={<EditCalendars/>}/>
+                <Route path="/edit-calendar/1" element={<EditCalendar/>}/>
 
-                {services && services.map(service => (
-                    <Route
-                        key={`/edit-service/${service.linkName}`}
-                        path={`/edit-service/${service.linkName}`}
-                        element={<EditService />}
-                    />
-                ))}
+                {/*{services && services.map(service => (*/}
+                {/*    <Route*/}
+                {/*        key={`/edit-service/${service.linkName}`}*/}
+                {/*        path={`/edit-service/${service.linkName}`}*/}
+                {/*        element={<EditServicePage />}*/}
+                {/*    />*/}
+                {/*))}*/}
 
                 <Route key='/' path='/' element={<ReservationPage isLoading={isLoading}
                                                                   isLoggedIn={isLoggedIn} onLogout={logout}
@@ -97,15 +102,16 @@ function AppContent() {
                 ))}
 
                 {/*{userRoles.includes("manager") && (*/}
+                {/*    // TODO add here all routs for manager*/}
                 {/*    <>*/}
-                {/*        <Route*/}
-                {/*            path='/create-new-calendar'*/}
-                {/*            element={<CreateNewCalendar isLoggedIn={isLoggedIn} username={username} />}*/}
-                {/*        />*/}
-                {/*        <Route*/}
-                {/*            path='/create-new-miniservice'*/}
-                {/*            element={<CreateNewMiniService isLoggedIn={isLoggedIn} username={username} />}*/}
-                {/*        />*/}
+                <Route
+                            path='/add-calendar'
+                            element={<CreateNewCalendar username={username} />}
+                        />
+                        <Route
+                            path='/add-miniservice'
+                            element={<CreateNewMiniService username={username} />}
+                        />
                 {/*    </>*/}
                 {/*)}*/}
             </Routes>

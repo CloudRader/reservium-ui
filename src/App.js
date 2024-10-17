@@ -20,6 +20,7 @@ import EditServices from "./Components/EditServices";
 import EditService from "./Components/EditService";
 import EditCalendars from "./Components/EditCalendars";
 import EditCalendar from "./Components/EditCalendar";
+import EditMiniServices from "./Components/EditMiniServices";
 
 axios.defaults.withCredentials = true;
 
@@ -37,14 +38,14 @@ function AppContent() {
         return <PulsatingLoader/>;
     }
 
-    const {services, calendars} = data || {services: [], calendars: {}};
+    const {services, calendars,miniServices} = data || {services: [], calendars: {} ,miniServices : {}};
 
     return (
         <div className=" dark:!bg-slate-400 ">
             <Header isLoggedIn={true}
                     username={username}
                     services={services}
-                    // isManager={userRoles.includes("manager")}
+                // isManager={userRoles.includes("manager")}
                     isManager={true}
             />
             <Routes>
@@ -71,8 +72,35 @@ function AppContent() {
                 {/*DELETE IT USE FOR TEST*/}
                 <Route path="/edit-services" element={<EditServices/>}/>
                 <Route path="/edit-service/1" element={<EditService/>}/>
+
+                <Route path="/edit-mini-services/1" element={<EditMiniServices/>}/>
+
+                {/*<Route path="/edit-mini-service/1" element={<EditMiniService/>}/>*/}
+
                 <Route path="/edit-calendars/1" element={<EditCalendars/>}/>
+                {services && services.map(service => (
+                    <>
+                        <Route
+                            key={'/edit-calendars/' + service.linkName}
+                            path={`/edit-calendars/${service.linkName}`}
+                            element={<EditCalendars
+                                roomCalendarLinks={calendars[service.linkName]}
+                                serviceName={service.linkName}
+                            />}
+                        />
+                        <Route
+                            key={'"/edit-mini-services/' + service.linkName}
+                            path={`"/edit-mini-services/${service.linkName}`}
+                            element={<EditMiniServices
+                                miniServices={miniServices[service.linkName]}
+                                serviceName={service.linkName}
+                            />}
+                        />
+                    </>
+                ))}
+
                 <Route path="/edit-calendar/1" element={<EditCalendar/>}/>
+
 
                 {/*{services && services.map(service => (*/}
                 {/*    <Route*/}
@@ -105,13 +133,13 @@ function AppContent() {
                 {/*    // TODO add here all routs for manager*/}
                 {/*    <>*/}
                 <Route
-                            path='/add-calendar'
-                            element={<CreateNewCalendar username={username} />}
-                        />
-                        <Route
-                            path='/add-miniservice'
-                            element={<CreateNewMiniService username={username} />}
-                        />
+                    path='/add-calendar'
+                    element={<CreateNewCalendar username={username}/>}
+                />
+                <Route
+                    path='/add-miniservice'
+                    element={<CreateNewMiniService username={username}/>}
+                />
                 {/*    </>*/}
                 {/*)}*/}
             </Routes>

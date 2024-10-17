@@ -89,7 +89,11 @@ function AppContent() {
                     />
                 ))}
 
+                {/*{userRoles.includes("manager") && (*/}
+                {/*    // TODO add here all routs for manager*/}
+                {/*    <>*/}
                 {/*DELETE IT USE FOR TEST*/}
+
                 <Route path="/edit-services" element={<EditServices services={services}/>}/>
                 {/*<Route*/}
                 {/*    path='/add-service'*/}
@@ -153,9 +157,7 @@ function AppContent() {
                     </>
                 ))}
 
-                {/*{userRoles.includes("manager") && (*/}
-                {/*    // TODO add here all routs for manager*/}
-                {/*    <>*/}
+
 
 
                 {/*    </>*/}

@@ -123,7 +123,6 @@ function AppContent() {
                                 key={'/edit-mini-service/' + service.linkName}
                                 path={`/edit-mini-service/${service.linkName}/${miniService.name}`}
                                 element={<EditMiniService
-                                    miniServices={miniServices[service.linkName]}
                                     serviceName={service.linkName}
                                     miniServiceData={miniService}
                                 />}
@@ -134,7 +133,6 @@ function AppContent() {
                                 key={'/edit-calendar/' + service.linkName}
                                 path={`/edit-calendar/${service.linkName}/${calendar.name}`}
                                 element={<EditCalendar
-                                    roomCalendarLinks={calendars[service.linkName]}
                                     serviceName={service.linkName}
                                     calendarData={calendar}
                                 />}

@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import React from 'react';
 import UniversalLayout from "../UniversalLayout";
 
 const mockCalendar = {
@@ -33,7 +32,7 @@ const mockCalendar = {
         in_prior_days: 14
     },
 };
-const EditCalendar = (roomCalendarLinks, serviceName, calendar) => {
+const EditCalendar = (serviceName, calendar) => {
     const handleEdit = () => {
         // Implement edit functionality
         console.log("Edit calendar:", calendar);

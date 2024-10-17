@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import UniversalLayout from "../UniversalLayout";
 
-const EditMiniServices = ({ miniServices, serviceName, miniServiceData }) => {
+const EditMiniServices = ({ serviceName, miniServiceData }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedData, setEditedData] = useState(miniServiceData);
 

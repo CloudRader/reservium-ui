@@ -62,7 +62,6 @@ const CreateNewMiniService = ({ username }) => {
                             className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>
-
                     <div>
                         <label htmlFor="service_alias" className="block text-sm font-medium text-green-700 mb-1">
                             Service Alias
@@ -79,7 +78,6 @@ const CreateNewMiniService = ({ username }) => {
                             <option value="grill">Grill</option>
                         </select>
                     </div>
-
                     <button
                         type="submit"
                         className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

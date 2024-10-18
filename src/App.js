@@ -132,7 +132,7 @@ function AppContent() {
 
                         <Route
                             path={`/add-calendar/${service.linkName}`}
-                            element={<CreateNewCalendar serviceId={service.id} serviceCalendars={service.linkName}/>}
+                            element={<CreateNewCalendar serviceId={service.id} serviceCalendars={calendars[service.linkName]}/>}
                         />
                         <Route
                             path={`/add-mini-service/${service.linkName}`}

@@ -304,56 +304,19 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
         handleSubmit(requestData);
     };
 
-    const renderCalendarIdField = useCallback(() => {
-        const commonProps = {
-            name: 'calendar_id',
-            value: formData.calendar_id || '',
-            onChange: handleChange,
-            className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-        };
-
-        return (
-            <div>
-                <div className="flex space-x-2 mb-2">
-                    <button
-                        type="button"
-                        onClick={() => setCalendarIdInputType('manual')}
-                        className={`py-2 px-4 text-sm font-medium rounded-md ${
-                            calendarIdInputType === 'manual'
-                                ? 'bg-green-600 text-white'
-                                : 'bg-green-100 text-green-700'
-                        }`}
-                    >
-                        Manual Input
-                    </button>
-                    <button
-                        type="button"
-                        onClick={fetchGoogleCalendars}
-                        disabled={isLoadingCalendars}
-                        className={`py-2 px-4 text-sm font-medium rounded-md ${
-                            calendarIdInputType === 'select'
-                                ? 'bg-green-600 text-white'
-                                : 'bg-green-100 text-green-700'
-                        } disabled:bg-green-300`}
-                    >
-                        {isLoadingCalendars ? 'Loading...' : 'Fetch Google Calendars'}
-                    </button>
+    const renderGroupField = (field) => (
+        <div key={field.name} className="space-y-4">
+            <h3 className="text-lg font-medium text-green-800">{field.labelText}</h3>
+            {field.fields.map(subField => (
+                <div key={`${field.name}.${subField.name}`}>
+                    <label htmlFor={`${field.name}.${subField.name}`} className="block text-sm font-medium text-green-700 mb-1">
+                        {subField.labelText}
+                    </label>
+                    {renderField({...subField, name: `${field.name}.${subField.name}`})}
                 </div>
-                {calendarIdInputType === 'manual' ? (
-                    <></>
-                ) : (
-                    <select {...commonProps}>
-                        <option value="">Select a calendar</option>
-                        {googleCalendars.map((calendar) => (
-                            <option key={calendar.id} value={calendar.id}>
-                                {calendar.summary}
-                            </option>
-                        ))}
-                    </select>
-                )}
-            </div>
-        );
-    }, [calendarIdInputType, formData.calendar_id, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars, manualCalendarId]);
+            ))}
+        </div>
+    );
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
@@ -363,12 +326,14 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                 </h1>
                 <form onSubmit={makeSubmit} className="space-y-5">
                     {formFields.map((field) => (
-                        <div key={field.name}>
-                            <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
-                                {field.labelText}
-                            </label>
-                            {renderField(field)}
-                        </div>
+                        field.type === 'group' ? renderGroupField(field) : (
+                            <div key={field.name}>
+                                <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
+                                    {field.labelText}
+                                </label>
+                                {renderField(field)}
+                            </div>
+                        )
                     ))}
                     <button
                         type="submit"

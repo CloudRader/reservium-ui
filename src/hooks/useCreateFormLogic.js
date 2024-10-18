@@ -10,21 +10,39 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
     const handleChange = useCallback((e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prevData => {
-            if (type === 'checkbox') {
-                return { ...prevData, [name]: checked };
-            } else if (type === 'multiCheckbox') {
-                const updatedValues = prevData[name] ? [...prevData[name]] : [];
-                if (checked) {
-                    updatedValues.push(value);
-                } else {
-                    const index = updatedValues.indexOf(value);
-                    if (index > -1) {
-                        updatedValues.splice(index, 1);
-                    }
+            const updateNestedField = (obj, path, val) => {
+                const [head, ...rest] = path;
+                if (rest.length === 0) {
+                    return { ...obj, [head]: val };
                 }
-                return { ...prevData, [name]: updatedValues };
+                return {
+                    ...obj,
+                    [head]: updateNestedField(obj[head] || {}, rest, val)
+                };
+            };
+
+            const [groupName, fieldName] = name.split('.');
+            if (fieldName) {
+                // Handle nested fields
+                return updateNestedField(prevData, [groupName, fieldName], type === 'checkbox' ? checked : value);
             } else {
-                return { ...prevData, [name]: value };
+                // Handle top-level fields
+                if (type === 'checkbox') {
+                    return { ...prevData, [name]: checked };
+                } else if (type === 'multiCheckbox') {
+                    const updatedValues = prevData[name] ? [...prevData[name]] : [];
+                    if (checked) {
+                        updatedValues.push(value);
+                    } else {
+                        const index = updatedValues.indexOf(value);
+                        if (index > -1) {
+                            updatedValues.splice(index, 1);
+                        }
+                    }
+                    return { ...prevData, [name]: updatedValues };
+                } else {
+                    return { ...prevData, [name]: value };
+                }
             }
         });
     }, []);
@@ -49,6 +67,11 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
             className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
         };
 
+        const getValue = (name) => {
+            const [groupName, fieldName] = name.split('.');
+            return fieldName ? formData[groupName]?.[fieldName] : formData[name];
+        };
+
         switch (field.type) {
             case 'checkbox':
                 return (
@@ -56,7 +79,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                         <input
                             type="checkbox"
                             {...commonProps}
-                            checked={formData[field.name] || false}
+                            checked={getValue(field.name) || false}
                             className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                         />
                         <label htmlFor={field.name} className="text-sm text-green-700">
@@ -74,7 +97,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                                     id={`${field.name}-${option.value}`}
                                     name={field.name}
                                     value={option.value}
-                                    checked={(formData[field.name] || []).includes(option.value)}
+                                    checked={(getValue(field.name) || []).includes(option.value)}
                                     onChange={handleChange}
                                     className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                                 />
@@ -90,7 +113,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                     <input
                         type={field.type}
                         {...commonProps}
-                        value={formData[field.name] || ''}
+                        value={getValue(field.name) || ''}
                     />
                 );
         }

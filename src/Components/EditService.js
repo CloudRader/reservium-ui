@@ -8,6 +8,8 @@ import {useNavigate} from "react-router-dom";
 const EditService = ({service: initialService}) => {
     const navigate = useNavigate();
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
+    // query include
+
     const {
         isEditing,
         editedData,

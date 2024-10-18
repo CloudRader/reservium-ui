@@ -22,6 +22,7 @@ import EditCalendars from "./Components/EditCalendars";
 import EditCalendar from "./Components/EditCalendar";
 import EditMiniServices from "./Components/EditMiniServices";
 import EditMiniService from "./Components/EditMiniService";
+import CreateNewService from "./Components/CreateNewService";
 
 axios.defaults.withCredentials = true;
 
@@ -95,10 +96,10 @@ function AppContent() {
                 {/*DELETE IT USE FOR TEST*/}
 
                 <Route path="/edit-services" element={<EditServices services={services}/>}/>
-                {/*<Route*/}
-                {/*    path='/add-service'*/}
-                {/*    element={<CreateNewService username={username}/>}*/}
-                {/*/>*/}
+                <Route
+                    path='/add-service'
+                    element={<CreateNewService />}
+                />
 
                 {services && services.map(service => (
                     <>

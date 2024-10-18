@@ -90,6 +90,11 @@ function AppContent() {
                     />
                 ))}
 
+                {/*<Route*/}
+                {/*    path={`/add-calendar/club`}*/}
+                {/*    element={<CreateNewCalendar serviceId={14488} />}*/}
+                {/*/>*/}
+
                 {/*{userRoles.includes("manager") && (*/}
                 {/*    // TODO add here all routs for manager*/}
                 {/*    <>*/}
@@ -127,7 +132,7 @@ function AppContent() {
 
                         <Route
                             path={`/add-calendar/${service.linkName}`}
-                            element={<CreateNewCalendar serviceId={service.id}/>}
+                            element={<CreateNewCalendar serviceId={service.id} serviceCalendars={service.linkName}/>}
                         />
                         <Route
                             path={`/add-mini-service/${service.linkName}`}

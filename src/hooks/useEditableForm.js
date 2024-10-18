@@ -29,6 +29,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
 
     const fetchData = async () => {
         try {
+            setLoading(true); // Start loading
             const response = await axios.get(fetchUrl);
             const data = response.data;
             setEditedData(data);
@@ -42,7 +43,6 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
     if(fetchUrl) {
         fetchData();
     }
-
 
     const handleEdit = () => {
         setIsEditing(true);

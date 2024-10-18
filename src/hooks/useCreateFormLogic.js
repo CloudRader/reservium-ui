@@ -95,7 +95,6 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                     </div>
                 );
             case 'multiCheckbox':
-                // const selectedValues = getValue(field.name) || [];
                 return (
                     <div className="space-y-2">
                         {field.options.map(option => (

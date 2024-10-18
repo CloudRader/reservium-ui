@@ -13,7 +13,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
     const [collisionWithCalendarOptions, setCollisionWithCalendarOptions] = useState([]);
     const [errFetchingTypeOfReservations, setErrFetchingTypeOfReservations] = useState(true);
 
-
     const initialFields = [
         // todo если выбираем гугл то само выполниться
         // отправляем пустой в др случае
@@ -250,20 +249,20 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
         }
     }, [serviceId, setMessage]);
 
-    useEffect(() => {
-        setFormFields(prevFields => prevFields.map(field =>
-            field.name === 'calendar_id'
-                ? {
-                    ...field,
-                    type: calendarIdInputType === 'select' ? 'select' : 'text',
-                    options: calendarIdInputType === 'select' ? googleCalendars.map(calendar => ({
-                        value: calendar.id,
-                        label: calendar.summary
-                    })) : []
-                }
-                : field
-        ));
-    }, [calendarIdInputType, googleCalendars, setFormFields]);
+    // useEffect(() => {
+    //     setFormFields(prevFields => prevFields.map(field =>
+    //         field.name === 'calendar_id'
+    //             ? {
+    //                 ...field,
+    //                 type: calendarIdInputType === 'select' ? 'select' : 'text',
+    //                 options: calendarIdInputType === 'select' ? googleCalendars.map(calendar => ({
+    //                     value: calendar.id,
+    //                     label: calendar.summary
+    //                 })) : []
+    //             }
+    //             : field
+    //     ));
+    // }, [calendarIdInputType, googleCalendars, setFormFields]);
 
     const makeSubmit = (e) => {
         e.preventDefault();
@@ -321,12 +320,66 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
         </div>
     );
 
+    const renderCalendarIdField = useCallback(() => {
+        const commonProps = {
+            name: 'calendar_id',
+            value: formData.calendar_id || '',
+            onChange: handleChange,
+            className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        };
+        return (
+            <div>
+                <div className="flex space-x-2 mb-2">
+                    <button
+                        type="button"
+                        onClick={() => setCalendarIdInputType('manual')}
+                        className={`py-2 px-4 text-sm font-medium rounded-md ${
+                            calendarIdInputType === 'manual'
+                                ? 'bg-green-600 text-white'
+                                : 'bg-green-100 text-green-700'
+                        }`}
+                    >
+                        Manual Input
+                    </button>
+                    <button
+                        type="button"
+                        onClick={fetchGoogleCalendars}
+                        disabled={isLoadingCalendars}
+                        className={`py-2 px-4 text-sm font-medium rounded-md ${
+                            calendarIdInputType === 'select'
+                                ? 'bg-green-600 text-white'
+                                : 'bg-green-100 text-green-700'
+                        } disabled:bg-green-300`}
+                    >
+                        {isLoadingCalendars ? 'Loading...' : 'Fetch Google Calendars'}
+                    </button>
+                </div>
+                {calendarIdInputType === 'manual' ? (
+                    <></>
+                ) : (
+                    <select {...commonProps}>
+                        <option value="">Select a calendar</option>
+                        {googleCalendars.map((calendar) => (
+                            <option key={calendar.id} value={calendar.id}>
+                                {calendar.summary}
+                            </option>
+                        ))}
+                    </select>
+                )}
+            </div>
+        );
+    }, [calendarIdInputType, formData.calendar_id, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars, manualCalendarId]);
+
+
+
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
             <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
                 <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
                     Create New Calendar
                 </h1>
+
+
                 <form onSubmit={makeSubmit} className="space-y-5">
                     {formFields.map((field) => (
                         field.type === 'group' ? renderGroupField(field) : (
@@ -334,7 +387,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                                 <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
                                     {field.labelText}
                                 </label>
-                                {renderField(field)}
+                                {field.name === 'calendar_id' ? renderCalendarIdField() : renderField(field)}
                             </div>
                         )
                     ))}

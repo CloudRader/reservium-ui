@@ -30,7 +30,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                 if (type === 'checkbox') {
                     return { ...prevData, [name]: checked };
                 } else if (type === 'multiCheckbox') {
-                    const updatedValues = prevData[name] ? [...prevData[name]] : [];
+                    const updatedValues = Array.isArray(prevData[name]) ? [...prevData[name]] : [];
                     if (checked) {
                         updatedValues.push(value);
                     } else {
@@ -97,7 +97,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                                     id={`${field.name}-${option.value}`}
                                     name={field.name}
                                     value={option.value}
-                                    checked={(getValue(field.name) || []).includes(option.value)}
+                                    checked={Array.isArray(getValue(field.name)) && getValue(field.name).includes(option.value)}
                                     onChange={handleChange}
                                     className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                                 />

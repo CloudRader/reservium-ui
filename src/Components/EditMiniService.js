@@ -1,34 +1,20 @@
 import React, { useState } from 'react';
 import UniversalLayout from "../UniversalLayout";
+import axios from "axios";
+import SuccessErrorMessage from "./SuccessErrorMessage";
+import useEditableForm from "../hooks/useEditableForm";
+axios.defaults.withCredentials = true;
 
 const EditMiniServices = ({ serviceName, miniServiceData }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedData, setEditedData] = useState(miniServiceData);
-
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    const handleSave = () => {
-        // Implement save functionality
-        console.log("Saving mini service:", editedData);
-        setIsEditing(false);
-        // In a real scenario, you would make an API call here to update the data
-        // and possibly update the parent component's state
-    };
-
-    const handleCancel = () => {
-        setIsEditing(false);
-        setEditedData(miniServiceData); // Reset to original data
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEditedData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
+    const {
+        isEditing,
+        editedData,
+        message,
+        handleEdit,
+        handleSave,
+        handleCancel,
+        handleChange
+    } = useEditableForm(miniServiceData, `${constants.serverURL}/mini_services/${miniServiceData.id}`);
 
     if (!miniServiceData) {
         return <div>No data available</div>;
@@ -40,6 +26,8 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
                 {isEditing ? 'Edit' : 'View'} Mini Service: {serviceName}
             </h1>
             <div className="bg-white p-4 rounded-lg shadow">
+                {message && <SuccessErrorMessage message={message}/>}
+
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">ID</label>
                     <input

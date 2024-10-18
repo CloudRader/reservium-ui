@@ -2,76 +2,25 @@ import React, {useEffect, useState} from 'react';
 import UniversalLayout from "../UniversalLayout";
 import axios from "axios";
 import constants from "../Constants";
+import useEditableForm from "../hooks/useEditableForm";
+import SuccessErrorMessage from "./SuccessErrorMessage";
 
-axios.defaults.withCredentials = true;
-async function fetchCalendarData(calendar_id) {
-    try {
-        const response = await axios.get(`${constants.serverURL}/calendars/${calendar_id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Failed to fetch calendar data:', error);
-        throw error; // Re-throw to handle it in the component if needed
-    }
-}
 const EditCalendar = ({ serviceName, calendarBaseData }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedData, setEditedData] = useState(null); // Changed from `calendar`
-    const [calendar, setCalendar] = useState(null);
-    const [loading, setLoading] = useState(true); // Loading state
-    const [error, setError] = useState(null); // Error state
+    const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
+    const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
+    const {
+        isEditing,
+        editedData,
+        message,
+        handleEdit,
+        handleSave,
+        handleCancel,
+        handleChange,
+        loading,
+    } = useEditableForm(calendarBaseData, calendarUpdateUrl, calendarFetchUrl);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchCalendarData(calendarBaseData.googleCalendarId);
-                setCalendar(data);
-                setEditedData(data); // Set editedData after fetching calendar data
-            } catch (err) {
-                setError(err.message); // Handle error
-            } finally {
-                setLoading(false); // Stop loading
-            }
-        };
-
-        fetchData();
-    }, [calendarBaseData.googleCalendarId]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>
-
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    const handleSave = () => {
-        console.log("Saving calendar:", editedData);
-        setIsEditing(false);
-        // In a real scenario, you would make an API call here to update the data
-    };
-
-    const handleCancel = () => {
-        setIsEditing(false);
-        setEditedData(calendar); // Reset to original data
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEditedData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
-
-    const handleRulesChange = (ruleType, field, value) => {
-        setEditedData(prevData => ({
-            ...prevData,
-            [ruleType]: {
-                ...prevData[ruleType],
-                [field]: value
-            }
-        }));
-    };
-
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
@@ -79,6 +28,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                 {isEditing ? 'Edit' : 'View'} Calendar: {serviceName}
             </h1>
             <div className="bg-white p-4 rounded-lg shadow">
+                {message && <SuccessErrorMessage message={message}/>}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">ID</label>
                     <input

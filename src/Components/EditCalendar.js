@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import UniversalLayout from "../UniversalLayout";
-import axios from "axios";
 import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
@@ -16,6 +15,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
         handleSave,
         handleCancel,
         handleChange,
+        handleRulesChange,
         loading,
     } = useEditableForm(calendarBaseData, calendarUpdateUrl, calendarFetchUrl);
 

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import UniversalLayout from "../UniversalLayout";
-import axios from "axios";
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import useEditableForm from "../hooks/useEditableForm";
-axios.defaults.withCredentials = true;
+import constants from "../Constants";
 
 const EditMiniServices = ({ serviceName, miniServiceData }) => {
     const {

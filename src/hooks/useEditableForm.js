@@ -11,38 +11,25 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
     const [loading, setLoading] = useState(false);
 
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get(fetchUrl);
-    //             const data = response.data;
-    //             setEditedData(data);
-    //         } catch (err) {
-    //             setMessage({ type: 'error', text: 'Failed to fetch calendar data. Please try again.' });
-    //         } finally {
-    //             setLoading(false); // Stop loading
-    //         }
-    //     };
-    //
-    //     fetchData();
-    // }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get(fetchUrl);
+                const data = response.data;
+                setEditedData(data);
+            } catch (err) {
+                setMessage({ type: 'error', text: 'Failed to fetch calendar data. Please try again.' });
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(fetchUrl);
-            const data = response.data;
-            setEditedData(data);
-        } catch (err) {
-            setMessage({type: 'error', text: 'Failed to fetch calendar data. Please try again.'});
-        } finally {
-            setLoading(false); // Stop loading
+        if (fetchUrl) {
+            fetchData();
         }
-    };
+    }, [fetchUrl]);
 
-    if(fetchUrl) {
-        setLoading(true);
-        fetchData();
-    }
 
     const handleEdit = () => {
         setIsEditing(true);

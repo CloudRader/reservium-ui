@@ -7,6 +7,13 @@ import SuccessErrorMessage from "./SuccessErrorMessage";
 const EditCalendar = ({ serviceName, calendarBaseData }) => {
     const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
+    const initialData = {
+        ...calendarBaseData,
+        club_member_rules: {},
+        active_member_rules: {},
+        manager_rules: {}
+    };
+
     const {
         loading,
         isEditing,
@@ -17,11 +24,12 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
         handleCancel,
         handleChange,
         handleRulesChange,
-    } = useEditableForm(calendarBaseData, calendarUpdateUrl, calendarFetchUrl);
+    } = useEditableForm(initialData, calendarUpdateUrl, calendarFetchUrl);
 
 
     if (loading) return <p>Loading...</p>;
 
+    if (!editedData) return <p>No data available</p>;
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
             <h1 className="text-2xl font-bold text-green-800 mb-6">
@@ -78,11 +86,11 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                         }`}
                     />
                 </div>
-
                 {['club_member_rules', 'active_member_rules', 'manager_rules'].map((ruleType) => (
-                    <div key={ruleType} className="mb-6">
-                        <h3 className="text-lg font-semibold mb-2">{ruleType.replace(/_/g, ' ').charAt(0).toUpperCase() + ruleType.replace(/_/g, ' ').slice(1)}</h3>
-                        {Object.entries(editedData[ruleType]).map(([key, value]) => (
+                    editedData[ruleType] && (
+                        <div key={ruleType} className="mb-6">
+                            <h3 className="text-lg font-semibold mb-2">{ruleType.replace(/_/g, ' ').charAt(0).toUpperCase() + ruleType.replace(/_/g, ' ').slice(1)}</h3>
+                            {Object.entries(editedData[ruleType]).map(([key, value]) => (
                             <div key={key} className="mb-2">
                                 <label className="block text-sm font-medium text-gray-700">{key.replace(/_/g, ' ')}</label>
                                 {typeof value === 'boolean' ? (
@@ -107,7 +115,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                             </div>
                         ))}
                     </div>
-                ))}
+                )))}
 
                 <div className="mt-6 flex justify-end space-x-3">
                     {isEditing ? (

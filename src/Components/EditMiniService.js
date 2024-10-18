@@ -50,19 +50,6 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
                         }`}
                     />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Reservation Service ID</label>
-                    <input
-                        type="text"
-                        name="reservationServiceId"
-                        value={editedData.reservationServiceId}
-                        onChange={handleChange}
-                        readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
-                    />
-                </div>
                 <div className="mt-6 flex justify-end space-x-3">
                     {isEditing ? (
                         <>

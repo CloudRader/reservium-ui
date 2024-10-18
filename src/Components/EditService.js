@@ -3,8 +3,10 @@ import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
+import {useNavigate} from "react-router-dom";
 
 const EditService = ({service: initialService}) => {
+    const navigate = useNavigate();
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
     const {
         isEditing,

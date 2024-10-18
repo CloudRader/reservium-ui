@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
+
 const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
     const [formFields, setFormFields] = useState(initialFields);
     const [formData, setFormData] = useState({});
@@ -11,16 +12,25 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
         setFormData(prevData => {
             if (type === 'checkbox') {
                 return { ...prevData, [name]: checked };
+            } else if (type === 'multiCheckbox') {
+                const updatedValues = prevData[name] ? [...prevData[name]] : [];
+                if (checked) {
+                    updatedValues.push(value);
+                } else {
+                    const index = updatedValues.indexOf(value);
+                    if (index > -1) {
+                        updatedValues.splice(index, 1);
+                    }
+                }
+                return { ...prevData, [name]: updatedValues };
             } else {
                 return { ...prevData, [name]: value };
             }
         });
     }, []);
 
-    const handleSubmit = useCallback((e) => {
-        e.preventDefault();
-
-        axios.post(submitUrl, formData)
+    const handleSubmit = useCallback((requestData) => {
+        axios.post(submitUrl, requestData)
             .then(() => {
                 setMessage({ type: 'success', text: 'Operation completed successfully!' });
                 setFormData({});
@@ -30,12 +40,11 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                 console.error('Error:', error);
                 setMessage({ type: 'error', text: 'An error occurred. Please try again.' });
             });
-    }, [formData, submitUrl, onSubmitSuccess]);
+    }, [submitUrl, onSubmitSuccess]);
 
     const renderField = useCallback((field) => {
         const commonProps = {
             name: field.name,
-            value: formData[field.name] || '',
             onChange: handleChange,
             className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
         };
@@ -55,11 +64,33 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                         </label>
                     </div>
                 );
+            case 'multiCheckbox':
+                return (
+                    <div className="space-y-2">
+                        {field.options.map(option => (
+                            <div key={option.value} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id={`${field.name}-${option.value}`}
+                                    name={field.name}
+                                    value={option.value}
+                                    checked={(formData[field.name] || []).includes(option.value)}
+                                    onChange={handleChange}
+                                    className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+                                />
+                                <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">
+                                    {option.label}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                );
             default:
                 return (
                     <input
                         type={field.type}
                         {...commonProps}
+                        value={formData[field.name] || ''}
                     />
                 );
         }

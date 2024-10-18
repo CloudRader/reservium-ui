@@ -39,11 +39,11 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
         },
         {
             name: 'collision_with_calendar',
-            type: 'checkbox',
+            type: 'multiCheckbox',
             labelText: 'Collision With Calendars',
             labelColor: 'text-success',
             options: serviceCalendars.map(calendar => ({ value: calendar.id, label: calendar.className })),
-            validation: (value) => value,
+            validation: (value) => Array.isArray(value) && value.length > 0,
         },
         {
             name: 'collision_with_itself',
@@ -367,16 +367,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                             <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
                                 {field.labelText}
                             </label>
-                            {field.name === 'calendar_id' ? renderCalendarIdField() :
-                                field.name === 'color' ? (
-                                    <input
-                                        type="color"
-                                        name={field.name}
-                                        value={formData[field.name] || ''}
-                                        onChange={handleChange}
-                                        className="w-full h-12 p-1 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                    />
-                                ) : renderField(field)}
+                            {renderField(field)}
                         </div>
                     ))}
                     <button

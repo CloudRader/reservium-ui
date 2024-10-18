@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
-
+axios.defaults.withCredentials = true;
 const CreateNewMiniService = ({servicesId}) => {
     const [formData, setFormData] = useState({
         name: '',

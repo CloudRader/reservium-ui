@@ -140,6 +140,7 @@ function AppContent() {
                                 element={<EditMiniService
                                     serviceName={service.linkName}
                                     miniServiceData={miniService}
+                                    serviceId={service.id}
                                 />}
                             />
                         ))}
@@ -150,6 +151,7 @@ function AppContent() {
                                 element={<EditCalendar
                                     serviceName={service.linkName}
                                     calendarBaseData={calendar}
+                                    serviceId={service.id}
                                 />}
                             />
                         ))}

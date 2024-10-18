@@ -10,10 +10,8 @@ const CreateNewCalendar = ({ serviceId }) => {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const [selectedType, setSelectedType] = useState(null);
     const [additionalServices, setAdditionalServices] = useState([]);
     const [collisionWithCalendarOptions, setCollisionWithCalendarOptions] = useState([]);
-    const [errFetchingAdditionalServices, setErrFetchingAdditionalServices] = useState(true);
     const [errFetchingTypeOfReservations, setErrFetchingTypeOfReservations] = useState(true);
     const [googleCalendars, setGoogleCalendars] = useState([]);
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
@@ -68,10 +66,6 @@ const CreateNewCalendar = ({ serviceId }) => {
                 return { ...prevData, [name]: value };
             }
         });
-
-        if (field.name === 'service_alias') {
-            setSelectedType(value);
-        }
     };
 
     useEffect(() => {
@@ -118,18 +112,6 @@ const CreateNewCalendar = ({ serviceId }) => {
                 validation: (value) => !!value,
             },
             {
-                name: 'service_alias',
-                type: 'select',
-                labelText: 'Service Alias',
-                labelColor: 'text-success',
-                options: [
-                    {value: 'klub', label: 'Klub'},
-                    {value: 'stud', label: 'Stud'},
-                    {value: 'grill', label: 'Grill'},
-                ],
-                validation: (value) => !!value,
-            },
-            {
                 name: 'more_than_max_people_with_permission',
                 type: 'checkbox',
                 sybType: 'oneCheckbox',
@@ -143,21 +125,14 @@ const CreateNewCalendar = ({ serviceId }) => {
                 labelText: 'Calendar Color',
                 labelColor: 'text-success',
             },
-            // errFetchingTypeOfReservations ? {type: "empty"} : {
-            //     name: 'collision_with_calendar',
-            //     type: 'checkbox',
-            //     labelText: 'Collision With Calendar',
-            //     labelColor: 'text-success',
-            //     options: collisionWithCalendarOptions,
-            //     validation: (value) => value,
-            // },
-            // errFetchingAdditionalServices ? {type: "empty"} : {
-            //     name: 'mini_services',
-            //     type: 'checkbox',
-            //     labelText: 'Mini Services',
-            //     labelColor: 'text-success',
-            //     options: additionalServices,
-            // },
+            errFetchingTypeOfReservations ? {type: "empty"} : {
+                name: 'collision_with_calendar',
+                type: 'checkbox',
+                labelText: 'Collision With Calendar',
+                labelColor: 'text-success',
+                options: collisionWithCalendarOptions,
+                validation: (value) => value,
+            },
             {
                 name: 'collision_with_itself',
                 type: 'checkbox',
@@ -312,7 +287,7 @@ const CreateNewCalendar = ({ serviceId }) => {
                 ],
             },
         ]);
-    }, [collisionWithCalendarOptions, additionalServices, errFetchingAdditionalServices, errFetchingTypeOfReservations]);
+    }, [collisionWithCalendarOptions, additionalServices, errFetchingTypeOfReservations]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -323,7 +298,6 @@ const CreateNewCalendar = ({ serviceId }) => {
 
             reservation_service_id: serviceId,
             id: formData.calendar_id,
-            service_alias: formData.service_alias,
             collision_with_calendar: formData.collision_with_calendar || [],
             mini_services: formData.mini_services || [],
             collision_with_itself: !!(formData.collision_with_itself && formData.collision_with_itself.length > 0),
@@ -459,7 +433,6 @@ const CreateNewCalendar = ({ serviceId }) => {
             case 'group':
                 return (
                     <div className="space-y-3 bg-green-50 p-3 rounded-md">
-                        <h6 className="font-medium text-green-800">{field.labelText}</h6>
                         {field.fields.map(subField => (
                             <div key={subField.name}>
                                 <label className="block text-sm font-medium text-green-700 mb-1">
@@ -491,12 +464,11 @@ const CreateNewCalendar = ({ serviceId }) => {
     }, [formData, handleChange, googleCalendars, isLoadingCalendars, fetchGoogleCalendars, calendarIdInputType, manualCalendarId]);
 
     return (
-        <UniversalLayout centerContent>
+        <UniversalLayout centerContent whiteBackGreenContentBackground>
             <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
                 <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
                     Create New Calendar
                 </h1>
-
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {formFields.map((field) => (
                         <div key={field.name}>

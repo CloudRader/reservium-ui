@@ -1,9 +1,10 @@
 import {useQuery} from 'react-query';
 import axios from 'axios';
 import constants from "../Constants";
+axios.defaults.withCredentials = true;
 
 export async function fetchReservationData() {
-    axios.defaults.withCredentials = true;
+
     const response = await axios.get(`${constants.serverURL}/reservation_services/`);
     const data = response.data;
 

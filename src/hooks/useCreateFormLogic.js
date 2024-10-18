@@ -33,12 +33,16 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
 
                     if (field && field.type === 'multiCheckbox') {
                         // Handle multiCheckbox
-                        const currentValues = Array.isArray(prevData[name]) ? prevData[name] : [];
+                        const updatedValues = prevData[name] ? [...prevData[name]] : [];
                         if (checked) {
-                            return { ...prevData, [name]: [...currentValues, value] };
+                            updatedValues.push(value);
                         } else {
-                            return { ...prevData, [name]: currentValues.filter(v => v !== value) };
+                            const index = updatedValues.indexOf(value);
+                            if (index > -1) {
+                                updatedValues.splice(index, 1);
+                            }
                         }
+                        return { ...prevData, [name]: updatedValues };
                     } else {
                         // Handle regular checkbox
                         return { ...prevData, [name]: checked };
@@ -99,9 +103,11 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                                 <input
                                     type="checkbox"
                                     id={`${field.name}-${option.value}`}
-                                    {...commonProps}
+                                    name={field.name}
                                     value={option.value}
-                                    checked={selectedValues.includes(option.value)}
+                                    checked={(formData[field.name] || []).includes(option.value)}
+                                    onChange={handleChange}
+                                    data-multicheckbox="true"
                                     className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                                 />
                                 <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">

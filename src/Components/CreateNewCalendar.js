@@ -42,7 +42,10 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
             type: 'multiCheckbox',
             labelText: 'Collision With Calendars',
             labelColor: 'text-success',
-            options: serviceCalendars.map(calendar => ({ value: calendar.id, label: calendar.className })),
+            options: serviceCalendars.map(calendar => ({
+                value: calendar.googleCalendarId,
+                label: calendar.className
+            })),
             validation: (value) => Array.isArray(value) && value.length > 0,
         },
         {

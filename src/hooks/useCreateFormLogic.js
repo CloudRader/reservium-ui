@@ -22,30 +22,33 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
             };
 
             const [groupName, fieldName] = name.split('.');
-            if (fieldName) {
+            if (groupName && fieldName) {
                 // Handle nested fields
                 return updateNestedField(prevData, [groupName, fieldName], type === 'checkbox' ? checked : value);
             } else {
                 // Handle top-level fields
                 if (type === 'checkbox') {
-                    return { ...prevData, [name]: checked };
-                } else if (type === 'multiCheckbox') {
-                    const updatedValues = Array.isArray(prevData[name]) ? [...prevData[name]] : [];
-                    if (checked) {
-                        updatedValues.push(value);
-                    } else {
-                        const index = updatedValues.indexOf(value);
-                        if (index > -1) {
-                            updatedValues.splice(index, 1);
+                    const field = formFields.find(f => f.name === name) ||
+                        formFields.flatMap(f => f.fields || []).find(f => f.name === name);
+
+                    if (field && field.type === 'multiCheckbox') {
+                        // Handle multiCheckbox
+                        const currentValues = Array.isArray(prevData[name]) ? prevData[name] : [];
+                        if (checked) {
+                            return { ...prevData, [name]: [...currentValues, value] };
+                        } else {
+                            return { ...prevData, [name]: currentValues.filter(v => v !== value) };
                         }
+                    } else {
+                        // Handle regular checkbox
+                        return { ...prevData, [name]: checked };
                     }
-                    return { ...prevData, [name]: updatedValues };
                 } else {
                     return { ...prevData, [name]: value };
                 }
             }
         });
-    }, []);
+    }, [formFields]);
 
     const handleSubmit = useCallback((requestData) => {
         axios.post(submitUrl, requestData)
@@ -69,7 +72,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
 
         const getValue = (name) => {
             const [groupName, fieldName] = name.split('.');
-            return fieldName ? formData[groupName]?.[fieldName] : formData[name];
+            return groupName && fieldName ? formData[groupName]?.[fieldName] : formData[name];
         };
 
         switch (field.type) {
@@ -88,6 +91,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                     </div>
                 );
             case 'multiCheckbox':
+                const selectedValues = getValue(field.name) || [];
                 return (
                     <div className="space-y-2">
                         {field.options.map(option => (
@@ -95,10 +99,9 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                                 <input
                                     type="checkbox"
                                     id={`${field.name}-${option.value}`}
-                                    name={field.name}
+                                    {...commonProps}
                                     value={option.value}
-                                    checked={Array.isArray(getValue(field.name)) && getValue(field.name).includes(option.value)}
-                                    onChange={handleChange}
+                                    checked={selectedValues.includes(option.value)}
                                     className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                                 />
                                 <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">

@@ -8,6 +8,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
     const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const {
+        loading,
         isEditing,
         editedData,
         message,
@@ -16,7 +17,6 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
         handleCancel,
         handleChange,
         handleRulesChange,
-        loading,
     } = useEditableForm(calendarBaseData, calendarUpdateUrl, calendarFetchUrl);
 
 

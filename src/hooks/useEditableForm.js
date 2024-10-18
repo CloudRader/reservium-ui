@@ -8,7 +8,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedData, setEditedData] = useState(initialData);
     const [message, setMessage] = useState(null);
-    const [loading, setLoading] = useState();
+    const [loading, setLoading] = useState(true);
 
 
     // useEffect(() => {
@@ -86,6 +86,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
     };
 
     return {
+        loading,
         isEditing,
         editedData,
         message,
@@ -94,7 +95,6 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
         handleCancel,
         handleChange,
         handleRulesChange,
-        loading
     };
 };
 

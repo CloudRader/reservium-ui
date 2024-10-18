@@ -3,10 +3,10 @@ import axios from 'axios';
 import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
 axios.defaults.withCredentials = true;
-const CreateNewMiniService = ({servicesId}) => {
+const CreateNewMiniService = ({serviceId}) => {
     const [formData, setFormData] = useState({
         name: '',
-        reservation_service_id: servicesId, // Default value set to 'klub'
+        reservation_service_id: serviceId, // Default value set to 'klub'
     });
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');

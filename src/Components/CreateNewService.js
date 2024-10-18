@@ -24,6 +24,7 @@ const CreateNewService = () => {
                 labelColor: 'text-success',
                 validation: (value) => !!value,
             },
+            // TODO ALIS GET FROM BACKEND  MAKE AOPTION SELECTOR
             {
                 name: 'alias',
                 type: 'text',
@@ -31,19 +32,19 @@ const CreateNewService = () => {
                 labelColor: 'text-success',
                 validation: (value) => !!value,
             },
-            {
-                name: 'web',
-                type: 'text',
-                labelText: 'Web',
-                labelColor: 'text-success',
-            },
-            {
-                name: 'contact_mail',
-                type: 'email',
-                labelText: 'Contact Email',
-                labelColor: 'text-success',
-                validation: (value) => /\S+@\S+\.\S+/.test(value),
-            },
+            // {
+            //     name: 'web',
+            //     type: 'text',
+            //     labelText: 'Web',
+            //     labelColor: 'text-success',
+            // },
+            // {
+            //     name: 'contact_mail',
+            //     type: 'email',
+            //     labelText: 'Contact Email',
+            //     labelColor: 'text-success',
+            //     validation: (value) => /\S+@\S+\.\S+/.test(value),
+            // },
             {
                 name: 'public',
                 type: 'checkbox',

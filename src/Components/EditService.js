@@ -4,7 +4,7 @@ import UniversalLayout from "../UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
 
-const EditService = ({ service: initialService }) => {
+const EditService = ({service: initialService}) => {
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
     const {
         isEditing,
@@ -27,7 +27,7 @@ const EditService = ({ service: initialService }) => {
                 {isEditing ? 'Edit' : 'View'} Service: {editedData.name}
             </h1>
             <div className="bg-white p-4 rounded-lg shadow">
-                {message && <SuccessErrorMessage message={message} />}
+                {message && <SuccessErrorMessage message={message}/>}
 
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">ID</label>
@@ -120,12 +120,26 @@ const EditService = ({ service: initialService }) => {
                             </button>
                         </>
                     ) : (
-                        <button
-                            onClick={handleEdit}
-                            className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        >
-                            Edit Service
-                        </button>
+                        <>
+                            <button
+                                onClick={() => navigate(`/edit-calendars/${editedData.alias}`)}
+                                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                                Edit Calendars
+                            </button>
+                            <button
+                                onClick={() => navigate(`/edit-mini-services/${editedData.alias}`)}
+                                className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                            >
+                                Edit Mini Services
+                            </button>
+                            <button
+                                onClick={handleEdit}
+                                className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                            >
+                                Edit Service
+                            </button>
+                        </>
                     )}
                 </div>
             </div>

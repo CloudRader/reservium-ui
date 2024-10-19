@@ -5,7 +5,6 @@ import UniversalLayout from "../UniversalLayout";
 import useCreateFormLogic from '../hooks/useCreateFormLogic';
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import CalendarIdInput from "./CalendarIdInput";
-import BackArrow from "./BackArrow";
 
 const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
@@ -284,9 +283,11 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     }, [setMessage]);
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground>
-            <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
-                <BackArrow className="absolute top-4 left-4" />
+        <UniversalLayout centerContent whiteBackGreenContentBackground  header={
+            <h1 className="text-3xl font-bold text-green-800 text-center">
+                Create New Calendar
+            </h1>
+        }>
                 <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
                     Create New Calendar
                 </h1>
@@ -319,7 +320,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                 </form>
 
                 {message && <SuccessErrorMessage message={message} />}
-            </div>
         </UniversalLayout>
     );
 };

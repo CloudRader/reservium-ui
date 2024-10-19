@@ -95,6 +95,24 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                         ))}
                     </div>
                 )
+            case 'color':
+                return (
+                    <div className="flex items-center space-x-2">
+                        <input
+                            type="color"
+                            {...commonProps}
+                            value={getValue(field.name) || '#000000'}
+                            className="w-12 h-12 p-1 rounded-md cursor-pointer"
+                        />
+                        <input
+                            type="text"
+                            {...commonProps}
+                            value={getValue(field.name) || ''}
+                            className="flex-grow"
+                            placeholder="#000000"
+                        />
+                    </div>
+                );
             case 'checkbox':
                 return (
                     <div className="flex items-center">

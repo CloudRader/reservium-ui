@@ -31,10 +31,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
 
     if (!editedData) return <p>No data available</p>;
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground>
-            <h1 className="text-2xl font-bold text-green-800 mb-6">
-                {isEditing ? 'Edit' : 'View'} Calendar: {serviceName}
-            </h1>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Calendar: ${serviceName}`} >
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message}/>}
                 <div className="mb-4">

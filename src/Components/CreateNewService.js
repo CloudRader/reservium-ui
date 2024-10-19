@@ -56,11 +56,8 @@ const CreateNewService = () => {
     }, [setFormFields]);
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground>
-            <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
-                <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
-                    Create New Service
-                </h1>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Service'}>
+            <div className="bg-white p-4 rounded-lg shadow">
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {formFields.map((field) => (
                         <div key={field.name}>
@@ -78,7 +75,7 @@ const CreateNewService = () => {
                     </button>
                 </form>
 
-                {message && <SuccessErrorMessage message={message} />}
+                {message && <SuccessErrorMessage message={message}/>}
             </div>
         </UniversalLayout>
     );

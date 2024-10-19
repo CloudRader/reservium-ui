@@ -279,40 +279,40 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     }, [setMessage]);
 
     return (
-        <UniversalLayout centerContent
-                         headerTittle={`Create New Calendar`}
-        >
-            <form onSubmit={makeSubmit} className="space-y-5">
-                <CalendarIdInput
-                    calendarIdInputType={calendarIdInputType}
-                    setCalendarIdInputType={setCalendarIdInputType}
-                    isLoadingCalendars={isLoadingCalendars}
-                    fetchGoogleCalendars={fetchGoogleCalendars}
-                    googleCalendars={googleCalendars}
-                    formData={formData}
-                    handleChange={handleChange}
-                />
-                {formFields.map((field) => (
-                    field.name !== 'calendar_id' && (
-                        <div key={field.name}>
-                            <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
-                                {field.labelText}
-                            </label>
-                            {renderField(field)}
-                        </div>
-                    )
-                ))}
-                <button
-                    type="submit"
-                    className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                >
-                    Create Calendar
-                </button>
-            </form>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Calendar'}>
+            <div className="bg-white p-4 rounded-lg shadow">
+                <form onSubmit={makeSubmit} className="space-y-5">
+                    <CalendarIdInput
+                        calendarIdInputType={calendarIdInputType}
+                        setCalendarIdInputType={setCalendarIdInputType}
+                        isLoadingCalendars={isLoadingCalendars}
+                        fetchGoogleCalendars={fetchGoogleCalendars}
+                        googleCalendars={googleCalendars}
+                        formData={formData}
+                        handleChange={handleChange}
+                    />
+                    {formFields.map((field) => (
+                        field.name !== 'calendar_id' && (
+                            <div key={field.name}>
+                                <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
+                                    {field.labelText}
+                                </label>
+                                {renderField(field)}
+                            </div>
+                        )
+                    ))}
+                    <button
+                        type="submit"
+                        className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    >
+                        Create Calendar
+                    </button>
+                </form>
 
-            {message && <SuccessErrorMessage message={message}/>}
+                {message && <SuccessErrorMessage message={message}/>}
+                </div>
         </UniversalLayout>
-    );
+);
 };
 
 export default CreateNewCalendar;

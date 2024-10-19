@@ -17,11 +17,6 @@ const EditTable = ({name, data, nameAtr, idAtr, editLink, addLink}) => {
                 <table className="w-full bg-white rounded-lg overflow-hidden">
                     <thead className="bg-green-200 text-green-700">
                     <tr>
-                        {/*{columHeaders.map((header) =>*/}
-                        {/*    (<th className="py-2 px-4 text-left">*/}
-                        {/*            {header}*/}
-                        {/*        </th>*/}
-                        {/*    ))}*/}
                         <th className="py-2 px-4 text-left">
                                     {columHeaders[0]}
                         </th>

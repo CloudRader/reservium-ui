@@ -20,10 +20,7 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground>
-            <h1 className="text-2xl font-bold text-green-800 mb-6">
-                {isEditing ? 'Edit' : 'View'} Mini Service: {serviceName}
-            </h1>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Mini Service: ${miniServiceData.name}`} >
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message}/>}
 

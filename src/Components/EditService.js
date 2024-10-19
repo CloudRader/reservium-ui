@@ -25,9 +25,7 @@ const EditService = ({service: initialService}) => {
     }
 
     return (
-        <UniversalLayout centerContent
-                         header={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.name}`}
-        >
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.name}`}>
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message}/>}
 

@@ -23,6 +23,7 @@ import EditCalendar from "./Components/EditCalendar";
 import EditMiniServices from "./Components/EditMiniServices";
 import EditMiniService from "./Components/EditMiniService";
 import CreateNewService from "./Components/CreateNewService";
+import UniversalLayout from "./UniversalLayout";
 
 axios.defaults.withCredentials = true;
 
@@ -91,8 +92,21 @@ function AppContent() {
                 ))}
 
                 {/*<Route*/}
-                {/*    path={`/add-calendar/club`}*/}
-                {/*    element={<CreateNewCalendar serviceId={14488} />}*/}
+                {/*    path={`/edit-service/1`}*/}
+
+                {/*    element={<UniversalLayout centerContent*/}
+                {/*                              headerTittle={"Service:"}>*/}
+
+                {/*        <div className="bg-white p-4 rounded-lg shadow">*/}
+                {/*            asd*/}
+                {/*        </div><div className="bg-white p-4 rounded-lg shadow">*/}
+                {/*            asd*/}
+                {/*        </div><div className="bg-white p-4 rounded-lg shadow">*/}
+                {/*            asd*/}
+                {/*        </div><div className="bg-white p-4 rounded-lg shadow">*/}
+                {/*            asd*/}
+                {/*        </div>*/}
+                {/*    </UniversalLayout>}*/}
                 {/*/>*/}
 
                 {/*{userRoles.includes("manager") && (*/}

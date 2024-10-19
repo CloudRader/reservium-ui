@@ -7,7 +7,7 @@ const UniversalLayout = ({
                              fullHeight = false,
                              whiteBackGreenContentBackground = false,
                              className = '',
-                             header
+                             headerTittle = '',
                          }) => {
     const contentClass = centerContent
         ? 'flex flex-col items-center justify-center'
@@ -28,12 +28,17 @@ const UniversalLayout = ({
     return (
         <div className={`${backGroundPage} lg:py-52 ${heightClass}`}>
             <div className={`container mx-auto px-4 ${backGroundContent} ${className}`}>
-                <div className="flex items-center justify-between mb-6">
-                    <BackArrow/>
-                    <div className="text-center">
-                        {header}
+                {headerTittle &&
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="w-1/4">
+                            <BackArrow/>
+                        </div>
+                        <div className="w-1/2 text-center text-2xl font-bold text-green-800">
+                            {headerTittle}
+                        </div>
+                        <div className="w-1/4"></div>
                     </div>
-                </div>
+                }
                 <div className={contentClass}>
                     {children}
                 </div>

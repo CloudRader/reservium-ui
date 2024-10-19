@@ -11,8 +11,8 @@ const EditTable = ({name, data, nameAtr, idAtr, editLink, addLink}) => {
     ];
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground>
-            <h1 className="text-2xl font-bold text-green-800 mb-6">{name}</h1>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={name}>
+            {/*<h1 className="text-2xl font-bold text-green-800 mb-6">{name}</h1>*/}
             {data.length !== 0 ?
                 <table className="w-full bg-white rounded-lg overflow-hidden">
                     <thead className="bg-green-200 text-green-700">

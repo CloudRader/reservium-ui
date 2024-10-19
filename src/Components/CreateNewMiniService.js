@@ -41,11 +41,8 @@ const CreateNewMiniService = ({serviceId}) => {
     };
 
     return (
-        <UniversalLayout centerContent>
-            <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
-                <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
-                    Create New Mini Service
-                </h1>
+        <UniversalLayout centerContent headerTittle={'Create New Mini Service'}>
+            {/*<div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">*/}
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
@@ -72,7 +69,7 @@ const CreateNewMiniService = ({serviceId}) => {
 
                 {successMessage && <div className="mt-3 p-2 bg-green-100 text-green-700 rounded">{successMessage}</div>}
                 {errorMessage && <div className="mt-3 p-2 bg-red-100 text-red-700 rounded">{errorMessage}</div>}
-            </div>
+            {/*</div>*/}
         </UniversalLayout>
     );
 }

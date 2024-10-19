@@ -279,13 +279,9 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     }, [setMessage]);
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground
-                         header={
-                             <h1 className="text-3xl font-bold text-green-800 text-center">
-                                 Create New Calendar
-                             </h1>
-                         }>
-
+        <UniversalLayout centerContent
+                         headerTittle={`Create New Calendar`}
+        >
             <form onSubmit={makeSubmit} className="space-y-5">
                 <CalendarIdInput
                     calendarIdInputType={calendarIdInputType}

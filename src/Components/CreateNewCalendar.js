@@ -4,6 +4,8 @@ import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
 import useCreateFormLogic from '../hooks/useCreateFormLogic';
 import SuccessErrorMessage from "./SuccessErrorMessage";
+import CalendarIdInput from "./CalendarIdInput";
+import BackArrow from "./BackArrow";
 
 const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
@@ -13,7 +15,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     const initialFields = [
         {
             name: 'calendar_id',
-            // type: 'text',
+            // type: 'text', // This field is not rendered
             labelText: 'Select Calendar Source',
             labelColor: 'text-success',
         },
@@ -260,7 +262,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                 in_prior_days: Number(formData.manager_rules.in_prior_days) || 0
             }
         };
-    }, [formData,calendarIdInputType,googleCalendars,serviceId]);
+    }, [formData, calendarIdInputType, googleCalendars, serviceId]);
     const makeSubmit = (e) => {
         e.preventDefault();
         handleSubmit(preparePayload());
@@ -275,97 +277,38 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             setCalendarIdInputType('select');
         } catch (error) {
             console.error('Error fetching Google Calendars:', error);
-            setMessage({type: 'error', text: 'Failed to fetch Google Calendars'});
+            setMessage({ type: 'error', text: 'Failed to fetch Google Calendars' });
         } finally {
             setIsLoadingCalendars(false);
         }
     }, [setMessage]);
 
-    const renderCalendarIdField = useCallback(() => {
-        let commonProps = {
-            name: 'calendar_id',
-            value: formData.calendar_id || '',
-            onChange: handleChange,
-            className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-        };
-        const getValue = (name) => {
-            const [groupName, fieldName] = name.split('.');
-            return groupName && fieldName ? formData[groupName]?.[fieldName] : formData[name];
-        };
-
-        const reservation_type_field = {
-            name: 'reservation_type',
-            type: 'text',
-            labelText: 'Calendar Name (reservation_type)',
-            labelColor: 'text-success',
-            validation: (value) => !!value,
-        }
-
-        return (
-            <>
-                <div className="flex space-x-2 mb-2">
-                    <button
-                        type="button"
-                        onClick={() => setCalendarIdInputType('manual')}
-                        className={`py-2 px-4 text-sm font-medium rounded-md ${
-                            calendarIdInputType === 'manual'
-                                ? 'bg-green-600 text-white'
-                                : 'bg-green-100 text-green-700'
-                        }`}
-                    >
-                        Manual Input
-                    </button>
-                    <button
-                        type="button"
-                        onClick={fetchGoogleCalendars}
-                        disabled={isLoadingCalendars}
-                        className={`py-2 px-4 text-sm font-medium rounded-md ${
-                            calendarIdInputType === 'select'
-                                ? 'bg-green-600 text-white'
-                                : 'bg-green-100 text-green-700'
-                        } disabled:bg-green-300`}
-                    >
-                        {isLoadingCalendars ? 'Loading...' : 'Fetch Google Calendars'}
-                    </button>
-                </div>
-                {calendarIdInputType === 'manual'
-                    ? (<input
-                            type={reservation_type_field.type}
-                            name={reservation_type_field.name}
-                            onChange={handleChange}
-                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                            value={getValue(reservation_type_field.name) || ''}
-                        />
-                    )
-                    : (<select {...commonProps}>
-                            <option value="">Select a calendar</option>
-                            {googleCalendars.map((calendar) => (
-                                <option key={calendar.id} value={calendar.id}>
-                                    {calendar.summary}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-            </>
-        );
-    }, [calendarIdInputType, formData, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars]);
-
-
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
             <div className="max-w-2xl w-full bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6 rounded-lg">
+                <BackArrow className="absolute top-4 left-4" />
                 <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
                     Create New Calendar
                 </h1>
-
                 <form onSubmit={makeSubmit} className="space-y-5">
+                    <CalendarIdInput
+                        calendarIdInputType={calendarIdInputType}
+                        setCalendarIdInputType={setCalendarIdInputType}
+                        isLoadingCalendars={isLoadingCalendars}
+                        fetchGoogleCalendars={fetchGoogleCalendars}
+                        googleCalendars={googleCalendars}
+                        formData={formData}
+                        handleChange={handleChange}
+                    />
                     {formFields.map((field) => (
-                        <div key={field.name}>
-                            <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
-                                {field.labelText}
-                            </label>
-                            {field.name === 'calendar_id' ? renderCalendarIdField() : renderField(field)}
-                        </div>
+                        field.name !== 'calendar_id' && (
+                            <div key={field.name}>
+                                <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
+                                    {field.labelText}
+                                </label>
+                                {renderField(field)}
+                            </div>
+                        )
                     ))}
                     <button
                         type="submit"
@@ -375,7 +318,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     </button>
                 </form>
 
-                {message && <SuccessErrorMessage message={message}/>}
+                {message && <SuccessErrorMessage message={message} />}
             </div>
         </UniversalLayout>
     );

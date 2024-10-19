@@ -84,7 +84,6 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
             case 'group':
                 return (
                     <div key={field.name} className="space-y-4">
-                        <h3 className="text-lg font-medium text-green-800">{field.labelText}</h3>
                         {field.fields.map(subField => (
                             <div key={`${field.name}.${subField.name}`}>
                                 <label htmlFor={`${field.name}.${subField.name}`}

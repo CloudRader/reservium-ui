@@ -278,10 +278,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
         setIsLoadingCalendars(true);
         try {
             const response = await axios.get(`${constants.serverURL}/calendars/google_calendars/`);
-            // const newOptions = response.data
-            //     .filter(calendar => calendar.id === serviceId)
-            //     .map(calendar => ({value: calendar.calendar_id, label: calendar.reservation_type}));
-
             setGoogleCalendars(response.data);
             setCalendarIdInputType('select');
         } catch (error) {

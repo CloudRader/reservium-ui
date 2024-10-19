@@ -23,7 +23,6 @@ import EditCalendar from "./Components/EditCalendar";
 import EditMiniServices from "./Components/EditMiniServices";
 import EditMiniService from "./Components/EditMiniService";
 import CreateNewService from "./Components/CreateNewService";
-import UniversalLayout from "./UniversalLayout";
 
 axios.defaults.withCredentials = true;
 
@@ -41,10 +40,28 @@ function AppContent() {
         return <PulsatingLoader/>;
     }
 
-    const {services, calendars, miniServices} = data || {services: [], calendars: {} ,miniServices : {}};
+    const {services, calendars, miniServices} = data || {services: [], calendars: {}, miniServices: {}};
+
+    // if (!isLoggedIn) {
+    //     return (
+    //         <div className=" dark:!bg-slate-400 ">
+    //             <Routes>
+    //                 <Route path='/login' element={<LoginToIS/>}/>
+    //                 <Route path='/logined' element={<LoginToBackend login={login}/>}/>
+    //             </Routes>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className=" dark:!bg-slate-400 ">
+            <Routes>
+                {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
+                <Route path='/login' element={<LoginToIS/>}/>
+                {/* send it to back-end for session get data from back and make components*/}
+                <Route path='/logined' element={<LoginToBackend login={login}/>}/>
+                {/*then go here as default page*/}
+            </Routes>
             <Header isLoggedIn={true}
                     username={username}
                     services={services}
@@ -52,11 +69,8 @@ function AppContent() {
                     isManager={true}
             />
             <Routes>
-                {/*when login go to back-end redirect to IS then redirect to logined(with needed credentials) */}
-                <Route path='/login' element={<LoginToIS/>}/>
-                {/* send it to back-end for session get data from back and make components*/}
-                <Route path='/logined' element={<LoginToBackend login={login}/>}/>
-                {/*then go here as default page*/}
+                <Route path='/logout' element={<Logout onLogout={logout}/>}/>
+                <Route path="*" element={<NotFoundPage/>}/>
 
                 {services && services.map(service => (
                     <Route
@@ -77,8 +91,7 @@ function AppContent() {
                                                                   roomCalendarLinks={calendars["club"]}
                                                                   service={services[0]}/>}/>
 
-                <Route path='/logout' element={<Logout onLogout={logout}/>}/>
-                <Route path="*" element={<NotFoundPage/>}/>
+
 
                 <Route path='/success' element={<SuccessPage/>}/>
 
@@ -109,86 +122,80 @@ function AppContent() {
                 {/*    </UniversalLayout>}*/}
                 {/*/>*/}
 
-                {/*{userRoles.includes("manager") && (*/}
-                {/*    // TODO add here all routs for manager*/}
-                {/*    <>*/}
-                {/*DELETE IT USE FOR TEST*/}
-
-                <Route path="/edit-services" element={<EditServices services={services}/>}/>
-                <Route
-                    path='/add-service'
-                    element={<CreateNewService />}
-                />
-
-                {services && services.map(service => (
+                {userRoles.includes("manager") &&
                     <>
+                        <Route path="/edit-services" element={<EditServices services={services}/>}/>
                         <Route
-                            key={'/edit-calendars/' + service.linkName}
-                            path={`/edit-calendars/${service.linkName}`}
-                            element={<EditCalendars
-                                roomCalendarLinks={calendars[service.linkName]}
-                                serviceName={service.linkName}
-                            />}
-                        />
-                        <Route
-                            path={`/edit-mini-services/${service.linkName}`}
-                            element={<EditMiniServices
-                                miniServices={miniServices[service.linkName]}
-                                serviceName={service.linkName}
-                            />}
-                        />
-                        <Route
-                            path={`/edit-service/${service.serviceName}`}
-                            element={<EditService
-                                service={service}
-                            />}
+                            path='/add-service'
+                            element={<CreateNewService/>}
                         />
 
-                        <Route
-                            path={`/add-calendar/${service.linkName}`}
-                            element={<CreateNewCalendar serviceId={service.id} serviceCalendars={calendars[service.linkName]}/>}
-                        />
-                        <Route
-                            path={`/add-mini-service/${service.linkName}`}
-                            element={<CreateNewMiniService serviceId={service.id} />}
-                        />
+                        {services && services.map(service => (
+                            <>
+                                <Route
+                                    key={'/edit-calendars/' + service.linkName}
+                                    path={`/edit-calendars/${service.linkName}`}
+                                    element={<EditCalendars
+                                        roomCalendarLinks={calendars[service.linkName]}
+                                        serviceName={service.linkName}
+                                    />}
+                                />
+                                <Route
+                                    path={`/edit-mini-services/${service.linkName}`}
+                                    element={<EditMiniServices
+                                        miniServices={miniServices[service.linkName]}
+                                        serviceName={service.linkName}
+                                    />}
+                                />
+                                <Route
+                                    path={`/edit-service/${service.serviceName}`}
+                                    element={<EditService
+                                        service={service}
+                                    />}
+                                />
 
-                        {miniServices[service.linkName].map(miniService => (
-                            <Route
-                                key={'/edit-mini-service/' + service.linkName}
-                                path={`/edit-mini-service/${service.linkName}/${miniService.name}`}
-                                element={<EditMiniService
-                                    serviceName={service.linkName}
-                                    miniServiceData={miniService}
-                                    serviceId={service.id}
-                                />}
-                            />
+                                <Route
+                                    path={`/add-calendar/${service.linkName}`}
+                                    element={<CreateNewCalendar serviceId={service.id}
+                                                                serviceCalendars={calendars[service.linkName]}/>}
+                                />
+                                <Route
+                                    path={`/add-mini-service/${service.linkName}`}
+                                    element={<CreateNewMiniService serviceId={service.id}/>}
+                                />
+
+                                {miniServices[service.linkName].map(miniService => (
+                                    <Route
+                                        key={'/edit-mini-service/' + service.linkName}
+                                        path={`/edit-mini-service/${service.linkName}/${miniService.name}`}
+                                        element={<EditMiniService
+                                            serviceName={service.linkName}
+                                            miniServiceData={miniService}
+                                            serviceId={service.id}
+                                        />}
+                                    />
+                                ))}
+                                {calendars[service.linkName].map(calendar => (
+                                    <Route
+                                        key={'/edit-calendar/' + service.linkName}
+                                        path={`/edit-calendar/${service.linkName}/${calendar.className}`}
+                                        element={<EditCalendar
+                                            serviceName={service.linkName}
+                                            calendarBaseData={calendar}
+                                            serviceId={service.id}
+                                        />}
+                                    />
+                                ))}
+
+                            </>
                         ))}
-                        {calendars[service.linkName].map(calendar => (
-                            <Route
-                                key={'/edit-calendar/' + service.linkName}
-                                path={`/edit-calendar/${service.linkName}/${calendar.className}`}
-                                element={<EditCalendar
-                                    serviceName={service.linkName}
-                                    calendarBaseData={calendar}
-                                    serviceId={service.id}
-                                />}
-                            />
-                        ))}
-
                     </>
-                ))}
-
-
-
-
-                {/*    </>*/}
-                {/*)}*/}
-
+                }
             </Routes>
             <Footer/>
         </div>
-    );
+    )
+        ;
 }
 
 function App() {

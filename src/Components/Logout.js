@@ -17,7 +17,6 @@ function Logout({ onLogout }) {
             }
         };
         fetchLoginUrl();
-
         onLogout();
     }, [onLogout, navigate]);
 

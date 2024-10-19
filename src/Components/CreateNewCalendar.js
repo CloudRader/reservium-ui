@@ -41,7 +41,19 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                 value: calendar.googleCalendarId,
                 label: calendar.className
             })),
-            validation: (value) => Array.isArray(value) && value.length > 0,
+        },
+        {
+            name: 'mini_services',
+            type: 'text',
+            labelText: 'Mini Services',
+            labelColor: 'text-success',
+        },
+        {
+            name: 'max_people',
+            type: 'number',
+            labelText: 'Max People',
+            labelColor: 'text-success',
+            validation: (value) => value >= 0,
         },
         {
             name: 'collision_with_itself',
@@ -51,22 +63,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             labelColor: 'text-success',
             options: [{value: 'true', label: 'True'}],
             validation: (value) => value,
-        },
-        {
-            name: 'mini_services',
-            type: 'text',
-            labelText: 'Mini Services',
-            labelColor: 'text-success',
-            validation: (value) => !!value,
-        },
-        // todo если выбираем гугл то само выполниться
-        // человек заполняет сам  в др случае
-        {
-            name: 'max_people',
-            type: 'number',
-            labelText: 'Max People',
-            labelColor: 'text-success',
-            validation: (value) => value >= 0,
         },
         {
             name: 'club_member_rules',

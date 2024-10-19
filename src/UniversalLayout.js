@@ -27,13 +27,16 @@ const UniversalLayout = ({
 
     return (
         <div className={`${backGroundPage} lg:py-52 ${heightClass}`}>
-            <div className={`container mx-auto px-4 ${backGroundContent} ${contentClass} ${className}`}>
-                <div>
+            <div className={`container mx-auto px-4 ${backGroundContent} ${className}`}>
+                <div className="flex items-center justify-between mb-6">
                     <BackArrow/>
-                    {header && ( header
-                    )}
+                    <div className="text-center">
+                        {header}
+                    </div>
                 </div>
-                {children}
+                <div className={contentClass}>
+                    {children}
+                </div>
             </div>
         </div>
     );

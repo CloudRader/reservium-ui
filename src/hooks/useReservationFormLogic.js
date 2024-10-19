@@ -83,16 +83,14 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         },
     ], [getTomorrowDate]);
 
-    const reservationTypeFormField  = useMemo(() => [
-    {
+    const reservationTypeFormField  = useMemo(() => ({
             name: 'type',
             type: 'select',
             labelText: 'Type of Reservation',
             labelColor: 'text-primary',
             options: reservationTypes,
             validation: (value) => !!value
-        },
-    ], [reservationTypes]);
+    }), [reservationTypes]);
 
     const formFields  = useMemo(() => [...mainFormFields, reservationTypeFormField], [mainFormFields, reservationTypeFormField]);
 

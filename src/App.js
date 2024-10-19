@@ -65,7 +65,7 @@ function AppContent() {
             <Header isLoggedIn={true}
                     username={username}
                     services={services}
-                // isManager={userRoles.includes("manager")}
+                // isManager={userRoles.section_head}
                     isManager={true}
             />
             <Routes>
@@ -122,7 +122,7 @@ function AppContent() {
                 {/*    </UniversalLayout>}*/}
                 {/*/>*/}
 
-                {userRoles && userRoles.includes("manager") &&
+                {isLoggedIn && userRoles?.section_head &&
                     <>
                         <Route path="/edit-services" element={<EditServices services={services}/>}/>
                         <Route

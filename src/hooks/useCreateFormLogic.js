@@ -87,7 +87,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                         {field.fields.map(subField => (
                             <div key={`${field.name}.${subField.name}`}>
                                 <label htmlFor={`${field.name}.${subField.name}`}
-                                       className="block text-sm font-medium text-green-700 mb-1">
+                                       className="block text-xl font-medium text-green-700 mb-1">
                                     {subField.labelText}
                                 </label>
                                 {renderField({...subField, name: `${field.name}.${subField.name}`})}

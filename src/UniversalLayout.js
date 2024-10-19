@@ -28,12 +28,13 @@ const UniversalLayout = ({
     return (
         <div className={`${backGroundPage} lg:py-52 ${heightClass}`}>
             <div className={`container mx-auto px-4 ${backGroundContent} ${contentClass} ${className}`}>
-                <BackArrow className="w-full mb-4"/>
-                {header && (
-                    <div className="w-full mb-6">
+                <div>
+                    <BackArrow/>
+                    {header && (
                         {header}
-                    </div>
-                )}
+
+                    )}
+                </div>
                 {children}
             </div>
         </div>

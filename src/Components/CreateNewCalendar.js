@@ -276,50 +276,49 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             setCalendarIdInputType('select');
         } catch (error) {
             console.error('Error fetching Google Calendars:', error);
-            setMessage({ type: 'error', text: 'Failed to fetch Google Calendars' });
+            setMessage({type: 'error', text: 'Failed to fetch Google Calendars'});
         } finally {
             setIsLoadingCalendars(false);
         }
     }, [setMessage]);
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground  header={
-            <h1 className="text-3xl font-bold text-green-800 text-center">
-                Create New Calendar
-            </h1>
-        }>
-                <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
-                    Create New Calendar
-                </h1>
-                <form onSubmit={makeSubmit} className="space-y-5">
-                    <CalendarIdInput
-                        calendarIdInputType={calendarIdInputType}
-                        setCalendarIdInputType={setCalendarIdInputType}
-                        isLoadingCalendars={isLoadingCalendars}
-                        fetchGoogleCalendars={fetchGoogleCalendars}
-                        googleCalendars={googleCalendars}
-                        formData={formData}
-                        handleChange={handleChange}
-                    />
-                    {formFields.map((field) => (
-                        field.name !== 'calendar_id' && (
-                            <div key={field.name}>
-                                <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
-                                    {field.labelText}
-                                </label>
-                                {renderField(field)}
-                            </div>
-                        )
-                    ))}
-                    <button
-                        type="submit"
-                        className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                        Create Calendar
-                    </button>
-                </form>
+        <UniversalLayout centerContent whiteBackGreenContentBackground
+                         header={
+                             <h1 className="text-3xl font-bold text-green-800 text-center">
+                                 Create New Calendar
+                             </h1>
+                         }>
 
-                {message && <SuccessErrorMessage message={message} />}
+            <form onSubmit={makeSubmit} className="space-y-5">
+                <CalendarIdInput
+                    calendarIdInputType={calendarIdInputType}
+                    setCalendarIdInputType={setCalendarIdInputType}
+                    isLoadingCalendars={isLoadingCalendars}
+                    fetchGoogleCalendars={fetchGoogleCalendars}
+                    googleCalendars={googleCalendars}
+                    formData={formData}
+                    handleChange={handleChange}
+                />
+                {formFields.map((field) => (
+                    field.name !== 'calendar_id' && (
+                        <div key={field.name}>
+                            <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
+                                {field.labelText}
+                            </label>
+                            {renderField(field)}
+                        </div>
+                    )
+                ))}
+                <button
+                    type="submit"
+                    className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                    Create Calendar
+                </button>
+            </form>
+
+            {message && <SuccessErrorMessage message={message}/>}
         </UniversalLayout>
     );
 };

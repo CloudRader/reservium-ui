@@ -4,7 +4,6 @@ import UniversalLayout from "../UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import {useNavigate} from "react-router-dom";
-import BackArrow from "./BackArrow";
 
 const EditService = ({service: initialService}) => {
     const navigate = useNavigate();
@@ -26,11 +25,12 @@ const EditService = ({service: initialService}) => {
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground>
-            <BackArrow className="absolute top-4 left-4" />
-            <h1 className="text-2xl font-bold text-green-800 mb-6">
-                {isEditing ? 'Edit' : 'View'} Service: {editedData.name}
-            </h1>
+        <UniversalLayout centerContent
+                         header={<h1
+                             className=" text-center text-2xl font-bold text-green-800 mb-6">
+                             {isEditing ? 'Edit' : 'View'} Service: {editedData.name}
+                         </h1>
+                         }>
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message}/>}
 

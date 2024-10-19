@@ -122,7 +122,7 @@ function AppContent() {
                 {/*    </UniversalLayout>}*/}
                 {/*/>*/}
 
-                {userRoles.includes("manager") &&
+                {userRoles && userRoles.includes("manager") &&
                     <>
                         <Route path="/edit-services" element={<EditServices services={services}/>}/>
                         <Route

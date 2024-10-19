@@ -4,11 +4,11 @@ import UniversalLayout from "../UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import {useNavigate} from "react-router-dom";
+import BackArrow from "./BackArrow";
 
 const EditService = ({service: initialService}) => {
     const navigate = useNavigate();
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
-    // query include
 
     const {
         isEditing,
@@ -27,6 +27,7 @@ const EditService = ({service: initialService}) => {
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground>
+            <BackArrow className="absolute top-4 left-4" />
             <h1 className="text-2xl font-bold text-green-800 mb-6">
                 {isEditing ? 'Edit' : 'View'} Service: {editedData.name}
             </h1>
@@ -47,8 +48,8 @@ const EditService = ({service: initialService}) => {
                     <label className="block text-sm font-medium text-gray-700">Name</label>
                     <input
                         type="text"
-                        name="name"
-                        value={editedData.name}
+                        name="serviceName"
+                        value={editedData.serviceName}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
@@ -60,8 +61,8 @@ const EditService = ({service: initialService}) => {
                     <label className="block text-sm font-medium text-gray-700">Alias</label>
                     <input
                         type="text"
-                        name="alias"
-                        value={editedData.alias}
+                        name="linkName"
+                        value={editedData.linkName}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
@@ -73,8 +74,8 @@ const EditService = ({service: initialService}) => {
                     <label className="block text-sm font-medium text-gray-700">Web</label>
                     <input
                         type="text"
-                        name="web"
-                        value={editedData.web}
+                        name="wikiLink"
+                        value={editedData.wikiLink}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${

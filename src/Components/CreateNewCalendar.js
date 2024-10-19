@@ -18,13 +18,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             labelColor: 'text-success',
         },
         {
-            name: 'reservation_type',
-            type: 'text',
-            labelText: 'Calendar Name (reservation_type)',
-            labelColor: 'text-success',
-            validation: (value) => !!value,
-        },
-        {
             name: 'more_than_max_people_with_permission',
             type: 'checkbox',
             sybType: 'oneCheckbox',
@@ -267,7 +260,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                 in_prior_days: Number(formData.manager_rules.in_prior_days) || 0
             }
         };
-    }, [formData]);
+    }, [formData,calendarIdInputType,googleCalendars,serviceId]);
     const makeSubmit = (e) => {
         e.preventDefault();
         handleSubmit(preparePayload());
@@ -286,7 +279,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
         } finally {
             setIsLoadingCalendars(false);
         }
-    }, [serviceId, setMessage]);
+    }, [setMessage]);
 
     const renderCalendarIdField = useCallback(() => {
         let commonProps = {
@@ -299,6 +292,14 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             const [groupName, fieldName] = name.split('.');
             return groupName && fieldName ? formData[groupName]?.[fieldName] : formData[name];
         };
+
+        const reservation_type_field = {
+            name: 'reservation_type',
+            type: 'text',
+            labelText: 'Calendar Name (reservation_type)',
+            labelColor: 'text-success',
+            validation: (value) => !!value,
+        }
 
         return (
             <>
@@ -328,16 +329,13 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     </button>
                 </div>
                 {calendarIdInputType === 'manual'
-                    ? (
-                    <input
-                        type={field.type}
-                        {{
-                            name: field.name,
-                            onChange: handleChange,
-                            className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        }}
-                        value={getValue(field.name) || ''}
-                    />
+                    ? (<input
+                            type={reservation_type_field.type}
+                            name={reservation_type_field.name}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                            value={getValue(reservation_type_field.name) || ''}
+                        />
                     )
                     : (<select {...commonProps}>
                             <option value="">Select a calendar</option>
@@ -350,7 +348,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     )}
             </>
         );
-    }, [calendarIdInputType, formData.calendar_id, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars]);
+    }, [calendarIdInputType, formData, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars]);
 
 
     return (

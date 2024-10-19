@@ -228,7 +228,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             reservation_service_id: serviceId,
             reservation_type: calendarIdInputType === 'manual'
                 ? formData.reservation_type
-                : googleCalendars.find(cal => cal.id === formData.calendar_id)?.submission || '',
+                : googleCalendars.find(cal => cal.id === formData.calendar_id)?.summary || '',
             max_people: Number(formData.max_people) || 0,
             collision_with_itself: !!formData.collision_with_itself,
 

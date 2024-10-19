@@ -1,21 +1,16 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
 import useCreateFormLogic from '../hooks/useCreateFormLogic';
 import SuccessErrorMessage from "./SuccessErrorMessage";
 
-const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
+const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
     const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
-    const [manualCalendarId, setManualCalendarId] = useState('');
-    const [collisionWithCalendarOptions, setCollisionWithCalendarOptions] = useState([]);
-    const [errFetchingTypeOfReservations, setErrFetchingTypeOfReservations] = useState(true);
 
     const initialFields = [
-        // todo если выбираем гугл то само выполниться
-        // отправляем пустой в др случае
         {
             name: 'calendar_id',
             // type: 'text',
@@ -56,6 +51,13 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
             options: [{value: 'true', label: 'True'}],
             validation: (value) => value,
         },
+        {
+            name: 'mini_services',
+            type: 'text',
+            labelText: 'Mini Services',
+            labelColor: 'text-success',
+            validation: (value) => !!value,
+        },
         // todo если выбираем гугл то само выполниться
         // человек заполняет сам  в др случае
         {
@@ -85,7 +87,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                     labelColor: 'text-success',
                     options: [{value: 'true', label: 'True'}],
                 },
-                // todo reservation_without_permission
                 {
                     name: 'reservation_without_permission',
                     type: 'checkbox',
@@ -133,7 +134,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                     labelColor: 'text-success',
                     options: [{value: 'true', label: 'True'}],
                 },
-                // todo reservation_without_permission
                 {
                     name: 'reservation_without_permission',
                     type: 'checkbox',
@@ -181,7 +181,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                     labelColor: 'text-success',
                     options: [{value: 'true', label: 'True'}],
                 },
-                // todo reservation_without_permission
                 {
                     name: 'reservation_without_permission',
                     type: 'checkbox',
@@ -222,23 +221,66 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
         formFields,
         formData,
         message,
-        setFormFields,
+        // setFormFields,
         handleChange,
         handleSubmit,
         renderField,
         setMessage
     } = useCreateFormLogic(initialFields, `${constants.serverURL}/calendars/create_calendar`);
 
+    const makeSubmit = (e) => {
+        e.preventDefault();
+
+        const requestData = {
+            id: calendarIdInputType === 'manual' ? '' : formData.calendar_id,
+            collision_with_calendar: formData.collision_with_calendar || [],
+            more_than_max_people_with_permission: !!formData.more_than_max_people_with_permission,
+            mini_services: formData.mini_services.split(",") || [],
+            color: formData.color,
+            reservation_service_id: serviceId,
+            reservation_type: calendarIdInputType === 'manual'
+                ? formData.reservation_type
+                : googleCalendars.find(cal => cal.id === formData.calendar_id)?.submission || '',
+            max_people: Number(formData.max_people) || 0,
+            collision_with_itself: !!formData.collision_with_itself,
+
+            club_member_rules: {
+                night_time: !!formData.club_member_rules.night_time,
+                reservation_without_permission: !!formData.club_member_rules.reservation_without_permission,
+                max_reservation_hours: !!formData.club_member_rules.max_reservation_hours,
+                in_advance_hours: Number(formData.club_member_rules.in_advance_hours) || 0,
+                in_advance_minutes: Number(formData.club_member_rules.in_advance_minutes) || 0,
+                in_prior_days: Number(formData.club_member_rules.in_prior_days) || 0
+            },
+            active_member_rules: {
+                night_time: !!formData.active_member_rules.night_time,
+                reservation_without_permission: !!formData.active_member_rules.reservation_without_permission,
+                max_reservation_hours: !!formData.active_member_rules.max_reservation_hours,
+                in_advance_hours: Number(formData.active_member_rules.in_advance_hours) || 0,
+                in_advance_minutes: Number(formData.active_member_rules.in_advance_minutes) || 0,
+                in_prior_days: Number(formData.active_member_rules.in_prior_days) || 0
+            },
+            manager_rules: {
+                night_time: !!formData.manager_rules.night_time,
+                reservation_without_permission: !!formData.manager_rules.reservation_without_permission,
+                max_reservation_hours: !!formData.manager_rules.max_reservation_hours,
+                in_advance_hours: Number(formData.manager_rules.in_advance_hours) || 0,
+                in_advance_minutes: Number(formData.manager_rules.in_advance_minutes) || 0,
+                in_prior_days: Number(formData.manager_rules.in_prior_days) || 0
+            }
+        };
+        handleSubmit(requestData);
+    };
+
+
     const fetchGoogleCalendars = useCallback(async () => {
         setIsLoadingCalendars(true);
         try {
             const response = await axios.get(`${constants.serverURL}/calendars/google_calendars/`);
-            const newOptions = response.data
-                .filter(calendar => calendar.id === serviceId)
-                .map(calendar => ({value: calendar.calendar_id, label: calendar.reservation_type}));
+            // const newOptions = response.data
+            //     .filter(calendar => calendar.id === serviceId)
+            //     .map(calendar => ({value: calendar.calendar_id, label: calendar.reservation_type}));
 
-            setCollisionWithCalendarOptions(newOptions);
-            setErrFetchingTypeOfReservations(false);
             setGoogleCalendars(response.data);
             setCalendarIdInputType('select');
         } catch (error) {
@@ -249,77 +291,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
         }
     }, [serviceId, setMessage]);
 
-    // useEffect(() => {
-    //     setFormFields(prevFields => prevFields.map(field =>
-    //         field.name === 'calendar_id'
-    //             ? {
-    //                 ...field,
-    //                 type: calendarIdInputType === 'select' ? 'select' : 'text',
-    //                 options: calendarIdInputType === 'select' ? googleCalendars.map(calendar => ({
-    //                     value: calendar.id,
-    //                     label: calendar.summary
-    //                 })) : []
-    //             }
-    //             : field
-    //     ));
-    // }, [calendarIdInputType, googleCalendars, setFormFields]);
-
-    const makeSubmit = (e) => {
-        e.preventDefault();
-
-        const requestData = {
-            more_than_max_people_with_permission: !!formData.more_than_max_people_with_permission,
-            color: formData.color,
-            reservation_service_id: serviceId,
-            collision_with_calendar: formData.collision_with_calendar || [],
-            id: calendarIdInputType === 'manual' ? '' : formData.calendar_id,
-            reservation_type: calendarIdInputType === 'manual'
-                ? formData.reservation_type
-                : googleCalendars.find(cal => cal.id === formData.calendar_id)?.reservation_type || '',
-            mini_services: formData.mini_services || [],
-            collision_with_itself: !!formData.collision_with_itself,
-
-            max_people: Number(formData.max_people) || 0,
-            club_member_rules: {
-                night_time: !!formData.club_night_time,
-                reservation_more_24_hours: !!formData.club_reservation_more_24_hours,
-                in_advance_hours: Number(formData.club_in_advance_hours) || 0,
-                in_advance_minutes: Number(formData.club_in_advance_minutes) || 0,
-                in_advance_day: Number(formData.club_in_advance_day) || 0
-            },
-            active_member_rules: {
-                night_time: !!formData.active_night_time,
-                reservation_more_24_hours: !!formData.active_reservation_more_24_hours,
-                in_advance_hours: Number(formData.active_in_advance_hours) || 0,
-                in_advance_minutes: Number(formData.active_in_advance_minutes) || 0,
-                in_advance_day: Number(formData.active_in_advance_day) || 0
-            },
-            manager_rules: {
-                night_time: !!formData.manager_night_time,
-                reservation_more_24_hours: !!formData.manager_reservation_more_24_hours,
-                in_advance_hours: Number(formData.manager_in_advance_hours) || 0,
-                in_advance_minutes: Number(formData.manager_in_advance_minutes) || 0,
-                in_advance_day: Number(formData.manager_in_advance_day) || 0
-            }
-        };
-
-        handleSubmit(requestData);
-    };
-
-    const renderGroupField = (field) => (
-        <div key={field.name} className="space-y-4">
-            <h3 className="text-lg font-medium text-green-800">{field.labelText}</h3>
-            {field.fields.map(subField => (
-                <div key={`${field.name}.${subField.name}`}>
-                    <label htmlFor={`${field.name}.${subField.name}`} className="block text-sm font-medium text-green-700 mb-1">
-                        {subField.labelText}
-                    </label>
-                    {renderField({...subField, name: `${field.name}.${subField.name}`})}
-                </div>
-            ))}
-        </div>
-    );
-
     const renderCalendarIdField = useCallback(() => {
         const commonProps = {
             name: 'calendar_id',
@@ -328,7 +299,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
             className: "w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
         };
         return (
-            <div>
+            <>
                 <div className="flex space-x-2 mb-2">
                     <button
                         type="button"
@@ -354,22 +325,35 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                         {isLoadingCalendars ? 'Loading...' : 'Fetch Google Calendars'}
                     </button>
                 </div>
-                {calendarIdInputType === 'manual' ? (
-                    <></>
-                ) : (
-                    <select {...commonProps}>
-                        <option value="">Select a calendar</option>
-                        {googleCalendars.map((calendar) => (
-                            <option key={calendar.id} value={calendar.id}>
-                                {calendar.summary}
-                            </option>
-                        ))}
-                    </select>
-                )}
-            </div>
+                {calendarIdInputType === 'manual'
+                    ? null
+                    : (<select {...commonProps}>
+                            <option value="">Select a calendar</option>
+                            {googleCalendars.map((calendar) => (
+                                <option key={calendar.id} value={calendar.id}>
+                                    {calendar.summary}
+                                </option>
+                            ))}
+                        </select>
+                    )}
+            </>
         );
-    }, [calendarIdInputType, formData.calendar_id, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars, manualCalendarId]);
+    }, [calendarIdInputType, formData.calendar_id, handleChange, isLoadingCalendars, fetchGoogleCalendars, googleCalendars]);
 
+    const renderGroupField = (field) => (
+        <div key={field.name} className="space-y-4">
+            <h3 className="text-lg font-medium text-green-800">{field.labelText}</h3>
+            {field.fields.map(subField => (
+                <div key={`${field.name}.${subField.name}`}>
+                    <label htmlFor={`${field.name}.${subField.name}`}
+                           className="block text-sm font-medium text-green-700 mb-1">
+                        {subField.labelText}
+                    </label>
+                    {renderField({...subField, name: `${field.name}.${subField.name}`})}
+                </div>
+            ))}
+        </div>
+    );
 
 
     return (
@@ -378,7 +362,6 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                 <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">
                     Create New Calendar
                 </h1>
-
 
                 <form onSubmit={makeSubmit} className="space-y-5">
                     {formFields.map((field) => (
@@ -399,7 +382,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars }) => {
                     </button>
                 </form>
 
-                {message && <SuccessErrorMessage message={message} />}
+                {message && <SuccessErrorMessage message={message}/>}
             </div>
         </UniversalLayout>
     );

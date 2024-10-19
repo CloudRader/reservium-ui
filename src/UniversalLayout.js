@@ -30,9 +30,7 @@ const UniversalLayout = ({
             <div className={`container mx-auto px-4 ${backGroundContent} ${contentClass} ${className}`}>
                 <div>
                     <BackArrow/>
-                    {header && (
-                        {header}
-
+                    {header && ( header
                     )}
                 </div>
                 {children}

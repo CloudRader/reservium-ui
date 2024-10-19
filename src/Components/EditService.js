@@ -26,11 +26,12 @@ const EditService = ({service: initialService}) => {
 
     return (
         <UniversalLayout centerContent
-                         header={<h1
+                         header={
+                        <h1
                              className=" text-center text-2xl font-bold text-green-800 mb-6">
                              {isEditing ? 'Edit' : 'View'} Service: {editedData.name}
                          </h1>
-                         }>
+            }>
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message}/>}
 

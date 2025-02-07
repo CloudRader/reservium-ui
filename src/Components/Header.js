@@ -30,11 +30,11 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                 >
                                     <span>{username}</span>
                                     <svg className="w-4 h-4 transition-transform duration-200 ease-in-out"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         viewBox="0 0 24 24"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)' }}>
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)' }}>
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </button>
@@ -42,11 +42,11 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                     <div className="absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg py-1 z-10 ring-1 ring-black ring-opacity-5">
                                         {isManager && (
                                             <NavLink
-                                                to="/edit-services"
+                                                to="/manager-panel"
                                                 className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
                                                 onClick={() => setIsDropdownOpen(false)}
                                             >
-                                                Edit Services
+                                                Manager panel
                                             </NavLink>
                                         )}
                                         <NavLink
@@ -94,10 +94,9 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                     key={item.linkName}
                                     to={item.linkName}
                                     className={({ isActive }) =>
-                                        `block px-3 py-2 rounded-md text-sm font-medium ${
-                                            isActive
-                                                ? 'bg-green-200 text-green-900'
-                                                : 'text-green-700 hover:bg-green-100 hover:text-green-900'
+                                        `block px-3 py-2 rounded-md text-sm font-medium ${isActive
+                                            ? 'bg-green-200 text-green-900'
+                                            : 'text-green-700 hover:bg-green-100 hover:text-green-900'
                                         } transition duration-150 ease-in-out`
                                     }
                                 >
@@ -111,10 +110,10 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                     <span className="block text-sm font-medium text-green-700">{username}</span>
                                     {isManager && (
                                         <NavLink
-                                            to="/edit-services"
+                                            to="/manager-panel"
                                             className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                         >
-                                            Edit Services
+                                            Manager panel
                                         </NavLink>
                                     )}
                                     <NavLink

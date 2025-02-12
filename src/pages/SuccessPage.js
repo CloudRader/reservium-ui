@@ -15,7 +15,16 @@ const SuccessPage = () => {
     const [submitSuccess, setSubmitSuccess] = useState(false);
 
     if (state) {
-        const { message, contactMail, wikiLink } = state;
+        const { message,
+            contactMail,
+            wikiLink,
+            additional_services,
+            end_datetime,
+            guests,
+            purpose,
+            reservation_type,
+            start_datetime,
+        } = state;
         if (message) {
             const response = JSON.stringify(message, null, 2);
             isTooManyPeopleMessage = response.includes("more than");
@@ -66,16 +75,15 @@ const SuccessPage = () => {
 
     // Extract form data from state
     let formData = {};
-    if (state && state.message) {
-        const messageObj = JSON.parse(state.message);
+    if (state) {
         formData = {
-            event_name: messageObj.event_name || '',
-            guests: messageObj.guests || '',
-            event_start: messageObj.event_start || '',
-            event_end: messageObj.event_end || '',
-            user_name: messageObj.user_name || '',
-            email: messageObj.email || '',
-            space: messageObj.space || '',
+            event_name: state.purpose || '',
+            guests: state.guests || '',
+            event_start: state.start_datetime || '',
+            event_end: state.end_datetime || '',
+            user_name: state.user_name || '',
+            email: state.contactMail || '',
+            space: state.reservation_type || '',
         };
     }
 

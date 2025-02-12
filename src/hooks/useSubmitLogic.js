@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 import constants from '../Constants';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const useSubmitLogic = (service) => {
@@ -19,7 +19,13 @@ const useSubmitLogic = (service) => {
                         state: {
                             ...response.data,
                             contactMail: service.contact_mail,
-                            wikiLink: service.wikiLink
+                            wikiLink: service.wikiLink,
+                            additional_services: service.additional_services,
+                            end_datetime: service.end_datetime,
+                            guests: service.guests,
+                            purpose: service.purpose,
+                            reservation_type: service.reservation_type,
+                            start_datetime: service.start_datetime,
                         }
                     });
                 } else {

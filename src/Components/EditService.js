@@ -9,6 +9,15 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     const navigate = useNavigate();
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
 
+    // TODO rework names in service Transform initial service data to match form field names
+    const transformedInitialService = {
+        name: initialService.serviceName,
+        alias: initialService.linkName,
+        web: initialService.wikiLink,
+        contact_mail: initialService.contact_mail,
+        public: initialService.public
+    };
+
     const {
         isEditing,
         editedData,
@@ -18,14 +27,14 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
         handleCancel,
         handleChange,
         loading,
-    } = useEditableForm(initialService, serviceUpdateUrl, null, isEditMode);
+    } = useEditableForm(transformedInitialService, serviceUpdateUrl, null, isEditMode);
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.serviceName}`}>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${initialService.serviceName}`}>
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message} />}
 
@@ -34,7 +43,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="name"
-                        value={editedData.serviceName}
+                        value={editedData.name}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
@@ -45,7 +54,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="alias"
-                        value={editedData.linkName}
+                        value={editedData.alias}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
@@ -56,7 +65,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="web"
-                        value={editedData.wikiLink}
+                        value={editedData.web}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
@@ -103,13 +112,13 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     ) : (
                         <>
                             <button
-                                onClick={() => navigate(`/edit-calendars/${editedData.linkName}`)}
+                                onClick={() => navigate(`/edit-calendars/${editedData.alias}`)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 Edit Calendars
                             </button>
                             <button
-                                onClick={() => navigate(`/edit-mini-services/${editedData.linkName}`)}
+                                onClick={() => navigate(`/edit-mini-services/${editedData.alias}`)}
                                 className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                             >
                                 Edit Mini Services

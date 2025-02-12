@@ -93,7 +93,6 @@ function AppContent() {
                     service={services[0]} />} />
 
 
-
                 <Route path='/success' element={<SuccessPage />} />
 
                 {services && services.map(service => (
@@ -104,23 +103,11 @@ function AppContent() {
                             roomCalendarLinks={calendars[service.linkName]} />}
                     />
                 ))}
-
+                {/* delete this */}
                 <Route
                     path={`/1`}
                     element={<SamplePage />}
                 />
-
-
-                {/*        <div className="bg-white p-4 rounded-lg shadow">*/}
-                {/*            asd*/}
-                {/*        </div><div className="bg-white p-4 rounded-lg shadow">*/}
-                {/*            asd*/}
-                {/*        </div><div className="bg-white p-4 rounded-lg shadow">*/}
-                {/*            asd*/}
-                {/*        </div><div className="bg-white p-4 rounded-lg shadow">*/}
-                {/*            asd*/}
-                {/*        </div>*/}
-                {/*    </UniversalLayout>}*/}
 
                 {isLoggedIn && userRoles?.section_head &&
                     <>
@@ -147,10 +134,19 @@ function AppContent() {
                                         serviceName={service.linkName}
                                     />}
                                 />
+                                
+                                <Route
+                                    path={`/view-service/${service.serviceName}`}
+                                    element={<EditService
+                                        service={service}
+                                        isEditMode={false}
+                                    />}
+                                />
                                 <Route
                                     path={`/edit-service/${service.serviceName}`}
                                     element={<EditService
                                         service={service}
+                                        isEditMode={true}
                                     />}
                                 />
 
@@ -165,26 +161,52 @@ function AppContent() {
                                 />
 
                                 {miniServices[service.linkName].map(miniService => (
-                                    <Route
-                                        key={'/edit-mini-service/' + service.linkName}
-                                        path={`/edit-mini-service/${service.linkName}/${miniService.name}`}
-                                        element={<EditMiniService
-                                            serviceName={service.linkName}
-                                            miniServiceData={miniService}
-                                            serviceId={service.id}
-                                        />}
-                                    />
+                                    <>
+                                        <Route
+                                            key={'/view-mini-service/' + service.linkName}
+                                            path={`/view-mini-service/${service.linkName}/${miniService.name}`}
+                                            element={<EditMiniService
+                                                serviceName={service.linkName}
+                                                miniServiceData={miniService}
+                                                serviceId={service.id}
+                                                isEditMode={false}
+                                            />}
+                                        />
+                                        <Route
+                                            key={'/edit-mini-service/' + service.linkName}
+                                            path={`/edit-mini-service/${service.linkName}/${miniService.name}`}
+                                            element={<EditMiniService
+                                                serviceName={service.linkName}
+                                                miniServiceData={miniService}
+                                                serviceId={service.id}
+                                                isEditMode={true}
+                                            />}
+                                        />
+                                    </>
                                 ))}
                                 {calendars[service.linkName].map(calendar => (
-                                    <Route
-                                        key={'/edit-calendar/' + service.linkName}
-                                        path={`/edit-calendar/${service.linkName}/${calendar.className}`}
-                                        element={<EditCalendar
-                                            serviceName={service.linkName}
-                                            calendarBaseData={calendar}
-                                            serviceId={service.id}
-                                        />}
-                                    />
+                                    <>
+                                        <Route
+                                            key={'/view-calendar/' + service.linkName}
+                                            path={`/view-calendar/${service.linkName}/${calendar.className}`}
+                                            element={<EditCalendar
+                                                serviceName={service.linkName}
+                                                calendarBaseData={calendar}
+                                                serviceId={service.id}
+                                                isEditMode={false}
+                                            />}
+                                        />
+                                        <Route
+                                            key={'/edit-calendar/' + service.linkName}
+                                            path={`/edit-calendar/${service.linkName}/${calendar.className}`}
+                                            element={<EditCalendar
+                                                serviceName={service.linkName}
+                                                calendarBaseData={calendar}
+                                                serviceId={service.id}
+                                                isEditMode={true}
+                                            />}
+                                        />
+                                    </>
                                 ))}
 
                             </>

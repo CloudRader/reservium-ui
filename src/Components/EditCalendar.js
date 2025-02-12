@@ -4,7 +4,7 @@ import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
 
-const EditCalendar = ({ serviceName, calendarBaseData }) => {
+const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = false }) => {
     const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const initialData = {
@@ -24,7 +24,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
         handleCancel,
         handleChange,
         handleRulesChange,
-    } = useEditableForm(initialData, calendarUpdateUrl, calendarFetchUrl);
+    } = useEditableForm(initialData, calendarUpdateUrl, calendarFetchUrl, isEditMode);
 
 
     if (loading) return <p>Loading...</p>;
@@ -33,7 +33,7 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Calendar: ${serviceName}`} >
             <div className="bg-white p-4 rounded-lg shadow">
-                {message && <SuccessErrorMessage message={message}/>}
+                {message && <SuccessErrorMessage message={message} />}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">ID</label>
                     <input
@@ -46,16 +46,25 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Color</label>
-                    <input
-                        type="text"
-                        name="color"
-                        value={editedData.color}
-                        onChange={handleChange}
-                        readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
-                    />
+                    <div className="flex items-center space-x-2">
+                        <input
+                            type="color"
+                            name="color"
+                            value={editedData.color || '#000000'}
+                            onChange={handleChange}
+                            disabled={!isEditing}
+                            className="w-12 h-12 p-1 rounded-md cursor-pointer"
+                        />
+                        <input
+                            type="text"
+                            name="color"
+                            value={editedData.color || ''}
+                            onChange={handleChange}
+                            readOnly={!isEditing}
+                            className={`flex-grow mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                            placeholder="#000000"
+                        />
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Reservation Type</label>
@@ -65,9 +74,8 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                         value={editedData.reservation_type}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
+                            }`}
                     />
                 </div>
                 <div className="mb-4">
@@ -78,9 +86,8 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                         value={editedData.max_people}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
+                            }`}
                     />
                 </div>
                 {['club_member_rules', 'active_member_rules', 'manager_rules'].map((ruleType) => (
@@ -88,31 +95,30 @@ const EditCalendar = ({ serviceName, calendarBaseData }) => {
                         <div key={ruleType} className="mb-6">
                             <h3 className="text-lg font-semibold mb-2">{ruleType.replace(/_/g, ' ').charAt(0).toUpperCase() + ruleType.replace(/_/g, ' ').slice(1)}</h3>
                             {Object.entries(editedData[ruleType]).map(([key, value]) => (
-                            <div key={key} className="mb-2">
-                                <label className="block text-sm font-medium text-gray-700">{key.replace(/_/g, ' ')}</label>
-                                {typeof value === 'boolean' ? (
-                                    <input
-                                        type="checkbox"
-                                        checked={value}
-                                        onChange={(e) => handleRulesChange(ruleType, key, e.target.checked)}
-                                        disabled={!isEditing}
-                                        className="mt-1"
-                                    />
-                                ) : (
-                                    <input
-                                        type="number"
-                                        value={value}
-                                        onChange={(e) => handleRulesChange(ruleType, key, parseInt(e.target.value))}
-                                        readOnly={!isEditing}
-                                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                                            isEditing ? 'bg-white' : 'bg-gray-100'
-                                        }`}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                )))}
+                                <div key={key} className="mb-2">
+                                    <label className="block text-sm font-medium text-gray-700">{key.replace(/_/g, ' ')}</label>
+                                    {typeof value === 'boolean' ? (
+                                        <input
+                                            type="checkbox"
+                                            checked={value}
+                                            onChange={(e) => handleRulesChange(ruleType, key, e.target.checked)}
+                                            disabled={!isEditing}
+                                            className="mt-1"
+                                        />
+                                    ) : (
+                                        <input
+                                            type="number"
+                                            value={value}
+                                            onChange={(e) => handleRulesChange(ruleType, key, parseInt(e.target.value))}
+                                            readOnly={!isEditing}
+                                            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
+                                                }`}
+                                        />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )))}
 
                 <div className="mt-6 flex justify-end space-x-3">
                     {isEditing ? (

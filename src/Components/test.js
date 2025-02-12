@@ -14,7 +14,6 @@ const SamplePage = () => {
 
     return (
             <div >
-
                 <EditTable
                     name="Mini Service"
                     data={sampleData}

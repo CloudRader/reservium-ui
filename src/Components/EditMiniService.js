@@ -4,7 +4,7 @@ import SuccessErrorMessage from "./SuccessErrorMessage";
 import useEditableForm from "../hooks/useEditableForm";
 import constants from "../Constants";
 
-const EditMiniServices = ({ serviceName, miniServiceData }) => {
+const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode = false }) => {
     const {
         isEditing,
         editedData,
@@ -13,7 +13,7 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
         handleSave,
         handleCancel,
         handleChange
-    } = useEditableForm(miniServiceData, `${constants.serverURL}/mini_services/${miniServiceData.id}`);
+    } = useEditableForm(miniServiceData, `${constants.serverURL}/mini_services/${miniServiceData.id}`, null, isEditMode);
 
     if (!miniServiceData) {
         return <div>No data available</div>;
@@ -22,7 +22,7 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Mini Service: ${miniServiceData.name}`} >
             <div className="bg-white p-4 rounded-lg shadow">
-                {message && <SuccessErrorMessage message={message}/>}
+                {message && <SuccessErrorMessage message={message} />}
 
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">ID</label>
@@ -42,9 +42,8 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
                         value={editedData.name}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
+                            }`}
                     />
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">
@@ -77,4 +76,4 @@ const EditMiniServices = ({ serviceName, miniServiceData }) => {
     );
 };
 
-export default EditMiniServices;
+export default EditMiniService;

@@ -3,9 +3,9 @@ import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const EditService = ({service: initialService}) => {
+const EditService = ({ service: initialService, isEditMode = false }) => {
     const navigate = useNavigate();
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
 
@@ -18,64 +18,48 @@ const EditService = ({service: initialService}) => {
         handleCancel,
         handleChange,
         loading,
-    } = useEditableForm(initialService, serviceUpdateUrl);
+    } = useEditableForm(initialService, serviceUpdateUrl, null, isEditMode);
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.serviceName}`}>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.name}`}>
             <div className="bg-white p-4 rounded-lg shadow">
-                {message && <SuccessErrorMessage message={message}/>}
+                {message && <SuccessErrorMessage message={message} />}
 
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">ID</label>
-                    <input
-                        type="text"
-                        name="id"
-                        value={editedData.id}
-                        readOnly
-                        className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                    />
-                </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Name</label>
                     <input
                         type="text"
-                        name="serviceName"
-                        value={editedData.serviceName}
+                        name="name"
+                        value={editedData.name}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Alias</label>
                     <input
                         type="text"
-                        name="linkName"
-                        value={editedData.linkName}
+                        name="alias"
+                        value={editedData.alias}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Web</label>
                     <input
                         type="text"
-                        name="wikiLink"
-                        value={editedData.wikiLink}
+                        name="web"
+                        value={editedData.web}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
                 </div>
                 <div className="mb-4">
@@ -86,9 +70,7 @@ const EditService = ({service: initialService}) => {
                         value={editedData.contact_mail}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-                            isEditing ? 'bg-white' : 'bg-gray-100'
-                        }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
                 </div>
                 <div className="mb-4">
@@ -102,7 +84,6 @@ const EditService = ({service: initialService}) => {
                         className="mt-1 focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
                     />
                 </div>
-                {/* Add more fields for calendars and mini_services if needed */}
                 <div className="mt-6 flex justify-end space-x-3">
                     {isEditing ? (
                         <>
@@ -122,13 +103,13 @@ const EditService = ({service: initialService}) => {
                     ) : (
                         <>
                             <button
-                                onClick={() => navigate(`/edit-calendars/${editedData.linkName}`)}
+                                onClick={() => navigate(`/edit-calendars/${editedData.alias}`)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 Edit Calendars
                             </button>
                             <button
-                                onClick={() => navigate(`/edit-mini-services/${editedData.linkName}`)}
+                                onClick={() => navigate(`/edit-mini-services/${editedData.alias}`)}
                                 className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                             >
                                 Edit Mini Services

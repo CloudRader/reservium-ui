@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import constants from "../Constants";
 
 axios.defaults.withCredentials = true;
 
-const useEditableForm = (initialData, updateUrl, fetchUrl) => {
-    const [isEditing, setIsEditing] = useState(false);
+const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = false) => {
+    const [isEditing, setIsEditing] = useState(initialEditMode);
     const [editedData, setEditedData] = useState(initialData);
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -41,10 +41,10 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
             const response = await axios.put(updateUrl, editedData);
             console.log("Update successful:", response.data);
             setIsEditing(false);
-            setMessage({type: 'success', text: 'Update successful!'});
+            setMessage({ type: 'success', text: 'Update successful!' });
         } catch (error) {
             console.error("Failed to update:", error);
-            setMessage({type: 'error', text: 'Failed to update. Please try again.'});
+            setMessage({ type: 'error', text: 'Failed to update. Please try again.' });
         }
     };
 
@@ -55,7 +55,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl) => {
     };
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setEditedData(prevData => ({
             ...prevData,
             [name]: value

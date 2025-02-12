@@ -9,8 +9,9 @@ const EditCalendars = ({roomCalendarLinks, serviceName}) => {
             nameAtr={'className'}
             idAtr={'googleCalendarId'}
             editLink={`/edit-calendar/${serviceName}/`}
-            addLink={`/add-calendar/${serviceName}`}/>
+            addLink={`/add-calendar/${serviceName}`}
             deleteLink={`/calendars/`}
+            />
     );
 };
 

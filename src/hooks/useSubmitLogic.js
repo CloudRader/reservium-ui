@@ -19,7 +19,7 @@ const useSubmitLogic = (service) => {
                         state: {
                             ...response.data,
                             contactMail: service.contact_mail,
-                            wikiLink: formData.wikiLink,
+                            wikiLink: service.wikiLink,
                             ...formData
                         }
                     });

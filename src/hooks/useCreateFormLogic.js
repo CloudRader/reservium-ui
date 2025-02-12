@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -9,12 +9,12 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
     const [message, setMessage] = useState(null);
 
     const handleChange = useCallback((e) => {
-        const {name, value, type, checked} = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData(prevData => {
             const updateNestedField = (obj, path, val) => {
                 const [head, ...rest] = path;
                 if (rest.length === 0) {
-                    return {...obj, [head]: val};
+                    return { ...obj, [head]: val };
                 }
                 return {
                     ...obj,
@@ -43,13 +43,13 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                                 updatedValues.splice(index, 1);
                             }
                         }
-                        return {...prevData, [name]: updatedValues};
+                        return { ...prevData, [name]: updatedValues };
                     } else {
                         // Handle regular checkbox
-                        return {...prevData, [name]: checked};
+                        return { ...prevData, [name]: checked };
                     }
                 } else {
-                    return {...prevData, [name]: value};
+                    return { ...prevData, [name]: value };
                 }
             }
         });
@@ -58,13 +58,13 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
     const handleSubmit = useCallback((requestData) => {
         axios.post(submitUrl, requestData)
             .then(() => {
-                setMessage({type: 'success', text: 'Operation completed successfully!'});
+                setMessage({ type: 'success', text: 'Operation completed successfully!' });
                 setFormData({});
                 if (onSubmitSuccess) onSubmitSuccess();
             })
             .catch((error) => {
                 console.error('Error:', error);
-                setMessage({type: 'error', text: 'An error occurred. Please try again.'});
+                setMessage({ type: 'error', text: 'An error occurred. Please try again.' });
             });
     }, [submitUrl, onSubmitSuccess]);
 
@@ -87,10 +87,10 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                         {field.fields.map(subField => (
                             <div key={`${field.name}.${subField.name}`}>
                                 <label htmlFor={`${field.name}.${subField.name}`}
-                                       className="block text-xl font-medium text-green-700 mb-1">
+                                    className="block text-xl font-medium text-green-700 mb-1">
                                     {subField.labelText}
                                 </label>
-                                {renderField({...subField, name: `${field.name}.${subField.name}`})}
+                                {renderField({ ...subField, name: `${field.name}.${subField.name}` })}
                             </div>
                         ))}
                     </div>

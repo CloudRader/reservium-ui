@@ -50,15 +50,20 @@ const CreateNewService = () => {
                 sybType: 'oneCheckbox',
                 labelText: 'Public',
                 labelColor: 'text-success',
-                options: [{value: 'true', label: 'True'}],
+                options: [{ value: 'true', label: 'True' }],
             },
         ]);
     }, [setFormFields]);
 
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        handleSubmit(formData);
+    };
+
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Service'}>
             <div className="bg-white p-4 rounded-lg shadow">
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleFormSubmit} className="space-y-5">
                     {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
@@ -75,7 +80,7 @@ const CreateNewService = () => {
                     </button>
                 </form>
 
-                {message && <SuccessErrorMessage message={message}/>}
+                {message && <SuccessErrorMessage message={message} />}
             </div>
         </UniversalLayout>
     );

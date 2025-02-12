@@ -12,20 +12,15 @@ const useSubmitLogic = (service) => {
     const mutation = useMutation(
         (formData) => axios.post(`${constants.serverURL}/events/create_event`, formData),
         {
-            onSuccess: (response) => {
+            onSuccess: (response, formData) => {
                 if (response.status === 201) {
                     setErrorMessages({});
                     navigate('/success', {
                         state: {
                             ...response.data,
                             contactMail: service.contact_mail,
-                            wikiLink: service.wikiLink,
-                            additional_services: service.additional_services,
-                            end_datetime: service.end_datetime,
-                            guests: service.guests,
-                            purpose: service.purpose,
-                            reservation_type: service.reservation_type,
-                            start_datetime: service.start_datetime,
+                            wikiLink: formData.wikiLink,
+                            ...formData
                         }
                     });
                 } else {

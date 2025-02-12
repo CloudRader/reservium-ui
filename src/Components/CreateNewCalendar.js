@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
@@ -6,7 +6,7 @@ import useCreateFormLogic from '../hooks/useCreateFormLogic';
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import CalendarIdInput from "./CalendarIdInput";
 
-const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
+const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
     const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
@@ -24,7 +24,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             sybType: 'oneCheckbox',
             labelText: 'Allow More Than Max People With Permission',
             labelColor: 'text-success',
-            options: [{value: 'true', label: 'True'}],
+            options: [{ value: 'true', label: 'True' }],
         },
         {
             name: 'color',
@@ -61,7 +61,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             sybType: 'oneCheckbox',
             labelText: 'Collision With Itself',
             labelColor: 'text-success',
-            options: [{value: 'true', label: 'True'}],
+            options: [{ value: 'true', label: 'True' }],
             validation: (value) => value,
         },
         {
@@ -75,7 +75,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     sybType: 'oneCheckbox',
                     labelText: 'Night Time',
                     labelColor: 'text-success',
-                    options: [{value: 'true', label: 'True'}],
+                    options: [{ value: 'true', label: 'True' }],
                 },
                 {
                     name: 'reservation_without_permission',
@@ -83,7 +83,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     sybType: 'oneCheckbox',
                     labelText: 'Reservation Without Permission',
                     labelColor: 'text-success',
-                    options: [{value: 'true', label: 'True'}],
+                    options: [{ value: 'true', label: 'True' }],
                 },
                 {
                     name: 'max_reservation_hours',
@@ -122,7 +122,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     sybType: 'oneCheckbox',
                     labelText: 'Night Time',
                     labelColor: 'text-success',
-                    options: [{value: 'true', label: 'True'}],
+                    options: [{ value: 'true', label: 'True' }],
                 },
                 {
                     name: 'reservation_without_permission',
@@ -130,7 +130,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     sybType: 'oneCheckbox',
                     labelText: 'Reservation Without Permission',
                     labelColor: 'text-success',
-                    options: [{value: 'true', label: 'True'}],
+                    options: [{ value: 'true', label: 'True' }],
                 },
                 {
                     name: 'max_reservation_hours',
@@ -169,7 +169,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     sybType: 'oneCheckbox',
                     labelText: 'Night Time',
                     labelColor: 'text-success',
-                    options: [{value: 'true', label: 'True'}],
+                    options: [{ value: 'true', label: 'True' }],
                 },
                 {
                     name: 'reservation_without_permission',
@@ -177,7 +177,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     sybType: 'oneCheckbox',
                     labelText: 'Reservation Without Permission',
                     labelColor: 'text-success',
-                    options: [{value: 'true', label: 'True'}],
+                    options: [{ value: 'true', label: 'True' }],
                 },
                 {
                     name: 'max_reservation_hours',
@@ -258,6 +258,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             }
         };
     }, [formData, calendarIdInputType, googleCalendars, serviceId]);
+
     const makeSubmit = (e) => {
         e.preventDefault();
         handleSubmit(preparePayload());
@@ -272,7 +273,7 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
             setCalendarIdInputType('select');
         } catch (error) {
             console.error('Error fetching Google Calendars:', error);
-            setMessage({type: 'error', text: 'Failed to fetch Google Calendars'});
+            setMessage({ type: 'error', text: 'Failed to fetch Google Calendars' });
         } finally {
             setIsLoadingCalendars(false);
         }
@@ -309,10 +310,10 @@ const CreateNewCalendar = ({serviceId, serviceCalendars}) => {
                     </button>
                 </form>
 
-                {message && <SuccessErrorMessage message={message}/>}
-                </div>
+                {message && <SuccessErrorMessage message={message} />}
+            </div>
         </UniversalLayout>
-);
+    );
 };
 
 export default CreateNewCalendar;

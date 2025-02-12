@@ -25,7 +25,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     }
 
     return (
-        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.name}`}>
+        <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Service: ${editedData.serviceName}`}>
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message} />}
 
@@ -34,7 +34,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="name"
-                        value={editedData.name}
+                        value={editedData.serviceName}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
@@ -45,7 +45,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="alias"
-                        value={editedData.alias}
+                        value={editedData.linkName}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
@@ -56,7 +56,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="web"
-                        value={editedData.web}
+                        value={editedData.wikiLink}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
@@ -103,13 +103,13 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     ) : (
                         <>
                             <button
-                                onClick={() => navigate(`/edit-calendars/${editedData.alias}`)}
+                                onClick={() => navigate(`/edit-calendars/${editedData.linkName}`)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 Edit Calendars
                             </button>
                             <button
-                                onClick={() => navigate(`/edit-mini-services/${editedData.alias}`)}
+                                onClick={() => navigate(`/edit-mini-services/${editedData.linkName}`)}
                                 className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                             >
                                 Edit Mini Services

@@ -3,7 +3,8 @@ import axios from 'axios';
 import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
 axios.defaults.withCredentials = true;
-const CreateNewMiniService = ({serviceId}) => {
+
+const CreateNewMiniService = ({ serviceId }) => {
     const [formData, setFormData] = useState({
         name: '',
         reservation_service_id: serviceId, // Default value set to 'klub'
@@ -42,7 +43,7 @@ const CreateNewMiniService = ({serviceId}) => {
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Mini Service'}>
-                <div className="bg-white p-4 rounded-lg shadow">
+            <div className="bg-white p-4 rounded-lg shadow">
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-green-700 mb-1">

@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import UniversalLayout from "../UniversalLayout";
 import { Pencil, Trash2, Eye } from 'lucide-react';
 import axios from 'axios';
+import constants from '../Constants';
 axios.defaults.withCredentials = true;
 
-const EditTable = ({ name, data, nameAtr, idAtr, editLink, addLink, viewLink }) => {
+const EditTable = ({ name, data, nameAtr, idAtr, editLink, addLink, viewLink, deleteLink }) => {
     // TODO rework
     const columHeaders = [
         'Name',
@@ -18,9 +19,8 @@ const EditTable = ({ name, data, nameAtr, idAtr, editLink, addLink, viewLink }) 
             const confirmed = window.confirm("Are you sure you want to permanently delete this item? This action cannot be undone.");
             if (!confirmed) return;
         }
-
         try {
-            const response = await axios.delete(`/reservation_services/${serviceId}`, {
+            const response = await axios.delete(constants.serverURL + deleteLink + serviceId, {
                 params: { hard_remove: hardRemove },
             });
 

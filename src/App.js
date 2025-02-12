@@ -106,7 +106,7 @@ function AppContent() {
                 {/* delete this */}
                 <Route
                     path={`/1`}
-                    element={<SamplePage />}
+                    element={<SuccessPage />}
                 />
 
                 {isLoggedIn && userRoles?.section_head &&
@@ -134,7 +134,7 @@ function AppContent() {
                                         serviceName={service.linkName}
                                     />}
                                 />
-                                
+
                                 <Route
                                     path={`/view-service/${service.serviceName}`}
                                     element={<EditService
@@ -216,8 +216,7 @@ function AppContent() {
             </Routes>
             <Footer />
         </div>
-    )
-        ;
+    );
 }
 
 function App() {

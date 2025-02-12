@@ -64,6 +64,21 @@ const SuccessPage = () => {
         }
     };
 
+    // Extract form data from state
+    let formData = {};
+    if (state && state.message) {
+        const messageObj = JSON.parse(state.message);
+        formData = {
+            event_name: messageObj.event_name || '',
+            guests: messageObj.guests || '',
+            event_start: messageObj.event_start || '',
+            event_end: messageObj.event_end || '',
+            user_name: messageObj.user_name || '',
+            email: messageObj.email || '',
+            space: messageObj.space || '',
+        };
+    }
+
     if (isTooManyPeopleMessage) {
         return (
             <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
@@ -86,6 +101,7 @@ const SuccessPage = () => {
                                                 type="text"
                                                 name="event_name"
                                                 required
+                                                defaultValue={formData.event_name}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>
@@ -95,6 +111,7 @@ const SuccessPage = () => {
                                                 type="number"
                                                 name="guests"
                                                 required
+                                                defaultValue={formData.guests}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>
@@ -104,6 +121,7 @@ const SuccessPage = () => {
                                                 type="datetime-local"
                                                 name="event_start"
                                                 required
+                                                defaultValue={formData.event_start}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>
@@ -113,6 +131,7 @@ const SuccessPage = () => {
                                                 type="datetime-local"
                                                 name="event_end"
                                                 required
+                                                defaultValue={formData.event_end}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>
@@ -122,6 +141,7 @@ const SuccessPage = () => {
                                                 type="text"
                                                 name="user_name"
                                                 required
+                                                defaultValue={formData.user_name}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>
@@ -131,6 +151,7 @@ const SuccessPage = () => {
                                                 type="email"
                                                 name="email"
                                                 required
+                                                defaultValue={formData.email}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>
@@ -148,6 +169,7 @@ const SuccessPage = () => {
                                                 type="text"
                                                 name="space"
                                                 required
+                                                defaultValue={formData.space}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />
                                         </div>

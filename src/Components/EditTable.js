@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import UniversalLayout from "../UniversalLayout";
 import { Pencil, Trash2, Eye } from 'lucide-react';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const EditTable = ({ name, data, nameAtr, idAtr, editLink, addLink, viewLink }) => {
     // TODO rework

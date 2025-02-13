@@ -7,9 +7,9 @@ const EditServices = ({ services }) => {
             data={services}
             nameAtr={'serviceName'}
             idAtr={'linkName'}
-            viewLink={`/view-service/`}
             editLink={`/edit-service/`}
             addLink={`/add-service`}
+            viewLink={`/view-service/`}
             deleteLink={`/reservation_services/`}
         />
     );

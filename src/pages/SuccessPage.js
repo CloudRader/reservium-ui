@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ServicesSection from '../Components/ServicesSection';
 import constants from '../Constants';
-import EventRegistrationForm from '../components/EventRegistrationForm';
+import EventRegistrationForm from '../Components/EventRegistrationForm';
 import PulsatingLoader from '../Components/PulsatingLoader';
 
 const SuccessPage = () => {

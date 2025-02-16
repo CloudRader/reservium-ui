@@ -158,7 +158,7 @@ function AppContent() {
                                 <Route
                                     path={`/add-mini-service/${service.linkName}`}
                                     element={<CreateNewMiniService serviceId={service.id} />}
-                                />
+                                />5
 
                                 {miniServices[service.linkName].map(miniService => (
                                     <>

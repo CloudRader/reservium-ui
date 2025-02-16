@@ -6,7 +6,7 @@ const EditServices = ({ services }) => {
         <EditTable name={'Services'}
             data={services}
             nameAtr={'serviceName'}
-            idAtr={'linkName'}
+            idAtr={'id'}
             editLink={`/edit-service/`}
             addLink={`/add-service`}
             viewLink={`/view-service/`}

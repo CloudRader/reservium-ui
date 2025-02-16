@@ -115,19 +115,19 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                                 onClick={() => navigate(`/edit-calendars/${editedData.alias}`)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
-                                Edit Calendars
+                                Calendars
                             </button>
                             <button
                                 onClick={() => navigate(`/edit-mini-services/${editedData.alias}`)}
                                 className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                             >
-                                Edit Mini Services
+                                Mini Services
                             </button>
                             <button
                                 onClick={handleEdit}
                                 className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
-                                Edit Service
+                                Edit
                             </button>
                         </>
                     )}

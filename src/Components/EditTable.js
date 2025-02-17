@@ -1,112 +1,151 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import UniversalLayout from "../UniversalLayout";
-import { Pencil, Trash2, Eye } from 'lucide-react';
+import TableActions from './TableActions';
 import axios from 'axios';
 import constants from '../Constants';
+
 axios.defaults.withCredentials = true;
 
-const EditTable = ({ name, data, nameAtr, idAtr, editLink, addLink, viewLink, deleteLink }) => {
-    // TODO rework
-    const columHeaders = [
-        'Name',
-        'Actions',
-    ];
-
-    const handleDelete = async (serviceId, hardRemove = false) => {
+const EditTable = ({
+    name,
+    data,
+    nameAtr,
+    idAtr,
+    editLink,
+    addLink,
+    viewLink,
+    deleteLink,
+    columns = ['Name', 'Actions']
+}) => {
+    const handleDelete = async (itemId, hardRemove = false) => {
         if (hardRemove) {
-            // Show confirmation dialog for hard delete
-            const confirmed = window.confirm("Are you sure you want to permanently delete this item? This action cannot be undone.");
+            const confirmed = window.confirm(
+                "Are you sure you want to permanently delete this item? This action cannot be undone."
+            );
             if (!confirmed) return;
         }
+
         try {
-            const response = await axios.delete(constants.serverURL + deleteLink + serviceId, {
+            const response = await axios.delete(`${constants.serverURL}${deleteLink}${itemId}`, {
                 params: { hard_remove: hardRemove },
             });
 
             if (response.status === 200) {
-                // Refresh the page or update the state after successful deletion
                 window.location.reload();
             }
         } catch (error) {
-            console.error('Failed to delete service:', error);
-            alert(`Failed to ${hardRemove ? 'permanently ' : ''}delete service. Please try again.`);
+            console.error('Failed to delete item:', error);
+            alert(`Failed to ${hardRemove ? 'permanently ' : ''}delete item. Please try again.`);
         }
     };
 
+    const EmptyState = () => (
+        <div className="text-center p-8 bg-white rounded-lg shadow-sm">
+            <p className="text-green-800 text-xl mb-4">
+                No {name.toLowerCase()} found
+            </p>
+            <p className="text-green-600 mb-4">
+                Click the button below to add your first {name.toLowerCase()}
+            </p>
+        </div>
+    );
+
+    // Desktop version
+    const DesktopTable = () => (
+        <table className="hidden md:table w-full bg-white rounded-lg overflow-hidden">
+            <thead className="bg-green-200">
+                <tr>
+                    <th className="w-1/3 py-3 px-6 text-left text-xs font-medium text-green-700 uppercase tracking-wider">
+                        {columns[0]}
+                    </th>
+                    <th className="w-2/3 py-3 px-6 text-center text-xs font-medium text-green-700 uppercase tracking-wider">
+                        {columns[1]}
+                    </th>
+                </tr>
+            </thead>
+            <tbody className="divide-y divide-green-100">
+                {data.map((rowData) => (
+                    <tr key={rowData[idAtr]} className="hover:bg-green-50">
+                        <td className="py-4 px-6 text-sm text-green-700">
+                            {rowData[nameAtr]}
+                        </td>
+                        <td className="py-4 px-6">
+                            <div className="flex justify-center">
+                                <TableActions
+                                    item={rowData}
+                                    viewLink={viewLink}
+                                    editLink={editLink}
+                                    onDelete={handleDelete}
+                                    nameAtr={nameAtr}
+                                    idAtr={idAtr}
+                                    isMobile={false}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+
+    // Mobile version
+    const MobileTable = () => (
+        <div className="md:hidden space-y-4">
+            {data.map((rowData) => (
+                <div key={rowData[idAtr]} className="bg-white rounded-lg shadow-sm p-4">
+                    <div className="font-medium text-green-700 text-lg mb-3">
+                        {rowData[nameAtr]}
+                    </div>
+                    <TableActions
+                        item={rowData}
+                        viewLink={viewLink}
+                        editLink={editLink}
+                        onDelete={handleDelete}
+                        nameAtr={nameAtr}
+                        idAtr={idAtr}
+                        isMobile={true}
+                    />
+                </div>
+            ))}
+        </div>
+    );
 
     return (
         <UniversalLayout centerContent headerTittle={name}>
-            {data.length !== 0 ?
-                <table className="w-full bg-white rounded-lg overflow-hidden">
-                    <thead className="bg-green-200 text-green-700">
-                        <tr>
-                            <th className="py-2 px-4 text-left w-1/4">
-                                {columHeaders[0]}
-                            </th>
-                            <th className="py-2 px-4 text-center w-1/4">
-                                {columHeaders[1]}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((rowData) => (
-                            <tr key={rowData[idAtr]} className="border-b border-green-100 hover:bg-green-50">
-                                <td key={rowData[nameAtr]} className="py-3 px-4 text-green-700">
-                                    {rowData[nameAtr]}
-                                </td>
-                                <td className="py-3 px-4 pl-3 text-center">
-                                    <div className="flex justify-center gap-2">
-                                        <Link
-                                            to={viewLink + rowData[nameAtr]}
-                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                                        >
-                                            <Eye className="w-4 h-4 mr-1" />
-                                            View
-                                        </Link>
-                                        <Link
-                                            to={editLink + rowData[nameAtr]}
-                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
-                                        >
-                                            <Pencil className="w-4 h-4 mr-1" />
-                                            Edit
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(rowData[idAtr], false)}
-                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
-                                        >
-                                            <Trash2 className="w-4 h-4 mr-1" />
-                                            Soft Delete
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(rowData[idAtr], true)}
-                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
-                                        >
-                                            <Trash2 className="w-4 h-4 mr-1" />
-                                            Hard Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                :
-                <div className="text-center text-green-800 text-xl">
-                    There are no mini-services for this service {name}.
-                    But you can add it.
-                </div>
-            }
+            <div className="w-full">
+                {data.length > 0 ? (
+                    <>
+                        <DesktopTable />
+                        <MobileTable />
+                    </>
+                ) : (
+                    <EmptyState />
+                )}
+            </div>
             <div className="mt-6">
                 <Link
                     to={addLink}
-                    className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
                 >
                     Add New {name}
                 </Link>
             </div>
         </UniversalLayout>
     );
+};
+
+EditTable.propTypes = {
+    name: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
+    nameAtr: PropTypes.string.isRequired,
+    idAtr: PropTypes.string.isRequired,
+    editLink: PropTypes.string.isRequired,
+    addLink: PropTypes.string.isRequired,
+    viewLink: PropTypes.string.isRequired,
+    deleteLink: PropTypes.string.isRequired,
+    columns: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default EditTable;

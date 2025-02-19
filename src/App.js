@@ -63,11 +63,6 @@ function AppContent() {
 
     return (
         <div className="dark:!bg-slate-400">
-            <Routes>
-                <Route path='/login' element={<LoginToIS />} />
-                <Route path='/logined' element={<LoginToBackend login={login} />} />
-            </Routes>
-
             <Header
                 isLoggedIn={isLoggedIn}
                 username={username}
@@ -75,15 +70,17 @@ function AppContent() {
                 isManager={userRoles?.section_head}
             />
 
-            <Suspense fallback={<PulsatingLoader />}>
-                <Routes>
-                    <Route path='/logout' element={<Logout onLogout={logout} />} />
-                    <Route path='/success' element={<SuccessPage />} />
+            <Routes>
+                <Route path='/login' element={<LoginToIS />} />
+                <Route path='/logined' element={<LoginToBackend login={login} />} />
+                <Route path='/logout' element={<Logout onLogout={logout} />} />
+                <Route path='/success' element={<SuccessPage />} />
 
-                    {/* Test Routes */}
-                    <TestRoutes />
+                {/* Test Routes */}
+                <Route path="test/*" element={<TestRoutes />} />
 
-                    {/* Service Routes */}
+                {/* Service Routes */}
+                <Route path="/*" element={
                     <ServiceRoutes
                         services={services}
                         calendars={calendars}
@@ -91,20 +88,22 @@ function AppContent() {
                         isLoggedIn={isLoggedIn}
                         logout={logout}
                     />
-
-                    {/* Manager Routes */}
-                    {isLoggedIn && userRoles?.section_head && (
+                } />
+                {/* Manager Routes */}
+                {isLoggedIn && userRoles?.section_head && (
+                    <Route path="manager/*" element={
                         <ManagerRoutes
                             services={services}
                             calendars={calendars}
                             miniServices={miniServices}
                         />
-                    )}
+                    } />
+                )}
 
-                    {/* 404 route should be last */}
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </Suspense>
+                {/* 404 route should be last */}
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+
             <Footer />
         </div>
     );

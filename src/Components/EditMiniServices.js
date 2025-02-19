@@ -10,9 +10,9 @@ const EditMiniServices = ({ serviceName, miniServices }) => {
             data={miniServices}
             nameAtr={'name'}
             idAtr={'id'}
-            editLink={`/edit-mini-service/${serviceName}/`}
-            addLink={`/add-mini-service/${serviceName}`}
-            viewLink={`/view-mini-service/${serviceName}/`}
+            editLink={`/manager/edit-mini-service/${serviceName}/`}
+            addLink={`/manager/add-mini-service/${serviceName}`}
+            viewLink={`/manager/view-mini-service/${serviceName}/`}
             deleteLink={`/mini_services/`}
         />
     );

@@ -112,13 +112,13 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     ) : (
                         <>
                             <button
-                                onClick={() => navigate(`manager/edit-calendars/${editedData.alias}`)}
+                                onClick={() => navigate(`/manager/edit-calendars/${editedData.alias}`)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 Calendars
                             </button>
                             <button
-                                onClick={() => navigate(`manager/edit-mini-services/${editedData.alias}`)}
+                                onClick={() => navigate(`/manager/edit-mini-services/${editedData.alias}`)}
                                 className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                             >
                                 Mini Services

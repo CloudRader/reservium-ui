@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UniversalLayout from '../UniversalLayout';
-import EditTable from './EditTable';
+import EditTable from '../Components/EditTable';
 
 const SamplePage = () => {
     const [successMessage, setSuccessMessage] = useState('');

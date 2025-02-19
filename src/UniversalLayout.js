@@ -2,36 +2,28 @@ import React from 'react';
 import BackArrow from "./Components/BackArrow";
 
 const UniversalLayout = ({
-                             children,
-                             centerContent = false,
-                             fullHeight = false,
-                             whiteBackGreenContentBackground = false,
-                             className = '',
-                             headerTittle = '',
-                         }) => {
+    children,
+    centerContent = false,
+    fullHeight = false,
+    whiteBackGreenContentBackground = false,
+    className = '',
+    headerTittle = '',
+}) => {
     const contentClass = centerContent
         ? 'flex flex-col items-center justify-center'
         : 'flex flex-col md:flex-row items-stretch justify-between';
 
-    const backGroundPage = whiteBackGreenContentBackground
-        ? 'bg-white'
-        : 'bg-gradient-to-r from-green-50 to-green-100';
-
-    const backGroundContent = whiteBackGreenContentBackground
-        ? 'p-6 bg-gradient-to-r from-green-50 to-green-100'
-        : '';
-
     const heightClass = fullHeight
         ? 'min-h-screen'
-        : 'min-h-[calc(100vh-4rem)]'; // Adjust 4rem based on your footer height
+        : 'min-h-[calc(100vh-4rem)]';
 
     return (
-        <div className={`${backGroundPage} lg:py-52 ${heightClass}`}>
-            <div className={`container mx-auto px-4 ${backGroundContent} ${className}`}>
+        <div className={`bg-gradient-to-br from-green-100 via-green-50 to-blue-50 lg:py-16 ${heightClass}`}>
+            <div className={`container mx-auto px-4 ${className}`}>
                 {headerTittle &&
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-8">
                         <div className="w-1/4">
-                            <BackArrow/>
+                            <BackArrow />
                         </div>
                         <div className="w-1/2 text-center text-2xl font-bold text-green-800">
                             {headerTittle}

@@ -42,7 +42,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                     <div className="absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg py-1 z-10 ring-1 ring-black ring-opacity-5">
                                         {isManager && (
                                             <NavLink
-                                                to="/manager-panel"
+                                                to="manager/manager-panel"
                                                 className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
                                                 onClick={() => setIsDropdownOpen(false)}
                                             >

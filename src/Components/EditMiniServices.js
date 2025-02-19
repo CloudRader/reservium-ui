@@ -4,7 +4,6 @@ import EditTable from "./EditTable";
 
 
 const EditMiniServices = ({ serviceName, miniServices }) => {
-
     return (
         <EditTable name={'Mini Services'}
             data={miniServices}

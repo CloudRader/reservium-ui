@@ -28,7 +28,7 @@ import SamplePage from "./testData/test";
 import testService from './testData/serviceTestData';
 import { ManagerRoutes } from './routes/ManagerRoutes';
 import { ServiceRoutes } from './routes/ServiceRoutes';
-import { testRoutes } from './routes/TestRoutes';
+import { TestRoutes } from './routes/TestRoutes';
 
 axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
@@ -79,32 +79,30 @@ function AppContent() {
                 <Routes>
                     <Route path='/logout' element={<Logout onLogout={logout} />} />
                     <Route path='/success' element={<SuccessPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
 
                     {/* Test Routes */}
-                    {testRoutes}
+                    <TestRoutes />
 
                     {/* Service Routes */}
-                    <Route path="/" element={
-                        <ServiceRoutes
-                            services={services}
-                            calendars={calendars}
-                            isLoading={isLoading}
-                            isLoggedIn={isLoggedIn}
-                            logout={logout}
-                        />
-                    } />
+                    <ServiceRoutes
+                        services={services}
+                        calendars={calendars}
+                        isLoading={isLoading}
+                        isLoggedIn={isLoggedIn}
+                        logout={logout}
+                    />
 
                     {/* Manager Routes */}
                     {isLoggedIn && userRoles?.section_head && (
-                        <Route path="/*" element={
-                            <ManagerRoutes
-                                services={services}
-                                calendars={calendars}
-                                miniServices={miniServices}
-                            />
-                        } />
+                        <ManagerRoutes
+                            services={services}
+                            calendars={calendars}
+                            miniServices={miniServices}
+                        />
                     )}
+
+                    {/* 404 route should be last */}
+                    <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </Suspense>
             <Footer />

@@ -4,10 +4,10 @@ import ReservationPage from '../pages/ReservationPage';
 import CalendarView from '../pages/ViewCalendarPage';
 
 export const ServiceRoutes = ({ services, calendars, isLoading, isLoggedIn, logout }) => (
-    <Routes>
+    <>
         {/* Default route */}
         <Route
-            index
+            path="/"
             element={
                 <ReservationPage
                     isLoading={isLoading}
@@ -22,7 +22,7 @@ export const ServiceRoutes = ({ services, calendars, isLoading, isLoggedIn, logo
         {services && services.map(service => (
             <React.Fragment key={service.linkName}>
                 <Route
-                    path={service.linkName}
+                    path={`/${service.linkName}`}
                     element={<ReservationPage
                         isLoading={isLoading}
                         isLoggedIn={isLoggedIn}
@@ -32,12 +32,12 @@ export const ServiceRoutes = ({ services, calendars, isLoading, isLoggedIn, logo
                     />}
                 />
                 <Route
-                    path={`view/${service.linkName}`}
+                    path={`/view/${service.linkName}`}
                     element={<CalendarView
                         roomCalendarLinks={calendars[service.linkName]}
                     />}
                 />
             </React.Fragment>
         ))}
-    </Routes>
+    </>
 ); 

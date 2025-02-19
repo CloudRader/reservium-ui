@@ -100,13 +100,13 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                                 onClick={handleSave}
                                 className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
-                                Save
+                            Save
                             </button>
                             <button
                                 onClick={handleCancel}
                                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                             >
-                                Cancel
+                            Cancel
                             </button>
                         </>
                     ) : (

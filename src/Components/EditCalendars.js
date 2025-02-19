@@ -8,9 +8,9 @@ const EditCalendars = ({ roomCalendarLinks, serviceName }) => {
             data={roomCalendarLinks}
             nameAtr={'className'}
             idAtr={'googleCalendarId'}
-            editLink={`/manager/edit-calendar/${serviceName}/`}
-            addLink={`/manager/add-calendar/${serviceName}`}
-            viewLink={`/manager/view-calendar/${serviceName}/`}
+            editLink={`/edit-calendar/${serviceName}/`}
+            addLink={`/add-calendar/${serviceName}`}
+            viewLink={`/view-calendar/${serviceName}/`}
             deleteLink={`/calendars/`}
         />
     );

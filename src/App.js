@@ -101,7 +101,7 @@ function AppContent() {
                 )}
 
                 {/* 404 route should be last */}
-                <Route path="*" element={<NotFoundPage />} />
+                <Route path="/*" element={<NotFoundPage />} />
             </Routes>
 
             <Footer />

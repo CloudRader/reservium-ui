@@ -2,9 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './Components/Header';
-import ReservationPage from "./pages/ReservationPage";
-import CreateNewCalendar from "./Components/CreateNewCalendar";
-import CreateNewMiniService from "./Components/CreateNewMiniService";
 import { LoginToBackend } from "./Components/LoginToBackend";
 import Logout from "./Components/Logout";
 import Footer from "./Components/Footer";
@@ -15,20 +12,10 @@ import PulsatingLoader from "./Components/PulsatingLoader";
 import axios from "axios";
 import LoginToIS from "./Components/LoginToIS";
 import { useAuth } from './hooks/useAuth';
-import CalendarView from "./pages/ViewCalendarPage";
-import EditServices from "./Components/EditServices";
-import EditService from "./Components/EditService";
-import EditCalendars from "./Components/EditCalendars";
-import EditCalendar from "./Components/EditCalendar";
-import EditMiniServices from "./Components/EditMiniServices";
-import EditMiniService from "./Components/EditMiniService";
-import CreateNewService from "./Components/CreateNewService";
-// tests
-import SamplePage from "./testData/test";
-import testService from './testData/serviceTestData';
 import { ManagerRoutes } from './routes/ManagerRoutes';
 import { ServiceRoutes } from './routes/ServiceRoutes';
 import { TestRoutes } from './routes/TestRoutes';
+import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
 
 axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
@@ -76,8 +63,11 @@ function AppContent() {
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
                 <Route path='/success' element={<SuccessPage />} />
 
+                {/* View Calendar Routes */}
+                <Route path="view/" element={<ViewCalendarRoutes />} />
+
                 {/* Test Routes */}
-                <Route path="test/*" element={<TestRoutes />} />
+                <Route path="test/" element={<TestRoutes />} />
 
                 {/* Manager Routes */}
                 {isLoggedIn && userRoles?.section_head && (
@@ -101,8 +91,7 @@ function AppContent() {
                     />
                 } />
 
-
-                {/* 404 route should be last */}
+                {/* 404 route */}
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
 

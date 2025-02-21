@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 
 export const useViewCalendarData = () => {
     return useQuery('viewCalendarData', async () => {
-        const response = await axios.get(`${constants.serverURL}reservation_services/services/public`);
+        const response = await axios.get(`${constants.serverURL}/reservation_services/services/public`);
         const data = response.data;
 
         const services = data.map(info => ({

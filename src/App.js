@@ -79,19 +79,9 @@ function AppContent() {
                 {/* Test Routes */}
                 <Route path="test/*" element={<TestRoutes />} />
 
-                {/* Service Routes */}
-                <Route path="/*" element={
-                    <ServiceRoutes
-                        services={services}
-                        calendars={calendars}
-                        isLoading={isLoading}
-                        isLoggedIn={isLoggedIn}
-                        logout={logout}
-                    />
-                } />
                 {/* Manager Routes */}
                 {isLoggedIn && userRoles?.section_head && (
-                    <Route path="manager/*" element={
+                    <Route path="manager/" element={
                         <ManagerRoutes
                             services={services}
                             calendars={calendars}
@@ -100,8 +90,20 @@ function AppContent() {
                     } />
                 )}
 
+                {/* Service Routes */}
+                <Route path="/" element={
+                    <ServiceRoutes
+                        services={services}
+                        calendars={calendars}
+                        isLoading={isLoading}
+                        isLoggedIn={isLoggedIn}
+                        logout={logout}
+                    />
+                } />
+
+
                 {/* 404 route should be last */}
-                <Route path="/*" element={<NotFoundPage />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
             <Footer />

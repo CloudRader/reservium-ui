@@ -1,7 +1,17 @@
 .kiosk-calendar-container {
   height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Add these styles to control the calendar size */
+:global(.fc) {
+  width: 100%;
+  max-width: 1400px; /* Adjust this value based on your needs */
+  margin: 0 auto;
 }
 
 :global(.fc-event) {

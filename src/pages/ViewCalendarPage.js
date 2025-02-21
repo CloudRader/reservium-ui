@@ -1,12 +1,10 @@
 import React from 'react';
-import { mockGoogleCalendars } from "../tests/mockCalendars";
 import KioskCalendar from "../Components/KioskCalendar";
 
-const CalendarView = ({ roomCalendarLinks }) => {
-
+const CalendarView = ({ googleCalendars }) => {
     return (
-        <div className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden p-10 no-underline`}>
-            <KioskCalendar googleCalendars={mockGoogleCalendars} />
+        <div className="w-full h-screen dark:!bg-slate-400 shadow-md overflow-hidden no-underline">
+            <KioskCalendar googleCalendars={googleCalendars} />
         </div>
     );
 };

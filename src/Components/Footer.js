@@ -9,17 +9,18 @@ const Footer = () => {
         <footer className="bg-gradient-to-r from-green-50 to-green-100 shadow-md mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex flex-col md:flex-row justify-between items-center">
-                    <a href="https://wiki.buk.cvut.cz/cs/home" target="_blank" rel="noopener noreferrer"
-                        className="no-underline">
-                        <div className="mb-4 md:mb-0">
-                            <span className="text-xl mr-2 font-bold text-green-800">Buben Club</span>
-                            <img src={bubenLogo} alt="Buben Club Logo" className="w-12 h-12 inline-block" />
-                        </div>
-                        <a href={`mailto:${constants.feedbackEmail}`} target="_blank" rel="noopener noreferrer"
-                            className="text-green-600 hover:text-green-800 block no-underline">
+                    <div className="flex flex-col items-start">
+                        <a href="https://wiki.buk.cvut.cz/cs/home" target="_blank" rel="noopener noreferrer"
+                            className="no-underline mb-2">
+                            <div className="mb-4 md:mb-0">
+                                <span className="text-xl mr-2 font-bold text-green-800">Buben Club</span>
+                                <img src={bubenLogo} alt="Buben Club Logo" className="w-12 h-12 inline-block" />
+                            </div>
+                        </a>
+                        <a href={`mailto:${constants.feedBackEmail}`} className="text-green-600 hover:text-green-800 no-underline">
                             Made by PS team <Heart className="inline-block w-4 h-4" />
                         </a>
-                    </a>
+                    </div>
                     <div className="flex flex-col md:flex-row md:space-x-8">
                         <div className="mb-4 mr-6 md:mb-0">
                             <h3 className="font-semibold text-green-800 mb-2">Help</h3>

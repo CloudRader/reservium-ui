@@ -21,9 +21,10 @@ export const ViewCalendarRoutes = () => {
         <Routes>
             {services && services.map(service => (
                 <Route
+                    key={service.linkName}
                     path={`${service.linkName}`}
                     element={<CalendarView
-                        roomCalendarLinks={calendars[service.linkName]}
+                        googleCalendars={calendars[service.linkName]}
                     />}
                 />
             ))}

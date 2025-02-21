@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import UniversalLayout from '../UniversalLayout';
+import React from 'react';
 import EditTable from '../Components/EditTable';
 
 const SamplePage = () => {
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+
 
     const sampleData = [
         { id: 1, name: 'Mini Service 1' },
@@ -13,16 +11,16 @@ const SamplePage = () => {
     ];
 
     return (
-            <div >
-                <EditTable
-                    name="Mini Service"
-                    data={sampleData}
-                    nameAtr="name"
-                    idAtr="id"
-                    editLink="/edit-mini-service"
-                    addLink="/add-mini-service"
-                />
-            </div>
+        <div >
+            <EditTable
+                name="Mini Service"
+                data={sampleData}
+                nameAtr="name"
+                idAtr="id"
+                editLink="/edit-mini-service"
+                addLink="/add-mini-service"
+            />
+        </div>
     );
 };
 

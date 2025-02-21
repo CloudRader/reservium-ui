@@ -64,14 +64,14 @@ function AppContent() {
                 <Route path='/success' element={<SuccessPage />} />
 
                 {/* View Calendar Routes */}
-                <Route path="view/" element={<ViewCalendarRoutes />} />
+                <Route path="view/*" element={<ViewCalendarRoutes />} />
 
                 {/* Test Routes */}
-                <Route path="test/" element={<TestRoutes />} />
+                <Route path="test/*" element={<TestRoutes />} />
 
                 {/* Manager Routes */}
                 {isLoggedIn && userRoles?.section_head && (
-                    <Route path="manager/" element={
+                    <Route path="manager/*" element={
                         <ManagerRoutes
                             services={services}
                             calendars={calendars}
@@ -81,7 +81,7 @@ function AppContent() {
                 )}
 
                 {/* Service Routes */}
-                <Route path="/" element={
+                <Route path="/*" element={
                     <ServiceRoutes
                         services={services}
                         calendars={calendars}
@@ -90,11 +90,7 @@ function AppContent() {
                         logout={logout}
                     />
                 } />
-
-                {/* 404 route */}
-                <Route path="*" element={<NotFoundPage />} />
             </Routes>
-
             <Footer />
         </div>
     );

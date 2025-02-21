@@ -1,22 +1,11 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import axios from 'axios';
-import ReservationForm from '../Components/ReservationForm';
-import LoginInfoPage from "./LoginInfoPage";
-import Logout from "../Components/Logout";
-import constants from "../Constants";
-import AdaptiveCalendar from "../Components/AdaptiveCalendar";
-import {useNavigate} from "react-router-dom";
-import {useMutation} from 'react-query';
-import WarningMessage from "../Components/WarningMessage";
-import {ErrorMobileModal} from "../Components/ErrorMobileModal";
-import PulsatingLoader from "../Components/PulsatingLoader";
-import {mockGoogleCalendars} from "../tests/mockCalendars";
+import React from 'react';
+import { mockGoogleCalendars } from "../tests/mockCalendars";
 import KioskCalendar from "../Components/KioskCalendar";
 
-const CalendarView = ({roomCalendarLinks}) => {
+const CalendarView = ({ roomCalendarLinks }) => {
 
     return (
-        <div className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden p-6 no-underline`}>
+        <div className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden p-10 no-underline`}>
             <KioskCalendar googleCalendars={mockGoogleCalendars} />
         </div>
     );

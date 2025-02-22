@@ -21,7 +21,11 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
         <header className="bg-gradient-to-r from-green-50 to-green-100 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex justify-between items-center h-16 text-green-800">
-                    <HeaderNavigation services={services} showServices={isLoggedIn || isViewMode} />
+                    <HeaderNavigation
+                        services={services}
+                        showServices={isLoggedIn || isViewMode}
+                        isViewMode={isViewMode}
+                    />
                     {!isViewMode && (
                         <>
                             <div className="hidden sm:flex sm:items-center space-x-4">

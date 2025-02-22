@@ -17,7 +17,7 @@ export function useReservationData(isLoggedIn) {
 
             const servicesData = data.map(info => ({
                 wikiLink: info.web,
-                linkName: isLoggedIn ? info.alias : 'view/' + info.alias,
+                linkName: info.alias,
                 serviceName: info.name,
                 contact_mail: info.contact_mail,
                 public: info.public,

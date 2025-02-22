@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import ThemeToggle from "./ThemeToggle";
+// import ThemeToggle from "./ThemeToggle";
 import HeaderNavigation from "./HeaderNavigation";
 
 const Header = ({ username, isLoggedIn, services, isManager }) => {

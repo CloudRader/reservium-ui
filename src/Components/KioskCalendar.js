@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -23,9 +23,9 @@ function KioskCalendar({ googleCalendars }) {
 
     const formatEventSources = useCallback(() => {
         if (!googleCalendars) return [];
-        
+
         const calendarsArray = Array.isArray(googleCalendars) ? googleCalendars : [googleCalendars];
-        
+
         return calendarsArray.map(calendar => ({
             googleCalendarId: calendar.googleCalendarId,
             className: calendar.className,
@@ -38,6 +38,12 @@ function KioskCalendar({ googleCalendars }) {
     // Event handlers
     const handleEventMount = useCallback((info) => {
         const { event, el } = info;
+
+        // Add event styling from AdaptiveCalendar
+        if (event.title.toLowerCase().includes("not approved")) {
+            el.style.cssText = 'border-color: rgb(146, 34, 167); background-color: darkgray';
+        }
+
         const startTime = formatTime(event.start);
         const endTime = formatTime(event.end || event.start);
 
@@ -54,28 +60,29 @@ function KioskCalendar({ googleCalendars }) {
         });
     }, [formatTime]);
 
-    // Calendar configuration
+    // Updated calendar configuration
     const calendarProps = useMemo(() => ({
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, googleCalendarPlugin],
         height: "100%",
+        aspectRatio: 1.1,
         googleCalendarApiKey: constants.googleCalendarApiKey,
         eventSources: formatEventSources(),
         dayMaxEventRows: 3,
         fixedWeekCount: false,
         firstDay: 1,
         eventDidMount: handleEventMount,
-        eventTimeFormat: { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            omitZeroMinute: true, 
-            hour12: false 
+        eventTimeFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            omitZeroMinute: true,
+            hour12: false
         },
-        slotLabelFormat: { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            omitZeroMinute: false, 
-            meridiem: false, 
-            hour12: false 
+        slotLabelFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            omitZeroMinute: false,
+            meridiem: false,
+            hour12: false
         },
         allDaySlot: false,
         slotMinTime: "08:00:00",
@@ -83,6 +90,7 @@ function KioskCalendar({ googleCalendars }) {
         expandRows: true,
         stickyHeaderDates: true,
         nowIndicator: true,
+        navLinks: true,
         initialView: "dayGridMonth",
         headerToolbar: {
             start: 'prev,next today',
@@ -95,33 +103,11 @@ function KioskCalendar({ googleCalendars }) {
             timeGridDay: { buttonText: 'Day' },
             listWeek: { buttonText: 'List' },
         },
+        // Disable interaction features
+        selectable: false,
+        eventClick: (e) => e.jsEvent.preventDefault(),
     }), [formatEventSources, handleEventMount]);
 
-    // Effects
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'F11' || e.key === 'Escape') {
-                e.preventDefault();
-            }
-        };
-
-        // Initial setup
-        document.documentElement.requestFullscreen().catch(console.error);
-        document.addEventListener('keydown', handleKeyDown);
-
-        // Cleanup
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
-
-    // Debug logging
-    useEffect(() => {
-        console.log({
-            calendarData: googleCalendars,
-            formattedSources: formatEventSources()
-        });
-    }, [googleCalendars, formatEventSources]);
 
     return (
         <div className={styles['kiosk-calendar-container']}>

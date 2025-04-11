@@ -1,11 +1,10 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './Components/Header';
 import { LoginToBackend } from "./Components/LoginToBackend";
 import Logout from "./Components/Logout";
 import Footer from "./Components/Footer";
-import NotFoundPage from "./pages/NotFoundPage";
 import SuccessPage from "./pages/SuccessPage";
 import { useReservationData } from './hooks/useReservationData';
 import PulsatingLoader from "./Components/PulsatingLoader";
@@ -26,6 +25,10 @@ const CreateNewServiceLazy = lazy(() => import('./Components/CreateNewService'))
 function AppContent() {
     const { login, isLoggedIn, username, userRoles, logout, authState } = useAuth();
     const { data, isLoading, isError } = useReservationData(isLoggedIn);
+    const location = useLocation();
+
+    // Check if the current path starts with /view
+    const isViewCalendarRoute = location.pathname.startsWith('/view');
 
     if (isError) {
         return <div>Error loading data. Please try again later.</div>;
@@ -91,7 +94,9 @@ function AppContent() {
                     />
                 } />
             </Routes>
-            <Footer />
+
+            {/* Only render the footer if not on a view calendar route */}
+            {!isViewCalendarRoute && <Footer />}
         </div>
     );
 }

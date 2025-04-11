@@ -13,7 +13,7 @@ import LoginToIS from "./Components/LoginToIS";
 import { useAuth } from './hooks/useAuth';
 import { ManagerRoutes } from './routes/ManagerRoutes';
 import { ServiceRoutes } from './routes/ServiceRoutes';
-import { TestRoutes } from './routes/TestRoutes';
+// import { TestRoutes } from './routes/TestRoutes';
 import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
 
 axios.defaults.withCredentials = true;
@@ -26,7 +26,6 @@ function AppContent() {
     const { login, isLoggedIn, username, userRoles, logout, authState } = useAuth();
     const { data, isLoading, isError } = useReservationData(isLoggedIn);
     const location = useLocation();
-
     // Check if the current path starts with /view
     const isViewCalendarRoute = location.pathname.startsWith('/view');
 
@@ -70,7 +69,7 @@ function AppContent() {
                 <Route path="view/*" element={<ViewCalendarRoutes />} />
 
                 {/* Test Routes */}
-                <Route path="test/*" element={<TestRoutes />} />
+                {/* <Route path="test/*" element={<TestRoutes />} /> */}
 
                 {/* Manager Routes */}
                 {isLoggedIn && userRoles?.section_head && (

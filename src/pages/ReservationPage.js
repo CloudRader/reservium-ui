@@ -9,16 +9,11 @@ import PulsatingLoader from "../Components/PulsatingLoader";
 import useSubmitLogic from "../hooks/useSubmitLogic";
 import Constants from "../Constants";
 
-const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service}) => {
+const ReservationPage = ({isLoggedIn, onLogout, roomCalendarLinks, service, allService}) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT);
     const [selectedSlot, setSelectedSlot] = useState(null)
-    const {errorMessages,setErrorMessages, handleSubmit, isSubmitting} = useSubmitLogic(service);
+    const {errorMessages,setErrorMessages, handleSubmit, isSubmitting} = useSubmitLogic(service, allService);
 
-    // useEffect(() => {
-    //     const handleResize = () => setisMobile(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
-    //     window.addEventListener('resize', handleResize);
-    //     return () => window.removeEventListener('resize', handleResize);
-    // }, []);
 
     if (!isLoggedIn) {
         return <LoginInfoPage/>;

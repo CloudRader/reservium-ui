@@ -3,9 +3,17 @@ import React, { useState } from 'react';
 const EventRegistrationForm = ({ formData }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [agreementAccepted, setAgreementAccepted] = useState(false);
+    const [selectedSpaces, setSelectedSpaces] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!agreementAccepted) {
+            alert('Please accept the agreement terms before submitting.');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
@@ -18,7 +26,7 @@ const EventRegistrationForm = ({ formData }) => {
                 email: e.target.email.value,
                 organizers: e.target.organizers.value,
                 space: e.target.space.value,
-                others_space: e.target.others_space.value,
+                others_space: selectedSpaces.join(', '),
             };
 
             const response = await fetch('/emails/send_event_registration', {
@@ -42,6 +50,14 @@ const EventRegistrationForm = ({ formData }) => {
         }
     };
 
+    const toggleSpace = (space) => {
+        if (selectedSpaces.includes(space)) {
+            setSelectedSpaces(selectedSpaces.filter(s => s !== space));
+        } else {
+            setSelectedSpaces([...selectedSpaces, space]);
+        }
+    };
+
     return (
         <>
             {submitSuccess ? (
@@ -59,7 +75,8 @@ const EventRegistrationForm = ({ formData }) => {
                                 name="event_name"
                                 required
                                 defaultValue={formData.event_name}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div>
@@ -69,7 +86,8 @@ const EventRegistrationForm = ({ formData }) => {
                                 name="guests"
                                 required
                                 defaultValue={formData.guests}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div>
@@ -79,7 +97,8 @@ const EventRegistrationForm = ({ formData }) => {
                                 name="event_start"
                                 required
                                 defaultValue={formData.event_start}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div>
@@ -89,7 +108,8 @@ const EventRegistrationForm = ({ formData }) => {
                                 name="event_end"
                                 required
                                 defaultValue={formData.event_end}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div>
@@ -99,7 +119,8 @@ const EventRegistrationForm = ({ formData }) => {
                                 name="email"
                                 required
                                 defaultValue={formData.email}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div>
@@ -117,22 +138,86 @@ const EventRegistrationForm = ({ formData }) => {
                                 name="space"
                                 required
                                 defaultValue={formData.space}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Additional Space</label>
-                            <textarea
-                                name="others_space"
-                                rows="1"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                            ></textarea>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Additional Spaces</label>
+                            <div className="border border-gray-300 rounded-md p-3 max-h-40 overflow-y-auto">
+                                {formData.allSpace && formData.allSpace.length > 0 ? (
+                                    <div className="space-y-2">
+                                        {formData.allSpace.map((space, index) => (
+                                            <div key={index} className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id={`space-${index}`}
+                                                    checked={selectedSpaces.includes(space)}
+                                                    onChange={() => toggleSpace(space)}
+                                                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                                                />
+                                                <label htmlFor={`space-${index}`} className="ml-2 block text-sm text-gray-700">
+                                                    {space}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-gray-500 italic">No additional spaces available</p>
+                                )}
+                            </div>
+                            {selectedSpaces.length > 0 && (
+                                <div className="mt-2 flex flex-wrap gap-2">
+                                    {selectedSpaces.map((space, index) => (
+                                        <span
+                                            key={index}
+                                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                                        >
+                                            {space}
+                                            <button
+                                                type="button"
+                                                onClick={() => toggleSpace(space)}
+                                                className="ml-1 inline-flex items-center p-0.5 rounded-full text-green-400 hover:bg-green-200 hover:text-green-500 focus:outline-none"
+                                            >
+                                                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
+
+                    <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Agreement of Terms</h3>
+                        <p className="text-gray-700 text-sm mb-4">
+                            By sending this registration form, I acknowledge that I am formally registering the event in the system and I
+                            am aware of the terms of use for the BUK club space and its equipment. I take full responsibility
+                            for ensuring that the event runs smoothly, without health complications or issues. I also
+                            acknowledge that the PS team will ensure the registration of the event in the reservation system. I
+                            accept responsibility for any damages caused to the space and am prepared to cover the costs in
+                            case of any damage.
+                        </p>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                id="agreement"
+                                checked={agreementAccepted}
+                                onChange={(e) => setAgreementAccepted(e.target.checked)}
+                                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                            />
+                            <label htmlFor="agreement" className="ml-2 block text-sm text-gray-700">
+                                I accept the agreement terms
+                            </label>
+                        </div>
+                    </div>
+
                     <div className="flex justify-center">
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || !agreementAccepted}
                             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
                         >
                             {isSubmitting ? 'Submitting...' : 'Submit Form'}

@@ -34,6 +34,7 @@ const SuccessPage = () => {
                 user_name: rest.user_name || '',
                 email: rest.email || '',
                 space: rest.reservation_type || '',
+                allSpace: allSpace || [],
             }
         };
     };

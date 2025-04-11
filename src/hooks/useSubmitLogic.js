@@ -5,7 +5,7 @@ import constants from '../Constants';
 import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
-const useSubmitLogic = (service) => {
+const useSubmitLogic = (service, allService) => {
     const [errorMessages, setErrorMessages] = useState({});
     const navigate = useNavigate()
 
@@ -20,6 +20,7 @@ const useSubmitLogic = (service) => {
                             ...response.data,
                             contactMail: service.contact_mail,
                             wikiLink: service.wikiLink,
+                            allService : allService,
                             ...formData
                         }
                     });

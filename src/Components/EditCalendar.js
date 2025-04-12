@@ -47,9 +47,15 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
         handleRulesChange,
     } = useEditableForm(initialData, calendarUpdateUrl, calendarFetchUrl, isEditMode);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading || isLoadingMiniServices) return <p>Loading...</p>;
 
     if (!editedData) return <p>No data available</p>;
+
+    // Ensure mini_services is always an array
+    if (!editedData.mini_services) {
+        editedData.mini_services = [];
+    }
+
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Calendar: ${serviceName}`} >
             <div className="bg-white p-4 rounded-lg shadow">
@@ -81,7 +87,8 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                             value={editedData.color || ''}
                             onChange={handleChange}
                             readOnly={!isEditing}
-                            className={`flex-grow mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                            className={`flex-grow mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
+                                }`}
                             placeholder="#000000"
                         />
                     </div>
@@ -112,11 +119,9 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Mini Services</label>
-                    {isLoadingMiniServices ? (
-                        <p>Loading mini services...</p>
-                    ) : (
-                        <div className="mt-1">
-                            {miniServices.map(service => (
+                    <div className="mt-1">
+                        {miniServices.length > 0 ? (
+                            miniServices.map(service => (
                                 <div key={service.id} className="flex items-center mb-2">
                                     <input
                                         type="checkbox"
@@ -138,9 +143,11 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                                     />
                                     <label htmlFor={`mini-service-${service.id}`}>{service.name}</label>
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                            ))
+                        ) : (
+                            <p>No mini services available</p>
+                        )}
+                    </div>
                 </div>
                 {['club_member_rules', 'active_member_rules', 'manager_rules'].map((ruleType) => (
                     editedData[ruleType] && (

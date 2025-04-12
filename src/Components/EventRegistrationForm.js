@@ -5,6 +5,7 @@ const EventRegistrationForm = ({ formData }) => {
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [agreementAccepted, setAgreementAccepted] = useState(false);
     const [selectedSpaces, setSelectedSpaces] = useState([]);
+    const [selectedSpace, setSelectedSpace] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,12 +51,15 @@ const EventRegistrationForm = ({ formData }) => {
         }
     };
 
-    const toggleSpace = (space) => {
-        if (selectedSpaces.includes(space)) {
-            setSelectedSpaces(selectedSpaces.filter(s => s !== space));
-        } else {
-            setSelectedSpaces([...selectedSpaces, space]);
+    const addSpace = () => {
+        if (selectedSpace && !selectedSpaces.includes(selectedSpace)) {
+            setSelectedSpaces([...selectedSpaces, selectedSpace]);
+            setSelectedSpace('');
         }
+    };
+
+    const removeSpace = (space) => {
+        setSelectedSpaces(selectedSpaces.filter(s => s !== space));
     };
 
     return (
@@ -144,30 +148,31 @@ const EventRegistrationForm = ({ formData }) => {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Additional Spaces</label>
-                            <div className="border border-gray-300 rounded-md p-3 max-h-40 overflow-y-auto">
-                                {formData.allSpace && formData.allSpace.length > 0 ? (
-                                    <div className="space-y-2">
-                                        {formData.allSpace.map((space, index) => (
-                                            <div key={index} className="flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    id={`space-${index}`}
-                                                    checked={selectedSpaces.includes(space)}
-                                                    onChange={() => toggleSpace(space)}
-                                                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                                                />
-                                                <label htmlFor={`space-${index}`} className="ml-2 block text-sm text-gray-700">
-                                                    {space}
-                                                </label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <p className="text-sm text-gray-500 italic">No additional spaces available</p>
-                                )}
+                            <div className="flex space-x-2">
+                                <select
+                                    value={selectedSpace}
+                                    onChange={(e) => setSelectedSpace(e.target.value)}
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                >
+                                    <option value="">Select a space</option>
+                                    {formData.allSpace && formData.allSpace.map((space, index) => (
+                                        <option key={index} value={space}>
+                                            {space}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    type="button"
+                                    onClick={addSpace}
+                                    disabled={!selectedSpace}
+                                    className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                                >
+                                    Add
+                                </button>
                             </div>
+
                             {selectedSpaces.length > 0 && (
-                                <div className="mt-2 flex flex-wrap gap-2">
+                                <div className="mt-3 flex flex-wrap gap-2">
                                     {selectedSpaces.map((space, index) => (
                                         <span
                                             key={index}
@@ -176,7 +181,7 @@ const EventRegistrationForm = ({ formData }) => {
                                             {space}
                                             <button
                                                 type="button"
-                                                onClick={() => toggleSpace(space)}
+                                                onClick={() => removeSpace(space)}
                                                 className="ml-1 inline-flex items-center p-0.5 rounded-full text-green-400 hover:bg-green-200 hover:text-green-500 focus:outline-none"
                                             >
                                                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
@@ -186,6 +191,10 @@ const EventRegistrationForm = ({ formData }) => {
                                         </span>
                                     ))}
                                 </div>
+                            )}
+
+                            {!formData.allSpace || formData.allSpace.length === 0 && (
+                                <p className="mt-2 text-sm text-gray-500 italic">No additional spaces available</p>
                             )}
                         </div>
                     </div>

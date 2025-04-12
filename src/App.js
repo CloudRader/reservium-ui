@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './Components/Header';
@@ -18,9 +18,6 @@ import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
 
 axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
-
-const EditServicesLazy = lazy(() => import('./Components/EditServices'));
-const CreateNewServiceLazy = lazy(() => import('./Components/CreateNewService'));
 
 function AppContent() {
     const { login, isLoggedIn, username, userRoles, logout, authState } = useAuth();

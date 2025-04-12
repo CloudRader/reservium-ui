@@ -10,8 +10,7 @@ export function useReservationData(isLoggedIn) {
             if (isLoggedIn) {
                 response = await axios.get(`${constants.serverURL}/reservation_services/services`);
             } else {
-                return null;
-                // response = await axios.get(`${constants.serverURL}/reservation_services/services/public`);
+                response = await axios.get(`${constants.serverURL}/reservation_services/services/public`);
             }
 
             const servicesData = response.data.map(info => ({

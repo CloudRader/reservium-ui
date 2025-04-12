@@ -308,16 +308,6 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         }
     }, [setMessage]);
 
-    if (isLoadingMiniServices) {
-        return (
-            <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Calendar'}>
-                <div className="bg-white p-4 rounded-lg shadow">
-                    <p>Loading mini services...</p>
-                </div>
-            </UniversalLayout>
-        );
-    }
-
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Calendar'}>
             <div className="bg-white p-4 rounded-lg shadow">

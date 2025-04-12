@@ -5,6 +5,7 @@ import UniversalLayout from "../UniversalLayout";
 import useCreateFormLogic from '../hooks/useCreateFormLogic';
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import CalendarIdInput from "./CalendarIdInput";
+axios.defaults.withCredentials = true;
 
 const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
@@ -16,7 +17,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const fetchMiniServices = useCallback(async () => {
         setIsLoadingMiniServices(true);
         try {
-            const response = await axios.get(`${constants.serverURL}/mini_services/service/${serviceId}`);
+            const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
             setMiniServices(response.data);
         } catch (error) {
             console.error('Error fetching mini services:', error);

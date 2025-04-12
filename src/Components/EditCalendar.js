@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import UniversalLayout from "../UniversalLayout";
 import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
 import axios from 'axios';
 axios.defaults.withCredentials = true;
+
 const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = false }) => {
     const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
@@ -18,7 +19,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
     const [miniServices, setMiniServices] = useState([]);
     const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
 
-    const fetchMiniServices = async () => {
+    const fetchMiniServices = useCallback(async () => {
         setIsLoadingMiniServices(true);
         try {
             const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
@@ -28,11 +29,11 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
         } finally {
             setIsLoadingMiniServices(false);
         }
-    };
+    }, [serviceId]);
 
     useEffect(() => {
         fetchMiniServices();
-    }, [serviceId]);
+    }, [fetchMiniServices]);
 
     const {
         loading,

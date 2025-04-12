@@ -193,7 +193,7 @@ const EventRegistrationForm = ({ formData }) => {
                                 </div>
                             )}
 
-                            {!formData.allSpace || formData.allSpace.length === 0 && (
+                            {(!formData.allSpace || formData.allSpace.length === 0) && (
                                 <p className="mt-2 text-sm text-gray-500 italic">No additional spaces available</p>
                             )}
                         </div>

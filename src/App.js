@@ -25,8 +25,8 @@ const CreateNewServiceLazy = lazy(() => import('./Components/CreateNewService'))
 function AppContent() {
     const { login, isLoggedIn, username, userRoles, logout, authState } = useAuth();
     const { data, isLoading, isError } = useReservationData(isLoggedIn);
+
     const location = useLocation();
-    // Check if the current path starts with /view
     const isViewCalendarRoute = location.pathname.startsWith('/view');
 
     if (isError) {
@@ -43,8 +43,8 @@ function AppContent() {
     //     return (
     //         <div className=" dark:!bg-slate-400 ">
     //             <Routes>
-    //                 <Route path='/login' element={<LoginToIS/>}/>
-    //                 <Route path='/logined' element={<LoginToBackend login={login}/>}/>
+    //                 <Route path='/login' element={<LoginToIS />} />
+    //                 <Route path='/logined' element={<LoginToBackend login={login} />} />
     //             </Routes>
     //         </div>
     //     );

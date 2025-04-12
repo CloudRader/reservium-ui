@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import ServicesSection from '../Components/ServicesSection';
 import constants from '../Constants';
 import EventRegistrationForm from '../Components/EventRegistrationForm';
-import PulsatingLoader from '../Components/PulsatingLoader';
 
 const SuccessPage = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+
 
     // Extract state processing to a separate function
     const processLocationState = (state) => {
@@ -130,23 +128,6 @@ const SuccessPage = () => {
             </div>
         );
     };
-
-    if (isLoading) {
-        return (
-            <PulsatingLoader />
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100 flex items-center justify-center">
-                <div className="bg-red-50 p-6 rounded-lg">
-                    <h2 className="text-red-700 text-xl font-bold">Error</h2>
-                    <p className="text-red-600">{error.message}</p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">

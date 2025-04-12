@@ -11,31 +11,11 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
     const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
-    const [miniServices, setMiniServices] = useState([]);
-    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(true);
-    const [formInitialized, setFormInitialized] = useState(false);
-
-    const fetchMiniServices = useCallback(async () => {
-        try {
-            const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
-            setMiniServices(response.data);
-            setFormInitialized(true);
-        } catch (error) {
-            console.error('Error fetching mini services:', error);
-            setFormInitialized(true); // Still initialize form even if fetch fails
-        } finally {
-            setIsLoadingMiniServices(false);
-        }
-    }, [serviceId]);
-
-    useEffect(() => {
-        fetchMiniServices();
-    }, [fetchMiniServices]);
+    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
 
     const initialFields = [
         {
             name: 'calendar_id',
-            // type: 'text', // This field is not rendered
             labelText: 'Select Calendar Source',
             labelColor: 'text-success',
         },
@@ -68,10 +48,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
             type: 'multiCheckbox',
             labelText: 'Mini Services',
             labelColor: 'text-success',
-            options: miniServices.map(service => ({
-                value: service.name,
-                label: service.name
-            })),
+            options: [], // Will be populated after fetching
         },
         {
             name: 'max_people',
@@ -236,11 +213,40 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         formFields,
         formData,
         message,
+        setFormFields,
         handleChange,
         handleSubmit,
         renderField,
         setMessage
-    } = useCreateFormLogic(formInitialized ? initialFields : [], `${constants.serverURL}/calendars/create_calendar`);
+    } = useCreateFormLogic(initialFields, `${constants.serverURL}/calendars/create_calendar`);
+
+    const fetchMiniServices = useCallback(async () => {
+        setIsLoadingMiniServices(true);
+        try {
+            const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
+            const updatedFields = formFields.map(field => {
+                if (field.name === 'mini_services') {
+                    return {
+                        ...field,
+                        options: response.data.map(service => ({
+                            value: service.name,
+                            label: service.name
+                        }))
+                    };
+                }
+                return field;
+            });
+            setFormFields(updatedFields);
+            setIsLoadingMiniServices(false);
+        } catch (error) {
+            console.error('Error fetching mini services:', error);
+            setIsLoadingMiniServices(false);
+        }
+    }, [serviceId, formFields, setFormFields]);
+
+    useEffect(() => {
+        fetchMiniServices();
+    }, [fetchMiniServices]);
 
     const preparePayload = useCallback(() => {
         return {
@@ -301,7 +307,6 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
             setIsLoadingCalendars(false);
         }
     }, [setMessage]);
-
 
     if (isLoadingMiniServices) {
         return (

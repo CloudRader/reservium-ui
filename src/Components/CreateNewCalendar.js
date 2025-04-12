@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
@@ -10,6 +10,24 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
     const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
+    const [miniServices, setMiniServices] = useState([]);
+    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
+
+    const fetchMiniServices = useCallback(async () => {
+        setIsLoadingMiniServices(true);
+        try {
+            const response = await axios.get(`${constants.serverURL}/mini_services/service/${serviceId}`);
+            setMiniServices(response.data);
+        } catch (error) {
+            console.error('Error fetching mini services:', error);
+        } finally {
+            setIsLoadingMiniServices(false);
+        }
+    }, [serviceId]);
+
+    useEffect(() => {
+        fetchMiniServices();
+    }, [fetchMiniServices]);
 
     const initialFields = [
         {
@@ -44,9 +62,13 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         },
         {
             name: 'mini_services',
-            type: 'text',
+            type: 'multiCheckbox',
             labelText: 'Mini Services',
             labelColor: 'text-success',
+            options: miniServices.map(service => ({
+                value: service.name,
+                label: service.name
+            })),
         },
         {
             name: 'max_people',
@@ -223,7 +245,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
             id: calendarIdInputType === 'manual' ? '' : formData.calendar_id,
             collision_with_calendar: formData.collision_with_calendar || [],
             more_than_max_people_with_permission: !!formData.more_than_max_people_with_permission,
-            mini_services: formData.mini_services.split(",") || [],
+            mini_services: formData.mini_services || [],
             color: formData.color,
             reservation_service_id: serviceId,
             reservation_type: calendarIdInputType === 'manual'
@@ -233,25 +255,25 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
             collision_with_itself: !!formData.collision_with_itself,
 
             club_member_rules: {
-                night_time: !!formData.club_member_rules.night_time,
+                night_time: formData.club_member_rules.night_time === 'true',
                 reservation_without_permission: !!formData.club_member_rules.reservation_without_permission,
-                max_reservation_hours: !!formData.club_member_rules.max_reservation_hours,
+                max_reservation_hours: Number(formData.club_member_rules.max_reservation_hours) || 0,
                 in_advance_hours: Number(formData.club_member_rules.in_advance_hours) || 0,
                 in_advance_minutes: Number(formData.club_member_rules.in_advance_minutes) || 0,
                 in_prior_days: Number(formData.club_member_rules.in_prior_days) || 0
             },
             active_member_rules: {
-                night_time: !!formData.active_member_rules.night_time,
+                night_time: formData.active_member_rules.night_time === 'true',
                 reservation_without_permission: !!formData.active_member_rules.reservation_without_permission,
-                max_reservation_hours: !!formData.active_member_rules.max_reservation_hours,
+                max_reservation_hours: Number(formData.active_member_rules.max_reservation_hours) || 0,
                 in_advance_hours: Number(formData.active_member_rules.in_advance_hours) || 0,
                 in_advance_minutes: Number(formData.active_member_rules.in_advance_minutes) || 0,
                 in_prior_days: Number(formData.active_member_rules.in_prior_days) || 0
             },
             manager_rules: {
-                night_time: !!formData.manager_rules.night_time,
+                night_time: formData.manager_rules.night_time === 'true',
                 reservation_without_permission: !!formData.manager_rules.reservation_without_permission,
-                max_reservation_hours: !!formData.manager_rules.max_reservation_hours,
+                max_reservation_hours: Number(formData.manager_rules.max_reservation_hours) || 0,
                 in_advance_hours: Number(formData.manager_rules.in_advance_hours) || 0,
                 in_advance_minutes: Number(formData.manager_rules.in_advance_minutes) || 0,
                 in_prior_days: Number(formData.manager_rules.in_prior_days) || 0

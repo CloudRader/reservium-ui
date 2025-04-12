@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import UniversalLayout from "../UniversalLayout";
 import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./SuccessErrorMessage";
-
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = false }) => {
     const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
@@ -13,6 +14,25 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
         active_member_rules: {},
         manager_rules: {}
     };
+
+    const [miniServices, setMiniServices] = useState([]);
+    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
+
+    const fetchMiniServices = async () => {
+        setIsLoadingMiniServices(true);
+        try {
+            const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
+            setMiniServices(response.data);
+        } catch (error) {
+            console.error('Error fetching mini services:', error);
+        } finally {
+            setIsLoadingMiniServices(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchMiniServices();
+    }, [serviceId]);
 
     const {
         loading,
@@ -25,7 +45,6 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
         handleChange,
         handleRulesChange,
     } = useEditableForm(initialData, calendarUpdateUrl, calendarFetchUrl, isEditMode);
-
 
     if (loading) return <p>Loading...</p>;
 
@@ -90,6 +109,38 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                             }`}
                     />
                 </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Mini Services</label>
+                    {isLoadingMiniServices ? (
+                        <p>Loading mini services...</p>
+                    ) : (
+                        <div className="mt-1">
+                            {miniServices.map(service => (
+                                <div key={service.id} className="flex items-center mb-2">
+                                    <input
+                                        type="checkbox"
+                                        id={`mini-service-${service.id}`}
+                                        checked={editedData.mini_services?.includes(service.name) || false}
+                                        onChange={(e) => {
+                                            const updatedServices = e.target.checked
+                                                ? [...(editedData.mini_services || []), service.name]
+                                                : (editedData.mini_services || []).filter(name => name !== service.name);
+                                            handleChange({
+                                                target: {
+                                                    name: 'mini_services',
+                                                    value: updatedServices
+                                                }
+                                            });
+                                        }}
+                                        disabled={!isEditing}
+                                        className="mr-2"
+                                    />
+                                    <label htmlFor={`mini-service-${service.id}`}>{service.name}</label>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
                 {['club_member_rules', 'active_member_rules', 'manager_rules'].map((ruleType) => (
                     editedData[ruleType] && (
                         <div key={ruleType} className="mb-6">
@@ -97,7 +148,24 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                             {Object.entries(editedData[ruleType]).map(([key, value]) => (
                                 <div key={key} className="mb-2">
                                     <label className="block text-sm font-medium text-gray-700">{key.replace(/_/g, ' ')}</label>
-                                    {typeof value === 'boolean' ? (
+                                    {key === 'night_time' ? (
+                                        <input
+                                            type="checkbox"
+                                            checked={value === true}
+                                            onChange={(e) => handleRulesChange(ruleType, key, e.target.checked)}
+                                            disabled={!isEditing}
+                                            className="mt-1"
+                                        />
+                                    ) : key === 'max_reservation_hours' ? (
+                                        <input
+                                            type="number"
+                                            value={value}
+                                            onChange={(e) => handleRulesChange(ruleType, key, parseInt(e.target.value) || 0)}
+                                            readOnly={!isEditing}
+                                            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
+                                                }`}
+                                        />
+                                    ) : typeof value === 'boolean' ? (
                                         <input
                                             type="checkbox"
                                             checked={value}
@@ -109,7 +177,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                                         <input
                                             type="number"
                                             value={value}
-                                            onChange={(e) => handleRulesChange(ruleType, key, parseInt(e.target.value))}
+                                            onChange={(e) => handleRulesChange(ruleType, key, parseInt(e.target.value) || 0)}
                                             readOnly={!isEditing}
                                             className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
                                                 }`}
@@ -118,7 +186,8 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                                 </div>
                             ))}
                         </div>
-                    )))}
+                    )
+                ))}
 
                 <div className="mt-6 flex justify-end space-x-3">
                     {isEditing ? (

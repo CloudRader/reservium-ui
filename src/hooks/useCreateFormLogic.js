@@ -139,7 +139,6 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
                                     value={option.value}
                                     checked={(formData[field.name] || []).includes(option.value)}
                                     onChange={handleChange}
-                                    data-multicheckbox="true"
                                     className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                                 />
                                 <label htmlFor={`${field.name}-${option.value}`} className="text-sm text-green-700">

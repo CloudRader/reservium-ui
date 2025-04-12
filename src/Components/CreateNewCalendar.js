@@ -12,15 +12,17 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
     const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
     const [miniServices, setMiniServices] = useState([]);
-    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
+    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(true);
+    const [formInitialized, setFormInitialized] = useState(false);
 
     const fetchMiniServices = useCallback(async () => {
-        setIsLoadingMiniServices(true);
         try {
             const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
             setMiniServices(response.data);
+            setFormInitialized(true);
         } catch (error) {
             console.error('Error fetching mini services:', error);
+            setFormInitialized(true); // Still initialize form even if fetch fails
         } finally {
             setIsLoadingMiniServices(false);
         }
@@ -234,12 +236,11 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         formFields,
         formData,
         message,
-        // setFormFields,
         handleChange,
         handleSubmit,
         renderField,
         setMessage
-    } = useCreateFormLogic(initialFields, `${constants.serverURL}/calendars/create_calendar`);
+    } = useCreateFormLogic(formInitialized ? initialFields : [], `${constants.serverURL}/calendars/create_calendar`);
 
     const preparePayload = useCallback(() => {
         return {
@@ -287,7 +288,6 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         handleSubmit(preparePayload());
     };
 
-
     const fetchGoogleCalendars = useCallback(async () => {
         setIsLoadingCalendars(true);
         try {
@@ -301,6 +301,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
             setIsLoadingCalendars(false);
         }
     }, [setMessage]);
+
 
     if (isLoadingMiniServices) {
         return (

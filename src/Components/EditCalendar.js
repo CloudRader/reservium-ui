@@ -120,7 +120,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Collision With Calendars</label>
                     <div className="mt-1">
-                        {serviceCalendars.collision_with_calendar?.map(calendarId => (
+                        {serviceCalendars?.map(calendarId => (
                             <div key={calendarId} className="flex items-center mb-2">
                                 <input
                                     type="checkbox"

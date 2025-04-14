@@ -32,7 +32,7 @@ const SuccessPage = () => {
                 user_name: rest.user_name || '',
                 email: rest.email || '',
                 space: rest.serviceName || '',
-                allSpace: rest.allService || [],
+                allSpace: (rest.allService || []).filter(service => service !== rest.serviceName),
             }
         };
     };

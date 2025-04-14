@@ -120,16 +120,16 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Collision With Calendars</label>
                     <div className="mt-1">
-                        {serviceCalendars?.map(calendarId => (
-                            <div key={calendarId} className="flex items-center mb-2">
+                        {serviceCalendars?.map(calendar => (
+                            <div key={calendar.googleCalendarId} className="flex items-center mb-2">
                                 <input
                                     type="checkbox"
-                                    id={`collision-calendar-${calendarId}`}
-                                    checked={editedData.collision_with_calendar?.includes(calendarId) || false}
+                                    id={`collision-calendar-${calendar.googleCalendarId}`}
+                                    checked={editedData.collision_with_calendar?.includes(calendar.googleCalendarId) || false}
                                     onChange={(e) => {
                                         const updatedCollisions = e.target.checked
-                                            ? [...(editedData.collision_with_calendar || []), calendarId]
-                                            : (editedData.collision_with_calendar || []).filter(id => id !== calendarId);
+                                            ? [...(editedData.collision_with_calendar || []), calendar.googleCalendarId]
+                                            : (editedData.collision_with_calendar || []).filter(id => id !== calendar.googleCalendarId);
                                         handleChange({
                                             target: {
                                                 name: 'collision_with_calendar',
@@ -140,7 +140,9 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                                     disabled={!isEditing}
                                     className="mr-2"
                                 />
-                                <label htmlFor={`collision-calendar-${calendarId}`}>{calendarId}</label>
+                                <label htmlFor={`collision-calendar-${calendar.googleCalendarId}`}>
+                                    {calendar.className} ({calendar.googleCalendarId})
+                                </label>
                             </div>
                         ))}
                     </div>

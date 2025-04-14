@@ -23,7 +23,6 @@ const EventRegistrationForm = ({ formData }) => {
                 guests: e.target.guests.value,
                 event_start: e.target.event_start.value,
                 event_end: e.target.event_end.value,
-                user_name: e.target.user_name.value,
                 email: e.target.email.value,
                 organizers: e.target.organizers.value,
                 space: [e.target.space.value, ...selectedSpaces].join(', '),

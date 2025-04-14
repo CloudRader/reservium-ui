@@ -141,7 +141,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                                     className="mr-2"
                                 />
                                 <label htmlFor={`collision-calendar-${calendar.googleCalendarId}`}>
-                                    {calendar.className} ({calendar.googleCalendarId})
+                                    {calendar.className}
                                 </label>
                             </div>
                         ))}

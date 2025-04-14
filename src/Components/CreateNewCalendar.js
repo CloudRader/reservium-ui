@@ -11,7 +11,6 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     const [googleCalendars, setGoogleCalendars] = useState([]);
     const [isLoadingCalendars, setIsLoadingCalendars] = useState(false);
     const [calendarIdInputType, setCalendarIdInputType] = useState('manual');
-    const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
 
     const initialFields = [
         {
@@ -221,7 +220,6 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     } = useCreateFormLogic(initialFields, `${constants.serverURL}/calendars/create_calendar`);
 
     const fetchMiniServices = useCallback(async () => {
-        setIsLoadingMiniServices(true);
         try {
             const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
             const updatedFields = formFields.map(field => {
@@ -237,16 +235,14 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
                 return field;
             });
             setFormFields(updatedFields);
-            setIsLoadingMiniServices(false);
         } catch (error) {
             console.error('Error fetching mini services:', error);
-            setIsLoadingMiniServices(false);
         }
     }, [serviceId, formFields, setFormFields]);
 
     useEffect(() => {
         fetchMiniServices();
-    }, [fetchMiniServices]);
+    }, [serviceId]);
 
     const preparePayload = useCallback(() => {
         return {
@@ -263,7 +259,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
             collision_with_itself: !!formData.collision_with_itself,
 
             club_member_rules: {
-                night_time: formData.club_member_rules.night_time === 'true',
+                night_time: !!formData.club_member_rules.club_night_time,
                 reservation_without_permission: !!formData.club_member_rules.reservation_without_permission,
                 max_reservation_hours: Number(formData.club_member_rules.max_reservation_hours) || 0,
                 in_advance_hours: Number(formData.club_member_rules.in_advance_hours) || 0,
@@ -271,7 +267,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
                 in_prior_days: Number(formData.club_member_rules.in_prior_days) || 0
             },
             active_member_rules: {
-                night_time: formData.active_member_rules.night_time === 'true',
+                night_time: !!formData.active_member_rules.club_night_time,
                 reservation_without_permission: !!formData.active_member_rules.reservation_without_permission,
                 max_reservation_hours: Number(formData.active_member_rules.max_reservation_hours) || 0,
                 in_advance_hours: Number(formData.active_member_rules.in_advance_hours) || 0,
@@ -279,7 +275,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
                 in_prior_days: Number(formData.active_member_rules.in_prior_days) || 0
             },
             manager_rules: {
-                night_time: formData.manager_rules.night_time === 'true',
+                night_time: !!formData.manager_rules.club_night_time,
                 reservation_without_permission: !!formData.manager_rules.reservation_without_permission,
                 max_reservation_hours: Number(formData.manager_rules.max_reservation_hours) || 0,
                 in_advance_hours: Number(formData.manager_rules.in_advance_hours) || 0,

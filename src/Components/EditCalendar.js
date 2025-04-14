@@ -33,7 +33,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
 
     useEffect(() => {
         fetchMiniServices();
-    }, [fetchMiniServices]);
+    }, [serviceId]);
 
     const {
         loading,

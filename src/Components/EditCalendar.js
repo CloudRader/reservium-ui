@@ -13,7 +13,8 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
         ...calendarBaseData,
         club_member_rules: {},
         active_member_rules: {},
-        manager_rules: {}
+        manager_rules: {},
+        collision_with_calendar: calendarBaseData.collision_with_calendar || []
     };
 
     const [miniServices, setMiniServices] = useState([]);
@@ -113,9 +114,36 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                         value={editedData.max_people}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
-                            }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Collision With Calendars</label>
+                    <div className="mt-1">
+                        {calendarBaseData.collision_with_calendar?.map(calendarId => (
+                            <div key={calendarId} className="flex items-center mb-2">
+                                <input
+                                    type="checkbox"
+                                    id={`collision-calendar-${calendarId}`}
+                                    checked={editedData.collision_with_calendar?.includes(calendarId) || false}
+                                    onChange={(e) => {
+                                        const updatedCollisions = e.target.checked
+                                            ? [...(editedData.collision_with_calendar || []), calendarId]
+                                            : (editedData.collision_with_calendar || []).filter(id => id !== calendarId);
+                                        handleChange({
+                                            target: {
+                                                name: 'collision_with_calendar',
+                                                value: updatedCollisions
+                                            }
+                                        });
+                                    }}
+                                    disabled={!isEditing}
+                                    className="mr-2"
+                                />
+                                <label htmlFor={`collision-calendar-${calendarId}`}>{calendarId}</label>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Mini Services</label>

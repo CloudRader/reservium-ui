@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
@@ -208,6 +208,8 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         },
     ]
 
+    const fetchedRef = useRef(false);
+
     const {
         formFields,
         formData,
@@ -220,6 +222,9 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     } = useCreateFormLogic(initialFields, `${constants.serverURL}/calendars/create_calendar`);
 
     const fetchMiniServices = useCallback(async () => {
+        if (fetchedRef.current) return;
+        fetchedRef.current = true;
+
         try {
             const response = await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}`);
             const updatedFields = formFields.map(field => {
@@ -240,9 +245,8 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
         }
     }, [serviceId, formFields, setFormFields]);
 
-    useEffect(() => {
-        fetchMiniServices();
-    }, [serviceId]);
+    // Call fetchMiniServices immediately after definition
+    fetchMiniServices();
 
     const preparePayload = useCallback(() => {
         return {

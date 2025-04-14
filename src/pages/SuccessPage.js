@@ -31,7 +31,7 @@ const SuccessPage = () => {
                 event_end: rest.end_datetime || '',
                 user_name: rest.user_name || '',
                 email: rest.email || '',
-                space: rest.reservation_type || '',
+                space: rest.serviceName || '',
                 allSpace: rest.allService || [],
             }
         };

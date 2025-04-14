@@ -26,8 +26,7 @@ const EventRegistrationForm = ({ formData }) => {
                 user_name: e.target.user_name.value,
                 email: e.target.email.value,
                 organizers: e.target.organizers.value,
-                space: e.target.space.value,
-                others_space: selectedSpaces.join(', '),
+                space: [e.target.space.value, ...selectedSpaces].join(', '),
             };
 
             const response = await fetch('/emails/send_event_registration', {

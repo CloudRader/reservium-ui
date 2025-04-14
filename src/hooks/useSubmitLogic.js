@@ -20,7 +20,8 @@ const useSubmitLogic = (service, allService) => {
                             ...response.data,
                             contactMail: service.contact_mail,
                             wikiLink: service.wikiLink,
-                            allService : allService,
+                            allService: allService,
+                            serviceName: service.serviceName,
                             ...formData
                         }
                     });

@@ -97,6 +97,7 @@ export const ManagerRoutes = ({ services, calendars, miniServices }) => (
                                 calendarBaseData={calendar}
                                 serviceId={service.id}
                                 isEditMode={false}
+                                serviceCalendars={calendars[service.linkName]}
                             />}
                         />
                         <Route
@@ -106,6 +107,7 @@ export const ManagerRoutes = ({ services, calendars, miniServices }) => (
                                 calendarBaseData={calendar}
                                 serviceId={service.id}
                                 isEditMode={true}
+                                serviceCalendars={calendars[service.linkName]}
                             />}
                         />
                     </React.Fragment>

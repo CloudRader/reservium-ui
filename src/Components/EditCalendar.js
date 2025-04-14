@@ -6,7 +6,7 @@ import SuccessErrorMessage from "./SuccessErrorMessage";
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = false }) => {
+const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = false, serviceCalendars = [] }) => {
     const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
     const initialData = {
@@ -14,7 +14,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
         club_member_rules: {},
         active_member_rules: {},
         manager_rules: {},
-        collision_with_calendar: calendarBaseData.collision_with_calendar || []
+        collision_with_calendar: serviceCalendars.collision_with_calendar || []
     };
 
     const [miniServices, setMiniServices] = useState([]);
@@ -120,7 +120,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Collision With Calendars</label>
                     <div className="mt-1">
-                        {calendarBaseData.collision_with_calendar?.map(calendarId => (
+                        {serviceCalendars.collision_with_calendar?.map(calendarId => (
                             <div key={calendarId} className="flex items-center mb-2">
                                 <input
                                     type="checkbox"

@@ -31,7 +31,7 @@ const EventRegistrationForm = ({ formData }) => {
                 other_space: selectedSpaces,
                 manager_contact_mail: formData.manager_contact_mail,
             };
-            await axios.post(`${constants.serverURL}/emails/send_event_registration`, formDataToSend);
+            await axios.post(`${constants.serverURL}/emails/send_registration_form`, formDataToSend);
             setSubmitSuccess(true);
         } catch (error) {
             console.error('Error submitting form:', error);

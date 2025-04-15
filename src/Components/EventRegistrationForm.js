@@ -18,14 +18,16 @@ const EventRegistrationForm = ({ formData }) => {
         setIsSubmitting(true);
 
         try {
-            const formData = {
+            const formDataToSend = {
                 event_name: e.target.event_name.value,
                 guests: e.target.guests.value,
                 event_start: e.target.event_start.value,
                 event_end: e.target.event_end.value,
                 email: e.target.email.value,
                 organizers: e.target.organizers.value,
-                space: [e.target.space.value, ...selectedSpaces].join(', '),
+                space: e.target.space.value,
+                other_space: selectedSpaces,
+                manager_contact_mail: formData.manager_contact_mail,
             };
 
             const response = await fetch('/emails/send_event_registration', {
@@ -33,7 +35,7 @@ const EventRegistrationForm = ({ formData }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formDataToSend)
             });
 
             if (!response.ok) {

@@ -33,6 +33,7 @@ const SuccessPage = () => {
                 email: rest.email || '',
                 space: rest.serviceName || '',
                 allSpace: (rest.allService || []).filter(service => service !== rest.serviceName),
+                manager_contact_mail: contactMail || '',
             }
         };
     };

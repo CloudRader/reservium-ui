@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import constants from '../Constants';
+axios.defaults.withCredentials = true;
 
 const EventRegistrationForm = ({ formData }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,7 +19,6 @@ const EventRegistrationForm = ({ formData }) => {
         }
 
         setIsSubmitting(true);
-
         try {
             const formDataToSend = {
                 event_name: e.target.event_name.value,
@@ -29,19 +31,7 @@ const EventRegistrationForm = ({ formData }) => {
                 other_space: selectedSpaces,
                 manager_contact_mail: formData.manager_contact_mail,
             };
-
-            const response = await fetch('/emails/send_event_registration', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formDataToSend)
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to submit form: ${response.statusText}`);
-            }
-
+            await axios.post(`${constants.serverURL}/emails/send_event_registration`, formDataToSend);
             setSubmitSuccess(true);
         } catch (error) {
             console.error('Error submitting form:', error);

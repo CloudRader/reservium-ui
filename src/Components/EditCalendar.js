@@ -34,6 +34,7 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
 
     useEffect(() => {
         fetchMiniServices();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [serviceId]);
 
     const {

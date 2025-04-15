@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";

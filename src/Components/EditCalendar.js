@@ -119,6 +119,17 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                     />
                 </div>
                 <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Allow More Than Max People With Permission</label>
+                    <input
+                        type="checkbox"
+                        name="more_than_max_people_with_permission"
+                        checked={editedData.more_than_max_people_with_permission || false}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1"
+                    />
+                </div>
+                <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Collision With Calendars</label>
                     <div className="mt-1">
                         {serviceCalendars?.map(calendar => (

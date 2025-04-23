@@ -34,7 +34,7 @@ export function useReservationData(isLoggedIn) {
                     className: calendar.reservation_type,
                     backgroundColor: calendar.color,
                     borderColor: calendar.color,
-                    deleted_at: info.deleted_at,
+                    deleted_at: calendar.deleted_at,
                 }));
                 return acc;
             }, {});
@@ -44,7 +44,7 @@ export function useReservationData(isLoggedIn) {
                     id: miniService.id,
                     name: miniService.name,
                     reservationServiceId: miniService.reservation_service_id,
-                    deleted_at: info.deleted_at,
+                    deleted_at: miniService.deleted_at,
                 }));
                 return acc;
             }, {});

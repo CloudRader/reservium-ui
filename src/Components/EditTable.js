@@ -67,7 +67,7 @@ const EditTable = ({
             </thead>
             <tbody className="divide-y divide-green-100">
                 {data.map((rowData) => (
-                    <tr key={rowData[idAtr]} className="hover:bg-green-50">
+                    <tr key={rowData[idAtr]} className={`${rowData.deleted_at !== null ? 'bg-gray-100' : ''} hover:bg-green-50`}>
                         <td className="py-4 px-6 text-sm text-green-700">
                             {rowData[nameAtr]}
                         </td>

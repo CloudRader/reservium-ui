@@ -5,10 +5,8 @@ import { Pencil, Trash2, Eye } from 'lucide-react';
 
 const TableActions = ({ item, viewLink, editLink, onDelete, nameAtr, idAtr, isMobile }) => {
     const baseButtonClasses = "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200";
-    const containerClasses = `p-2 ${item.deleted_at === null ? 'bg-gray-100' : ''}`;
 
     return (
-        <div className={containerClasses}>
             <div className={`flex flex-wrap gap-2 ${isMobile ? 'justify-start' : 'justify-center'}`}>
                 <Link
                     to={`${viewLink}${item[nameAtr]}`}
@@ -39,7 +37,6 @@ const TableActions = ({ item, viewLink, editLink, onDelete, nameAtr, idAtr, isMo
                     Hard Delete
                 </button>
             </div>
-        </div>
     );
 };
 

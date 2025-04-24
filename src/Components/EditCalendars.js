@@ -27,12 +27,11 @@ const EditCalendars = ({ serviceId, serviceName }) => {
         () => fetchCalendarsForService(serviceId),
         {
             enabled: !!serviceId,
-            refetchOnWindowFocus: false,
         }
     );
 
     return (
-        <EditTable
+        data && <EditTable
             name={'Calendars'}
             data={data}
             nameAtr={'className'}

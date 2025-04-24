@@ -17,8 +17,21 @@ const EditTable = ({
     addLink,
     viewLink,
     deleteLink,
+    retrieveLink,
     columns = ['Name', 'Actions']
 }) => {
+    const handleRetrieve = async (itemId) => {
+        try {
+            const response = await axios.delete(`${constants.serverURL}${retrieveLink}${itemId}`);
+            if (response.status === 200) {
+                window.location.reload();
+            }
+
+        } catch (error) {
+            console.error('Failed to retrieve item:', error);
+        }
+    };
+
     const handleDelete = async (itemId, hardRemove = false) => {
         if (hardRemove) {
             const confirmed = window.confirm(
@@ -28,9 +41,7 @@ const EditTable = ({
         }
 
         try {
-            const response = await axios.delete(`${constants.serverURL}${deleteLink}${itemId}`, {
-                params: { hard_remove: hardRemove },
-            });
+            const response = await axios.delete(`${constants.serverURL}${deleteLink}${itemId}?hard_remove=${hardRemove}`);
 
             if (response.status === 200) {
                 window.location.reload();
@@ -78,6 +89,7 @@ const EditTable = ({
                                     viewLink={viewLink}
                                     editLink={editLink}
                                     onDelete={handleDelete}
+                                    onRetrieve={handleRetrieve}
                                     nameAtr={nameAtr}
                                     idAtr={idAtr}
                                     isMobile={false}

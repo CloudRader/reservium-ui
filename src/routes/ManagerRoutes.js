@@ -13,8 +13,14 @@ import EditCalendar from '../Components/EditCalendar';
 
 export const ManagerRoutes = ({ services, calendars, miniServices }) => (
     <Routes>
-        <Route path="manager-panel" element={<EditServices services={services} />} />
-        <Route path='add-service' element={<CreateNewService />} />
+        <Route
+            path="manager-panel"
+            element={<EditServices
+                services={services} />} />
+
+        <Route
+            path='add-service'
+            element={<CreateNewService />} />
 
         {services && services.map(service => (
             <React.Fragment key={service.linkName}>
@@ -22,7 +28,7 @@ export const ManagerRoutes = ({ services, calendars, miniServices }) => (
                 <Route
                     path={`edit-calendars/${service.linkName}`}
                     element={<EditCalendars
-                        roomCalendarLinks={calendars[service.linkName]}
+                        serviceId={service.id}
                         serviceName={service.linkName}
                     />}
                 />
@@ -38,13 +44,14 @@ export const ManagerRoutes = ({ services, calendars, miniServices }) => (
                 <Route
                     path={`edit-mini-services/${service.linkName}`}
                     element={<EditMiniServices
-                        miniServices={miniServices[service.linkName]}
+                        serviceId={service.id}
                         serviceName={service.linkName}
                     />}
                 />
                 <Route
                     path={`add-mini-service/${service.linkName}`}
-                    element={<CreateNewMiniService serviceId={service.id} />}
+                    element={<CreateNewMiniService
+                        serviceId={service.id} />}
                 />
 
                 {/* Service edit/view routes */}

@@ -34,7 +34,8 @@ const EditCalendars = ({ serviceId, serviceName }) => {
         data && <EditTable
             name={'Calendars'}
             data={data}
-            nameAtr={'className'}
+            nameAtr={'reservation_type'}
+            // nameAtr={'className'}
             idAtr={'googleCalendarId'}
             editLink={`/manager/edit-calendar/${serviceName}/`}
             addLink={`/manager/add-calendar/${serviceName}`}

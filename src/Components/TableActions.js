@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Pencil, Trash2, Eye } from 'lucide-react';
+import { Pencil, Trash2, Eye, RotateCcw } from 'lucide-react';
 
 const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr, idAtr, isMobile }) => {
     const baseButtonClasses = "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200";
@@ -22,7 +22,8 @@ const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr,
                 <Pencil className="w-4 h-4 mr-1" />
                 Edit
             </Link>
-            <button
+            item.deleted_at === null :
+            (<button
                 onClick={() => onDelete(item[idAtr], false)}
                 className={`${baseButtonClasses} bg-red-400 hover:bg-red-500 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
             >
@@ -35,15 +36,15 @@ const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr,
             >
                 <Trash2 className="w-4 h-4 mr-1" />
                 Hard Delete
-            </button>
-            <button
+            </button>) :
+            (<button
                 onClick={() => onRetrieve(item[idAtr])}
-                className={`${baseButtonClasses} bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500 ${isMobile ? 'w-full' : ''}`}
+                className={`${baseButtonClasses} bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 ${isMobile ? 'w-full' : ''}`}
             >
-                <Pencil className="w-4 h-4 mr-1" />
+                <RotateCcw className="w-4 h-4 mr-1" />
                 Retrieve
             </button>
-
+            )
         </div>
     );
 };

@@ -33,7 +33,7 @@ const EditMiniServices = ({ serviceId, serviceName }) => {
     );
 
     return (
-        <EditTable name={'Mini Services'}
+        data && <EditTable name={'Mini Services'}
             data={data}
             nameAtr={'name'}
             idAtr={'id'}

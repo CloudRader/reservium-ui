@@ -55,10 +55,14 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, type, checked, value } = e.target;
+
+        // Use the checked property for checkboxes, value for all other input types
+        const newValue = type === 'checkbox' ? checked : value;
+
         setEditedData(prevData => ({
             ...prevData,
-            [name]: value
+            [name]: newValue
         }));
     };
 

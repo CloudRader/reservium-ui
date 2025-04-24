@@ -11,6 +11,7 @@ const EditServices = ({ services }) => {
             addLink={`/manager/add-service`}
             viewLink={`/manager/view-service/`}
             deleteLink={`/reservation_services/`}
+            retrieveLink={`/reservation_services/retrieve_deleted/`}
         />
     );
 };

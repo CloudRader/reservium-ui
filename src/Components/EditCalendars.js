@@ -1,17 +1,46 @@
-import React from 'react';
-import EditTable from "./EditTable";
 
-const EditCalendars = ({ roomCalendarLinks, serviceName }) => {
+import React from 'react';
+import { useQuery } from 'react-query';
+import EditTable from "./EditTable";
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+
+const fetchCalendarsForService = async (serviceId) => {
+    try {
+        const response = await axios.get(`${constants.serverURL}/calendars/reservation_service/${serviceId}?include_removed=true`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Failed to fetch calendars for this service');
+    }
+};
+
+const EditCalendars = ({ serviceId, serviceName }) => {
+
+    const {
+        data,
+        isLoading,
+        isError,
+        error
+    } = useQuery(
+        ['serviceCalendars', serviceId],
+        () => fetchCalendarsForService(serviceId),
+        {
+            enabled: !!serviceId,
+            refetchOnWindowFocus: false,
+        }
+    );
+
     return (
         <EditTable
             name={'Calendars'}
-            data={roomCalendarLinks}
+            data={data}
             nameAtr={'className'}
             idAtr={'googleCalendarId'}
             editLink={`/manager/edit-calendar/${serviceName}/`}
             addLink={`/manager/add-calendar/${serviceName}`}
             viewLink={`/manager/view-calendar/${serviceName}/`}
             deleteLink={`/calendars/`}
+            retrieveLink={`/calendars/retrieve_deleted/`}
         />
     );
 };

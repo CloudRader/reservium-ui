@@ -19,7 +19,7 @@ const HeaderNavigation = ({ services, showServices, isViewMode }) => {
                             key={item.linkName}
                             to={isViewMode ? `view/${item.linkName}` : item.linkName}
                             className={({ isActive }) =>
-                                `inline-flex text-green-800 items-center h-11 border-b-2 text-lg font-medium no-underline ${isActive
+                                `inline-flex text-green-800 h-11 border-b-2 text-lg font-medium no-underline ${isActive
                                     ? 'border-green-600 text-green-900'
                                     : 'border-transparent hover:border-green-300 hover:text-green-600'
                                 }`

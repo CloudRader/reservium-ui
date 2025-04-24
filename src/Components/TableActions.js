@@ -22,29 +22,32 @@ const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr,
                 <Pencil className="w-4 h-4 mr-1" />
                 Edit
             </Link>
-            item.deleted_at === null :
-            (<button
-                onClick={() => onDelete(item[idAtr], false)}
-                className={`${baseButtonClasses} bg-red-400 hover:bg-red-500 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
-            >
-                <Trash2 className="w-4 h-4 mr-1" />
-                Soft Delete
-            </button>
-            <button
-                onClick={() => onDelete(item[idAtr], true)}
-                className={`${baseButtonClasses} bg-red-600 hover:bg-red-700 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
-            >
-                <Trash2 className="w-4 h-4 mr-1" />
-                Hard Delete
-            </button>) :
-            (<button
-                onClick={() => onRetrieve(item[idAtr])}
-                className={`${baseButtonClasses} bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 ${isMobile ? 'w-full' : ''}`}
-            >
-                <RotateCcw className="w-4 h-4 mr-1" />
-                Retrieve
-            </button>
-            )
+            {item.deleted_at === null ?
+                <>
+                    <button
+                        onClick={() => onDelete(item[idAtr], false)}
+                        className={`${baseButtonClasses} bg-red-400 hover:bg-red-500 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
+                    >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        Soft Delete
+                    </button>
+                    <button
+                        onClick={() => onDelete(item[idAtr], true)}
+                        className={`${baseButtonClasses} bg-red-600 hover:bg-red-700 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
+                    >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        Hard Delete
+                    </button>
+                </>
+                :
+                <button
+                    onClick={() => onRetrieve(item[idAtr])}
+                    className={`${baseButtonClasses} bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 ${isMobile ? 'w-full' : ''}`}
+                >
+                    <RotateCcw className="w-4 h-4 mr-1" />
+                    Retrieve
+                </button>
+            }
         </div>
     );
 };

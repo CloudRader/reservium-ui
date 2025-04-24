@@ -35,8 +35,7 @@ const EditCalendars = ({ serviceId, serviceName }) => {
             name={'Calendars'}
             data={data}
             nameAtr={'reservation_type'}
-            // nameAtr={'className'}
-            idAtr={'googleCalendarId'}
+            idAtr={'id'}
             editLink={`/manager/edit-calendar/${serviceName}/`}
             addLink={`/manager/add-calendar/${serviceName}`}
             viewLink={`/manager/view-calendar/${serviceName}/`}

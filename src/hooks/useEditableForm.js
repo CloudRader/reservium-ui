@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import constants from "../Constants";
-
 axios.defaults.withCredentials = true;
 
 const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = false) => {

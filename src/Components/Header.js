@@ -20,7 +20,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
     return (
         <header className="bg-gradient-to-r from-green-50 to-green-100 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <nav className="flex justify-between items-center h-16 text-green-800">
+                <nav className="flex items-center justify-between h-16">
                     <HeaderNavigation
                         services={services}
                         showServices={isLoggedIn || isViewMode}
@@ -48,6 +48,13 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                         </button>
                                         {isDropdownOpen && (
                                             <div className="absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg py-1 z-10 ring-1 ring-black ring-opacity-5">
+                                                <NavLink
+                                                    to="/dashboard"
+                                                    className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
+                                                    onClick={() => setIsDropdownOpen(false)}
+                                                >
+                                                    Dashboard
+                                                </NavLink>
                                                 {isManager && (
                                                     <NavLink
                                                         to="manager/manager-panel"
@@ -70,7 +77,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                 ) : (
                                     <NavLink
                                         to="/login"
-                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                     >
                                         Log in
                                     </NavLink>
@@ -117,17 +124,23 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                             {isLoggedIn ? (
                                 <div className="space-y-2">
                                     <span className="block text-sm font-medium text-green-700">{username}</span>
+                                    <NavLink
+                                        to="/dashboard"
+                                        className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                    >
+                                        Dashboard
+                                    </NavLink>
                                     {isManager && (
                                         <NavLink
                                             to="/manager-panel"
-                                            className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                            className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                         >
                                             Manager panel
                                         </NavLink>
                                     )}
                                     <NavLink
                                         to="/logout"
-                                        className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                        className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                     >
                                         Log out
                                     </NavLink>
@@ -135,7 +148,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                             ) : (
                                 <NavLink
                                     to="/login"
-                                    className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                    className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                 >
                                     Log in
                                 </NavLink>

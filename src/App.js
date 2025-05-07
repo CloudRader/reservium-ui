@@ -13,6 +13,7 @@ import LoginToIS from "./Components/LoginToIS";
 import { useAuth } from './hooks/useAuth';
 import { ManagerRoutes } from './routes/ManagerRoutes';
 import { ServiceRoutes } from './routes/ServiceRoutes';
+import Dashboard from './Components/Dashboard';
 // import { TestRoutes } from './routes/TestRoutes';
 import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
 
@@ -30,9 +31,9 @@ function AppContent() {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    if (authState === 'initializing' || authState === 'checking' || isLoading) {
-        return <PulsatingLoader />;
-    }
+    // if (authState === 'initializing' || authState === 'checking' || isLoading) {
+    //     return <PulsatingLoader />;
+    // }
 
     const { services, calendars, miniServices } = data || { services: [], calendars: {}, miniServices: {} };
 
@@ -61,6 +62,7 @@ function AppContent() {
                 <Route path='/logined' element={<LoginToBackend login={login} />} />
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
                 <Route path='/success' element={<SuccessPage />} />
+                <Route path='/dashboard' element={<Dashboard isManager={userRoles?.section_head} />} />
 
                 {/* View Calendar Routes */}
                 <Route path="view/*" element={<ViewCalendarRoutes />} />

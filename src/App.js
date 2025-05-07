@@ -31,9 +31,9 @@ function AppContent() {
         return <div>Error loading data. Please try again later.</div>;
     }
 
-    // if (authState === 'initializing' || authState === 'checking' || isLoading) {
-    //     return <PulsatingLoader />;
-    // }
+    if (authState === 'initializing' || authState === 'checking' || isLoading) {
+        return <PulsatingLoader />;
+    }
 
     const { services, calendars, miniServices } = data || { services: [], calendars: {}, miniServices: {} };
 

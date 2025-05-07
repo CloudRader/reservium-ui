@@ -9,14 +9,14 @@ import CreateNewCalendar from '../Components/CreateNewCalendar';
 import CreateNewMiniService from '../Components/CreateNewMiniService';
 import EditMiniService from '../Components/EditMiniService';
 import EditCalendar from '../Components/EditCalendar';
-// ... import other manager components
 
+
+// todo DEL make this as condition only for manager and then try to get all data that i need with deleted services and cal and mini serv
 export const ManagerRoutes = ({ services, calendars, miniServices }) => (
     <Routes>
         <Route
             path="manager-panel"
-            element={<EditServices
-                services={services} />} />
+            element={<EditServices />} />
 
         <Route
             path='add-service'

@@ -1,21 +1,6 @@
 import React from 'react';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 import EditTable from "./EditTable";
-import constants from "../Constants";
-
-axios.defaults.withCredentials = true;
-
-const fetchCalendarsForService = async (serviceId) => {
-    try {
-        const response =
-            await axios.get(`${constants.serverURL}/mini_services/reservation_service/${serviceId}?include_removed=true`);
-        return response.data;
-    } catch (error) {
-        throw new Error('Failed to fetch calendars for this service');
-    }
-
-};
+import useFetchWithDeleted from "../hooks/useFetchWithDeleted";
 
 const EditMiniServices = ({ serviceId, serviceName }) => {
     const {
@@ -23,13 +8,10 @@ const EditMiniServices = ({ serviceId, serviceName }) => {
         isLoading,
         isError,
         error
-    } = useQuery(
+    } = useFetchWithDeleted(
         ['serviceCalendars', serviceId],
-        () => fetchCalendarsForService(serviceId),
-        {
-            enabled: !!serviceId,
-            refetchOnWindowFocus: false,
-        }
+        `/mini_services/reservation_service/${serviceId}`,
+        !!serviceId
     );
 
     return (

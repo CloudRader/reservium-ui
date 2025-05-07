@@ -1,33 +1,17 @@
-
 import React from 'react';
-import { useQuery } from 'react-query';
 import EditTable from "./EditTable";
-import axios from 'axios';
-import constants from "../Constants";
-axios.defaults.withCredentials = true;
-
-const fetchCalendarsForService = async (serviceId) => {
-    try {
-        const response = await axios.get(`${constants.serverURL}/calendars/reservation_service/${serviceId}?include_removed=true`);
-        return response.data;
-    } catch (error) {
-        throw new Error('Failed to fetch calendars for this service');
-    }
-};
+import useFetchWithDeleted from "../hooks/useFetchWithDeleted";
 
 const EditCalendars = ({ serviceId, serviceName }) => {
-
     const {
         data,
         isLoading,
         isError,
         error
-    } = useQuery(
+    } = useFetchWithDeleted(
         ['serviceCalendars', serviceId],
-        () => fetchCalendarsForService(serviceId),
-        {
-            enabled: !!serviceId,
-        }
+        `/calendars/reservation_service/${serviceId}`,
+        !!serviceId
     );
 
     return (

@@ -1,10 +1,21 @@
 import React from 'react';
 import EditTable from "./EditTable";
+import useFetchWithDeleted from "../hooks/useFetchWithDeleted";
 
-const EditServices = ({ services }) => {
+const EditServices = () => {
+    const {
+        data,
+        isLoading,
+        isError,
+        error
+    } = useFetchWithDeleted(
+        ['services'],
+        '/reservation_services/services/'
+    );
+    // /reservation_services/services/ 
     return (
-        <EditTable name={'Services'}
-            data={services}
+        data && <EditTable name={'Services'}
+            data={data}
             nameAtr={'serviceName'}
             idAtr={'id'}
             editLink={`/manager/edit-service/`}
@@ -15,4 +26,5 @@ const EditServices = ({ services }) => {
         />
     );
 };
+
 export default EditServices;

@@ -10,9 +10,9 @@ const EditServices = () => {
         error
     } = useFetchWithDeleted(
         ['services'],
-        '/reservation_services/services/'
+        '/reservation_services/'
     );
-    // /reservation_services/services/ 
+
     return (
         data && <EditTable name={'Services'}
             data={data}

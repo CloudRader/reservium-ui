@@ -22,16 +22,17 @@ const queryClient = new QueryClient();
 
 function AppContent() {
     const { login, isLoggedIn, username, userRoles, logout, authState } = useAuth();
-    const { data, isLoading, isError } = useReservationData(isLoggedIn);
 
-    const location = useLocation();
-    const isViewCalendarRoute = location.pathname.startsWith('/view');
+    if (authState === 'initializing' || authState === 'checking') {
+        return <PulsatingLoader />;
+    }
+
+    const { data, isLoading, isError } = useReservationData(isLoggedIn);
 
     if (isError) {
         return <div>Error loading data. Please try again later.</div>;
     }
-
-    if (authState === 'initializing' || authState === 'checking' || isLoading) {
+    if (isLoading) {
         return <PulsatingLoader />;
     }
 
@@ -48,6 +49,8 @@ function AppContent() {
     //     );
     // }
 
+    const location = useLocation();
+    const isViewCalendarRoute = location.pathname.startsWith('/view');
     return (
         <div className="dark:!bg-slate-400">
             <Header

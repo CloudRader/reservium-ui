@@ -55,9 +55,11 @@ export function useReservationData(isLoggedIn) {
         }
     };
 
-    return useQuery('reservationData', fetchData, {
+    return useQuery(['reservationData', isLoggedIn], fetchData, {
         enabled: true,
-        staleTime: Infinity,
-        cacheTime: 1000 * 60 * 60,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        cacheTime: 30 * 60 * 1000, // 30 minutes
+        retry: 1,
+        retryDelay: 1000,
     });
 }

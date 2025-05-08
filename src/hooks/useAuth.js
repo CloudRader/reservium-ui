@@ -1,12 +1,12 @@
-import {useState, useEffect, useCallback} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import constants from "../Constants";
 
 axios.defaults.withCredentials = true;
 const sendCodeToServer = async (code, state) => {
     const response = await axios.get(`${constants.serverURL}/users/callback`, {
-        params: {code, state}
+        params: { code, state }
     });
     return response.data.username;
 };
@@ -21,7 +21,7 @@ export const useAuth = () => {
     const [authState, setAuthState] = useState('initializing'); // 'initializing', 'checking', 'authenticated', 'unauthenticated'
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
-    const [userRoles, setUserRoles] = useState({active_member: false, section_head: false});
+    const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
     const navigate = useNavigate();
 
     const login = useCallback(async (code, state) => {
@@ -48,7 +48,7 @@ export const useAuth = () => {
     const logout = useCallback(() => {
         setIsLoggedIn(false);
         setUsername(null);
-        setUserRoles({active_member: false, section_head: false});
+        setUserRoles({ active_member: false, section_head: false });
         setAuthState('unauthenticated');
         localStorage.removeItem('userName');
         // navigate('/');
@@ -80,5 +80,5 @@ export const useAuth = () => {
         checkAuth();
     }, [logout]);
 
-    return {login, isLoggedIn, username, userRoles, logout, authState};
+    return { login, isLoggedIn, username, userRoles, logout, authState };
 };

@@ -16,7 +16,7 @@ const EditServices = () => {
     return (
         data && <EditTable name={'Services'}
             data={data}
-            nameAtr={'serviceName'}
+            nameAtr={'name'}
             idAtr={'id'}
             editLink={`/manager/edit-service/`}
             addLink={`/manager/add-service`}

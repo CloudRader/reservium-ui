@@ -6,7 +6,7 @@ const HeaderNavigation = ({ services, showServices, isViewMode }) => {
     return (
         <div className="flex items-center space-x-2">
             <NavLink
-                to={isViewMode ? "/view/club" : "/club"}
+                to={isViewMode ? "/view/club" : "/club"} // TODO set to default route 
                 className="w-200px flex items-center text-green-800 no-underline"
             >
                 <span className="text-2xl font-bold mr-2">Buben Club</span>
@@ -19,7 +19,7 @@ const HeaderNavigation = ({ services, showServices, isViewMode }) => {
                             key={item.linkName}
                             to={isViewMode ? `view/${item.linkName}` : item.linkName}
                             className={({ isActive }) =>
-                                `inline-flex text-green-800 h-11 border-b-2 text-sm font-medium no-underline ${isActive
+                                `inline-flex items-center text-green-800 h-11 border-b-2 text-sm font-medium no-underline ${isActive
                                     ? 'border-green-600 text-green-900'
                                     : 'border-transparent hover:border-green-300 hover:text-green-600'
                                 }`

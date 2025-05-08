@@ -15,15 +15,15 @@ const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr,
                 <Eye className="w-4 h-4 mr-1" />
                 View
             </Link>
-            <Link
-                to={`${editLink}${item[nameAtr]}`}
-                className={`${baseButtonClasses} bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500 ${isMobile ? 'w-full' : ''}`}
-            >
-                <Pencil className="w-4 h-4 mr-1" />
-                Edit
-            </Link>
             {item.deleted_at === null ?
                 <>
+                    <Link
+                        to={`${editLink}${item[nameAtr]}`}
+                        className={`${baseButtonClasses} bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500 ${isMobile ? 'w-full' : ''}`}
+                    >
+                        <Pencil className="w-4 h-4 mr-1" />
+                        Edit
+                    </Link>
                     <button
                         onClick={() => onDelete(item[idAtr], false)}
                         className={`${baseButtonClasses} bg-red-400 hover:bg-red-500 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}

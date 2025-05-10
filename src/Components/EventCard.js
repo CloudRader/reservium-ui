@@ -45,7 +45,8 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
         isOpen: false,
         type: null,
         note: '',
-        newTime: ''
+        newTime: '',
+        endTime: ''
     });
 
     const openModal = (type) => {
@@ -53,7 +54,8 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
             isOpen: true,
             type,
             note: '',
-            newTime: ''
+            newTime: '',
+            endTime: ''
         });
     };
 
@@ -62,7 +64,8 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
             isOpen: false,
             type: null,
             note: '',
-            newTime: ''
+            newTime: '',
+            endTime: ''
         });
     };
 
@@ -74,7 +77,7 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 }
                 break;
             case 'updateTime':
-                onUpdateTime(event.id, modalState.newTime);
+                onUpdateTime(event.id, modalState.newTime, modalState.endTime, modalState.note);
                 break;
             case 'approveTime':
                 onApproveTime(event.id, true, '');
@@ -116,19 +119,45 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 return {
                     title: 'Request Time Change',
                     children: (
-                        <div>
-                            <p className="text-gray-600 dark:text-gray-300 mb-2">Enter new start time (YYYY-MM-DD HH:mm):</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Note: The event duration will remain the same.</p>
-                            <input
-                                type="datetime-local"
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                value={modalState.newTime}
-                                onChange={(e) => setModalState(prev => ({ ...prev, newTime: e.target.value }))}
-                            />
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Start Time
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={modalState.newTime}
+                                    onChange={(e) => setModalState(prev => ({ ...prev, newTime: e.target.value }))}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    End Time
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={modalState.endTime}
+                                    onChange={(e) => setModalState(prev => ({ ...prev, endTime: e.target.value }))}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Reason for Change
+                                </label>
+                                <textarea
+                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={modalState.note}
+                                    onChange={(e) => setModalState(prev => ({ ...prev, note: e.target.value }))}
+                                    placeholder="Please provide a reason for the time change..."
+                                    rows="3"
+                                />
+                            </div>
                         </div>
                     ),
                     confirmText: 'Request Change',
-                    isConfirmDisabled: !modalState.newTime
+                    isConfirmDisabled: !modalState.newTime || !modalState.endTime || !modalState.note.trim()
                 };
             case 'approveTime':
                 return {

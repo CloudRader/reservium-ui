@@ -32,14 +32,12 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     };
 
     // Handle update event time
-    const handleUpdateTime = async (eventId, newTime) => {
+    const handleUpdateTime = async (eventId, newStartTime, newEndTime, reason) => {
         try {
-            const reason = prompt('Please provide a reason for the time change:');
             if (!reason) return;
 
-            const startDateTime = new Date(newTime);
-            const endDateTime = new Date(newTime);
-            endDateTime.setHours(endDateTime.getHours() + 1); // Assuming 1-hour duration, adjust as needed
+            const startDateTime = new Date(newStartTime);
+            const endDateTime = new Date(newEndTime);
 
             await axios.put(
                 `${constants.serverURL}/events/request_update_reservation_time/${eventId}`,

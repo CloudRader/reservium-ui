@@ -1,95 +1,100 @@
 import React, { useState } from 'react';
-// import { format } from 'date-fns';
+import { useEvents } from '../hooks/useEvents';
+import { useAuth } from '../hooks/useAuth';
+import axios from 'axios';
+import constants from '../Constants';
+import DashboardHeader from './DashboardHeader';
+import EventCard from './EventCard';
 
-// Test data for local development
-const TEST_EVENTS = {
-    personal: [
-        {
-            id: 1,
-            name: "Team Meeting",
-            serviceName: "Conference Room A",
-            time: "2024-03-20T10:00:00",
-            status: "confirmed"
-        },
-        {
-            id: 2,
-            name: "Client Presentation",
-            serviceName: "Meeting Room B",
-            time: "2024-03-21T14:30:00",
-            status: "pending"
-        },
-        {
-            id: 3,
-            name: "Project Review",
-            serviceName: "Board Room",
-            time: "2024-03-22T09:00:00",
-            status: "confirmed"
-        }
-    ],
-    managed: [
-        {
-            id: 4,
-            name: "Department Meeting",
-            serviceName: "Conference Room A",
-            time: "2024-03-20T13:00:00",
-            status: "confirmed"
-        },
-        {
-            id: 5,
-            name: "Training Session",
-            serviceName: "Training Room",
-            time: "2024-03-21T11:00:00",
-            status: "pending"
-        },
-        {
-            id: 6,
-            name: "Team Building",
-            serviceName: "Outdoor Space",
-            time: "2024-03-23T15:00:00",
-            status: "confirmed"
-        }
-    ]
-};
-
-// Simple date formatting function
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-};
-
-const Dashboard = ({ isManager }) => {
+const Dashboard = ({ isManager, reservationServiceId }) => {
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('personal');
-    const [events, setEvents] = useState(TEST_EVENTS[activeTab]);
+    const [eventState, setEventState] = useState('not_approved');
 
-    // Simulate loading state
-    const [isLoading, setIsLoading] = useState(false);
+    const { data: events, isLoading, error } = useEvents(
+        user?.id,
+        activeTab,
+        reservationServiceId,
+        eventState
+    );
 
     // Handle tab change
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        setEvents(TEST_EVENTS[tab]);
+        if (tab === 'managed') {
+            setEventState('not_approved');
+        }
     };
 
-    // Simulate delete event
-    const handleDelete = (eventId, note) => {
-        console.log('Deleting event:', eventId, 'with note:', note);
-        setEvents(events.filter(event => event.id !== eventId));
+    // Handle event state change for managed events
+    const handleEventStateChange = (newState) => {
+        setEventState(newState);
     };
 
-    // Simulate update event time
-    const handleUpdateTime = (eventId, newTime) => {
-        console.log('Updating event:', eventId, 'to new time:', newTime);
-        setEvents(events.map(event =>
-            event.id === eventId
-                ? { ...event, time: newTime }
-                : event
-        ));
+    // Handle delete event
+    const handleDelete = async (eventId, note) => {
+        try {
+            await axios.delete(`${constants.serverURL}/events/${eventId}`, { data: { note } });
+            // The query will automatically refetch due to React Query's cache invalidation
+        } catch (error) {
+            console.error('Error deleting event:', error);
+            alert('Failed to delete event. Please try again.');
+        }
+    };
+
+    // Handle update event time
+    const handleUpdateTime = async (eventId, newTime) => {
+        try {
+            const reason = prompt('Please provide a reason for the time change:');
+            if (!reason) return;
+
+            const startDateTime = new Date(newTime);
+            const endDateTime = new Date(newTime);
+            endDateTime.setHours(endDateTime.getHours() + 1); // Assuming 1-hour duration, adjust as needed
+
+            await axios.put(
+                `${constants.serverURL}/events/request_update_reservation_time/${eventId}`,
+                {
+                    event_update: {
+                        start_datetime: startDateTime.toISOString(),
+                        end_datetime: endDateTime.toISOString()
+                    },
+                    reason: reason
+                }
+            );
+            // The query will automatically refetch due to React Query's cache invalidation
+        } catch (error) {
+            console.error('Error requesting time update:', error);
+            alert('Failed to request time update. Please try again.');
+        }
+    };
+
+    // Handle approve/decline time change
+    const handleApproveTime = async (eventId, approve, managerNotes) => {
+        try {
+            await axios.put(
+                `${constants.serverURL}/events/approve_update_reservation_time/${eventId}?approve=${approve}`,
+                { manager_notes: managerNotes }
+            );
+            // The query will automatically refetch due to React Query's cache invalidation
+        } catch (error) {
+            console.error('Error approving/declining time change:', error);
+            alert(`Failed to ${approve ? 'approve' : 'decline'} time change. Please try again.`);
+        }
+    };
+
+    // Handle approve/decline event
+    const handleApproveEvent = async (eventId, approve, managerNotes) => {
+        try {
+            await axios.put(
+                `${constants.serverURL}/events/approve_event/${eventId}?approve=${approve}`,
+                { manager_notes: managerNotes }
+            );
+            // The query will automatically refetch due to React Query's cache invalidation
+        } catch (error) {
+            console.error('Error approving/declining event:', error);
+            alert(`Failed to ${approve ? 'approve' : 'decline'} event. Please try again.`);
+        }
     };
 
     if (isLoading) {
@@ -98,87 +103,63 @@ const Dashboard = ({ isManager }) => {
         </div>;
     }
 
+    if (error) {
+        return <div className="text-red-500 text-center p-4">Error loading events: {error.message}</div>;
+    }
+
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">Event Dashboard</h1>
-                <div className="flex space-x-4 border-b border-gray-200 dark:border-gray-700">
-                    <button
-                        className={`px-3 py-1.5 text-sm font-medium ${activeTab === 'personal'
-                            ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400'
-                            : 'text-gray-600 dark:text-gray-400'
-                            }`}
-                        onClick={() => handleTabChange('personal')}
-                    >
-                        My Events
-                    </button>
-                    {isManager &&
-                        (
-                            <button
-                                className={`px-3 py-1.5 text-sm font-medium ${activeTab === 'managed'
-                                    ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400'
-                                    : 'text-gray-600 dark:text-gray-400'
-                                    }`}
-                                onClick={() => handleTabChange('managed')}
-                            >
-                                Managed Events
-                            </button>
-                        )}
-                </div>
-            </div>
+            <DashboardHeader
+                activeTab={activeTab}
+                eventState={eventState}
+                onTabChange={handleTabChange}
+                onEventStateChange={handleEventStateChange}
+                isManager={isManager}
+            />
 
-            <div className="grid gap-4">
+            {/* Desktop version */}
+            <div className="hidden md:grid gap-4">
                 {events?.map((event) => (
-                    <div
+                    <EventCard
                         key={event.id}
-                        className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 hover:shadow-md transition-shadow"
-                    >
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">
-                                    {event.name}
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                                    Service: {event.serviceName}
-                                </p>
-                                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                                    Time: {formatDate(event.time)}
-                                </p>
-                                <span className={`inline-block px-2 py-0.5 rounded text-xs ${event.status === 'confirmed'
-                                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                                    : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                                    }`}>
-                                    {event.status}
-                                </span>
-                            </div>
-                            <div className="flex space-x-2">
-                                <button
-                                    onClick={() => {
-                                        const newTime = prompt('Enter new time (YYYY-MM-DD HH:mm):');
-                                        if (newTime) {
-                                            handleUpdateTime(event.id, newTime);
-                                        }
-                                    }}
-                                    className="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                                >
-                                    Change Time
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        const note = prompt('Please provide a reason for deletion:');
-                                        if (note) {
-                                            handleDelete(event.id, note);
-                                        }
-                                    }}
-                                    className="px-3 py-1.5 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                        event={event}
+                        onUpdateTime={handleUpdateTime}
+                        onDelete={handleDelete}
+                        onApproveTime={handleApproveTime}
+                        onApproveEvent={handleApproveEvent}
+                        isManager={isManager}
+                    />
                 ))}
             </div>
+
+            {/* Mobile version */}
+            <div className="md:hidden space-y-4">
+                {events?.map((event) => (
+                    <EventCard
+                        key={event.id}
+                        event={event}
+                        onUpdateTime={handleUpdateTime}
+                        onDelete={handleDelete}
+                        onApproveTime={handleApproveTime}
+                        onApproveEvent={handleApproveEvent}
+                        isManager={isManager}
+                        isMobile={true}
+                    />
+                ))}
+            </div>
+
+            {(!events || events.length === 0) && (
+                <div className="text-center p-8 bg-white rounded-lg shadow-sm">
+                    <p className="text-gray-800 text-xl mb-4">
+                        No events found
+                    </p>
+                    <p className="text-gray-600">
+                        {activeTab === 'personal'
+                            ? "You don't have any events yet."
+                            : "There are no events to manage at the moment."}
+                    </p>
+                </div>
+            )}
         </div>
     );
 };

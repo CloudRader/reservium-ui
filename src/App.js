@@ -21,7 +21,7 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
-    const { login, isLoggedIn, username, userRoles, logout, authState } = useAuth();
+    const { login, isLoggedIn, username, managerRoles, logout, authState, userId } = useAuth();
     const { data, isLoading, isError } = useReservationData(isLoggedIn);
     const location = useLocation();
     const isViewCalendarRoute = location.pathname.startsWith('/view');
@@ -57,7 +57,7 @@ function AppContent() {
                 isLoggedIn={isLoggedIn}
                 username={username}
                 services={services}
-                isManager={userRoles?.section_head}
+                isManager={managerRoles?.length > 1}
             />
 
             <Routes>
@@ -65,7 +65,13 @@ function AppContent() {
                 <Route path='/logined' element={<LoginToBackend login={login} />} />
                 <Route path='/logout' element={<Logout onLogout={logout} />} />
                 <Route path='/success' element={<SuccessPage />} />
-                <Route path='/dashboard' element={<Dashboard isManager={userRoles?.section_head} />} />
+                <Route path='/dashboard' element={
+                    <Dashboard
+                        userId={userId}
+                        isManager={managerRoles?.length > 1}
+                        managerRoles={managerRoles}
+                    />
+                } />
 
                 {/* View Calendar Routes */}
                 <Route path="view/*" element={<ViewCalendarRoutes />} />
@@ -74,7 +80,7 @@ function AppContent() {
                 {/* <Route path="test/*" element={<TestRoutes />} /> */}
 
                 {/* Manager Routes */}
-                {isLoggedIn && userRoles?.section_head && (
+                {isLoggedIn && managerRoles?.length > 1 && (
                     <Route path="manager/*" element={
                         <ManagerRoutes
                             services={services}

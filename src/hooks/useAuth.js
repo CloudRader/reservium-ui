@@ -21,7 +21,8 @@ export const useAuth = () => {
     const [authState, setAuthState] = useState('initializing'); // 'initializing', 'checking', 'authenticated', 'unauthenticated'
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState(null);
-    const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
+    const [userId, setUserId] = useState(null);
+    const [managerRoles, setManagerRoles] = useState([]);
     const navigate = useNavigate();
 
     const login = useCallback(async (code, state) => {
@@ -31,10 +32,8 @@ export const useAuth = () => {
             const userInfo = await getUserInfo();
             setIsLoggedIn(true);
             setUsername(username);
-            setUserRoles({
-                active_member: userInfo.active_member,
-                section_head: userInfo.section_head
-            });
+            setManagerRoles(userInfo.roles || []);
+            setUserId(userInfo.id)
             localStorage.setItem('userName', username);
             setAuthState('authenticated');
             navigate('/club'); // redirect here
@@ -48,8 +47,10 @@ export const useAuth = () => {
     const logout = useCallback(() => {
         setIsLoggedIn(false);
         setUsername(null);
-        setUserRoles({ active_member: false, section_head: false });
+        setUserId(null)
+        setManagerRoles([]);
         setAuthState('unauthenticated');
+        
         localStorage.removeItem('userName');
         // navigate('/');
     }, []);
@@ -63,10 +64,8 @@ export const useAuth = () => {
                     const userInfo = await getUserInfo();
                     setIsLoggedIn(true);
                     setUsername(storedUserName);
-                    setUserRoles({
-                        active_member: userInfo.active_member,
-                        section_head: userInfo.section_head
-                    });
+                    setManagerRoles(userInfo.roles || []);
+                    setUserId(userInfo.id)
                     setAuthState('authenticated');
                 } catch (error) {
                     setAuthState('unauthorized');
@@ -80,5 +79,5 @@ export const useAuth = () => {
         checkAuth();
     }, [logout]);
 
-    return { login, isLoggedIn, username, userRoles, logout, authState };
+    return { login, isLoggedIn, username, managerRoles, logout, authState, userId };
 };

@@ -63,7 +63,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
         try {
             await axios.put(
                 `${constants.serverURL}/events/approve_update_reservation_time/${eventId}?approve=${approve}`,
-                { manager_notes: managerNotes }
+                managerNotes
             );
             // The query will automatically refetch due to React Query's cache invalidation
         } catch (error) {
@@ -77,7 +77,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
         try {
             await axios.put(
                 `${constants.serverURL}/events/approve_event/${eventId}?approve=${approve}`,
-                { manager_notes: managerNotes }
+                managerNotes
             );
             // The query will automatically refetch due to React Query's cache invalidation
         } catch (error) {

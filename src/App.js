@@ -80,7 +80,7 @@ function AppContent() {
                 {/* <Route path="test/*" element={<TestRoutes />} /> */}
 
                 {/* Manager Routes */}
-                {isLoggedIn && managerRoles?.length > 1 && (
+                {isLoggedIn && managerRoles?.length > 0 && (
                     <Route path="manager/*" element={
                         <ManagerRoutes
                             services={services}

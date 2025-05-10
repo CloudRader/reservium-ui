@@ -217,9 +217,6 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Guests: {event.guests}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Purpose: {event.purpose}
-                </p>
                 {/* <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Service: {event.calendar_id}
                 </p> */}
@@ -264,12 +261,20 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                                 </button>
                             </>
                         ) : (
-                            <button
-                                onClick={() => openModal('delete')}
-                                className="px-3 py-1.5 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                            >
-                                Delete
-                            </button>
+                            <>
+                                <button
+                                    onClick={() => openModal('updateTime')}
+                                    className="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                                >
+                                    Request Time Change
+                                </button>
+                                <button
+                                    onClick={() => onDelete(event.id, '')}
+                                    className="px-3 py-1.5 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                                >
+                                    Delete
+                                </button>
+                            </>
                         )}
                     </>
                 ) : (

@@ -57,7 +57,7 @@ function AppContent() {
                 isLoggedIn={isLoggedIn}
                 username={username}
                 services={services}
-                isManager={managerRoles?.length > 1}
+                isManager={managerRoles?.length > 0}
             />
 
             <Routes>
@@ -68,7 +68,7 @@ function AppContent() {
                 <Route path='/dashboard' element={
                     <Dashboard
                         userId={userId}
-                        isManager={managerRoles?.length > 1}
+                        isManager={managerRoles?.length > 0}
                         managerRoles={managerRoles}
                     />
                 } />

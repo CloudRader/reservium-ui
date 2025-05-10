@@ -39,12 +39,17 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
             const startDateTime = new Date(newStartTime);
             const endDateTime = new Date(newEndTime);
 
+            // Convert to naive datetime strings (YYYY-MM-DD HH:mm:ss)
+            const formatNaiveDateTime = (date) => {
+                return date.toISOString().slice(0, 19).replace('T', ' ');
+            };
+
             await axios.put(
                 `${constants.serverURL}/events/request_update_reservation_time/${eventId}`,
                 {
                     event_update: {
-                        start_datetime: startDateTime.toISOString(),
-                        end_datetime: endDateTime.toISOString()
+                        start_datetime: formatNaiveDateTime(startDateTime),
+                        end_datetime: formatNaiveDateTime(endDateTime)
                     },
                     reason: reason
                 }

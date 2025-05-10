@@ -5,8 +5,7 @@ import NotFoundPage from '../pages/NotFoundPage'
 
 export const ServiceRoutes = ({ services, calendars, isLoading, isLoggedIn, logout }) => {
     // Create an array of all service link names
-    const allServiceLinkNames = services ? services.map(service => service.
-        serviceName) : [];
+    const allServiceLinkNames = services ? services.map(service => service.serviceName) : [];
 
     return (
         <Routes>

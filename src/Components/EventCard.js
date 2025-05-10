@@ -77,13 +77,13 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 onUpdateTime(event.id, modalState.newTime);
                 break;
             case 'approveTime':
-                onApproveTime(event.id, true, modalState.note);
+                onApproveTime(event.id, true, '');
                 break;
             case 'declineTime':
                 onApproveTime(event.id, false, modalState.note);
                 break;
             case 'approveEvent':
-                onApproveEvent(event.id, true, modalState.note);
+                onApproveEvent(event.id, true, '');
                 break;
             case 'declineEvent':
                 onApproveEvent(event.id, false, modalState.note);
@@ -134,16 +134,10 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 return {
                     title: 'Approve Time Change',
                     children: (
-                        <textarea
-                            className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            value={modalState.note}
-                            onChange={(e) => setModalState(prev => ({ ...prev, note: e.target.value }))}
-                            placeholder="Please provide notes for approving this time change..."
-                            rows="3"
-                        />
+                        <p className="text-gray-600 dark:text-gray-300">Are you sure you want to approve this time change?</p>
                     ),
                     confirmText: 'Approve',
-                    isConfirmDisabled: !modalState.note.trim()
+                    isConfirmDisabled: false
                 };
             case 'declineTime':
                 return {
@@ -164,16 +158,10 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 return {
                     title: 'Approve Event',
                     children: (
-                        <textarea
-                            className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            value={modalState.note}
-                            onChange={(e) => setModalState(prev => ({ ...prev, note: e.target.value }))}
-                            placeholder="Please provide notes for approving this event..."
-                            rows="3"
-                        />
+                        <p className="text-gray-600 dark:text-gray-300">Are you sure you want to approve this event?</p>
                     ),
                     confirmText: 'Approve',
-                    isConfirmDisabled: !modalState.note.trim()
+                    isConfirmDisabled: false
                 };
             case 'declineEvent':
                 return {

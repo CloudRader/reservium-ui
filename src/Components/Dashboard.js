@@ -23,7 +23,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     // Handle delete event
     const handleDelete = async (eventId, note) => {
         try {
-            await axios.delete(`${constants.serverURL}/events/${eventId}`, { data: { note } });
+            await axios.delete(`${constants.serverURL}/events/${eventId}`, { data: note });
             // The query will automatically refetch due to React Query's cache invalidation
         } catch (error) {
             console.error('Error deleting event:', error);
@@ -132,7 +132,6 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                     />
                 ))}
             </div>
-
             {(!events || events.length === 0) && (
                 <div className="text-center p-8 bg-white rounded-lg shadow-sm">
                     <p className="text-gray-800 text-xl mb-4">

@@ -4,33 +4,49 @@ import constants from '../Constants';
 
 axios.defaults.withCredentials = true;
 
-export const useEvents = (userId, activeTab, reservationServiceId, eventState) => {
+export const useEvents = (userId, activeTab, managerRoles) => {
     const fetchUserEvents = async () => {
         const response = await axios.get(`${constants.serverURL}/events/user/${userId}`);
         return response.data;
     };
 
     const fetchManagedEvents = async () => {
-        const response = await axios.get(
-            `${constants.serverURL}/events/state/reservation_service/${reservationServiceId}?event_state=${eventState}`
+        // If no manager roles, return empty array
+        if (!managerRoles || managerRoles.length === 0) {
+            return [];
+        }
+
+        // Fetch events for each manager role and combine results
+        const eventsPromises = managerRoles.map(role =>
+            axios.get(`${constants.serverURL}/events/state/${role}?event_state=${activeTab}`)
         );
-        return response.data;
+
+        try {
+            const responses = await Promise.all(eventsPromises);
+            // Combine all events into a single array
+            const allEvents = responses.flatMap(response => response.data);
+            return allEvents;
+        } catch (error) {
+            console.error('Error fetching managed events:', error);
+            throw error;
+        }
     };
 
     return useQuery(
-        ['events', userId, activeTab, reservationServiceId, eventState],
+        ['events', userId, activeTab, managerRoles],
         () => {
             switch (activeTab) {
                 case 'personal':
                     return fetchUserEvents();
-                case 'managed':
+                case 'not_approved':
+                case 'update_requested':
                     return fetchManagedEvents();
                 default:
                     return fetchUserEvents();
             }
         },
         {
-            enabled: !!userId && (activeTab === 'personal' || (activeTab === 'managed' && !!reservationServiceId)),
+            enabled: !!userId,
             staleTime: 5 * 60 * 1000, // 5 minutes
             cacheTime: 30 * 60 * 1000, // 30 minutes
         }

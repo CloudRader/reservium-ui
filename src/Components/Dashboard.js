@@ -1,34 +1,23 @@
 import React, { useState } from 'react';
 import { useEvents } from '../hooks/useEvents';
-import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
 import constants from '../Constants';
 import DashboardHeader from './DashboardHeader';
 import EventCard from './EventCard';
+import PulsatingLoader from './PulsatingLoader';
 
-const Dashboard = ({ isManager, reservationServiceId }) => {
-    const { user } = useAuth();
+const Dashboard = ({ userId, isManager, managerRoles }) => {
     const [activeTab, setActiveTab] = useState('personal');
-    const [eventState, setEventState] = useState('not_approved');
 
     const { data: events, isLoading, error } = useEvents(
-        user?.id,
+        userId,
         activeTab,
-        reservationServiceId,
-        eventState
+        managerRoles
     );
 
     // Handle tab change
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        if (tab === 'managed') {
-            setEventState('not_approved');
-        }
-    };
-
-    // Handle event state change for managed events
-    const handleEventStateChange = (newState) => {
-        setEventState(newState);
     };
 
     // Handle delete event
@@ -98,9 +87,7 @@ const Dashboard = ({ isManager, reservationServiceId }) => {
     };
 
     if (isLoading) {
-        return <div className="flex justify-center items-center h-screen">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>;
+        return <PulsatingLoader />;
     }
 
     if (error) {
@@ -111,9 +98,7 @@ const Dashboard = ({ isManager, reservationServiceId }) => {
         <div className="container mx-auto px-4 py-8">
             <DashboardHeader
                 activeTab={activeTab}
-                eventState={eventState}
                 onTabChange={handleTabChange}
-                onEventStateChange={handleEventStateChange}
                 isManager={isManager}
             />
 

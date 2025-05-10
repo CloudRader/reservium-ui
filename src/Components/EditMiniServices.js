@@ -1,6 +1,7 @@
 import React from 'react';
 import EditTable from "./EditTable";
 import useFetchWithDeleted from "../hooks/useFetchWithDeleted";
+import PulsatingLoader from "./PulsatingLoader";
 
 const EditMiniServices = ({ serviceId, serviceName }) => {
     const {
@@ -13,6 +14,14 @@ const EditMiniServices = ({ serviceId, serviceName }) => {
         `/mini_services/reservation_service/${serviceId}`,
         !!serviceId
     );
+
+    if (isLoading) {
+        return <PulsatingLoader />;
+    }
+
+    if (isError) {
+        return <div>Error: {error?.message || 'Something went wrong'}</div>;
+    }
 
     return (
         data && <EditTable name={'Mini Services'}

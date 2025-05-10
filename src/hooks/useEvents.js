@@ -18,7 +18,7 @@ export const useEvents = (userId, activeTab, managerRoles) => {
 
         // Fetch events for each manager role and combine results
         const eventsPromises = managerRoles.map(role =>
-            axios.get(`${constants.serverURL}/events/state/${role}?event_state=${activeTab}`)
+            axios.get(`${constants.serverURL}/events/state/reservation_service/${role}?event_state=${activeTab}`)
         );
 
         try {

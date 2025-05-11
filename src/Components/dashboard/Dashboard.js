@@ -5,6 +5,7 @@ import constants from '../../Constants';
 import DashboardHeader from './DashboardHeader';
 import EventCard from './EventCard';
 import PulsatingLoader from '../ui/PulsatingLoader';
+import ErrorMessage from '../ui/ErrorMessage';
 
 const Dashboard = ({ userId, isManager, managerRoles }) => {
     const [activeTab, setActiveTab] = useState('personal');
@@ -90,7 +91,15 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     };
 
     if (error) {
-        return <div className="text-red-500 text-center p-4">Error loading events: {error.message}</div>;
+        return (
+            <div className="container mx-auto px-4 py-8">
+                <ErrorMessage
+                    message={error.message || 'Failed to load events'}
+                    title="Error Loading Events"
+                    onRetry={refetch}
+                />
+            </div>
+        );
     }
 
     return (

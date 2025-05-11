@@ -10,7 +10,7 @@ const CreateNewService = () => {
         formData,
         message,
         setFormFields,
-        handleChange,
+        // handleChange,
         handleSubmit,
         renderField,
     } = useCreateFormLogic([], `${constants.serverURL}/reservation_services/create_reservation_service`);

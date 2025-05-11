@@ -43,9 +43,9 @@ ManagerTabs.propTypes = {
 
 const DashboardHeader = ({ activeTab, onTabChange, isManager }) => {
     return (
-        <div className="mb-4 sm:mb-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">Event Dashboard</h1>
-            <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-5">Event Dashboard</h1>
+            <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-gray-200 dark:border-gray-700 pb-2">
                 <TabButton
                     isActive={activeTab === 'personal'}
                     onClick={() => onTabChange('personal')}

@@ -53,7 +53,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                                     className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
                                                     onClick={() => setIsDropdownOpen(false)}
                                                 >
-                                                    Dashboard
+                                                    Event Dashboard
                                                 </NavLink>
                                                 {isManager && (
                                                     <NavLink
@@ -128,7 +128,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                                         to="/dashboard"
                                         className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                     >
-                                        Dashboard
+                                        Event Dashboard
                                     </NavLink>
                                     {isManager && (
                                         <NavLink

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useEvents } from '../hooks/useEvents';
+import { useEvents } from '../../hooks/useEvents';
 import axios from 'axios';
-import constants from '../Constants';
+import constants from '../../Constants';
 import DashboardHeader from './DashboardHeader';
 import EventCard from './EventCard';
-import PulsatingLoader from './ui/PulsatingLoader';
+import PulsatingLoader from '../ui/PulsatingLoader';
 
 const Dashboard = ({ userId, isManager, managerRoles }) => {
     const [activeTab, setActiveTab] = useState('personal');

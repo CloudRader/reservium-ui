@@ -4,8 +4,8 @@ import UniversalLayout from "../UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import { useNavigate } from "react-router-dom";
-import Button from '../components/ui/Button';
-import ActionButtons from '../components/ui/ActionButtons';
+import Button from './ui/Button';
+import ActionButtons from './ui/ActionButtons';
 
 const EditService = ({ service: initialService, isEditMode = false }) => {
     const navigate = useNavigate();

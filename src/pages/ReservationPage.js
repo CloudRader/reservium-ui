@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReservationForm from '../Components/ReservationForm';
 import LoginInfoPage from "./LoginInfoPage";
 import Logout from "../Components/Logout";
@@ -14,6 +14,14 @@ const ReservationPage = ({ isLoggedIn, onLogout, roomCalendarLinks, service, all
     const [selectedSlot, setSelectedSlot] = useState(null)
     const { errorMessages, setErrorMessages, handleSubmit, isSubmitting } = useSubmitLogic(service, allService);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     if (!isLoggedIn) {
         return <LoginInfoPage />;

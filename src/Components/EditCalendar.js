@@ -3,7 +3,7 @@ import UniversalLayout from "../UniversalLayout";
 import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
-import ActionButtons from '../components/ui/ActionButtons';
+import ActionButtons from './ui/ActionButtons';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 

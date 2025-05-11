@@ -13,7 +13,7 @@ import LoginToIS from "./Components/LoginToIS";
 import { useAuth } from './hooks/useAuth';
 import { ManagerRoutes } from './routes/ManagerRoutes';
 import { ServiceRoutes } from './routes/ServiceRoutes';
-import Dashboard from './Components/Dashboard';
+import Dashboard from './Components/dashboard/Dashboard';
 // import { TestRoutes } from './routes/TestRoutes';
 import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
 

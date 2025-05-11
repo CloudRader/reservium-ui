@@ -3,7 +3,7 @@ import UniversalLayout from "../UniversalLayout";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import useEditableForm from "../hooks/useEditableForm";
 import constants from "../Constants";
-import ActionButtons from '../components/ui/ActionButtons';
+import ActionButtons from './ui/ActionButtons';
 
 const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode = false }) => {
     const {

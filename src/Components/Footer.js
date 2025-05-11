@@ -17,7 +17,7 @@ const Footer = () => {
                                 <img src={bubenLogo} alt="Buben Club Logo" className="w-12 h-12 inline-block" />
                             </div>
                         </a>
-                        <a href={`mailto:${constants.feedBackEmail}`} className="text-green-600 hover:text-green-800 no-underline">
+                        <a href={`mailto:${constants.feedBackEmail}`} className="text-green-600 hover:text-green-800 no-underline mb-4">
                             Made by PS team <Heart className="inline-block w-4 h-4" />
                         </a>
                     </div>

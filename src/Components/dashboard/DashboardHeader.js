@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const TabButton = ({ isActive, onClick, children }) => (
     <button
-        className={`px-3 py-1.5 text-sm font-medium ${isActive
+        className={`px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-medium ${isActive
             ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400'
             : 'text-gray-600 dark:text-gray-400'
             }`}
@@ -20,7 +20,7 @@ TabButton.propTypes = {
 };
 
 const ManagerTabs = ({ activeTab, onTabChange }) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1 sm:gap-2">
         <TabButton
             isActive={activeTab === 'not_approved'}
             onClick={() => onTabChange('not_approved')}
@@ -43,9 +43,9 @@ ManagerTabs.propTypes = {
 
 const DashboardHeader = ({ activeTab, onTabChange, isManager }) => {
     return (
-        <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">Event Dashboard</h1>
-            <div className="flex flex-wrap gap-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="mb-4 sm:mb-6">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">Event Dashboard</h1>
+            <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-gray-200 dark:border-gray-700">
                 <TabButton
                     isActive={activeTab === 'personal'}
                     onClick={() => onTabChange('personal')}

@@ -105,8 +105,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                 isManager={isManager}
             />
 
-            {/* Desktop version */}
-            <div className="hidden md:grid gap-4">
+            <div className="grid md:grid-cols-1 gap-4">
                 {events?.map((event) => (
                     <EventCard
                         key={event.id}
@@ -120,21 +119,6 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                 ))}
             </div>
 
-            {/* Mobile version */}
-            <div className="md:hidden space-y-4">
-                {events?.map((event) => (
-                    <EventCard
-                        key={event.id}
-                        event={event}
-                        onUpdateTime={handleUpdateTime}
-                        onDelete={handleDelete}
-                        onApproveTime={handleApproveTime}
-                        onApproveEvent={handleApproveEvent}
-                        isManager={isManager}
-                        isMobile={true}
-                    />
-                ))}
-            </div>
             {(!events || events.length === 0) && (
                 <div className="text-center p-8 bg-white rounded-lg shadow-sm">
                     <p className="text-gray-800 text-xl mb-4">

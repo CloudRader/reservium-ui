@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import UniversalLayout from "../UniversalLayout";
 import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
-import SuccessErrorMessage from "./SuccessErrorMessage";
+import SuccessErrorMessage from "./ui/SuccessErrorMessage";
+import ActionButtons from '../components/ui/ActionButtons';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -240,29 +241,14 @@ const EditCalendar = ({ serviceName, calendarBaseData, serviceId, isEditMode = f
                 ))}
 
                 <div className="mt-6 flex justify-end space-x-3">
-                    {isEditing ? (
-                        <>
-                            <button
-                                onClick={handleSave}
-                                className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                            >
-                                Save
-                            </button>
-                            <button
-                                onClick={handleCancel}
-                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                            >
-                                Cancel
-                            </button>
-                        </>
-                    ) : (
-                        <button
-                            onClick={handleEdit}
-                            className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        >
-                            Edit Calendar
-                        </button>
-                    )}
+                    <ActionButtons
+                        isEditing={isEditing}
+                        onSave={handleSave}
+                        onCancel={handleCancel}
+                        onEdit={handleEdit}
+                        editText="Edit Calendar"
+                        isDeleted={calendarBaseData.deleted_at !== null}
+                    />
                 </div>
             </div>
         </UniversalLayout>

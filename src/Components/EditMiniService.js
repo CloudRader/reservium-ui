@@ -1,8 +1,9 @@
 import React from 'react';
 import UniversalLayout from "../UniversalLayout";
-import SuccessErrorMessage from "./SuccessErrorMessage";
+import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import useEditableForm from "../hooks/useEditableForm";
 import constants from "../Constants";
+import ActionButtons from '../components/ui/ActionButtons';
 
 const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode = false }) => {
     const {
@@ -23,7 +24,6 @@ const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode =
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={`${isEditing ? 'Edit' : 'View'} Mini Service: ${miniServiceData.name}`} >
             <div className="bg-white p-4 rounded-lg shadow">
                 {message && <SuccessErrorMessage message={message} />}
-
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">ID</label>
                     <input
@@ -47,29 +47,14 @@ const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode =
                     />
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">
-                    {isEditing ? (
-                        <>
-                            <button
-                                onClick={handleSave}
-                                className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                            >
-                                Save
-                            </button>
-                            <button
-                                onClick={handleCancel}
-                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                            >
-                                Cancel
-                            </button>
-                        </>
-                    ) : (
-                        <button
-                            onClick={handleEdit}
-                            className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        >
-                            Edit Mini Service
-                        </button>
-                    )}
+                    <ActionButtons
+                        isEditing={isEditing}
+                        onSave={handleSave}
+                        onCancel={handleCancel}
+                        onEdit={handleEdit}
+                        editText="Edit Mini Service"
+                        isDeleted={miniServiceData.deleted_at !== null}
+                    />
                 </div>
             </div>
         </UniversalLayout>

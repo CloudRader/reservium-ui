@@ -115,6 +115,7 @@ const EditTable = ({
                         viewLink={viewLink}
                         editLink={editLink}
                         onDelete={handleDelete}
+                        onRetrieve={handleRetrieve}
                         nameAtr={nameAtr}
                         idAtr={idAtr}
                         isMobile={true}

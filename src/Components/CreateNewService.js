@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
-import SuccessErrorMessage from './SuccessErrorMessage';
+import SuccessErrorMessage from './ui/SuccessErrorMessage';
 import useCreateFormLogic from "../hooks/useCreateFormLogic";
 
 const CreateNewService = () => {

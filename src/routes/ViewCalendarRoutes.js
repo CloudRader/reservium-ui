@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import CalendarView from '../pages/ViewCalendarPage';
 import { useViewCalendarData } from '../hooks/useViewCalendarData';
 import NotFoundPage from '../pages/NotFoundPage';
-import PulsatingLoader from '../Components/PulsatingLoader';
+import PulsatingLoader from '../Components/ui/PulsatingLoader';
 
 export const ViewCalendarRoutes = () => {
     const { data, isLoading, isError } = useViewCalendarData();

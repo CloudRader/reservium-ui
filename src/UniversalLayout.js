@@ -1,5 +1,5 @@
 import React from 'react';
-import BackArrow from "./Components/BackArrow";
+import BackArrow from "./Components/ui/BackArrow";
 
 const UniversalLayout = ({
     children,

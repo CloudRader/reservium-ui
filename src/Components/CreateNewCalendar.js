@@ -3,7 +3,7 @@ import axios from 'axios';
 import constants from '../Constants';
 import UniversalLayout from "../UniversalLayout";
 import useCreateFormLogic from '../hooks/useCreateFormLogic';
-import SuccessErrorMessage from "./SuccessErrorMessage";
+import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import CalendarIdInput from "./CalendarIdInput";
 axios.defaults.withCredentials = true;
 

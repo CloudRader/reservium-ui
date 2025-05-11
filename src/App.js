@@ -7,7 +7,7 @@ import Logout from "./Components/Logout";
 import Footer from "./Components/Footer";
 import SuccessPage from "./pages/SuccessPage";
 import { useReservationData } from './hooks/useReservationData';
-import PulsatingLoader from "./Components/PulsatingLoader";
+import PulsatingLoader from "./Components/ui/PulsatingLoader";
 import axios from "axios";
 import LoginToIS from "./Components/LoginToIS";
 import { useAuth } from './hooks/useAuth';

@@ -4,7 +4,7 @@ import axios from 'axios';
 import constants from '../Constants';
 import DashboardHeader from './DashboardHeader';
 import EventCard from './EventCard';
-import PulsatingLoader from './PulsatingLoader';
+import PulsatingLoader from './ui/PulsatingLoader';
 
 const Dashboard = ({ userId, isManager, managerRoles }) => {
     const [activeTab, setActiveTab] = useState('personal');

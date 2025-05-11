@@ -1,7 +1,7 @@
 import React from 'react';
 import EditTable from "./EditTable";
 import useFetchWithDeleted from "../hooks/useFetchWithDeleted";
-import PulsatingLoader from "./PulsatingLoader";
+import PulsatingLoader from "./ui/PulsatingLoader";
 
 const EditServices = () => {
     const {

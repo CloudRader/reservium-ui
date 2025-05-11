@@ -18,15 +18,15 @@ const EditTable = ({
     viewLink,
     deleteLink,
     retrieveLink,
-    columns = ['Name', 'Actions']
+    columns = ['Name', 'Actions'],
+    refetch
 }) => {
     const handleRetrieve = async (itemId) => {
         try {
             const response = await axios.put(`${constants.serverURL}${retrieveLink}${itemId}`);
             if (response.status === 200) {
-                window.location.reload();
+                await refetch();
             }
-
         } catch (error) {
             console.error('Failed to retrieve item:', error);
         }
@@ -44,7 +44,7 @@ const EditTable = ({
             const response = await axios.delete(`${constants.serverURL}${deleteLink}${itemId}?hard_remove=${hardRemove}`);
 
             if (response.status === 200) {
-                window.location.reload();
+                await refetch();
             }
         } catch (error) {
             console.error('Failed to delete item:', error);
@@ -158,7 +158,9 @@ EditTable.propTypes = {
     addLink: PropTypes.string.isRequired,
     viewLink: PropTypes.string.isRequired,
     deleteLink: PropTypes.string.isRequired,
-    columns: PropTypes.arrayOf(PropTypes.string)
+    retrieveLink: PropTypes.string.isRequired,
+    columns: PropTypes.arrayOf(PropTypes.string),
+    refetch: PropTypes.func.isRequired
 };
 
 export default EditTable;

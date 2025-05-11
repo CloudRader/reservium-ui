@@ -9,7 +9,7 @@ import PulsatingLoader from '../ui/PulsatingLoader';
 const Dashboard = ({ userId, isManager, managerRoles }) => {
     const [activeTab, setActiveTab] = useState('personal');
 
-    const { data: events, isLoading, error } = useEvents(
+    const { data: events, isLoading, error, refetch } = useEvents(
         userId,
         activeTab,
         managerRoles
@@ -24,7 +24,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     const handleDelete = async (eventId, note) => {
         try {
             await axios.delete(`${constants.serverURL}/events/${eventId}`, { data: note });
-            // The query will automatically refetch due to React Query's cache invalidation
+            await refetch(); // Explicitly refetch after deletion
         } catch (error) {
             console.error('Error deleting event:', error);
             alert('Failed to delete event. Please try again.');
@@ -54,7 +54,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                     reason: reason
                 }
             );
-            // The query will automatically refetch due to React Query's cache invalidation
+            await refetch(); // Explicitly refetch after time update
         } catch (error) {
             console.error('Error requesting time update:', error);
             alert('Failed to request time update. Please try again.');
@@ -68,7 +68,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                 `${constants.serverURL}/events/approve_update_reservation_time/${eventId}?approve=${approve}`,
                 managerNotes
             );
-            // The query will automatically refetch due to React Query's cache invalidation
+            await refetch(); // Explicitly refetch after approval/decline
         } catch (error) {
             console.error('Error approving/declining time change:', error);
             alert(`Failed to ${approve ? 'approve' : 'decline'} time change. Please try again.`);
@@ -82,23 +82,21 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                 `${constants.serverURL}/events/approve_event/${eventId}?approve=${approve}`,
                 managerNotes
             );
-            // The query will automatically refetch due to React Query's cache invalidation
+            await refetch(); // Explicitly refetch after event approval/decline
         } catch (error) {
             console.error('Error approving/declining event:', error);
             alert(`Failed to ${approve ? 'approve' : 'decline'} event. Please try again.`);
         }
     };
 
-    if (isLoading) {
-        return <PulsatingLoader />;
-    }
-
     if (error) {
         return <div className="text-red-500 text-center p-4">Error loading events: {error.message}</div>;
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 relative">
+            {isLoading && <PulsatingLoader />}
+
             <DashboardHeader
                 activeTab={activeTab}
                 onTabChange={handleTabChange}

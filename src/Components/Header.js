@@ -124,9 +124,15 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                             {isLoggedIn ? (
                                 <div className="space-y-2">
                                     <span className="block text-sm font-medium text-green-700">{username}</span>
+                                    <NavLink
+                                        to="/dashboard"
+                                        className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                    >
+                                        Dashboard
+                                    </NavLink>
                                     {isManager && (
                                         <NavLink
-                                            to="/manager-panel"
+                                            to="manager/manager-panel"
                                             className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                                         >
                                             Manager panel

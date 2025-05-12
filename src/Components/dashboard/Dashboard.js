@@ -116,7 +116,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
                 {events?.map((eventData) => (
                     <EventCard
                         key={eventData.event.id}
-                        event={eventData.event}
+                        event={eventData}
                         onUpdateTime={handleUpdateTime}
                         onDelete={handleDelete}
                         onApproveTime={handleApproveTime}

@@ -14,7 +14,7 @@ const formatDate = (dateString) => {
     });
 };
 
-const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEvent, isManager = false, isMobile = false }) => {
+const EventCard = ({ event: { event, user_name, reservation_type, reservation_service_name }, onUpdateTime, onDelete, onApproveTime, onApproveEvent, isManager = false, isMobile = false }) => {
     const [modalState, setModalState] = useState({
         isOpen: false,
         type: null,
@@ -200,13 +200,22 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                     {event.purpose}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    User: {event.user_name}
+                    Start: {formatDate(event.start_datetime)}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Service: {event.reservation_service_name}
+                    End: {formatDate(event.end_datetime)}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Type: {event.reservation_type}
+                    Guests: {event.guests}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    User: {user_name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    Service: {reservation_service_name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    Type: {reservation_type}
                 </p>
                 {event.additional_services && event.additional_services.length > 0 && (
                     <div className="mb-1">
@@ -225,15 +234,6 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                         </div>
                     </div>
                 )}
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Start: {formatDate(event.start_datetime)}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    End: {formatDate(event.end_datetime)}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Guests: {event.guests}
-                </p>
                 <span className={`inline-block px-2 py-0.5 rounded text-xs ${event.event_state === 'confirmed'
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                     : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
@@ -340,19 +340,19 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
 
 EventCard.propTypes = {
     event: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        purpose: PropTypes.string.isRequired,
-        calendar_id: PropTypes.string.isRequired,
-        start_datetime: PropTypes.string.isRequired,
-        end_datetime: PropTypes.string.isRequired,
-        guests: PropTypes.number.isRequired,
-        event_state: PropTypes.string.isRequired,
-        additional_services: PropTypes.arrayOf(PropTypes.string),
+        event: PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            purpose: PropTypes.string.isRequired,
+            calendar_id: PropTypes.string.isRequired,
+            start_datetime: PropTypes.string.isRequired,
+            end_datetime: PropTypes.string.isRequired,
+            guests: PropTypes.number.isRequired,
+            event_state: PropTypes.string.isRequired,
+            additional_services: PropTypes.arrayOf(PropTypes.string)
+        }).isRequired,
         user_name: PropTypes.string.isRequired,
         reservation_type: PropTypes.string.isRequired,
-        reservation_service_name: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-        user_id: PropTypes.number.isRequired
+        reservation_service_name: PropTypes.string.isRequired
     }).isRequired,
     onUpdateTime: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,

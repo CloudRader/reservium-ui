@@ -113,10 +113,10 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
             />
 
             <div className="grid md:grid-cols-1 gap-4">
-                {events?.map((event) => (
+                {events?.map((eventData) => (
                     <EventCard
-                        key={event.id}
-                        event={event}
+                        key={eventData.event.id}
+                        event={eventData.event}
                         onUpdateTime={handleUpdateTime}
                         onDelete={handleDelete}
                         onApproveTime={handleApproveTime}

@@ -33,7 +33,7 @@ export const useEvents = (userId, activeTab, managerRoles) => {
     };
 
     return useQuery(
-        ['events', userId, activeTab, managerRoles],
+        ['events', userId, activeTab],
         () => {
             switch (activeTab) {
                 case 'personal':
@@ -46,9 +46,7 @@ export const useEvents = (userId, activeTab, managerRoles) => {
             }
         },
         {
-            enabled: !!userId,
-            staleTime: 5 * 60 * 1000, // 5 minutes
-            cacheTime: 30 * 60 * 1000, // 30 minutes
+            enabled: !!userId
         }
     );
 }; 

@@ -4,12 +4,13 @@ import Modal from '../ui/Modal';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
+    return date.toLocaleString('en-GB', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
+        hour12: false
     });
 };
 
@@ -199,6 +200,32 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                     {event.purpose}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    User: {event.user_name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    Service: {event.reservation_service_name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    Type: {event.reservation_type}
+                </p>
+                {event.additional_services && event.additional_services.length > 0 && (
+                    <div className="mb-1">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                            Additional Services:
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                            {event.additional_services.map((service, index) => (
+                                <span
+                                    key={index}
+                                    className="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded text-xs"
+                                >
+                                    {service}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Start: {formatDate(event.start_datetime)}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
@@ -207,9 +234,6 @@ const EventCard = ({ event, onUpdateTime, onDelete, onApproveTime, onApproveEven
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Guests: {event.guests}
                 </p>
-                {/* <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Service: {event.calendar_id}
-                </p> */}
                 <span className={`inline-block px-2 py-0.5 rounded text-xs ${event.event_state === 'confirmed'
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                     : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
@@ -323,6 +347,12 @@ EventCard.propTypes = {
         end_datetime: PropTypes.string.isRequired,
         guests: PropTypes.number.isRequired,
         event_state: PropTypes.string.isRequired,
+        additional_services: PropTypes.arrayOf(PropTypes.string),
+        user_name: PropTypes.string.isRequired,
+        reservation_type: PropTypes.string.isRequired,
+        reservation_service_name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        user_id: PropTypes.number.isRequired
     }).isRequired,
     onUpdateTime: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,

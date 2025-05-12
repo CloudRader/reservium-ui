@@ -1,115 +1,76 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import constants from "../Constants";
 import UniversalLayout from "../UniversalLayout";
-axios.defaults.withCredentials = true;
+import SuccessErrorMessage from "./ui/SuccessErrorMessage";
+import useCreateFormLogic from "../hooks/useCreateFormLogic";
 
 const CreateNewMiniService = ({ serviceId }) => {
-    const [formData, setFormData] = useState({
-        name: '',
-        reservation_service_id: serviceId,
-        lockers_id: [],
-        access_group: '',
-        room_id: null
-    });
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const {
+        formFields,
+        formData,
+        message,
+        setFormFields,
+        handleSubmit,
+        renderField,
+    } = useCreateFormLogic([], `${constants.serverURL}/mini_services/create_mini_service`);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    };
-
-    const handleLockersChange = (e) => {
-        const value = e.target.value;
-        const lockersArray = value ? value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : [];
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            lockers_id: lockersArray,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post(`${constants.serverURL}/mini_services/create_mini_service`, formData)
-            .then(response => {
-                if (response.status === 201) {
-                    console.log(response);
-                    setSuccessMessage('Mini service created successfully!');
-                    setErrorMessage('');
-                } else {
-                    console.error('Error:', response);
-                    setSuccessMessage('');
-                    setErrorMessage(`Error creating mini service. ${response.data.message}`);
+    useEffect(() => {
+        setFormFields([
+            {
+                name: 'name',
+                type: 'text',
+                labelText: 'Mini Service Name',
+                labelColor: 'text-success',
+                validation: (value) => !!value,
+            },
+            {
+                name: 'reservation_service_id',
+                type: 'hidden',
+                value: serviceId,
+            },
+            {
+                name: 'lockers_id',
+                type: 'text',
+                labelText: 'Lockers IDs (comma-separated)',
+                labelColor: 'text-success',
+                customHandler: (value) => {
+                    return value ? value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : [];
                 }
-            })
-            .catch(error => {
-                console.error('Error creating mini service:', error);
-                setSuccessMessage('');
-                setErrorMessage('Error creating mini service, try again later.');
-            });
+            },
+            {
+                name: 'access_group',
+                type: 'text',
+                labelText: 'Access Group',
+                labelColor: 'text-success',
+            },
+            {
+                name: 'room_id',
+                type: 'number',
+                labelText: 'Room ID',
+                labelColor: 'text-success',
+            }
+        ]);
+    }, [setFormFields, serviceId]);
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        handleSubmit(formData);
     };
 
     return (
         <UniversalLayout centerContent whiteBackGreenContentBackground headerTittle={'Create New Mini Service'}>
             <div className="bg-white p-4 rounded-lg shadow">
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-green-700 mb-1">
-                            Mini Service Name
-                        </label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="lockers_id" className="block text-sm font-medium text-green-700 mb-1">
-                            Lockers IDs (comma-separated)
-                        </label>
-                        <input
-                            type="text"
-                            id="lockers_id"
-                            name="lockers_id"
-                            value={formData.lockers_id.join(',')}
-                            onChange={handleLockersChange}
-                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="access_group" className="block text-sm font-medium text-green-700 mb-1">
-                            Access Group
-                        </label>
-                        <input
-                            type="text"
-                            id="access_group"
-                            name="access_group"
-                            value={formData.access_group}
-                            onChange={handleChange}
-                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="room_id" className="block text-sm font-medium text-green-700 mb-1">
-                            Room ID
-                        </label>
-                        <input
-                            type="number"
-                            id="room_id"
-                            name="room_id"
-                            value={formData.room_id || ''}
-                            onChange={handleChange}
-                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
+                <form onSubmit={handleFormSubmit} className="space-y-5">
+                    {formFields.map((field) => (
+                        <div key={field.name}>
+                            {field.type !== 'hidden' && (
+                                <label htmlFor={field.name} className="block text-sm font-medium text-green-700 mb-1">
+                                    {field.labelText}
+                                </label>
+                            )}
+                            {renderField(field)}
+                        </div>
+                    ))}
                     <button
                         type="submit"
                         className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -118,8 +79,7 @@ const CreateNewMiniService = ({ serviceId }) => {
                     </button>
                 </form>
 
-                {successMessage && <div className="mt-3 p-2 bg-green-100 text-green-700 rounded">{successMessage}</div>}
-                {errorMessage && <div className="mt-3 p-2 bg-red-100 text-red-700 rounded">{errorMessage}</div>}
+                {message && <SuccessErrorMessage message={message} />}
             </div>
         </UniversalLayout>
     );

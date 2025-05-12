@@ -40,9 +40,16 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
             const startDateTime = new Date(newStartTime);
             const endDateTime = new Date(newEndTime);
 
-            // Convert to naive datetime strings (YYYY-MM-DD HH:mm:ss)
+            // Convert to UTC time to avoid timezone issues
             const formatNaiveDateTime = (date) => {
-                return date.toISOString().slice(0, 19).replace('T', ' ');
+                const year = date.getUTCFullYear();
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(date.getUTCDate()).padStart(2, '0');
+                const hours = String(date.getUTCHours()).padStart(2, '0');
+                const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+                const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
             };
 
             await axios.put(

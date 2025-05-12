@@ -11,13 +11,16 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     const navigate = useNavigate();
     const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
 
-    // TODO rework names in service Transform initial service data to match form field names
+    // Transform initial service data to match form field names
     const transformedInitialService = {
         name: initialService.serviceName,
         alias: initialService.linkName,
         web: initialService.wikiLink,
         contact_mail: initialService.contact_mail,
-        public: initialService.public
+        public: initialService.public,
+        lockers_id: initialService.lockers_id || [],
+        access_group: initialService.access_group || '',
+        room_id: initialService.room_id || null
     };
 
     const {
@@ -95,6 +98,48 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                         onChange={handleChange}
                         disabled={!isEditing}
                         className="mt-1 focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Lockers IDs (comma-separated)</label>
+                    <input
+                        type="text"
+                        name="lockers_id"
+                        value={editedData.lockers_id.join(',')}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            const lockersArray = value ? value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : [];
+                            handleChange({
+                                target: {
+                                    name: 'lockers_id',
+                                    value: lockersArray
+                                }
+                            });
+                        }}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Access Group</label>
+                    <input
+                        type="text"
+                        name="access_group"
+                        value={editedData.access_group}
+                        onChange={handleChange}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Room ID</label>
+                    <input
+                        type="number"
+                        name="room_id"
+                        value={editedData.room_id || ''}
+                        onChange={handleChange}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">

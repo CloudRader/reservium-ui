@@ -7,7 +7,10 @@ axios.defaults.withCredentials = true;
 const CreateNewMiniService = ({ serviceId }) => {
     const [formData, setFormData] = useState({
         name: '',
-        reservation_service_id: serviceId, // Default value set to 'klub'
+        reservation_service_id: serviceId,
+        lockers_id: [],
+        access_group: '',
+        room_id: null
     });
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -17,6 +20,15 @@ const CreateNewMiniService = ({ serviceId }) => {
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value,
+        }));
+    };
+
+    const handleLockersChange = (e) => {
+        const value = e.target.value;
+        const lockersArray = value ? value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : [];
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            lockers_id: lockersArray,
         }));
     };
 
@@ -56,6 +68,45 @@ const CreateNewMiniService = ({ serviceId }) => {
                             value={formData.name}
                             onChange={handleChange}
                             required
+                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="lockers_id" className="block text-sm font-medium text-green-700 mb-1">
+                            Lockers IDs (comma-separated)
+                        </label>
+                        <input
+                            type="text"
+                            id="lockers_id"
+                            name="lockers_id"
+                            value={formData.lockers_id.join(',')}
+                            onChange={handleLockersChange}
+                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="access_group" className="block text-sm font-medium text-green-700 mb-1">
+                            Access Group
+                        </label>
+                        <input
+                            type="text"
+                            id="access_group"
+                            name="access_group"
+                            value={formData.access_group}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="room_id" className="block text-sm font-medium text-green-700 mb-1">
+                            Room ID
+                        </label>
+                        <input
+                            type="number"
+                            id="room_id"
+                            name="room_id"
+                            value={formData.room_id || ''}
+                            onChange={handleChange}
                             className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>

@@ -42,8 +42,49 @@ const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode =
                         value={editedData.name}
                         onChange={handleChange}
                         readOnly={!isEditing}
-                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'
-                            }`}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Lockers IDs (comma-separated)</label>
+                    <input
+                        type="text"
+                        name="lockers_id"
+                        value={editedData.lockers_id?.join(',') || ''}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            const lockersArray = value ? value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : [];
+                            handleChange({
+                                target: {
+                                    name: 'lockers_id',
+                                    value: lockersArray
+                                }
+                            });
+                        }}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Access Group</label>
+                    <input
+                        type="text"
+                        name="access_group"
+                        value={editedData.access_group || ''}
+                        onChange={handleChange}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Room ID</label>
+                    <input
+                        type="number"
+                        name="room_id"
+                        value={editedData.room_id || ''}
+                        onChange={handleChange}
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
                     />
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">

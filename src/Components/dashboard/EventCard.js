@@ -206,11 +206,11 @@ const EventCard = ({ event: { event, user_name, reservation_type, reservation_se
                     Type: {reservation_type}
                 </p>
                 {event.additional_services && event.additional_services.length > 0 && (
-                    <div className="mb-1">
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-0.5">
                             Additional Services:
                         </p>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-0.5">
                             {event.additional_services.map((service, index) => (
                                 <span
                                     key={index}

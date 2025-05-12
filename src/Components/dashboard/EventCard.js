@@ -200,18 +200,6 @@ const EventCard = ({ event: { event, user_name, reservation_type, reservation_se
                     {event.purpose}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Start: {formatDate(event.start_datetime)}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    End: {formatDate(event.end_datetime)}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    Guests: {event.guests}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                    User: {user_name}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Service: {reservation_service_name}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
@@ -222,11 +210,11 @@ const EventCard = ({ event: { event, user_name, reservation_type, reservation_se
                         <p className="text-sm text-gray-600 dark:text-gray-300">
                             Additional Services:
                         </p>
-                        <div className="flex flex-wrap gap-1 mt-1">
+                        <div className="flex flex-wrap gap-1">
                             {event.additional_services.map((service, index) => (
                                 <span
                                     key={index}
-                                    className="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded text-xs"
+                                    className="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded text-xs"
                                 >
                                     {service}
                                 </span>
@@ -234,6 +222,18 @@ const EventCard = ({ event: { event, user_name, reservation_type, reservation_se
                         </div>
                     </div>
                 )}
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    Guests: {event.guests}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    User: {user_name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    Start: {formatDate(event.start_datetime)}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                    End: {formatDate(event.end_datetime)}
+                </p>
                 <span className={`inline-block px-2 py-0.5 rounded text-xs ${event.event_state === 'confirmed'
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                     : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'

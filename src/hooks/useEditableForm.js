@@ -36,7 +36,18 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
 
     const handleSave = async () => {
         try {
-            const response = await axios.put(updateUrl, editedData);
+            // Format lockers_id before saving
+            const dataToSave = {
+                ...editedData,
+                lockers_id: editedData.lockers_id
+                    .split(',')
+                    .map(id => id.trim())
+                    .filter(id => id !== '')
+                    .map(id => parseInt(id))
+                    .filter(id => !isNaN(id))
+            };
+
+            const response = await axios.put(updateUrl, dataToSave);
             console.log("Update successful:", response.data);
             setIsEditing(false);
             setMessage({ type: 'success', text: 'Update successful!' });
@@ -54,26 +65,6 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
 
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target;
-
-        // Special handling for lockers_id
-        if (name === 'lockers_id') {
-            // Only allow numbers and commas
-            const sanitizedValue = value.replace(/[^0-9,]/g, '');
-
-            // Split by comma and convert to numbers
-            const lockersArray = sanitizedValue
-                .split(',')
-                .map(id => id.trim())
-                .filter(id => id !== '')
-                .map(id => parseInt(id))
-                .filter(id => !isNaN(id));
-
-            setEditedData(prevData => ({
-                ...prevData,
-                [name]: lockersArray
-            }));
-            return;
-        }
 
         // Use the checked property for checkboxes, value for all other input types
         const newValue = type === 'checkbox' ? checked : value;

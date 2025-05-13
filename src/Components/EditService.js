@@ -105,7 +105,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
                     <input
                         type="text"
                         name="lockers_id"
-                        value={Array.isArray(editedData.lockers_id) ? editedData.lockers_id.join(', ') : ''}
+                        value={editedData.lockers_id.join(', ')}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}

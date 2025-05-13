@@ -76,9 +76,7 @@ export const ManagerRoutes = ({ services, calendars, miniServices }) => (
                         <Route
                             path={`view-mini-service/${service.linkName}/${miniService.name}`}
                             element={<EditMiniService
-                                serviceName={service.linkName}
                                 miniServiceData={miniService}
-                                serviceId={service.id}
                                 isEditMode={false}
                             />}
                         />

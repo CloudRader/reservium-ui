@@ -55,6 +55,22 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target;
 
+        // Special handling for lockers_id
+        if (name === 'lockers_id') {
+            const lockersArray = value
+                .split(',')
+                .map(id => id.trim())
+                .filter(id => id !== '')
+                .map(id => parseInt(id))
+                .filter(id => !isNaN(id));
+
+            setEditedData(prevData => ({
+                ...prevData,
+                [name]: lockersArray
+            }));
+            return;
+        }
+
         // Use the checked property for checkboxes, value for all other input types
         const newValue = type === 'checkbox' ? checked : value;
 

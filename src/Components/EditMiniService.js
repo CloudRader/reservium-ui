@@ -5,7 +5,7 @@ import useEditableForm from "../hooks/useEditableForm";
 import constants from "../Constants";
 import ActionButtons from './ui/ActionButtons';
 
-const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode = false }) => {
+const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
     const {
         isEditing,
         editedData,
@@ -14,7 +14,10 @@ const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode =
         handleSave,
         handleCancel,
         handleChange
-    } = useEditableForm(miniServiceData, `${constants.serverURL}/mini_services/${miniServiceData.id}`, null, isEditMode);
+    } = useEditableForm(miniServiceData,
+        `${constants.serverURL}/mini_services/${miniServiceData.id}`,
+        null,
+        isEditMode);
 
     if (!miniServiceData) {
         return <div>No data available</div>;
@@ -50,19 +53,11 @@ const EditMiniService = ({ serviceName, miniServiceData, serviceId, isEditMode =
                     <input
                         type="text"
                         name="lockers_id"
-                        value={editedData.lockers_id?.join(',') || ''}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            const lockersArray = value ? value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : [];
-                            handleChange({
-                                target: {
-                                    name: 'lockers_id',
-                                    value: lockersArray
-                                }
-                            });
-                        }}
+                        value={Array.isArray(editedData.lockers_id) ? editedData.lockers_id.join(', ') : ''}
+                        onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}
+                        placeholder="Enter locker IDs separated by commas (e.g., 1, 2, 3)"
                     />
                 </div>
                 <div className="mb-4">

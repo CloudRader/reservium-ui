@@ -48,12 +48,17 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
             };
 
             const response = await axios.put(updateUrl, dataToSave);
-            console.log("Update successful:", response.data);
             setIsEditing(false);
             setMessage({ type: 'success', text: 'Update successful!' });
         } catch (error) {
-            console.error("Failed to update:", error);
-            setMessage({ type: 'error', text: error.response.data.detail.msg });
+            if (error.response && error.response.data && Array.isArray(error.response.data.detail)) {
+                const errorDetails = error.response.data.detail
+                    .map(detail => `${detail.loc.join('.')} - ${detail.msg}`)
+                    .join(', ');
+                setMessage({ type: 'error', text: `Failed to update: ${errorDetails}` });
+            } else {
+                setMessage({ type: 'error', text: 'Failed to update. Please try again.' });
+            }
         }
     };
 

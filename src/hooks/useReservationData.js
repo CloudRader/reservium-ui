@@ -25,6 +25,7 @@ export function useReservationData(isLoggedIn) {
                     acc[calendar.reservation_type] = calendar.id;
                     return acc;
                 }, {}),
+                lockers_id: info.lockers_id.join(',') || '',
                 ...info
             }));
 
@@ -44,6 +45,7 @@ export function useReservationData(isLoggedIn) {
                     id: miniService.id,
                     name: miniService.name,
                     reservationServiceId: miniService.reservation_service_id,
+                    lockers_id: miniService.lockers_id.join(',') || '',
                     ...miniService
                 }));
                 return acc;

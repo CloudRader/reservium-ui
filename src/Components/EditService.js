@@ -18,7 +18,7 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
         web: initialService.wikiLink,
         contact_mail: initialService.contact_mail,
         public: initialService.public,
-        lockers_id: initialService.lockers_id.join(',') || '',
+        lockers_id: initialService.lockers_id,
         access_group: initialService.access_group || '',
         room_id: initialService.room_id || null
     };

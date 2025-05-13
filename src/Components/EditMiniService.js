@@ -7,8 +7,6 @@ import ActionButtons from './ui/ActionButtons';
 
 const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
 
-    miniServiceData.lockers_id = miniServiceData.lockers_id.join(',') || ''
-
     const {
         isEditing,
         editedData,

@@ -206,8 +206,8 @@ const EventCard = ({ event: { event, user_name, reservation_type, reservation_se
                     Type: {reservation_type}
                 </p>
                 {event.additional_services && event.additional_services.length > 0 && (
-                    <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-0.5">
+                    <>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
                             Additional Services:
                         </p>
                         <div className="flex flex-wrap gap-0.5">
@@ -220,7 +220,7 @@ const EventCard = ({ event: { event, user_name, reservation_type, reservation_se
                                 </span>
                             ))}
                         </div>
-                    </div>
+                    </>
                 )}
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Guests: {event.guests}

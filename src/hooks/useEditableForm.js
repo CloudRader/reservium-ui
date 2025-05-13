@@ -57,7 +57,11 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
 
         // Special handling for lockers_id
         if (name === 'lockers_id') {
-            const lockersArray = value
+            // Only allow numbers and commas
+            const sanitizedValue = value.replace(/[^0-9,]/g, '');
+
+            // Split by comma and convert to numbers
+            const lockersArray = sanitizedValue
                 .split(',')
                 .map(id => id.trim())
                 .filter(id => id !== '')

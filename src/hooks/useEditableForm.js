@@ -36,7 +36,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
 
     const handleSave = async () => {
         try {
-            // Format lockers_id before saving
+            // Format lockers_id to array before saving
             const dataToSave = {
                 ...editedData,
                 lockers_id: editedData.lockers_id

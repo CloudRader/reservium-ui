@@ -53,7 +53,7 @@ const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
                     <input
                         type="text"
                         name="lockers_id"
-                        value={editedData.lockers_id?.join(', ') || ''}
+                        value={Array.isArray(editedData.lockers_id) ? editedData.lockers_id.join(', ') : editedData.lockers_id}
                         onChange={handleChange}
                         readOnly={!isEditing}
                         className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${isEditing ? 'bg-white' : 'bg-gray-100'}`}

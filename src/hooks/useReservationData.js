@@ -19,13 +19,13 @@ export function useReservationData(isLoggedIn) {
                 serviceName: info.name,
                 contact_mail: info.contact_mail,
                 public: info.public,
-                deleted_at: info.deleted_at,
                 id: info.id,
                 reservation_types: info.calendars.map(calendar => calendar.reservation_type),
                 calendarIds: info.calendars.reduce((acc, calendar) => {
                     acc[calendar.reservation_type] = calendar.id;
                     return acc;
-                }, {})
+                }, {}),
+                ...info
             }));
 
             const calendarsData = response.data.reduce((acc, info) => {
@@ -44,7 +44,7 @@ export function useReservationData(isLoggedIn) {
                     id: miniService.id,
                     name: miniService.name,
                     reservationServiceId: miniService.reservation_service_id,
-                    deleted_at: miniService.deleted_at,
+                    ...miniService
                 }));
                 return acc;
             }, {});

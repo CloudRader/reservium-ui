@@ -53,7 +53,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
             setMessage({ type: 'success', text: 'Update successful!' });
         } catch (error) {
             console.error("Failed to update:", error);
-            setMessage({ type: 'error', text: 'Failed to update. Please try again.' });
+            setMessage({ type: 'error', text: error.response.data.detail.msg });
         }
     };
 

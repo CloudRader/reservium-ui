@@ -167,7 +167,8 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
         handleChange,
         handleSubmit,
         renderField,
-        setMessage
+        setMessage,
+        setFormData
     };
 };
 

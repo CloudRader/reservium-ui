@@ -12,6 +12,7 @@ const CreateNewMiniService = ({ serviceId }) => {
         setFormFields,
         handleSubmit,
         renderField,
+        setFormData,
     } = useCreateFormLogic([], `${constants.serverURL}/mini_services/create_mini_service`);
 
     useEffect(() => {
@@ -22,11 +23,6 @@ const CreateNewMiniService = ({ serviceId }) => {
                 labelText: 'Mini Service Name',
                 labelColor: 'text-success',
                 validation: (value) => !!value,
-            },
-            {
-                name: 'reservation_service_id',
-                type: 'hidden',
-                value: serviceId,
             },
             {
                 name: 'lockers_id',
@@ -50,7 +46,14 @@ const CreateNewMiniService = ({ serviceId }) => {
                 labelColor: 'text-success',
             }
         ]);
-    }, [setFormFields, serviceId]);
+    }, [setFormFields]);
+
+    useEffect(() => {
+        setFormData(prevData => ({
+            ...prevData,
+            reservation_service_id: serviceId
+        }));
+    }, [setFormData, serviceId]);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();

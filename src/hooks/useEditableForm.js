@@ -41,10 +41,9 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
                 ...editedData,
                 ...(editedData.lockers_id ?
                     {
-                        lockers_id: editedData.lockers_id
-                            .split(',')
-                            .map(id => parseInt(id.trim()))
-                            .filter(id => !isNaN(id)),
+                        lockers_id: editedData.lockers_id.length !== 0 ?
+                            editedData.lockers_id.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id))
+                            : []
                     } : {}
                 ),
                 ...(editedData.access_group ?
@@ -59,7 +58,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
                 )
             };
 
-            await axios.put(updateUrl, dataToSave)
+            await axios.put(updateUrl, dataToSave);
             setIsEditing(false);
             setMessage({ type: 'success', text: 'Update successful!' });
         } catch (error) {

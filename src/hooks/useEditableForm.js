@@ -59,7 +59,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
                 )
             };
 
-            await axios.put(updateUrl, dataToSave);
+            await axios.put(updateUrl, dataToSave)
             setIsEditing(false);
             setMessage({ type: 'success', text: 'Update successful!' });
         } catch (error) {

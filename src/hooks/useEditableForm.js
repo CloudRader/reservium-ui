@@ -39,12 +39,9 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
             // Format lockers_id to array before saving
             const dataToSave = {
                 ...editedData,
-                // lockers_id: editedData.lockers_id === '' ? [] : editedData.lockers_id
-                //     .split(',')
-                //     .map(id => id.trim())
-                //     .filter(id => id !== '')
-                //     .map(id => parseInt(id))
-                //     .filter(id => !isNaN(id))
+                lockers_id: editedData.lockers_id ?
+                    editedData.lockers_id.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id))
+                    : [],
             };
 
             await axios.put(updateUrl, dataToSave);

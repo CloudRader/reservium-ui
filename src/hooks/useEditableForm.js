@@ -39,7 +39,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
             // Format lockers_id to array before saving
             const dataToSave = {
                 ...editedData,
-                lockers_id: editedData.lockers_id
+                lockers_id: editedData.lockers_id === '' ? [] : editedData.lockers_id
                     .split(',')
                     .map(id => id.trim())
                     .filter(id => id !== '')
@@ -47,7 +47,7 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
                     .filter(id => !isNaN(id))
             };
 
-            const response = await axios.put(updateUrl, dataToSave);
+            await axios.put(updateUrl, dataToSave);
             setIsEditing(false);
             setMessage({ type: 'success', text: 'Update successful!' });
         } catch (error) {

@@ -48,6 +48,24 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
                 access_group: editedData.access_group !== '' ?
                     editedData.access_group
                     : null,
+                ...(editedData.lockers_id ?
+                    {
+                        lockers_id: editedData.lockers_id
+                            .split(',')
+                            .map(id => parseInt(id.trim()))
+                            .filter(id => !isNaN(id)),
+                    } : {}
+                ),
+                ...(editedData.access_group ?
+                    {
+                        access_group: editedData.access_group !== '' ? editedData.access_group : null
+                    } : {}
+                ),
+                ...(editedData.room_id ?
+                    {
+                        room_id: editedData.room_id !== '' ? editedData.room_id : null
+                    } : {}
+                )
             };
 
             await axios.put(updateUrl, dataToSave);

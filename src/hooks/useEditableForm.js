@@ -39,15 +39,6 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
             // Format lockers_id to array before saving
             const dataToSave = {
                 ...editedData,
-                lockers_id: editedData.lockers_id.length !== 0 ?
-                    editedData.lockers_id.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id))
-                    : [],
-                room_id: editedData.room_id !== '' ?
-                    editedData.room_id
-                    : null,
-                access_group: editedData.access_group !== '' ?
-                    editedData.access_group
-                    : null,
                 ...(editedData.lockers_id ?
                     {
                         lockers_id: editedData.lockers_id

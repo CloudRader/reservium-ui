@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversalLayout from "../UniversalLayout";
+import UniversalLayout from "../layouts/UniversalLayout";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import useEditableForm from "../hooks/useEditableForm";
 import constants from "../Constants";

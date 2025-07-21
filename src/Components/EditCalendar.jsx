@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import UniversalLayout from "../UniversalLayout";
+import UniversalLayout from "../layouts/UniversalLayout";
 import constants from "../Constants";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";

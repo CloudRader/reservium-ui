@@ -11,7 +11,7 @@ import EditMiniService from '../Components/EditMiniService';
 import EditCalendar from '../Components/EditCalendar';
 
 
-// todo DEL make this as condition only for manager and then try to get all data that i need with deleted services and cal and mini serv
+// todo DEL make this as condition only for manager and then try to get all data that i need with deleted services and cal and mini ser
 export const ManagerRoutes = ({ services, calendars, miniServices }) => (
     <Routes>
         <Route

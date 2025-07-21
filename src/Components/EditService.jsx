@@ -1,6 +1,6 @@
 import React from 'react';
 import constants from "../Constants";
-import UniversalLayout from "../UniversalLayout";
+import UniversalLayout from "../layouts/UniversalLayout";
 import useEditableForm from "../hooks/useEditableForm";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import { useNavigate } from "react-router-dom";

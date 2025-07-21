@@ -6,7 +6,6 @@ import EventRegistrationForm from '../Components/EventRegistrationForm';
 
 const SuccessPage = () => {
 
-
     // Extract state processing to a separate function
     const processLocationState = (state) => {
         if (!state) return {};
@@ -112,7 +111,7 @@ const SuccessPage = () => {
                         <h1 className="text-4xl dark:!text-white font-bold text-green-800 mb-4">Reservation was made
                             successfully</h1>
                         <p className="text-l dark:!text-white md:text-xl text-green-700 mb-8">
-                            Now you can see it in the calendar. Read the terms of use of the spaces on our
+                            Now you can see it in the calendar and dashboard. Read the terms of use of the spaces on our
                             wiki page.
                         </p>
                         <div>
@@ -121,6 +120,12 @@ const SuccessPage = () => {
                                 READ
                             </a>
                         </div>
+                        <p className="text-l dark:!text-white md:text-xl text-green-700 mb-8">
+                            You can cancel or edit your reservation in your dashboard.
+                        </p>
+                        <Link to={`/dashboard`} className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Go to dashboard
+                        </Link>
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-7/12 md:flex md:flex-col">

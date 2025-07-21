@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import UniversalLayout from "../UniversalLayout";
+import UniversalLayout from "../layouts/UniversalLayout";
 import TableActions from './TableActions';
 import axios from 'axios';
 import constants from '../Constants';

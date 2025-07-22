@@ -105,11 +105,11 @@ const ReservationForm = ({
         <FormFieldRenderer
           field={additionalServicesField}
           formData={formData}
-          handleChange={(e) => handleChange(e, field)}
+          handleChange={handleChange}
         />
       </div>
     );
-  }, [additionalServices, renderField]);
+  }, [additionalServices]);
 
   return (
     <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6">

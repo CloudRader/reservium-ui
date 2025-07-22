@@ -107,7 +107,7 @@ const ReservationForm = ({
         {renderField(additionalServices)}
       </div>
     );
-  }, [additionalServices]);
+  }, [additionalServices, renderField]);
 
   return (
     <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6">

@@ -115,12 +115,12 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         }
     );
 
-    useEffect(() => {
-        setFormData(prevData => ({
-            ...prevData,
-            additionalServices: []
-        }));
-    }, [reservationType]);
+    // useEffect(() => {
+    //     setFormData(prevData => ({
+    //         ...prevData,
+    //         additionalServices: []
+    //     }));
+    // }, [reservationType]);
 
     const validateField = useCallback((field, value) => {
         if (field.validation && !field.validation(value)) {
@@ -183,8 +183,6 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
             }));
         }
     }, [selectedSlot]);
-
-
 
     const validateForm = useCallback(() => {
         const validationErrors = formFields.reduce((acc, field) => {

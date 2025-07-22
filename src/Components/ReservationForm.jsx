@@ -104,10 +104,14 @@ const ReservationForm = ({
         <label className="block text-sm font-medium text-green-700 mb-1">
           {additionalServicesField.labelText}
         </label>
-        {renderField(additionalServices)}
+        <FormFieldRenderer
+          field={additionalServicesField}
+          formData={formData}
+          handleChange={handleChange}
+        />
       </div>
     );
-  }, [additionalServices, renderField]);
+  }, [additionalServices]);
 
   return (
     <div className="max-w-1xl bg-gradient-to-r from-green-50 to-green-100 shadow-md p-6">
@@ -123,7 +127,11 @@ const ReservationForm = ({
             >
               {field.labelText}
             </label>
-            {renderField(field)}
+            <FormFieldRenderer
+              field={field}
+              formData={formData}
+              handleChange={(e) => handleChange(e, field)}
+            />
             {errors[field.name] && (
               <p className="text-red-600 text-sm mt-1">{errors[field.name]}</p>
             )}

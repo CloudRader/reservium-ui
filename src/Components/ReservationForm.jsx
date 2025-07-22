@@ -58,6 +58,7 @@ const ReservationForm = ({
                     checked={(formData[field.name] || []).includes(
                       option.value
                     )}
+                    onChange={(e) => handleChange(e, field)}
                     className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
                   />
                   <label
@@ -79,6 +80,7 @@ const ReservationForm = ({
               {...commonProps}
               min={field.min}
               max={field.max}
+              onChange={(e) => handleChange(e, field)}
             />
           );
       }

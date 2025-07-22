@@ -128,7 +128,7 @@ const ReservationForm = ({
             <FormFieldRenderer
               field={field}
               formData={formData}
-              handleChange={handleChange}
+              handleChange={(e) => handleChange(e, field)}
             />
             {errors[field.name] && (
               <p className="text-red-600 text-sm mt-1">{errors[field.name]}</p>

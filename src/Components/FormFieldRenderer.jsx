@@ -55,49 +55,70 @@ const FormFieldRenderer = ({ field, formData, handleChange }) => {
         </div>
       );
     case "checkbox":
+      // Support both single and multi-checkbox
+      if (field.options && field.options.length > 1) {
+        // Multi-checkbox
+        return (
+          <div className="space-y-2">
+            {field.options.map((option) => (
+              <div key={option.value} className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={`${field.name}-${option.value}`}
+                  name={field.name}
+                  value={option.value}
+                  checked={(formData[field.name] || []).includes(option.value)}
+                  onChange={handleChange}
+                  className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+                />
+                <label
+                  htmlFor={`${field.name}-${option.value}`}
+                  className="text-sm text-green-700"
+                >
+                  {option.label}
+                </label>
+              </div>
+            ))}
+          </div>
+        );
+      } else {
+        // Single checkbox
+        return (
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              {...commonProps}
+              checked={getValue(field.name) || false}
+              className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+            />
+            <label htmlFor={field.name} className="text-sm text-green-700">
+              {field.options && field.options[0]?.label}
+            </label>
+          </div>
+        );
+      }
+    case "select":
       return (
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            {...commonProps}
-            checked={getValue(field.name) || false}
-            className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
-          />
-          <label htmlFor={field.name} className="text-sm text-green-700">
-            {field.options[0].label}
-          </label>
-        </div>
-      );
-    case "multiCheckbox":
-      return (
-        <div className="space-y-2">
-          {field.options.map((option) => (
-            <div key={option.value} className="flex items-center">
-              <input
-                type="checkbox"
-                id={`${field.name}-${option.value}`}
-                name={field.name}
-                value={option.value}
-                checked={(formData[field.name] || []).includes(option.value)}
-                onChange={handleChange}
-                className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
-              />
-              <label
-                htmlFor={`${field.name}-${option.value}`}
-                className="text-sm text-green-700"
-              >
+        <select {...commonProps} value={getValue(field.name) || ""}>
+          <option value="">Select an option</option>
+          {field.options &&
+            field.options.map((option) => (
+              <option key={option.value} value={option.value}>
                 {option.label}
-              </label>
-            </div>
-          ))}
-        </div>
+              </option>
+            ))}
+        </select>
       );
+    case "empty":
+      return null;
     default:
       return (
         <input
           type={field.type}
           {...commonProps}
           value={getValue(field.name) || ""}
+          min={field.min}
+          max={field.max}
         />
       );
   }

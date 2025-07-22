@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import constants from '../Constants';
+import constants from '../constants/Constants';
 import moment from "moment/moment";
 
 const fetchAdditionalServices = async (calendarId) => {
@@ -21,7 +21,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
     }, []);
 
     // Moving the initialFormFields definition before useState usage
-    const mainFormFields  = useMemo(() => [
+    const mainFormFields = useMemo(() => [
         {
             name: 'startDate',
             type: 'date',
@@ -83,16 +83,16 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         },
     ], [getTomorrowDate]);
 
-    const reservationTypeFormField  = useMemo(() => ({
-            name: 'type',
-            type: 'select',
-            labelText: 'Type of Reservation',
-            labelColor: 'text-primary',
-            options: reservationTypes,
-            validation: (value) => !!value
+    const reservationTypeFormField = useMemo(() => ({
+        name: 'type',
+        type: 'select',
+        labelText: 'Type of Reservation',
+        labelColor: 'text-primary',
+        options: reservationTypes,
+        validation: (value) => !!value
     }), [reservationTypes]);
 
-    const formFields  = useMemo(() => [...mainFormFields, reservationTypeFormField], [mainFormFields, reservationTypeFormField]);
+    const formFields = useMemo(() => [...mainFormFields, reservationTypeFormField], [mainFormFields, reservationTypeFormField]);
 
     // Initialize form data based on default values
     useEffect(() => {

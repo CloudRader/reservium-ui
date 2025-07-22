@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import constants from "../Constants";
+import constants from "../constants/Constants";
 
 axios.defaults.withCredentials = true;
 const sendCodeToServer = async (code, state) => {
@@ -50,7 +50,7 @@ export const useAuth = () => {
         setUserId(null)
         setManagerRoles([]);
         setAuthState('unauthenticated');
-        
+
         localStorage.removeItem('userName');
         // navigate('/');
     }, []);

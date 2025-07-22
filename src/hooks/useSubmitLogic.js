@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
-import constants from '../Constants';
+import constants from '../constants/Constants';
 import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 

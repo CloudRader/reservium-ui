@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import ServicesSection from "../Components/ServicesSection";
-import constants from "../Constants";
+import constants from "../constants/Constants";
 import EventRegistrationForm from "../Components/EventRegistrationForm";
 
 const SuccessPage = () => {

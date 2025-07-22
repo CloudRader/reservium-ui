@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import constants from '../Constants';
+import constants from '../constants/Constants';
 
 axios.defaults.withCredentials = true;
 

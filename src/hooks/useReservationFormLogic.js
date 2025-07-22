@@ -133,13 +133,13 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         const { name, value, type, checked } = e.target;
         let updatedValue = value;
 
-        if (field.type === 'time') {
+        if (type === 'time') {
             const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
             if (!timeRegex.test(value)) {
                 return;
             }
         }
-        if (field.type === 'date' || field.type === 'time') {
+        if (type === 'date' || type === 'time') {
             const error = validateField(field, value);
             setErrors(prevErrors => ({
                 ...prevErrors,
@@ -148,7 +148,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
             if (error) return;
         }
 
-        if (field.name === 'type') {
+        if (name === 'type') {
             setReservationType(value);
         }
 

@@ -5,6 +5,8 @@ import UniversalLayout from "../layouts/UniversalLayout";
 import useCreateFormLogic from "../hooks/useCreateFormLogic";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import CalendarIdInput from "./CalendarIdInput";
+import FormFieldRenderer from "./FormFieldRenderer";
+
 axios.defaults.withCredentials = true;
 
 const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
@@ -217,7 +219,6 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     setFormFields,
     handleChange,
     handleSubmit,
-    renderField,
     setMessage,
   } = useCreateFormLogic(
     initialFields,
@@ -356,7 +357,11 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
                   >
                     {field.labelText}
                   </label>
-                  {renderField(field)}
+                  <FormFieldRenderer
+                    field={field}
+                    formData={formData}
+                    handleChange={handleChange}
+                  />
                 </div>
               )
           )}

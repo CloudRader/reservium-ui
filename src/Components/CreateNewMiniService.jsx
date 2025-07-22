@@ -3,6 +3,7 @@ import constants from "../constants/Constants";
 import UniversalLayout from "../layouts/UniversalLayout";
 import SuccessErrorMessage from "./ui/SuccessErrorMessage";
 import useCreateFormLogic from "../hooks/useCreateFormLogic";
+import FormFieldRenderer from "./FormFieldRenderer";
 
 const CreateNewMiniService = ({ serviceId }) => {
   const {
@@ -11,7 +12,6 @@ const CreateNewMiniService = ({ serviceId }) => {
     message,
     setFormFields,
     handleSubmit,
-    renderField,
     setFormData,
   } = useCreateFormLogic(
     [],
@@ -86,7 +86,11 @@ const CreateNewMiniService = ({ serviceId }) => {
                   {field.labelText}
                 </label>
               )}
-              {renderField(field)}
+              <FormFieldRenderer
+                field={field}
+                formData={formData}
+                handleChange={handleChange}
+              />
             </div>
           ))}
           <button

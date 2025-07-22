@@ -201,10 +201,10 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
     formData,
     message,
     setFormFields,
-    handleChange,
     handleSubmit,
     setMessage,
     setFormData,
+    handleChange,
   };
 };
 

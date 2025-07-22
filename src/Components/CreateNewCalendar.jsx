@@ -220,6 +220,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     handleChange,
     handleSubmit,
     setMessage,
+    
   } = useCreateFormLogic(
     initialFields,
     `${constants.serverURL}/calendars/create_calendar`

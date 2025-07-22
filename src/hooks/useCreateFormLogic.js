@@ -205,7 +205,6 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
     handleSubmit,
     setMessage,
     setFormData,
-    // Rendering is now handled by FormFieldRenderer component
   };
 };
 

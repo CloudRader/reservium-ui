@@ -13,6 +13,7 @@ const CreateNewMiniService = ({ serviceId }) => {
     setFormFields,
     handleSubmit,
     setFormData,
+    handleChange,
   } = useCreateFormLogic(
     [],
     `${constants.serverURL}/mini_services/create_mini_service`

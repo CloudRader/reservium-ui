@@ -6,11 +6,17 @@ import useCreateFormLogic from "../hooks/useCreateFormLogic";
 import FormFieldRenderer from "./FormFieldRenderer";
 
 const CreateNewService = () => {
-  const { formFields, formData, message, setFormFields, handleSubmit } =
-    useCreateFormLogic(
-      [],
-      `${constants.serverURL}/reservation_services/create_reservation_service`
-    );
+  const {
+    formFields,
+    formData,
+    message,
+    setFormFields,
+    handleSubmit,
+    handleChange,
+  } = useCreateFormLogic(
+    [],
+    `${constants.serverURL}/reservation_services/create_reservation_service`
+  );
 
   useEffect(() => {
     setFormFields([

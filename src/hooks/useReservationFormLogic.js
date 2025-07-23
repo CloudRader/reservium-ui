@@ -131,24 +131,30 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
     const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;
 
-        // Special handling for additionalServices checkboxes
-        if (type === 'checkbox' && name === 'additionalServices') {
-            setFormData(prevData => {
-                const prev = prevData.additionalServices || [];
-                let updated;
-                if (checked) {
-                    // Only add if not already present
-                    updated = prev.includes(value) ? prev : [...prev, value];
-                } else {
-                    updated = prev.filter(item => item !== value);
-                }
-                console.log('Checkbox changed:', value, checked, updated);
-                return {
+        if (type === 'checkbox') {
+            const fieldDef = formFields.find(f => f.name === name);
+            if (fieldDef && fieldDef.type === 'multiCheckbox') {
+                setFormData(prevData => {
+                    const prev = prevData[name] || [];
+                    let updated;
+                    if (checked) {
+                        updated = prev.includes(value) ? prev : [...prev, value];
+                    } else {
+                        updated = prev.filter(item => item !== value);
+                    }
+                    return {
+                        ...prevData,
+                        [name]: updated
+                    };
+                });
+                return;
+            } else {
+                setFormData(prevData => ({
                     ...prevData,
-                    additionalServices: updated
-                };
-            });
-            return;
+                    [name]: checked
+                }));
+                return;
+            }
         }
 
         // For all other field types
@@ -177,7 +183,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
             ...prevData,
             [name]: updatedValue
         }));
-    }, [validateField]);
+    }, [formFields, validateField]);
 
     useEffect(() => {
         if (selectedSlot) {

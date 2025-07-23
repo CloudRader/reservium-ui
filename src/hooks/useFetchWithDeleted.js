@@ -20,6 +20,7 @@ const useFetchWithDeleted = (queryKey, fetchUrl, enabled = true) => {
         {
             enabled,
             refetchOnWindowFocus: false,
+            keepPreviousData: true,
         }
     );
 };

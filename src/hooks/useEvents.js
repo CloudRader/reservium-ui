@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import constants from '../constants/Constants';
+import { options } from '@fullcalendar/core/preact.js';
 
 axios.defaults.withCredentials = true;
 
@@ -38,15 +39,15 @@ export const useEvents = (userId, activeTab, managerRoles) => {
             switch (activeTab) {
                 case 'personal':
                     return fetchUserEvents();
-                case 'not_approved':
-                case 'update_requested':
+                case 'not_approved' || 'update_requested':
                     return fetchManagedEvents();
                 default:
                     return fetchUserEvents();
             }
         },
         {
-            enabled: !!userId
+            enabled: !!userId,
+            keepPreviousData: true,
         }
     );
 }; 

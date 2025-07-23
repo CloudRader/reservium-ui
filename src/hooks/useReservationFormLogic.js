@@ -110,8 +110,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
         {
             enabled: !!reservationType && !!calendarIds[reservationType],
-            keepPreviousData: false,
-            onError: (error) => console.error('Error fetching additional services:', error),
+            keepPreviousData: true,
         }
     );
 
@@ -153,15 +152,12 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         }
 
         if (type === 'checkbox' && name === 'additionalServices') {
-            console.log("chek box cliked")
-
             updatedValue = formData.additionalServices || [];
             if (checked) {
                 updatedValue = [...updatedValue, value];
             } else {
                 updatedValue = updatedValue.filter(item => item !== value);
             }
-            console.log(updatedValue)
         }
 
         setFormData(prevData => ({

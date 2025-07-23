@@ -130,6 +130,28 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
 
     const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;
+
+        // Special handling for additionalServices checkboxes
+        if (type === 'checkbox' && name === 'additionalServices') {
+            setFormData(prevData => {
+                const prev = prevData.additionalServices || [];
+                let updated;
+                if (checked) {
+                    // Only add if not already present
+                    updated = prev.includes(value) ? prev : [...prev, value];
+                } else {
+                    updated = prev.filter(item => item !== value);
+                }
+                console.log('Checkbox changed:', value, checked, updated);
+                return {
+                    ...prevData,
+                    additionalServices: updated
+                };
+            });
+            return;
+        }
+
+        // For all other field types
         let updatedValue = value;
 
         if (type === 'time') {
@@ -151,37 +173,11 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
             setReservationType(value);
         }
 
-        // if (type === 'checkbox' && name === 'additionalServices') {
-        //     updatedValue = formData.additionalServices || [];
-        //     if (checked) {
-        //         updatedValue = [...updatedValue, value];
-        //     } else {
-        //         updatedValue = updatedValue.filter(item => item !== value);
-        //     }
-        // }
-        if (type === 'checkbox' && name === 'additionalServices') {
-            setFormData(prevData => {
-                const prev = prevData.additionalServices || [];
-                let updated;
-                if (checked) {
-                    updated = [...prev, value];
-                } else {
-                    updated = prev.filter(item => item !== value);
-                }
-                console.log('Checkbox changed:', value, checked, updated);
-                return {
-                    ...prevData,
-                    additionalServices: updated
-                };
-            });
-            return;
-        }
-
         setFormData(prevData => ({
             ...prevData,
             [name]: updatedValue
         }));
-    }, [formData, validateField]);
+    }, [validateField]);
 
     useEffect(() => {
         if (selectedSlot) {

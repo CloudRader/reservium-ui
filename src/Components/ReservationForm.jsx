@@ -107,7 +107,7 @@ const ReservationForm = ({
         <FormFieldRenderer
           field={additionalServicesField}
           formData={formData}
-          handleChange={(e) => handleChange(e, field)}
+          handleChange={(e) => handleChange(e, additionalServicesField)}
         />
       </div>
     );

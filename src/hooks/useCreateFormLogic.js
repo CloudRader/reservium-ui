@@ -3,7 +3,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
+const useCreateFormLogic = (initialFields, submitUrl) => {
   const [formFields, setFormFields] = useState(initialFields);
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState(null);
@@ -75,7 +75,6 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
             text: "Operation completed successfully!",
           });
           setFormData({});
-          if (onSubmitSuccess) onSubmitSuccess();
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -85,7 +84,7 @@ const useCreateFormLogic = (initialFields, submitUrl, onSubmitSuccess) => {
           });
         });
     },
-    [submitUrl, onSubmitSuccess]
+    [submitUrl]
   );
 
   return {

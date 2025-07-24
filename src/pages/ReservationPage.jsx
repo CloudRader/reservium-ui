@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ReservationForm from "../Components/ReservationForm";
-import LoginInfoPage from "./LoginInfoPage";
 import Logout from "../Components/Logout";
 import AdaptiveCalendar from "../Components/AdaptiveCalendar";
 import WarningMessage from "../Components/ui/WarningMessage";
@@ -10,7 +9,6 @@ import useSubmitLogic from "../hooks/useSubmitLogic";
 import Constants from "../constants/Constants";
 
 const ReservationPage = ({
-  isLoggedIn,
   onLogout,
   roomCalendarLinks,
   service,
@@ -32,13 +30,10 @@ const ReservationPage = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!isLoggedIn) {
-    return <LoginInfoPage />;
-  }
-
-  if (errorMessages.auth) {
-    return <Logout onLogout={onLogout} />;
-  }
+  // if (errorMessages.auth) {
+  return <Redirect to="/logout">LOGOUT</Redirect>;
+  // return <Logout onLogout={onLogout} />;
+  // }
 
   return (
     <div className="max-w-7xl dark:!bg-slate-400 mx-auto px-4 sm:px-6 lg:px-8 py-8">

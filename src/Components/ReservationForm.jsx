@@ -37,11 +37,13 @@ const ReservationForm = ({
           errors={errors}
           handleChange={handleChange}
         />
-        <AdditionalServicesSection
-          additionalServices={additionalServices}
-          formData={formData}
-          handleChange={handleChange}
-        />
+        {additionalServices && (
+          <AdditionalServicesSection
+            additionalServices={additionalServices}
+            formData={formData}
+            handleChange={handleChange}
+          />
+        )}
         <SubmitButton isSubmitting={isSubmitting} />
       </form>
     </div>

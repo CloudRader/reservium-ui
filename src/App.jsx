@@ -8,16 +8,13 @@ import Footer from "./Components/Footer";
 import SuccessPage from "./pages/SuccessPage";
 import { useReservationData } from "./hooks/useReservationData";
 import PulsatingLoader from "./Components/ui/PulsatingLoader";
-import axios from "axios";
 import LoginToIS from "./Components/LoginToIS";
 import { useAuth } from "./hooks/useAuth";
 import { ManagerRoutes } from "./routes/ManagerRoutes";
 import { ServiceRoutes } from "./routes/ServiceRoutes";
 import Dashboard from "./Components/dashboard/Dashboard";
-// import { TestRoutes } from './routes/TestRoutes';
 import { ViewCalendarRoutes } from "./routes/ViewCalendarRoutes";
 
-axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();
 
 function AppContent() {
@@ -94,8 +91,11 @@ function AppContent() {
         {/* Test Routes */}
         {/* <Route path="test/*" element={<TestRoutes />} /> */}
 
+        {/* TODO new test this */}
+        {!isLoggedIn && <LoginInfoPage />}
+
         {/* Manager Routes */}
-        {isLoggedIn && managerRoles?.length > 0 && (
+        {managerRoles?.length > 0 && (
           <Route
             path="manager/*"
             element={
@@ -115,8 +115,6 @@ function AppContent() {
             <ServiceRoutes
               services={services}
               calendars={calendars}
-              isLoading={isLoading}
-              isLoggedIn={isLoggedIn}
               logout={logout}
             />
           }

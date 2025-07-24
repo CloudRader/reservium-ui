@@ -36,7 +36,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     },
     {
       name: "collision_with_calendar",
-      type: "multiCheckbox",
+      type: "checkbox",
       labelText: "Collision With Calendars",
       labelColor: "text-success",
       options: serviceCalendars.map((calendar) => ({
@@ -46,7 +46,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     },
     {
       name: "mini_services",
-      type: "multiCheckbox",
+      type: "checkbox",
       labelText: "Mini Services",
       labelColor: "text-success",
       options: [], // Will be populated after fetching

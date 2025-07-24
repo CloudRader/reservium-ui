@@ -40,7 +40,7 @@ const useCreateFormLogic = (initialFields, submitUrl) => {
                 .flatMap((f) => f.fields || [])
                 .find((f) => f.name === name);
 
-            if (field && field.type === "multiCheckbox") {
+            if (field && field.options.length > 1) {
               // Handle multiCheckbox
               const updatedValues = prevData[name] ? [...prevData[name]] : [];
               if (checked) {

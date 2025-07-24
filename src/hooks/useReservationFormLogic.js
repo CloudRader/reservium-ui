@@ -58,7 +58,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
         }));
     }, []);
 
-    const { validateForm } = useFormValidation(formFields, formData);
+    const { errors, validateForm } = useFormValidation(formFields, formData);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();

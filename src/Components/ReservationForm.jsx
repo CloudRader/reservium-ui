@@ -37,7 +37,7 @@ const ReservationForm = ({
           errors={errors}
           handleChange={handleChange}
         />
-        {additionalServices && (
+        {additionalServices?.length > 0 && (
           <AdditionalServicesSection
             additionalServices={additionalServices}
             formData={formData}

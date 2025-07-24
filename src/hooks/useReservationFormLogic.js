@@ -37,11 +37,13 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
 
         // Reset additionalServices if reservation type changes
         if (name === 'type') {
-            setFormData(prevData => ({
-                ...prevData,
-                [name]: value,
-                additionalServices: []
-            }));
+            setFormData(prevData => {
+                return {
+                    ...prevData,
+                    [name]: value,
+                    additionalServices: []
+                };
+            });
             return;
         }
         // Validate time fields

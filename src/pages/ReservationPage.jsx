@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReservationForm from "../Components/ReservationForm";
 import Logout from "../Components/Logout";
+import { Redirect } from "react-router-dom";
 import AdaptiveCalendar from "../Components/AdaptiveCalendar";
 import WarningMessage from "../Components/ui/WarningMessage";
 import { ErrorMobileModal } from "../Components/ui/ErrorMobileModal";

@@ -44,10 +44,6 @@ function AppContent() {
     return <PulsatingLoader />;
   }
 
-  if (!isLoggedIn) {
-    return <LoginInfoPage />;
-  }
-
   const { services, calendars, miniServices } = data || {
     services: [],
     calendars: {},
@@ -78,7 +74,11 @@ function AppContent() {
         <Route path="/login" element={<LoginToIS />} />
         <Route path="/logined" element={<LoginToBackend login={login} />} />
         <Route path="/logout" element={<Logout onLogout={logout} />} />
+
+        {!isLoggedIn && <Route path="*" element={<LoginInfoPage />} />}
+
         <Route path="/success" element={<SuccessPage />} />
+
         <Route
           path="/dashboard"
           element={

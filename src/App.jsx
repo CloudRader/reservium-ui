@@ -117,7 +117,6 @@ function AppContent() {
             <ServiceRoutes
               services={services}
               calendars={calendars}
-              logout={logout}
             />
           }
         />

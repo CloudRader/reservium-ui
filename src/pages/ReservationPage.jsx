@@ -8,12 +8,7 @@ import PulsatingLoader from "../Components/ui/PulsatingLoader";
 import useSubmitLogic from "../hooks/useSubmitLogic";
 import Constants from "../constants/Constants";
 
-const ReservationPage = ({
-  onLogout,
-  roomCalendarLinks,
-  service,
-  allService,
-}) => {
+const ReservationPage = ({ roomCalendarLinks, service, allService }) => {
   const [isMobile, setIsMobile] = useState(
     window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT
   );

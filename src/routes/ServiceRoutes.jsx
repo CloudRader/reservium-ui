@@ -6,7 +6,6 @@ import NotFoundPage from "../pages/NotFoundPage";
 export const ServiceRoutes = ({
   services,
   calendars,
-  logout,
 }) => {
   // Create an array of all service link names
   const allServiceLinkNames = services
@@ -21,7 +20,6 @@ export const ServiceRoutes = ({
             path=""
             element={
               <ReservationPage
-                onLogout={logout}
                 // TODO fix this
                 roomCalendarLinks={calendars["club"]}
                 service={services[0]}
@@ -35,7 +33,6 @@ export const ServiceRoutes = ({
               path={service.linkName}
               element={
                 <ReservationPage
-                  onLogout={logout}
                   roomCalendarLinks={calendars[service.linkName]}
                   service={service}
                   allService={allServiceLinkNames}

@@ -7,7 +7,6 @@ const useAdditionalServices = (reservationType, calendarIds) => {
         () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
         {
             enabled: !!reservationType && !!calendarIds[reservationType],
-            keepPreviousData: true,
         }
     );
     return additionalServices;

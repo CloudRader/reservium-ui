@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { getTomorrowDate, validateField, preparePayload } from './useReservationFormLogic.utils';
+import { preparePayload } from './useReservationFormLogic.utils';
 import useFormFields from './useFormFields';
 import useAdditionalServices from './useAdditionalServices';
 import useInitialFormData from './useInitialFormData';
@@ -21,12 +21,11 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
 
         if (type === 'checkbox' && name === 'additionalServices') {
             setFormData(prevData => {
-                const prev = prevData.additionalServices || [];
                 let updated;
                 if (checked) {
-                    updated = prev.includes(value) ? prev : [...prev, value];
+                    updated = [...prevData.additionalServices, value];
                 } else {
-                    updated = prev.filter(item => item !== value);
+                    updated = prevData.additionalServices.filter(item => item !== value);
                 }
                 return {
                     ...prevData,
@@ -45,7 +44,6 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
             }));
             return;
         }
-
         // Validate time fields
         if (type === 'time') {
             const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -53,18 +51,14 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
                 return;
             }
         }
-        if (type === 'date' || type === 'time') {
-            const error = validateField(field, value);
-            if (error) return;
-        }
 
         setFormData(prevData => ({
             ...prevData,
             [name]: value
         }));
-    }, [validateField]);
+    }, []);
 
-    const { errors, validateForm } = useFormValidation(formFields, formData, validateField);
+    const { validateForm } = useFormValidation(formFields, formData);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();

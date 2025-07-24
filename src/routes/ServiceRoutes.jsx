@@ -3,10 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ReservationPage from "../pages/ReservationPage";
 import NotFoundPage from "../pages/NotFoundPage";
 
-export const ServiceRoutes = ({
-  services,
-  calendars,
-}) => {
+export const ServiceRoutes = ({ services, calendars }) => {
   // Create an array of all service link names
   const allServiceLinkNames = services
     ? services.map((service) => service.serviceName)
@@ -21,7 +18,7 @@ export const ServiceRoutes = ({
             element={
               <ReservationPage
                 // TODO fix this
-                roomCalendarLinks={calendars["club"]}
+                roomCalendarLinks={calendars[Object.keys(calendars)[0]]}
                 service={services[0]}
                 allService={allServiceLinkNames}
               />

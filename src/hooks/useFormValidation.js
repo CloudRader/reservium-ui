@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
+import { validateField } from './useReservationFormLogic.utils';
 
-const useFormValidation = (formFields, formData, validateField, setErrorsProp) => {
+// Use provided setErrors if available, otherwise use internal state
+const useFormValidation = (formFields, formData, setErrorsProp) => {
     const [internalErrors, setInternalErrors] = useState({});
-    // Use provided setErrors if available, otherwise use internal state
     const setErrors = setErrorsProp || setInternalErrors;
-    const errors = setErrorsProp ? setErrorsProp[0] : internalErrors;
 
     const validateForm = useCallback(() => {
         const validationErrors = formFields.reduce((acc, field) => {
@@ -16,7 +16,7 @@ const useFormValidation = (formFields, formData, validateField, setErrorsProp) =
         return Object.keys(validationErrors).length === 0;
     }, [formFields, formData, validateField, setErrors]);
 
-    return { errors, validateForm };
+    return {  validateForm };
 };
 
 export default useFormValidation; 

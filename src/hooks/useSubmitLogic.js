@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const useSubmitLogic = (service, allService) => {
-    const [errorMessages, setErrorMessages] = useState({});
+    const [errorMessages, setErrorMessage] = useState({});
     const navigate = useNavigate()
 
     const mutation = useMutation(
@@ -14,7 +14,7 @@ const useSubmitLogic = (service, allService) => {
         {
             onSuccess: (response, formData) => {
                 if (response.status === 201) {
-                    setErrorMessages({});
+                    setErrorMessage({});
                     navigate('/success', {
                         state: {
                             ...response.data,
@@ -26,14 +26,13 @@ const useSubmitLogic = (service, allService) => {
                         }
                     });
                 } else {
-                    handleError({ general: `Cannot create a reservation. ${response.data.message}` });
+                    setErrorMessage({ general: `Cannot create a reservation. ${response.data.message}` });
                 }
             },
             onError: (error) => {
-                const errorMessage = error.response?.status === 401
-                    ? { auth: 'Authentication failed. Please log out and log in again.' }
-                    : { general: 'Cannot create a reservation, try again later.' };
-                handleError(errorMessage);
+                if (error.response?.status === 401)
+                    navigate("/logout");
+                setErrorMessage({ general: 'Cannot create a reservation, try again later.' });
             }
         }
     );
@@ -42,15 +41,10 @@ const useSubmitLogic = (service, allService) => {
         mutation.mutate(formData);
     }, [mutation]);
 
-    const handleError = useCallback((errorMessage) => {
-        setErrorMessages(errorMessage);
-    }, []);
-
     return {
         errorMessages,
-        setErrorMessages,
+        setErrorMessage,
         handleSubmit,
-        handleError,
         isSubmitting: mutation.isLoading,
         isSuccess: mutation.isSuccess,
         isError: mutation.isError,

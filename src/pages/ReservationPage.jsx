@@ -1,42 +1,24 @@
 import React, { useState, useEffect } from "react";
 import ReservationForm from "../Components/ReservationForm";
-import Logout from "../Components/Logout";
-import { Redirect } from "react-router-dom";
 import AdaptiveCalendar from "../Components/AdaptiveCalendar";
 import WarningMessage from "../Components/ui/WarningMessage";
 import { ErrorMobileModal } from "../Components/ui/ErrorMobileModal";
 import PulsatingLoader from "../Components/ui/PulsatingLoader";
 import useSubmitLogic from "../hooks/useSubmitLogic";
-import Constants from "../constants/Constants";
+import useIsMobile from "../hooks/useIsMobile";
 
 const ReservationPage = ({ roomCalendarLinks, service, allService }) => {
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT
-  );
+  const isMobile = useIsMobile();
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const { errorMessages, setErrorMessages, handleSubmit, isSubmitting } =
+  const { errorMessages, setErrorMessage, handleSubmit, isSubmitting } =
     useSubmitLogic(service, allService);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < Constants.MOBILE_SCREEN_BREAKPOINT);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // if (errorMessages.auth) {
-  return <Redirect to="/logout">LOGOUT</Redirect>;
-  // return <Logout onLogout={onLogout} />;
-  // }
 
   return (
     <div className="max-w-7xl dark:!bg-slate-400 mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {isSubmitting && <PulsatingLoader />}
       {isMobile && errorMessages?.general && (
         <ErrorMobileModal
-          onClose={() => setErrorMessages({})}
+          onClose={() => setErrorMessage({})}
           message={errorMessages.general}
         />
       )}

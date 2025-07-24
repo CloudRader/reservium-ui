@@ -14,6 +14,7 @@ import { ManagerRoutes } from "./routes/ManagerRoutes";
 import { ServiceRoutes } from "./routes/ServiceRoutes";
 import Dashboard from "./Components/dashboard/Dashboard";
 import { ViewCalendarRoutes } from "./routes/ViewCalendarRoutes";
+import LoginInfoPage from "./pages/LoginInfoPage";
 
 const queryClient = new QueryClient();
 

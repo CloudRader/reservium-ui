@@ -10,7 +10,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
     const [formData, setFormData] = useState({});
     const { formFields } = useFormFields(reservationTypes);
 
-    useInitialFormData(formFields, setFormData);
+    useInitialFormData(formFields, setFormData, formData);
     useSlotSync(selectedSlot, setFormData);
 
     // Use formData.type as the reservation type

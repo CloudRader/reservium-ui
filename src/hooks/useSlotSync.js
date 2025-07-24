@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useSlotSync = (selectedSlot, setFormData) => {
+const useSlotSync = (selectedSlot, setFormData, formData) => {
     useEffect(() => {
         if (selectedSlot) {
             const start = new Date(selectedSlot.start);

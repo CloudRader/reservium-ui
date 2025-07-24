@@ -44,6 +44,10 @@ function AppContent() {
     return <PulsatingLoader />;
   }
 
+  if (!isLoggedIn) {
+    return <LoginInfoPage />;
+  }
+
   const { services, calendars, miniServices } = data || {
     services: [],
     calendars: {},
@@ -91,9 +95,6 @@ function AppContent() {
 
         {/* Test Routes */}
         {/* <Route path="test/*" element={<TestRoutes />} /> */}
-
-        {/* TODO new test this */}
-        {!isLoggedIn && <LoginInfoPage />}
 
         {/* Manager Routes */}
         {managerRoles?.length > 0 && (

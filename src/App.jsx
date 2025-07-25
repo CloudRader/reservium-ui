@@ -28,11 +28,12 @@ function AppContent() {
     authState,
     userId,
   } = useAuth();
+
   const { data, isLoading, isError } = useReservationData(isLoggedIn);
   const location = useLocation();
   const isViewCalendarRoute = location.pathname.startsWith("/view");
 
-  if (authState === "initializing" || authState === "checking") {
+  if (authState === "loading") {
     return <PulsatingLoader />;
   }
 
@@ -113,12 +114,7 @@ function AppContent() {
         {/* Service Routes */}
         <Route
           path="/*"
-          element={
-            <ServiceRoutes
-              services={services}
-              calendars={calendars}
-            />
-          }
+          element={<ServiceRoutes services={services} calendars={calendars} />}
         />
       </Routes>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import constants from "../constants/Constants";
+import { API_BASE_URL } from "../../constants";
 axios.defaults.withCredentials = true;
 
 const EventRegistrationForm = ({ formData }) => {
@@ -32,7 +32,7 @@ const EventRegistrationForm = ({ formData }) => {
         manager_contact_mail: formData.manager_contact_mail,
       };
       await axios.post(
-        `${constants.serverURL}/emails/send_registration_form`,
+        `${API_BASE_URL}/emails/send_registration_form`,
         formDataToSend
       );
       setSubmitSuccess(true);

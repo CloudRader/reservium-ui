@@ -1,5 +1,5 @@
 import React from 'react';
-import EditTable from '../Components/EditTable';
+import EditTable from '../../Components/managerPanel/EditTable.jsx';
 
 const SamplePage = () => {
 

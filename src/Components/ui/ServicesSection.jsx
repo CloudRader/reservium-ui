@@ -1,5 +1,5 @@
 import React from "react";
-import constants from "../constants/Constants";
+import { services } from "../../constants";
 const ServiceButton = ({ children, href }) => (
   <a
     href={href}
@@ -15,7 +15,7 @@ const ServicesSection = () => {
       <h2 className="text-white text-2xl mb-6">What else do we have</h2>
       <div className="flex-grow overflow-y-auto">
         <div className="flex flex-wrap">
-          {constants.services.map((service, index) => (
+          {services.map((service, index) => (
             <ServiceButton key={index} href={service.url}>
               {service.name}
             </ServiceButton>

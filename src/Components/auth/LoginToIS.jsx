@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import constants from "../constants/Constants";
-import PulsatingLoader from "./ui/PulsatingLoader";
+import { API_BASE_URL } from "../../constants";
+import PulsatingLoader from "../ui/PulsatingLoader.jsx";
 
 /**
  * Gets the login URL from the server and redirects the user to it.
@@ -14,7 +14,7 @@ const LoginToIS = () => {
     const fetchLoginUrl = async () => {
       try {
         axios.defaults.withCredentials = true;
-        const response = await axios.get(`${constants.serverURL}/users/login`, {
+        const response = await axios.get(`${API_BASE_URL}/users/login`, {
           cache: "no-store",
         });
         window.location.href = response.data;

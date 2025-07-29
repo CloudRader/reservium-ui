@@ -1,14 +1,14 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import Header from "./Components/Header";
-import { LoginToBackend } from "./Components/LoginToBackend";
-import Logout from "./Components/Logout";
-import Footer from "./Components/Footer";
+import Header from "./widgets/Header/Header.jsx";
+import { LoginToBackend } from "./Components/auth/LoginToBackend.jsx";
+import Logout from "./Components/auth/Logout.jsx";
+import Footer from "./widgets/Footer/Footer.jsx";
 import SuccessPage from "./pages/SuccessPage";
 import { useReservationData } from "./hooks/useReservationData";
 import PulsatingLoader from "./Components/ui/PulsatingLoader";
-import LoginToIS from "./Components/LoginToIS";
+import LoginToIS from "./Components/auth/LoginToIS.jsx";
 import { useAuth } from "./hooks/useAuth";
 import { ManagerRoutes } from "./routes/ManagerRoutes";
 import { ServiceRoutes } from "./routes/ServiceRoutes";
@@ -16,7 +16,14 @@ import Dashboard from "./Components/dashboard/Dashboard";
 import { ViewCalendarRoutes } from "./routes/ViewCalendarRoutes";
 import LoginInfoPage from "./pages/LoginInfoPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 function AppContent() {
   const {

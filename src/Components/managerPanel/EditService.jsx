@@ -1,15 +1,15 @@
 import React from "react";
-import constants from "../constants/Constants";
-import UniversalLayout from "../layouts/UniversalLayout";
-import useEditableForm from "../hooks/useEditableForm";
-import SuccessErrorMessage from "./ui/SuccessErrorMessage";
+import { API_BASE_URL } from "../../constants";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import useEditableForm from "../../hooks/useEditableForm.js";
+import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
 import { useNavigate } from "react-router-dom";
-import Button from "./ui/Button";
-import ActionButtons from "./ui/ActionButtons";
+import Button from "../ui/Button.jsx";
+import ActionButtons from "../ui/ActionButtons.jsx";
 
 const EditService = ({ service: initialService, isEditMode = false }) => {
   const navigate = useNavigate();
-  const serviceUpdateUrl = `${constants.serverURL}/reservation_services/${initialService.id}`;
+  const serviceUpdateUrl = `${API_BASE_URL}/reservation_services/${initialService.id}`;
 
   // Transform initial service data to match form field names
   const transformedInitialService = {

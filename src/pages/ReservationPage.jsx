@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ReservationForm from "../Components/ReservationForm";
-import AdaptiveCalendar from "../Components/AdaptiveCalendar";
+import ReservationForm from "../Components/reservationForm/ReservationForm.jsx";
+import AdaptiveCalendar from "../Components/ui/AdaptiveCalendar.jsx";
 import WarningMessage from "../Components/ui/WarningMessage";
 import { ErrorMobileModal } from "../Components/ui/ErrorMobileModal";
 import PulsatingLoader from "../Components/ui/PulsatingLoader";

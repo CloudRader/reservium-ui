@@ -1,5 +1,5 @@
 export const settings = {
-    defaultReservationStartTime: 17,
-    defaultReservationEndTime: 21,
+    default_reservation_start_time: 17,
+    default_reservation_end_time: 21,
     MOBILE_SCREEN_BREAKPOINT: 1024,
 };

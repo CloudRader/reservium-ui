@@ -6,8 +6,8 @@ import listPlugin from "@fullcalendar/list";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import constants from "../constants/Constants";
-import styles from "../styles/KioskCalendar.module.css";
+import styles from "../../styles/KioskCalendar.module.css";
+import { keys } from "../../constants";
 
 function KioskCalendar({ googleCalendars }) {
   // Helper functions
@@ -78,7 +78,7 @@ function KioskCalendar({ googleCalendars }) {
       ],
       height: "100%",
       aspectRatio: 1.1,
-      googleCalendarApiKey: constants.googleCalendarApiKey,
+      googleCalendarApiKey: keys.googleCalendarApiKey,
       eventSources: formatEventSources(),
       dayMaxEventRows: 3,
       fixedWeekCount: false,

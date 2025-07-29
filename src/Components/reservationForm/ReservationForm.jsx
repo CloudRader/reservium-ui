@@ -1,8 +1,8 @@
 import React from "react";
-import useReservationFormLogic from "../hooks/useReservationFormLogic";
-import AdditionalServicesSection from "./AdditionalServicesSection";
-import ReservationMainFields from "./ReservationMainFields";
-import SubmitButton from "./ui/SubmitButton";
+import useReservationFormLogic from "../../hooks/useReservationFormLogic.js";
+import AdditionalServicesSection from "./AdditionalServicesSection.jsx";
+import ReservationMainFields from "./ReservationMainFields.jsx";
+import SubmitButton from "../ui/SubmitButton.jsx";
 
 const ReservationForm = ({
   onSubmit,

@@ -2,18 +2,18 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery, useQueryClient } from 'react-query';
-import constants from "../constants/Constants";
+import { API_BASE_URL } from "../constants";
 
 axios.defaults.withCredentials = true;
 
 const sendCodeToServer = async (code, state) => {
-    await axios.get(`${constants.serverURL}/users/callback`, {
+    await axios.get(`${API_BASE_URL}/users/callback`, {
         params: { code, state },
     });
 };
 
 const getUserInfo = async () => {
-    const response = await axios.get(`${constants.serverURL}/users/me`);
+    const response = await axios.get(`${API_BASE_URL}/users/me`);
     return response.data;
 };
 
@@ -25,16 +25,11 @@ export const useAuth = () => {
         data: userInfo,
         isLoading,
         isError,
-        refetch,
         isFetching,
         status,
     } = useQuery('user', getUserInfo, {
         retry: false,
-        refetchOnWindowFocus: false,
-        staleTime: 1000 * 60 * 5,
     });
-
-    const isLoggedIn = !!userInfo;
 
     const login = useCallback(async (code, state) => {
         try {
@@ -49,15 +44,14 @@ export const useAuth = () => {
 
     const logout = useCallback(() => {
         queryClient.removeQueries('user');
-        localStorage.removeItem('userName');
         navigate('/');
-    }, [queryClient, navigate]);
+    }, [navigate, queryClient]);
 
     return {
         login,
         logout,
         userInfo,
-        isLoggedIn,
+        isLoggedIn: !!userInfo,
         isLoading,
         isError,
         isFetching,

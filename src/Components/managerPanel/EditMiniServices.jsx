@@ -1,8 +1,8 @@
 import React from 'react';
-import EditTable from "./EditTable";
-import useFetchWithDeleted from "../hooks/useFetchWithDeleted";
-import PulsatingLoader from "./ui/PulsatingLoader";
-import ErrorMessage from "./ui/ErrorMessage";
+import EditTable from "./EditTable.jsx";
+import useFetchWithDeleted from "../../hooks/useFetchWithDeleted.js";
+import PulsatingLoader from "../ui/PulsatingLoader.jsx";
+import ErrorMessage from "../ui/ErrorMessage.jsx";
 
 const EditMiniServices = ({ serviceId, serviceName }) => {
     const {

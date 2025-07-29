@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
-import constants from '../constants/Constants';
 import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
@@ -10,7 +9,7 @@ const useSubmitLogic = (service, allService) => {
     const navigate = useNavigate()
 
     const mutation = useMutation(
-        (formData) => axios.post(`${constants.serverURL}/events/create_event`, formData),
+        (formData) => axios.post(`${API_BASE_URL}/events/create_event`, formData),
         {
             onSuccess: (response, formData) => {
                 if (response.status === 201) {

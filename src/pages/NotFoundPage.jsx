@@ -1,6 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import ServicesSection from "../Components/ServicesSection";
+import { Link } from "react-router-dom";
+import ServicesSection from "../Components/ui/ServicesSection.jsx";
 import UniversalLayout from "../layouts/UniversalLayout";
 
 const NotFoundPage = () => {
@@ -16,12 +16,12 @@ const NotFoundPage = () => {
         <p className="text-green-700 dark:text-white mb-8 font-medium">
           Oops! The page you're looking for doesn't exist.
         </p>
-        <NavLink
+        <Link
           to="/"
           className="inline-flex self-center no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
         >
           Go to Home Page
-        </NavLink>
+        </Link>
       </div>
       <div className="w-full md:w-1/2 lg:w-7/12">
         <ServicesSection />

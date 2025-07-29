@@ -1,22 +1,21 @@
 import React, { useEffect } from "react";
-import constants from "../constants/Constants";
-import UniversalLayout from "../layouts/UniversalLayout";
-import SuccessErrorMessage from "./ui/SuccessErrorMessage";
-import useCreateFormLogic from "../hooks/useCreateFormLogic";
-import FormFieldRenderer from "./FormFieldRenderer";
+import { API_BASE_URL } from "../../constants";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
+import useCreateFormLogic from "../../hooks/useCreateFormLogic.js";
+import FormFieldRenderer from "../ui/FormFieldRenderer.jsx";
 
-const CreateNewMiniService = ({ serviceId }) => {
+const CreateNewService = () => {
   const {
     formFields,
     formData,
     message,
     setFormFields,
     handleSubmit,
-    setFormData,
     handleChange,
   } = useCreateFormLogic(
     [],
-    `${constants.serverURL}/mini_services/create_mini_service`
+    `${API_BASE_URL}/reservation_services/create_reservation_service`
   );
 
   useEffect(() => {
@@ -24,9 +23,29 @@ const CreateNewMiniService = ({ serviceId }) => {
       {
         name: "name",
         type: "text",
-        labelText: "Mini Service Name",
+        labelText: "Service Name",
         labelColor: "text-success",
         validation: (value) => !!value,
+      },
+      {
+        name: "alias",
+        type: "text",
+        labelText: "Alias",
+        labelColor: "text-success",
+        validation: (value) => !!value,
+      },
+      {
+        name: "web",
+        type: "text",
+        labelText: "Web",
+        labelColor: "text-success",
+      },
+      {
+        name: "contact_mail",
+        type: "email",
+        labelText: "Contact Email",
+        labelColor: "text-success",
+        validation: (value) => /\S+@\S+\.\S+/.test(value),
       },
       {
         name: "lockers_id",
@@ -54,15 +73,16 @@ const CreateNewMiniService = ({ serviceId }) => {
         labelText: "Room ID",
         labelColor: "text-success",
       },
+      {
+        name: "public",
+        type: "checkbox",
+        sybType: "oneCheckbox",
+        labelText: "Public",
+        labelColor: "text-success",
+        options: [{ value: "true", label: "True" }],
+      },
     ]);
   }, [setFormFields]);
-
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      reservation_service_id: serviceId,
-    }));
-  }, [setFormData, serviceId]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -73,20 +93,18 @@ const CreateNewMiniService = ({ serviceId }) => {
     <UniversalLayout
       centerContent
       whiteBackGreenContentBackground
-      headerTittle={"Create New Mini Service"}
+      headerTittle={"Create New Service"}
     >
       <div className="bg-white p-4 rounded-lg shadow">
         <form onSubmit={handleFormSubmit} className="space-y-5">
           {formFields.map((field) => (
             <div key={field.name}>
-              {field.type !== "hidden" && (
-                <label
-                  htmlFor={field.name}
-                  className="block text-sm font-medium text-green-700 mb-1"
-                >
-                  {field.labelText}
-                </label>
-              )}
+              <label
+                htmlFor={field.name}
+                className="block text-sm font-medium text-green-700 mb-1"
+              >
+                {field.labelText}
+              </label>
               <FormFieldRenderer
                 field={field}
                 formData={formData}
@@ -98,7 +116,7 @@ const CreateNewMiniService = ({ serviceId }) => {
             type="submit"
             className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
-            Create Mini Service
+            Create Service
           </button>
         </form>
 
@@ -108,4 +126,4 @@ const CreateNewMiniService = ({ serviceId }) => {
   );
 };
 
-export default CreateNewMiniService;
+export default CreateNewService;

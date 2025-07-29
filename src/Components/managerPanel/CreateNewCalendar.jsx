@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useRef } from "react";
 import axios from "axios";
-import constants from "../constants/Constants";
-import UniversalLayout from "../layouts/UniversalLayout";
-import useCreateFormLogic from "../hooks/useCreateFormLogic";
-import SuccessErrorMessage from "./ui/SuccessErrorMessage";
-import CalendarIdInput from "./CalendarIdInput";
-import FormFieldRenderer from "./FormFieldRenderer";
+import { API_BASE_URL } from "../../constants";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import useCreateFormLogic from "../../hooks/useCreateFormLogic.js";
+import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
+import CalendarIdInput from "./CalendarIdInput.jsx";
+import FormFieldRenderer from "../ui/FormFieldRenderer.jsx";
 
 axios.defaults.withCredentials = true;
 
@@ -222,7 +222,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     handleChange,
   } = useCreateFormLogic(
     initialFields,
-    `${constants.serverURL}/calendars/create_calendar`
+    `${API_BASE_URL}/calendars/create_calendar`
   );
 
   const fetchMiniServices = useCallback(async () => {
@@ -231,7 +231,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
 
     try {
       const response = await axios.get(
-        `${constants.serverURL}/mini_services/reservation_service/${serviceId}`
+        `${API_BASE_URL}/mini_services/reservation_service/${serviceId}`
       );
       const updatedFields = formFields.map((field) => {
         if (field.name === "mini_services") {
@@ -318,7 +318,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     setIsLoadingCalendars(true);
     try {
       const response = await axios.get(
-        `${constants.serverURL}/calendars/google_calendars/`
+        `${API_BASE_URL}/calendars/google_calendars/`
       );
       setGoogleCalendars(response.data);
       setCalendarIdInputType("select");

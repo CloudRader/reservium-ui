@@ -1,11 +1,10 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import constants from '../constants/Constants';
 axios.defaults.withCredentials = true;
 
 export const useViewCalendarData = () => {
     return useQuery('viewCalendarData', async () => {
-        const response = await axios.get(`${constants.serverURL}/reservation_services/services/public`);
+        const response = await axios.get(`${API_BASE_URL}/reservation_services/services/public`);
         const data = response.data;
 
         const services = data.map(info => ({

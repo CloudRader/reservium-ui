@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import UniversalLayout from "../layouts/UniversalLayout";
-import TableActions from "./TableActions";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import TableActions from "./TableActions.jsx";
 import axios from "axios";
-import constants from "../constants/Constants";
+import { API_BASE_URL } from "../../constants";
 
 axios.defaults.withCredentials = true;
 
@@ -24,7 +24,7 @@ const EditTable = ({
   const handleRetrieve = async (itemId) => {
     try {
       const response = await axios.put(
-        `${constants.serverURL}${retrieveLink}${itemId}`
+        `${API_BASE_URL}${retrieveLink}${itemId}`
       );
       if (response.status === 200) {
         await refetch();
@@ -44,7 +44,7 @@ const EditTable = ({
 
     try {
       const response = await axios.delete(
-        `${constants.serverURL}${deleteLink}${itemId}?hard_remove=${hardRemove}`
+        `${API_BASE_URL}${deleteLink}${itemId}?hard_remove=${hardRemove}`
       );
 
       if (response.status === 200) {

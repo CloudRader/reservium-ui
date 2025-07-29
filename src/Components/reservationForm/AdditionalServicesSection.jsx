@@ -1,5 +1,5 @@
 import React from "react";
-import FormFieldRenderer from "./FormFieldRenderer";
+import FormFieldRenderer from "../ui/FormFieldRenderer.jsx";
 
 const AdditionalServicesSection = ({
   additionalServices,

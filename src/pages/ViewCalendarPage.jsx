@@ -1,5 +1,5 @@
 import React from 'react';
-import KioskCalendar from "../Components/KioskCalendar";
+import KioskCalendar from "../Components/kioskCalendareView/KioskCalendar.jsx";
 
 const CalendarView = ({ googleCalendars }) => {
     return (

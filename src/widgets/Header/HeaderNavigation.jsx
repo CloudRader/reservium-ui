@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import bubenLogo from "../assets/buben_logo.svg";
+import bubenLogo from "../../assets/buben_logo.svg";
 
 const HeaderNavigation = ({ services, showServices, isViewMode }) => {
     return (

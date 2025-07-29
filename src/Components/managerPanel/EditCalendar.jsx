@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import UniversalLayout from "../layouts/UniversalLayout";
-import constants from "../constants/Constants";
-import useEditableForm from "../hooks/useEditableForm";
-import SuccessErrorMessage from "./ui/SuccessErrorMessage";
-import ActionButtons from "./ui/ActionButtons";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import { API_BASE_URL } from "../../constants";
+import useEditableForm from "../../hooks/useEditableForm.js";
+import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
+import ActionButtons from "../ui/ActionButtons.jsx";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -14,8 +14,8 @@ const EditCalendar = ({
   isEditMode = false,
   serviceCalendars = [],
 }) => {
-  const calendarFetchUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
-  const calendarUpdateUrl = `${constants.serverURL}/calendars/${calendarBaseData.googleCalendarId}`;
+  const calendarFetchUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}`;
+  const calendarUpdateUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}`;
   const initialData = {
     ...calendarBaseData,
     club_member_rules: {},
@@ -31,7 +31,7 @@ const EditCalendar = ({
     setIsLoadingMiniServices(true);
     try {
       const response = await axios.get(
-        `${constants.serverURL}/mini_services/reservation_service/${serviceId}`
+        `${API_BASE_URL}/mini_services/reservation_service/${serviceId}`
       );
       setMiniServices(response.data);
     } catch (error) {

@@ -1,7 +1,7 @@
 import React from "react";
-import bubenLogo from "../assets/buben_logo.svg";
-import constants from "../constants/Constants";
+import bubenLogo from "../../assets/buben_logo.svg";
 import { Heart } from "lucide-react";
+import { emails } from "../../constants";
 
 const Footer = () => {
   return (
@@ -27,7 +27,7 @@ const Footer = () => {
               </div>
             </a>
             <a
-              href={`mailto:${constants.feedBackEmail}`}
+              href={`mailto:${emails.feedback}`}
               className="text-green-600 hover:text-green-800 no-underline mb-4"
             >
               Made by PS team <Heart className="inline-block w-4 h-4" />

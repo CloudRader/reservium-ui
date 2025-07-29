@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
-import ServicesSection from "../Components/ServicesSection";
-import constants from "../constants/Constants";
-import EventRegistrationForm from "../Components/EventRegistrationForm";
+import ServicesSection from "../Components/ui/ServicesSection.jsx";
+import {emails} from "../constants";
+import EventRegistrationForm from "../Components/reservationForm/EventRegistrationForm.jsx";
 
 const SuccessPage = () => {
   // Extract state processing to a separate function
@@ -63,7 +63,7 @@ const SuccessPage = () => {
                 <p className="text-l md:text-xl text-green-700 mb-4">
                   If you are reserving for {maxPeopleMessage}, you must fill out
                   this registration form. It will be sent to the Head of
-                  Dormitory ({constants.headOfDormitoryEmail}), with the manager
+                  Dormitory ({emails.headOfDormitory}), with the manager
                   ({managerMail}) in CC.
                 </p>
                 <div className="pb-2">

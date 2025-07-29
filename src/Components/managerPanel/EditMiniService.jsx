@@ -1,9 +1,9 @@
 import React from "react";
-import UniversalLayout from "../layouts/UniversalLayout";
-import SuccessErrorMessage from "./ui/SuccessErrorMessage";
-import useEditableForm from "../hooks/useEditableForm";
-import constants from "../constants/Constants";
-import ActionButtons from "./ui/ActionButtons";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
+import useEditableForm from "../../hooks/useEditableForm.js";
+import { API_BASE_URL } from "../../constants";
+import ActionButtons from "../ui/ActionButtons.jsx";
 
 const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
   const {
@@ -16,7 +16,7 @@ const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
     handleChange,
   } = useEditableForm(
     miniServiceData,
-    `${constants.serverURL}/mini_services/${miniServiceData.id}`,
+    `${API_BASE_URL}/mini_services/${miniServiceData.id}`,
     null,
     isEditMode
   );

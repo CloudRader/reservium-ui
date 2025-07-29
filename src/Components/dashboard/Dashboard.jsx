@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useEvents } from "../../hooks/useEvents";
 import axios from "axios";
-import constants from "../../constants/Constants";
 import DashboardHeader from "./DashboardHeader";
 import EventCard from "./EventCard";
 import PulsatingLoader from "../ui/PulsatingLoader";
@@ -25,7 +24,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
   // Handle delete event
   const handleDelete = async (eventId, note) => {
     try {
-      await axios.delete(`${constants.serverURL}/events/${eventId}`, {
+      await axios.delete(`${API_BASE_URL}/events/${eventId}`, {
         data: note,
       });
       await refetch(); // Explicitly refetch after deletion
@@ -64,7 +63,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
       };
 
       await axios.put(
-        `${constants.serverURL}/events/request_update_reservation_time/${eventId}`,
+        `${API_BASE_URL}/events/request_update_reservation_time/${eventId}`,
         {
           event_update: {
             start_datetime: formatDateTime(startDateTime),
@@ -84,7 +83,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
   const handleApproveTime = async (eventId, approve, managerNotes) => {
     try {
       await axios.put(
-        `${constants.serverURL}/events/approve_update_reservation_time/${eventId}?approve=${approve}`,
+        `${API_BASE_URL}/events/approve_update_reservation_time/${eventId}?approve=${approve}`,
         managerNotes
       );
       await refetch(); // Explicitly refetch after approval/decline
@@ -102,7 +101,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
   const handleApproveEvent = async (eventId, approve, managerNotes) => {
     try {
       await axios.put(
-        `${constants.serverURL}/events/approve_event/${eventId}?approve=${approve}`,
+        `${API_BASE_URL}/events/approve_event/${eventId}?approve=${approve}`,
         managerNotes
       );
       await refetch(); // Explicitly refetch after event approval/decline

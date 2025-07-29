@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import EditServices from '../Components/EditServices';
-import CreateNewService from '../Components/CreateNewService';
-import EditCalendars from '../Components/EditCalendars';
-import EditMiniServices from '../Components/EditMiniServices';
-import EditService from '../Components/EditService';
-import CreateNewCalendar from '../Components/CreateNewCalendar';
-import CreateNewMiniService from '../Components/CreateNewMiniService';
-import EditMiniService from '../Components/EditMiniService';
-import EditCalendar from '../Components/EditCalendar';
+import EditServices from '../Components/managerPanel/EditServices.jsx';
+import CreateNewService from '../Components/managerPanel/CreateNewService.jsx';
+import EditCalendars from '../Components/managerPanel/EditCalendars.jsx';
+import EditMiniServices from '../Components/managerPanel/EditMiniServices.jsx';
+import EditService from '../Components/managerPanel/EditService.jsx';
+import CreateNewCalendar from '../Components/managerPanel/CreateNewCalendar.jsx';
+import CreateNewMiniService from '../Components/managerPanel/CreateNewMiniService.jsx';
+import EditMiniService from '../Components/managerPanel/EditMiniService.jsx';
+import EditCalendar from '../Components/managerPanel/EditCalendar.jsx';
 
 
 // todo DEL make this as condition only for manager and then try to get all data that i need with deleted services and cal and mini ser

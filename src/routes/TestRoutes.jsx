@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import SamplePage from '../testData/test';
-import EditService from '../Components/EditService';
-import testService from '../testData/serviceTestData';
+import SamplePage from '../tests/testData/test';
+import EditService from '../Components/managerPanel/EditService.jsx';
+import testService from '../tests/testData/serviceTestData';
 
 export const TestRoutes = () => (
     <Routes>

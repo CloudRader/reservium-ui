@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import constants from "../constants/Constants";
+import { API_BASE_URL } from "../constants";
 axios.defaults.withCredentials = true;
 
 export function useReservationData(isLoggedIn) {
@@ -8,9 +8,9 @@ export function useReservationData(isLoggedIn) {
         try {
             let response = null;
             if (isLoggedIn) {
-                response = await axios.get(`${constants.serverURL}/reservation_services/?include_removed=true`);
+                response = await axios.get(`${API_BASE_URL}/reservation_services/?include_removed=true`);
             } else {
-                response = await axios.get(`${constants.serverURL}/reservation_services/services/public`);
+                response = await axios.get(`${API_BASE_URL}/reservation_services/services/public`);
             }
 
             const servicesData = response.data.map(info => ({
@@ -57,14 +57,14 @@ export function useReservationData(isLoggedIn) {
         }
     };
 
-    return useQuery(['reservationData', isLoggedIn], fetchData, 
-    {
-        keepPreviousData: true,
-        enabled: true,
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        cacheTime: 30 * 60 * 1000, // 30 minutes
-        retry: 1,
-        retryDelay: 1000,
-    }
-);
+    return useQuery(['reservationData', isLoggedIn], fetchData,
+        {
+            keepPreviousData: true,
+            enabled: true,
+            staleTime: 5 * 60 * 1000, // 5 minutes
+            cacheTime: 30 * 60 * 1000, // 30 minutes
+            retry: 1,
+            retryDelay: 1000,
+        }
+    );
 }

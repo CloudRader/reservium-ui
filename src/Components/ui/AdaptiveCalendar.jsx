@@ -7,9 +7,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import constants from "../constants/Constants";
-import styles from "../styles/AdaptiveCalendar.module.css";
+import styles from "../../styles/AdaptiveCalendar.module.css";
 import moment from "moment";
+import { keys, settings } from "../../constants";
 
 const AdaptiveCalendar = memo(
   ({ isMobile, googleCalendars, setSelectedSlot }) => {
@@ -28,8 +28,8 @@ const AdaptiveCalendar = memo(
           "background-color: rgba(0, 128, 255, 0.3); border: 2px solid rgb(0, 128, 255);";
       }
 
-      let startTime = String(constants.default_reservation_start_time) + ":00";
-      let endTime = String(constants.default_reservation_end_time) + ":00";
+      let startTime = String(settings.default_reservation_start_time) + ":00";
+      let endTime = String(settings.default_reservation_end_time) + ":00";
 
       if (event.start) {
         startTime = formatDateTime(event.start);
@@ -82,14 +82,14 @@ const AdaptiveCalendar = memo(
           // For month view, set start to 17:00 and end to 22:00
           start = selectedDate
             .clone()
-            .hour(constants.default_reservation_start_time)
+            .hour(settings.default_reservation_start_time)
             .minute(0)
             .second(0)
             .millisecond(0)
             .toDate();
           end = selectedDate
             .clone()
-            .hour(constants.default_reservation_end_time)
+            .hour(settings.default_reservation_end_time)
             .minute(0)
             .second(0)
             .millisecond(0)
@@ -130,7 +130,7 @@ const AdaptiveCalendar = memo(
       dayMaxEventRows: 3,
       fixedWeekCount: false,
       firstDay: 1,
-      googleCalendarApiKey: constants.googleCalendarApiKey,
+      googleCalendarApiKey: keys.googleCalendarApiKey,
       eventSources: [
         ...googleCalendars,
         {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 // import ThemeToggle from "./ThemeToggle";
-import HeaderNavigation from "./HeaderNavigation";
+import HeaderNavigation from "./HeaderNavigation.jsx";
 
 const Header = ({ username, isLoggedIn, services, isManager }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

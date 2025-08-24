@@ -13,13 +13,13 @@ export const validateField = (field, value) => {
     return null;
 };
 
-export const preparePayload = (formData) => {
+export const preparePayload = (formData, calendarIds) => {
     return {
         start_datetime: `${formData.startDate}T${formData.startTime}`,
         end_datetime: `${formData.endDate}T${formData.endTime}`,
         purpose: formData.purpose,
         guests: parseInt(formData.guests, 10),
-        reservation_type: formData.type,
+        calendar_id: calendarIds[formData.type],
         email: formData.email,
         additional_services: formData.additionalServices || [],
     };

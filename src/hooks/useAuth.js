@@ -13,7 +13,15 @@ const sendCodeToServer = async (code, state) => {
 };
 
 const getUserInfo = async () => {
-    const response = await axios.get(`${constants.serverURL}/users/me`);
+    // const response = await axios.get(`${constants.serverURL}/users/me`);
+    const response = await axios.get(
+        `${constants.serverURL}/users/me`,
+        {
+            headers: {
+                Authorization: `Bearer some-token`,
+            },
+        }
+    );
     return response.data;
 };
 

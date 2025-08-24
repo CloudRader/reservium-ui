@@ -8,7 +8,15 @@ export function useReservationData(isLoggedIn) {
         try {
             let response = null;
             if (isLoggedIn) {
-                response = await axios.get(`${constants.serverURL}/reservation_services/?include_removed=true`);
+                // response = await axios.get(`${constants.serverURL}/reservation-services/?include_removed=true`);
+                response = await axios.get(
+                    `${constants.serverURL}/reservation-services/?include_removed=true`,
+                    {
+                        headers: {
+                            Authorization: `Bearer some-token`,
+                        },
+                    }
+                );
             } else {
                 response = await axios.get(`${constants.serverURL}/reservation-services/public`);
             }

@@ -5,6 +5,6 @@ import { parseCalendarData } from "../normalize/calendar";
 axios.defaults.withCredentials = true;
 
 export async function getPublicCalendarData() {
-    const response = await axios.get(`${serverURL}/reservation_services/services/public`);
+    const response = await axios.get(`${serverURL}/reservation-services/public`);
     return parseCalendarData(response.data);
 }

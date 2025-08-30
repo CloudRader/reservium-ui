@@ -15,7 +15,7 @@ const sendCodeToServer = async (code, state) => {
 
     if (response.data?.token) {
         console.log('🔑 Setting token from callback response');
-        tokenManager.setToken(response.data.token);
+        tokenManager.setToken(response.data.access_token);
     } else {
         console.warn('⚠️ No token found in callback response:', response.data);
     }

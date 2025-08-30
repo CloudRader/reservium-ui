@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { useEvents } from "../../hooks/useEvents";
-import axios from "axios";
-import DashboardHeader from "./DashboardHeader";
-import EventCard from "./EventCard";
-import PulsatingLoader from "../ui/PulsatingLoader";
-import ErrorMessage from "../ui/ErrorMessage";
+import React, { useState } from 'react';
+import { useEvents } from '../../hooks/useEvents';
+import axios from 'axios';
+import DashboardHeader from './DashboardHeader';
+import EventCard from './EventCard';
+import PulsatingLoader from '../ui/PulsatingLoader';
+import ErrorMessage from '../ui/ErrorMessage';
+import { API_BASE_URL } from '../../constants';
 
 const Dashboard = ({ userId, isManager, managerRoles }) => {
-  const [activeTab, setActiveTab] = useState("personal");
+  const [activeTab, setActiveTab] = useState('personal');
 
   const {
     data: events,
@@ -29,8 +30,8 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
       });
       await refetch(); // Explicitly refetch after deletion
     } catch (error) {
-      console.error("Error deleting event:", error);
-      alert("Failed to delete event. Please try again.");
+      console.error('Error deleting event:', error);
+      alert('Failed to delete event. Please try again.');
     }
   };
 
@@ -50,32 +51,29 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
       // Format date to YYYY-MM-DD HH:mm:ss
       const formatDateTime = (date) => {
         return date
-          .toLocaleString("sv", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
+          .toLocaleString('sv', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
             hour12: false,
           })
-          .replace("T", " ");
+          .replace('T', ' ');
       };
 
-      await axios.put(
-        `${API_BASE_URL}/events/request_update_reservation_time/${eventId}`,
-        {
-          event_update: {
-            start_datetime: formatDateTime(startDateTime),
-            end_datetime: formatDateTime(endDateTime),
-          },
-          reason: reason,
-        }
-      );
+      await axios.put(`${API_BASE_URL}/events/${eventId}/request-time-change`, {
+        event_update: {
+          start_datetime: formatDateTime(startDateTime),
+          end_datetime: formatDateTime(endDateTime),
+        },
+        reason: reason,
+      });
       await refetch();
     } catch (error) {
-      console.error("Error requesting time update:", error);
-      alert("Failed to request time update. Please try again.");
+      console.error('Error requesting time update:', error);
+      alert('Failed to request time update. Please try again.');
     }
   };
 
@@ -83,15 +81,15 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
   const handleApproveTime = async (eventId, approve, managerNotes) => {
     try {
       await axios.put(
-        `${API_BASE_URL}/events/approve_update_reservation_time/${eventId}?approve=${approve}`,
+        `${API_BASE_URL}/events/${eventId}/approve-time-change-request?approve=${approve}`,
         managerNotes
       );
       await refetch(); // Explicitly refetch after approval/decline
     } catch (error) {
-      console.error("Error approving/declining time change:", error);
+      console.error('Error approving/declining time change:', error);
       alert(
         `Failed to ${
-          approve ? "approve" : "decline"
+          approve ? 'approve' : 'decline'
         } time change. Please try again.`
       );
     }
@@ -101,14 +99,14 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
   const handleApproveEvent = async (eventId, approve, managerNotes) => {
     try {
       await axios.put(
-        `${API_BASE_URL}/events/approve_event/${eventId}?approve=${approve}`,
+        `${API_BASE_URL}/events/${eventId}/approve?approve=${approve}`,
         managerNotes
       );
       await refetch(); // Explicitly refetch after event approval/decline
     } catch (error) {
-      console.error("Error approving/declining event:", error);
+      console.error('Error approving/declining event:', error);
       alert(
-        `Failed to ${approve ? "approve" : "decline"} event. Please try again.`
+        `Failed to ${approve ? 'approve' : 'decline'} event. Please try again.`
       );
     }
   };
@@ -117,7 +115,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     return (
       <div className="container mx-auto px-4 py-8">
         <ErrorMessage
-          message={error.message || "Failed to load events"}
+          message={error.message || 'Failed to load events'}
           title="Error Loading Events"
           onRetry={refetch}
         />
@@ -153,9 +151,9 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
         <div className="text-center p-8 bg-white rounded-lg shadow-sm">
           <p className="text-gray-800 text-xl mb-4">No events found</p>
           <p className="text-gray-600">
-            {activeTab === "personal"
+            {activeTab === 'personal'
               ? "You don't have any events yet."
-              : "There are no events to manage at the moment."}
+              : 'There are no events to manage at the moment.'}
           </p>
         </div>
       )}

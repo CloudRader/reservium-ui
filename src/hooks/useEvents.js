@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 
 export const useEvents = (userId, activeTab, managerRoles) => {
     const fetchUserEvents = async () => {
-        const response = await axios.get(`${API_BASE_URL}/events/user/${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/users/me/events`);
         return response.data;
     };
 
@@ -18,7 +18,8 @@ export const useEvents = (userId, activeTab, managerRoles) => {
 
         // Fetch events for each manager role and combine results
         const eventsPromises = managerRoles.map(role =>
-            axios.get(`${API_BASE_URL}/events/state/reservation_service/${role}?event_state=${activeTab}`)
+            // axios.get(`${API_BASE_URL}/events/state/reservation_service/${role}?event_state=${activeTab}`)
+            axios.get(`${API_BASE_URL}/events/get-by-user-roles`)
         );
 
         try {

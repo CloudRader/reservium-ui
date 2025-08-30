@@ -9,7 +9,15 @@ const useSubmitLogic = (service, allService) => {
     const navigate = useNavigate()
 
     const mutation = useMutation(
-        (formData) => axios.post(`${API_BASE_URL}/events/create_event`, formData),
+        (formData) => axios.post(
+            `${API_BASE_URL}/events/`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer some-token`,
+                },
+            }
+            ),
         {
             onSuccess: (response, formData) => {
                 if (response.status === 201) {

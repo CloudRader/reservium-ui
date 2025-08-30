@@ -65,7 +65,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
         if (validateForm()) {
-            const payload = preparePayload(formData);
+            const payload = preparePayload(formData, calendarIds);
             onSubmit(payload);
         }
     }, [validateForm, preparePayload, onSubmit, formData]);

@@ -11,7 +11,7 @@ const sendCodeToServer = async (code, state) => {
     // Store the code as the token
     tokenManager.setToken(code);
     
-    await axios.get(`${API_BASE_URL}/users/callback`, {
+    await axios.get(`${API_BASE_URL}/auth/callback`, {
         params: { code, state },
     });
 };

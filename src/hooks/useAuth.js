@@ -3,25 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery, useQueryClient } from 'react-query';
 import { API_BASE_URL } from "../constants";
+import { tokenManager } from "../utils/tokenManager";
 
 axios.defaults.withCredentials = true;
 
 const sendCodeToServer = async (code, state) => {
+    // Store the code as the token
+    tokenManager.setToken(code);
+    
     await axios.get(`${API_BASE_URL}/users/callback`, {
         params: { code, state },
     });
 };
 
 const getUserInfo = async () => {
-    // const response = await axios.get(`${constants.serverURL}/users/me`);
-    const response = await axios.get(
-        `${API_BASE_URL}/users/me`,
-        {
-            headers: {
-                Authorization: `Bearer some-token`,
-            },
-        }
-    );
+    const response = await axios.get(`${API_BASE_URL}/users/me`);
     return response.data;
 };
 
@@ -51,6 +47,7 @@ export const useAuth = () => {
     }, [navigate, queryClient]);
 
     const logout = useCallback(() => {
+        tokenManager.clearToken();
         queryClient.removeQueries('user');
         navigate('/');
     }, [navigate, queryClient]);

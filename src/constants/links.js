@@ -6,4 +6,4 @@ export const links = {
     serverURL: "https://api.develop.reservation.buk.cvut.cz/v2",
 };
 
-export const API_BASE_URL = import.meta.env.DEV ? '/api' : "https://api.develop.reservation.buk.cvut.cz";
+export const API_BASE_URL = "https://api.develop.reservation.buk.cvut.cz/v2";

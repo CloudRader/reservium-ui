@@ -14,7 +14,7 @@ const LoginToIS = () => {
     const fetchLoginUrl = async () => {
       try {
         axios.defaults.withCredentials = true;
-        const response = await axios.get(`${API_BASE_URL}/users/login`, {
+        const response = await axios.get(`${API_BASE_URL}/auth/login`, {
           cache: "no-store",
         });
         window.location.href = response.data;

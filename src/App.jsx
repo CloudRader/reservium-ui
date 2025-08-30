@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import axios from "axios";
 import Header from "./widgets/Header/Header.jsx";
 import { LoginToBackend } from "./Components/auth/LoginToBackend.jsx";
 import Logout from "./Components/auth/Logout.jsx";
@@ -15,6 +16,34 @@ import { ServiceRoutes } from "./routes/ServiceRoutes";
 import Dashboard from "./Components/dashboard/Dashboard";
 import { ViewCalendarRoutes } from "./routes/ViewCalendarRoutes";
 import LoginInfoPage from "./pages/LoginInfoPage";
+import { tokenManager } from "./utils/tokenManager";
+
+// Setup axios interceptors for automatic token injection
+axios.interceptors.request.use(
+  (config) => {
+    const token = tokenManager.getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Setup response interceptor for handling 401 errors
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      tokenManager.clearToken();
+      // Redirect to login or handle logout
+      window.location.href = '/logout';
+    }
+    return Promise.reject(error);
+  }
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,7 +106,6 @@ function AppContent() {
         services={services}
         isManager={managerRoles?.length > 0}
       />
-
       <Routes>
         <Route path="/login" element={<LoginToIS />} />
         <Route path="/logined" element={<LoginToBackend login={login} />} />
@@ -124,7 +152,6 @@ function AppContent() {
           element={<ServiceRoutes services={services} calendars={calendars} />}
         />
       </Routes>
-
       {/* Only render the footer if not on a view calendar route */}
       {!isViewCalendarRoute && <Footer />}
     </div>

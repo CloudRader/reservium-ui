@@ -7,7 +7,7 @@ import constants from "../constants/Constants";
 axios.defaults.withCredentials = true;
 
 const sendCodeToServer = async (code, state) => {
-    await axios.get(`${constants.serverURL}/users/callback`, {
+    await axios.get(`${constants.serverURL}/auth/callback`, {
         params: { code, state },
     });
 };

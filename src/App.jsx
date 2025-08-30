@@ -20,36 +20,16 @@ import { tokenManager } from './utils/tokenManager';
 
 axios.interceptors.request.use(
   (config) => {
-    console.log(
-      '🔍 INTERCEPTOR CALLED for:',
-      config.method?.toUpperCase(),
-      config.url
-    );
-
     // Ensure headers object exists
     if (!config.headers) {
       config.headers = {};
     }
-
     const token = tokenManager.getToken();
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
-      console.log(
-        '🚀 Axios Request: Adding token to',
-        config.method?.toUpperCase(),
-        config.url
-      );
-      console.log('🔑 Token being sent:', token.substring(0, 20) + '...');
-    } else {
-      console.log(
-        '⚠️  Axios Request: No token available for',
-        config.method?.toUpperCase(),
-        config.url
-      );
     }
 
-    console.log('📋 Final headers:', JSON.stringify(config.headers, null, 2));
     return config;
   },
   (error) => {

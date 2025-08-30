@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { options } from '@fullcalendar/core/preact.js';
+import { API_BASE_URL } from "../constants";
 
 axios.defaults.withCredentials = true;
 

@@ -1,25 +1,27 @@
-// In-memory token storage - secure and cleared on page refresh
-let authToken = null;
+// SessionStorage token storage - persists during browser session
+const TOKEN_KEY = 'auth_token';
 
 export const tokenManager = {
   setToken(token) {
-    console.log('🔑 TokenManager: Setting token:', token ? `${token.substring(0, 10)}...` : 'null');
-    authToken = token;
+    if (token) {
+      sessionStorage.setItem(TOKEN_KEY, token);
+    } else {
+      sessionStorage.removeItem(TOKEN_KEY);
+    }
   },
 
   getToken() {
-    console.log('🔍 TokenManager: Getting token:', authToken ? `${authToken.substring(0, 10)}...` : 'null');
-    return authToken;
+    const token = sessionStorage.getItem(TOKEN_KEY);
+    return token;
   },
 
   clearToken() {
-    console.log('🗑️ TokenManager: Clearing token');
-    authToken = null;
+    sessionStorage.removeItem(TOKEN_KEY);
   },
 
   hasToken() {
-    const hasToken = authToken !== null;
-    console.log('❓ TokenManager: Has token:', hasToken);
+    const token = sessionStorage.getItem(TOKEN_KEY);
+    const hasToken = token !== null;
     return hasToken;
   }
 };

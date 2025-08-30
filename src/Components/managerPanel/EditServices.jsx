@@ -13,7 +13,7 @@ const EditServices = () => {
         refetch
     } = useFetchWithDeleted(
         ['services'],
-        '/reservation_services/'
+        '/reservation-services/'
     );
 
     if (isError) {
@@ -39,8 +39,8 @@ const EditServices = () => {
                 editLink={`/manager/edit-service/`}
                 addLink={`/manager/add-service`}
                 viewLink={`/manager/view-service/`}
-                deleteLink={`/reservation_services/`}
-                retrieveLink={`/reservation_services/retrieve_deleted/`}
+                deleteLink={`/reservation-services/`}
+                retrieveLink={`/reservation-services/`}
                 refetch={refetch}
             />}
         </div>

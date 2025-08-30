@@ -1,49 +1,92 @@
-import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
-import axios from "axios";
-import Header from "./widgets/Header/Header.jsx";
-import { LoginToBackend } from "./Components/auth/LoginToBackend.jsx";
-import Logout from "./Components/auth/Logout.jsx";
-import Footer from "./widgets/Footer/Footer.jsx";
-import SuccessPage from "./pages/SuccessPage";
-import { useReservationData } from "./hooks/useReservationData";
-import PulsatingLoader from "./Components/ui/PulsatingLoader";
-import LoginToIS from "./Components/auth/LoginToIS.jsx";
-import { useAuth } from "./hooks/useAuth";
-import { ManagerRoutes } from "./routes/ManagerRoutes";
-import { ServiceRoutes } from "./routes/ServiceRoutes";
-import Dashboard from "./Components/dashboard/Dashboard";
-import { ViewCalendarRoutes } from "./routes/ViewCalendarRoutes";
-import LoginInfoPage from "./pages/LoginInfoPage";
-import { tokenManager } from "./utils/tokenManager";
+import React from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import axios from 'axios';
+import Header from './widgets/Header/Header.jsx';
+import { LoginToBackend } from './Components/auth/LoginToBackend.jsx';
+import Logout from './Components/auth/Logout.jsx';
+import Footer from './widgets/Footer/Footer.jsx';
+import SuccessPage from './pages/SuccessPage';
+import { useReservationData } from './hooks/useReservationData';
+import PulsatingLoader from './Components/ui/PulsatingLoader';
+import LoginToIS from './Components/auth/LoginToIS.jsx';
+import { useAuth } from './hooks/useAuth';
+import { ManagerRoutes } from './routes/ManagerRoutes';
+import { ServiceRoutes } from './routes/ServiceRoutes';
+import Dashboard from './Components/dashboard/Dashboard';
+import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
+import LoginInfoPage from './pages/LoginInfoPage';
+import { tokenManager } from './utils/tokenManager';
 
-// Setup axios interceptors for automatic token injection
 axios.interceptors.request.use(
   (config) => {
-    const token = tokenManager.getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    console.log(
+      '🔍 INTERCEPTOR CALLED for:',
+      config.method?.toUpperCase(),
+      config.url
+    );
+
+    // Ensure headers object exists
+    if (!config.headers) {
+      config.headers = {};
     }
+
+    const token = tokenManager.getToken();
+
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+      console.log(
+        '🚀 Axios Request: Adding token to',
+        config.method?.toUpperCase(),
+        config.url
+      );
+      console.log('🔑 Token being sent:', token.substring(0, 20) + '...');
+    } else {
+      console.log(
+        '⚠️  Axios Request: No token available for',
+        config.method?.toUpperCase(),
+        config.url
+      );
+    }
+
+    console.log('📋 Final headers:', JSON.stringify(config.headers, null, 2));
     return config;
   },
   (error) => {
+    console.error('❌ Axios Request Error:', error);
     return Promise.reject(error);
   }
 );
 
 // Setup response interceptor for handling 401 errors
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      tokenManager.clearToken();
-      // Redirect to login or handle logout
-      window.location.href = '/logout';
-    }
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.response.use(
+//   (response) => {
+//     console.log(
+//       '✅ Axios Response:',
+//       response.status,
+//       response.config.method?.toUpperCase(),
+//       response.config.url
+//     );
+//     return response;
+//   },
+//   (error) => {
+//     console.error(
+//       '❌ Axios Response Error:',
+//       error.response?.status,
+//       error.config?.method?.toUpperCase(),
+//       error.config?.url
+//     );
+//     if (error.response?.status === 401) {
+//       console.log(
+//         '🔒 401 Unauthorized - Clearing token and redirecting to logout'
+//       );
+//       tokenManager.clearToken();
+//       // Redirect to login or handle logout
+//       window.location.href = '/logout';
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,9 +110,9 @@ function AppContent() {
 
   const { data, isLoading, isError } = useReservationData(isLoggedIn);
   const location = useLocation();
-  const isViewCalendarRoute = location.pathname.startsWith("/view");
+  const isViewCalendarRoute = location.pathname.startsWith('/view');
 
-  if (authState === "loading") {
+  if (authState === 'loading') {
     return <PulsatingLoader />;
   }
 

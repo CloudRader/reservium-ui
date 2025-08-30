@@ -8,12 +8,17 @@ import { tokenManager } from "../utils/tokenManager";
 axios.defaults.withCredentials = true;
 
 const sendCodeToServer = async (code, state) => {
-    // Store the code as the token
-    tokenManager.setToken(code);
-    
-    await axios.get(`${API_BASE_URL}/auth/callback`, {
+
+    const response = await axios.get(`${API_BASE_URL}/auth/callback`, {
         params: { code, state },
     });
+
+    if (response.data?.token) {
+        console.log('🔑 Setting token from callback response');
+        tokenManager.setToken(response.data.token);
+    } else {
+        console.warn('⚠️ No token found in callback response:', response.data);
+    }
 };
 
 const getUserInfo = async () => {

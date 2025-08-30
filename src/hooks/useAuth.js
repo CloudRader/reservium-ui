@@ -13,7 +13,7 @@ const sendCodeToServer = async (code, state) => {
         params: { code, state },
     });
 
-    if (response.data?.token) {
+    if (response.data?.access_token) {
         console.log('🔑 Setting token from callback response');
         tokenManager.setToken(response.data.access_token);
     } else {

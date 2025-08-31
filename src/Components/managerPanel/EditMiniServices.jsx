@@ -7,7 +7,7 @@ import ErrorMessage from '../ui/ErrorMessage.jsx';
 const EditMiniServices = ({ serviceId, serviceName }) => {
   const { data, isLoading, isError, error, refetch } = useFetchWithDeleted(
     ['serviceCalendars', serviceId],
-    `/mini-services/${serviceId}`,
+    `/reservation-services/${serviceId}/mini-services`,
     !!serviceId
   );
 

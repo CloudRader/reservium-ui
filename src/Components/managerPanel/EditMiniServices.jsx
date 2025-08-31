@@ -13,7 +13,7 @@ const EditMiniServices = ({ serviceId, serviceName }) => {
         refetch
     } = useFetchWithDeleted(
         ['serviceCalendars', serviceId],
-        `/mini_services/reservation_service/${serviceId}`,
+        `/mini-services/${serviceId}`,
         !!serviceId
     );
 
@@ -40,8 +40,8 @@ const EditMiniServices = ({ serviceId, serviceName }) => {
                 editLink={`/manager/edit-mini-service/${serviceName}/`}
                 addLink={`/manager/add-mini-service/${serviceName}`}
                 viewLink={`/manager/view-mini-service/${serviceName}/`}
-                deleteLink={`/mini_services/`}
-                retrieveLink={`/mini_services/retrieve_deleted/`}
+                deleteLink={`/mini-services/`}
+                retrieveLink={`/mini-services/retrieve_deleted/`}
                 refetch={refetch}
             />}
         </div>

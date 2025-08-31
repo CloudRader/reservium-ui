@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import UniversalLayout from "../../layouts/UniversalLayout.jsx";
-import TableActions from "./TableActions.jsx";
-import axios from "axios";
-import { API_BASE_URL } from "../../constants";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import UniversalLayout from '../../layouts/UniversalLayout.jsx';
+import TableActions from './TableActions.jsx';
+import axios from 'axios';
+import { API_BASE_URL } from '../../constants';
 
 axios.defaults.withCredentials = true;
 
@@ -18,26 +18,26 @@ const EditTable = ({
   viewLink,
   deleteLink,
   retrieveLink,
-  columns = ["Name", "Actions"],
+  columns = ['Name', 'Actions'],
   refetch,
 }) => {
   const handleRetrieve = async (itemId) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}${retrieveLink}${itemId}`
+        `${API_BASE_URL}${retrieveLink}${itemId}/`
       );
       if (response.status === 200) {
         await refetch();
       }
     } catch (error) {
-      console.error("Failed to retrieve item:", error);
+      console.error('Failed to retrieve item:', error);
     }
   };
 
   const handleDelete = async (itemId, hardRemove = false) => {
     if (hardRemove) {
       const confirmed = window.confirm(
-        "Are you sure you want to permanently delete this item? This action cannot be undone."
+        'Are you sure you want to permanently delete this item? This action cannot be undone.'
       );
       if (!confirmed) return;
     }
@@ -51,10 +51,10 @@ const EditTable = ({
         await refetch();
       }
     } catch (error) {
-      console.error("Failed to delete item:", error);
+      console.error('Failed to delete item:', error);
       alert(
         `Failed to ${
-          hardRemove ? "permanently " : ""
+          hardRemove ? 'permanently ' : ''
         }delete item. Please try again.`
       );
     }
@@ -89,7 +89,7 @@ const EditTable = ({
           <tr
             key={rowData[idAtr]}
             className={`${
-              rowData.deleted_at !== null ? "bg-gray-300" : ""
+              rowData.deleted_at !== null ? 'bg-gray-300' : ''
             } hover:bg-green-50`}
           >
             <td className="py-4 px-6 text-sm text-green-700">

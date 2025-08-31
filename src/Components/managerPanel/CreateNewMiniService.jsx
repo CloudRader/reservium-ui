@@ -16,7 +16,7 @@ const CreateNewMiniService = ({ serviceId }) => {
     handleChange,
   } = useCreateFormLogic(
     [],
-    `${API_BASE_URL}/mini_services/create_mini_service`
+    `${API_BASE_URL}/mini-services/`
   );
 
   useEffect(() => {

@@ -31,7 +31,7 @@ const EditCalendar = ({
     setIsLoadingMiniServices(true);
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/mini-services/${serviceId}`
+        `${API_BASE_URL}/reservation-services/${serviceId}/mini-services`
       );
       setMiniServices(response.data);
     } catch (error) {

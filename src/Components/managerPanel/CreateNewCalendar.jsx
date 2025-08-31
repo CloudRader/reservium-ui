@@ -231,7 +231,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
 
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/mini-services/${serviceId}`
+        `${API_BASE_URL}/reservation-services/${serviceId}/mini-services`
       );
       const updatedFields = formFields.map((field) => {
         if (field.name === 'mini_services') {

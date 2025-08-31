@@ -9,7 +9,7 @@ import ActionButtons from "../ui/ActionButtons.jsx";
 
 const EditService = ({ service: initialService, isEditMode = false }) => {
   const navigate = useNavigate();
-  const serviceUpdateUrl = `${API_BASE_URL}/reservation_services/${initialService.id}`;
+  const serviceUpdateUrl = `${API_BASE_URL}/reservation-services/${initialService.id}`;
 
   // Transform initial service data to match form field names
   const transformedInitialService = {

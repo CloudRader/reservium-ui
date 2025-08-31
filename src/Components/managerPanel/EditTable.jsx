@@ -24,7 +24,7 @@ const EditTable = ({
   const handleRetrieve = async (itemId) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}${retrieveLink}${itemId}/`
+        `${API_BASE_URL}${retrieveLink}${itemId}/restore`
       );
       if (response.status === 200) {
         await refetch();

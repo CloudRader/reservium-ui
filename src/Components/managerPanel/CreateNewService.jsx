@@ -15,7 +15,7 @@ const CreateNewService = () => {
     handleChange,
   } = useCreateFormLogic(
     [],
-    `${API_BASE_URL}/reservation_services/create_reservation_service`
+    `${API_BASE_URL}/reservation-services/`
   );
 
   useEffect(() => {

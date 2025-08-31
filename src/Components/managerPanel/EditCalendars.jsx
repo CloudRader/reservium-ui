@@ -13,7 +13,7 @@ const EditCalendars = ({ serviceId, serviceName }) => {
         refetch
     } = useFetchWithDeleted(
         ['serviceCalendars', serviceId],
-        `/reservation-service/${serviceId}/calendars`,
+        `/reservation-services/${serviceId}/calendars`,
         !!serviceId
     );
 

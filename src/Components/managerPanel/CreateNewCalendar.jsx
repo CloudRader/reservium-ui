@@ -318,7 +318,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     setIsLoadingCalendars(true);
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/calendars/google_calendars/`
+        `${API_BASE_URL}/calendars/google/importable`
       );
       setGoogleCalendars(response.data);
       setCalendarIdInputType('select');

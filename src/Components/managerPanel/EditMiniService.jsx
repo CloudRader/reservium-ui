@@ -16,7 +16,7 @@ const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
     handleChange,
   } = useEditableForm(
     miniServiceData,
-    `${API_BASE_URL}/reservation-services/${miniServiceData.id}/mini-services`,
+    `${API_BASE_URL}/mini-services/${miniServiceData.id}`,
     null,
     isEditMode
   );

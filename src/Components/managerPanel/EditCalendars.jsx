@@ -13,7 +13,7 @@ const EditCalendars = ({ serviceId, serviceName }) => {
         refetch
     } = useFetchWithDeleted(
         ['serviceCalendars', serviceId],
-        `/calendars/reservation_service/${serviceId}`,
+        `/calendars/reservation-service/${serviceId}`,
         !!serviceId
     );
 
@@ -41,7 +41,7 @@ const EditCalendars = ({ serviceId, serviceName }) => {
                 addLink={`/manager/add-calendar/${serviceName}`}
                 viewLink={`/manager/view-calendar/${serviceName}/`}
                 deleteLink={`/calendars/`}
-                retrieveLink={`/calendars/retrieve_deleted/`}
+                retrieveLink={`/calendars/`}
                 refetch={refetch}
             />}
         </div>

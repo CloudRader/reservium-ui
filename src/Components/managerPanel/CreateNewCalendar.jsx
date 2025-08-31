@@ -222,7 +222,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     handleChange,
   } = useCreateFormLogic(
     initialFields,
-    `${API_BASE_URL}/calendars/create_calendar`
+    `${API_BASE_URL}/calendars/`
   );
 
   const fetchMiniServices = useCallback(async () => {

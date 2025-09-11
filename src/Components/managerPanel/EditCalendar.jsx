@@ -14,14 +14,14 @@ const EditCalendar = ({
   isEditMode = false,
   serviceCalendars = [],
 }) => {
-  const calendarFetchUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}`;
+  const calendarFetchUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}/collisions`;
   const calendarUpdateUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}`;
   const initialData = {
     ...calendarBaseData,
     club_member_rules: {},
     active_member_rules: {},
     manager_rules: {},
-    collision_with_calendar: serviceCalendars.collision_with_calendar || [],
+    collision_ids: serviceCalendars.collision_ids || [],
   };
 
   const [miniServices, setMiniServices] = useState([]);
@@ -164,7 +164,9 @@ const EditCalendar = ({
             Collision With Calendars
           </label>
           <div className="mt-1">
-            {serviceCalendars?.map((calendar) => (
+            {serviceCalendars
+                ?.filter((calendar) => calendar.googleCalendarId !== calendarBaseData.googleCalendarId)
+                .map((calendar) => (
               <div
                 key={calendar.googleCalendarId}
                 className="flex items-center mb-2"
@@ -173,22 +175,22 @@ const EditCalendar = ({
                   type="checkbox"
                   id={`collision-calendar-${calendar.googleCalendarId}`}
                   checked={
-                    editedData.collision_with_calendar?.includes(
+                    editedData.collision_ids?.includes(
                       calendar.googleCalendarId
                     ) || false
                   }
                   onChange={(e) => {
                     const updatedCollisions = e.target.checked
                       ? [
-                          ...(editedData.collision_with_calendar || []),
+                          ...(editedData.collision_ids || []),
                           calendar.googleCalendarId,
                         ]
-                      : (editedData.collision_with_calendar || []).filter(
+                      : (editedData.collision_ids || []).filter(
                           (id) => id !== calendar.googleCalendarId
                         );
                     handleChange({
                       target: {
-                        name: "collision_with_calendar",
+                        name: "collision_ids",
                         value: updatedCollisions,
                       },
                     });
@@ -217,18 +219,28 @@ const EditCalendar = ({
                     type="checkbox"
                     id={`mini-service-${service.id}`}
                     checked={
-                      editedData.mini_services?.includes(service.name) || false
+                        (editedData.mini_services || [])
+                            .map(ms => (typeof ms === "object" ? ms.id : ms))
+                            .includes(service.id)
                     }
                     onChange={(e) => {
-                      const updatedServices = e.target.checked
-                        ? [...(editedData.mini_services || []), service.name]
-                        : (editedData.mini_services || []).filter(
-                            (name) => name !== service.name
-                          );
+                        let updatedMiniServicesIds;
+                        if (e.target.checked) {
+                            updatedMiniServicesIds = [
+                                ...(editedData.mini_services || []).map(ms =>
+                                    typeof ms === "object" ? ms.id : ms
+                                ),
+                                service.id,
+                            ];
+                        } else {
+                            updatedMiniServicesIds = (editedData.mini_services || [])
+                                .map(ms => (typeof ms === "object" ? ms.id : ms)) // normalize to IDs
+                                .filter(id => id !== service.id);
+                        }
                       handleChange({
                         target: {
                           name: "mini_services",
-                          value: updatedServices,
+                          value: updatedMiniServicesIds,
                         },
                       });
                     }}

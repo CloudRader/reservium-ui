@@ -35,7 +35,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
       labelColor: 'text-success',
     },
     {
-      name: 'collision_with_calendar',
+      name: 'collision_ids',
       type: 'checkbox',
       labelText: 'Collision With Calendars',
       labelColor: 'text-success',
@@ -238,7 +238,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
           return {
             ...field,
             options: response.data.map((service) => ({
-              value: service.name,
+              value: service.id,
               label: service.name,
             })),
           };
@@ -257,7 +257,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
   const preparePayload = useCallback(() => {
     return {
       id: calendarIdInputType === 'manual' ? '' : formData.calendar_id,
-      collision_with_calendar: formData.collision_with_calendar || [],
+      collision_ids: formData.collision_ids || [],
       more_than_max_people_with_permission:
         !!formData.more_than_max_people_with_permission,
       mini_services: formData.mini_services || [],

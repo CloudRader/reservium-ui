@@ -7,20 +7,6 @@ import { tokenManager } from "../utils/tokenManager";
 
 axios.defaults.withCredentials = true;
 
-const sendCodeToServer = async (code, state) => {
-
-    const response = await axios.get(`${API_BASE_URL}/auth/callback`, {
-        params: { code, state },
-    });
-
-    if (response.data?.access_token) {
-        console.log('🔑 Setting token from callback response');
-        tokenManager.setToken(response.data.access_token);
-    } else {
-        console.warn('⚠️ No token found in callback response:', response.data);
-    }
-};
-
 const getUserInfo = async () => {
     const response = await axios.get(`${API_BASE_URL}/users/me`);
     return response.data;
@@ -40,9 +26,8 @@ export const useAuth = () => {
         retry: false,
     });
 
-    const login = useCallback(async (code, state) => {
+    const login = useCallback(async () => {
         try {
-            await sendCodeToServer(code, state);
             await queryClient.invalidateQueries('user');
             navigate('/club');
         } catch (error) {

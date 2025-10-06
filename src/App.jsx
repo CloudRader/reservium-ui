@@ -9,7 +9,7 @@ import Footer from './widgets/Footer/Footer.jsx';
 import SuccessPage from './pages/SuccessPage';
 import { useReservationData } from './hooks/useReservationData';
 import PulsatingLoader from './Components/ui/PulsatingLoader';
-import LoginToIS from './Components/auth/LoginToIS.jsx';
+import LoginToKeycloak from './Components/auth/LoginToKeycloak.jsx';
 import { useAuth } from './hooks/useAuth';
 import { ManagerRoutes } from './routes/ManagerRoutes';
 import { ServiceRoutes } from './routes/ServiceRoutes';
@@ -130,7 +130,7 @@ function AppContent() {
         isManager={managerRoles?.length > 0}
       />
       <Routes>
-        <Route path="/login" element={<LoginToIS />} />
+        <Route path="/login" element={<LoginToKeycloak />} />
         <Route path="/logined" element={<LoginToBackend login={login} />} />
         <Route path="/logout" element={<Logout onLogout={logout} />} />
 

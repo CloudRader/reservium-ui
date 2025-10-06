@@ -5,4 +5,4 @@ export const links = {
     wikiInfo: "https://wiki.buk.cvut.cz/en/club-zone/",
 };
 
-export const API_BASE_URL = "https://api.develop.reservation.buk.cvut.cz/v2";
+export const API_BASE_URL = "http://localhost:8000/v2";

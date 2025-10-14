@@ -32,7 +32,7 @@ const EventRegistrationForm = ({ formData }) => {
         manager_contact_mail: formData.manager_contact_mail,
       };
       await axios.post(
-        `${API_BASE_URL}/emails/send_registration_form`,
+        `${API_BASE_URL}/emails/send-registration-form`,
         formDataToSend
       );
       setSubmitSuccess(true);

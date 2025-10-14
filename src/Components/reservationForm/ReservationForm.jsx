@@ -1,8 +1,8 @@
-import React from "react";
-import useReservationFormLogic from "../../hooks/useReservationFormLogic.js";
-import AdditionalServicesSection from "./AdditionalServicesSection.jsx";
-import ReservationMainFields from "./ReservationMainFields.jsx";
-import SubmitButton from "../ui/SubmitButton.jsx";
+import React from 'react';
+import useReservationFormLogic from '../../hooks/useReservationFormLogic.js';
+import AdditionalServicesSection from './AdditionalServicesSection.jsx';
+import ReservationMainFields from './ReservationMainFields.jsx';
+import SubmitButton from '../ui/SubmitButton.jsx';
 
 const ReservationForm = ({
   onSubmit,
@@ -10,10 +10,11 @@ const ReservationForm = ({
   calendarIds,
   reservationTypes,
   selectedSlot,
+  calendars,
 }) => {
   const {
     formFields,
-    additionalServices,
+    miniServices: filteredMiniServices,
     formData,
     errors,
     handleChange,
@@ -22,7 +23,8 @@ const ReservationForm = ({
     calendarIds,
     reservationTypes,
     selectedSlot,
-    onSubmit
+    onSubmit,
+    calendars
   );
 
   return (
@@ -37,9 +39,9 @@ const ReservationForm = ({
           errors={errors}
           handleChange={handleChange}
         />
-        {additionalServices?.length > 0 && (
+        {filteredMiniServices?.length > 0 && (
           <AdditionalServicesSection
-            additionalServices={additionalServices}
+            additionalServices={filteredMiniServices}
             formData={formData}
             handleChange={handleChange}
           />

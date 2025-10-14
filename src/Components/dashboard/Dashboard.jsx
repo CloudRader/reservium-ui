@@ -1,41 +1,30 @@
 import React, { useState } from 'react';
-import { useEvents } from '../../hooks/useEvents';
 import axios from 'axios';
 import DashboardHeader from './DashboardHeader';
-import EventCard from './EventCard';
-import PulsatingLoader from '../ui/PulsatingLoader';
-import ErrorMessage from '../ui/ErrorMessage';
+import EventsList from './EventsList';
 import { API_BASE_URL } from '../../constants';
+import { formatDateTimeLocalForAPI } from '../../utils/dateUtils';
 
 const Dashboard = ({ userId, isManager, managerRoles }) => {
   const [activeTab, setActiveTab] = useState('personal');
 
-  const {
-    data: events,
-    isLoading,
-    error,
-    refetch,
-  } = useEvents(userId, activeTab, managerRoles);
-
-  // Handle tab change
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Handle delete event
   const handleDelete = async (eventId, note) => {
     try {
       await axios.delete(`${API_BASE_URL}/events/${eventId}`, {
         data: note,
       });
-      await refetch(); // Explicitly refetch after deletion
+      alert('Event cancelled successfully!');
     } catch (error) {
       console.error('Error deleting event:', error);
-      alert('Failed to delete event. Please try again.');
+      alert('Failed to cancel event. Please try again.');
     }
   };
 
-  // Handle update event time
+  // Handle update event time (for managers - direct PUT to /events/{id})
   const handleUpdateTime = async (
     eventId,
     newStartTime,
@@ -45,35 +34,17 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     try {
       if (!reason) return;
 
-      const startDateTime = new Date(newStartTime);
-      const endDateTime = new Date(newEndTime);
-
-      // Format date to YYYY-MM-DD HH:mm:ss
-      const formatDateTime = (date) => {
-        return date
-          .toLocaleString('sv', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false,
-          })
-          .replace('T', ' ');
-      };
-
-      await axios.put(`${API_BASE_URL}/events/${eventId}/request-time-change`, {
+      await axios.put(`${API_BASE_URL}/events/${eventId}`, {
         event_update: {
-          start_datetime: formatDateTime(startDateTime),
-          end_datetime: formatDateTime(endDateTime),
+          reservation_start: formatDateTimeLocalForAPI(newStartTime),
+          reservation_end: formatDateTimeLocalForAPI(newEndTime),
         },
         reason: reason,
       });
-      await refetch();
+      alert('Time change request sent successfully!');
     } catch (error) {
-      console.error('Error requesting time update:', error);
-      alert('Failed to request time update. Please try again.');
+      console.error('Error updating event:', error);
+      alert('Failed to send time change request. Please try again.');
     }
   };
 
@@ -84,7 +55,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
         `${API_BASE_URL}/events/${eventId}/approve-time-change-request?approve=${approve}`,
         managerNotes
       );
-      await refetch(); // Explicitly refetch after approval/decline
+      alert(`Time change ${approve ? 'approved' : 'declined'} successfully!`);
     } catch (error) {
       console.error('Error approving/declining time change:', error);
       alert(
@@ -102,7 +73,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
         `${API_BASE_URL}/events/${eventId}/approve?approve=${approve}`,
         managerNotes
       );
-      await refetch(); // Explicitly refetch after event approval/decline
+      alert(`Event ${approve ? 'approved' : 'declined'} successfully!`);
     } catch (error) {
       console.error('Error approving/declining event:', error);
       alert(
@@ -111,52 +82,24 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     }
   };
 
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <ErrorMessage
-          message={error.message || 'Failed to load events'}
-          title="Error Loading Events"
-          onRetry={refetch}
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto px-4 py-8 relative">
-      {isLoading && <PulsatingLoader />}
-
       <DashboardHeader
         activeTab={activeTab}
         onTabChange={handleTabChange}
         isManager={isManager}
       />
 
-      <div className="grid md:grid-cols-1 gap-4">
-        {events?.map((eventData) => (
-          <EventCard
-            key={eventData.event.id}
-            event={eventData}
-            onUpdateTime={handleUpdateTime}
-            onDelete={handleDelete}
-            onApproveTime={handleApproveTime}
-            onApproveEvent={handleApproveEvent}
-            isManager={isManager}
-          />
-        ))}
-      </div>
-
-      {(!events || events.length === 0) && (
-        <div className="text-center p-8 bg-white rounded-lg shadow-sm">
-          <p className="text-gray-800 text-xl mb-4">No events found</p>
-          <p className="text-gray-600">
-            {activeTab === 'personal'
-              ? "You don't have any events yet."
-              : 'There are no events to manage at the moment.'}
-          </p>
-        </div>
-      )}
+      <EventsList
+        activeTab={activeTab}
+        onUpdateTime={handleUpdateTime}
+        onDelete={handleDelete}
+        onApproveTime={handleApproveTime}
+        onApproveEvent={handleApproveEvent}
+        isManager={isManager}
+        userId={userId}
+        managerRoles={managerRoles}
+      />
     </div>
   );
 };

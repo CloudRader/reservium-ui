@@ -1,20 +1,37 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { preparePayload } from './useReservationFormLogic.utils';
 import useFormFields from './useFormFields';
-import useAdditionalServices from './useAdditionalServices';
 import useInitialFormData from './useInitialFormData';
 import useSlotSync from './useSlotSync';
 import useFormValidation from './useFormValidation';
 
-const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, onSubmit) => {
+const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, onSubmit, calendars = []) => {
     const [formData, setFormData] = useState({});
     const { formFields } = useFormFields(reservationTypes);
 
     useInitialFormData(formFields, setFormData, formData);
     useSlotSync(selectedSlot, setFormData);
 
-    // Use formData.type as the reservation type
-    const additionalServices = useAdditionalServices(formData.type, calendarIds);
+    // Filter and format mini services for the selected reservation type from the matching calendar
+    const filteredMiniServices = useMemo(() => {
+        if (!formData.type || !calendars || calendars.length === 0) {
+            return [];
+        }
+
+        // Find the calendar that matches the selected reservation type
+        const selectedCalendar = calendars.find(
+            calendar => calendar.reservation_type === formData.type
+        );
+
+        if (!selectedCalendar || !selectedCalendar.mini_services) {
+            return [];
+        }
+
+        return selectedCalendar.mini_services.map(service => ({
+            value: service.name,
+            label: service.name
+        }));
+    }, [formData.type, calendars]);
 
     const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;
@@ -72,7 +89,7 @@ const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, on
 
     return {
         formFields,
-        additionalServices,
+        miniServices: filteredMiniServices,
         formData,
         errors,
         handleChange,

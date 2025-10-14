@@ -1,48 +1,38 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import LoginInfoPage from "../../pages/LoginInfoPage.jsx";
-import { API_BASE_URL } from "../../constants";
-import keycloak from "./Keycloak";
-import { tokenManager } from "../../utils/tokenManager";
+import { useEffect } from 'react';
+import axios from 'axios';
+import LoginInfoPage from '../../pages/LoginInfoPage.jsx';
+import { API_BASE_URL } from '../../constants';
+import keycloak from './Keycloak';
 
 axios.defaults.withCredentials = true;
 
 function Logout({ onLogout }) {
-    const navigate = useNavigate();
+  useEffect(() => {
+    const logoutUser = async () => {
+      try {
+        // Call backend logout endpoint if authenticated
+        if (keycloak.authenticated) {
+          await axios.get(`${API_BASE_URL}/auth/logout`);
+        }
+      } catch (error) {
+        console.error('Backend logout error:', error);
+      }
 
-    useEffect(() => {
-        const logoutUser = async () => {
-            try {
-                await keycloak.init({ onLoad: "check-sso", pkceMethod: "S256", checkLoginIframe: false });
+      // Update app state
+      if (onLogout) {
+        onLogout();
+      }
 
-                console.log("realm:", keycloak.realm);
-                console.log("clientId:", keycloak.clientId);
-                console.log("url:", keycloak.url);
-                console.log("authServerUrl:", keycloak.authServerUrl);
+      // Logout from Keycloak (clears tokens and redirects)
+      keycloak.logout({
+        redirectUri: window.location.origin,
+      });
+    };
 
-                // Call backend logout endpoint if needed
-                await axios.get(`${API_BASE_URL}/auth/logout`);
-            } catch (error) {
-                console.error("Error while logging out from backend:", error);
-            }
+    logoutUser();
+  }, [onLogout]);
 
-            // Clear frontend token + app state
-            tokenManager.clearToken();
-
-            // Update app state
-            if (onLogout) onLogout();
-
-            // Logout from Keycloak
-            await keycloak.logout({
-                redirectUri: window.location.origin, // redirect to home page
-            });
-        };
-
-        logoutUser();
-    }, [onLogout, navigate]);
-
-    return <LoginInfoPage />;
+  return <LoginInfoPage />;
 }
 
 export default Logout;

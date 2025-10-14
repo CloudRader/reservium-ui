@@ -1,8 +1,8 @@
-import React from "react";
-import { useLocation, Link } from "react-router-dom";
-import ServicesSection from "../Components/ui/ServicesSection.jsx";
-import {emails} from "../constants";
-import EventRegistrationForm from "../Components/reservationForm/EventRegistrationForm.jsx";
+import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
+import ServicesSection from '../Components/ui/ServicesSection.jsx';
+import { emails } from '../constants';
+import EventRegistrationForm from '../Components/reservationForm/EventRegistrationForm.jsx';
 
 const SuccessPage = () => {
   // Extract state processing to a separate function
@@ -13,26 +13,26 @@ const SuccessPage = () => {
 
     return {
       isTooManyPeopleMessage: message
-        ? JSON.stringify(message).includes("more than")
+        ? JSON.stringify(message).includes('more than')
         : false,
       isNightTimeMessage: message
-        ? JSON.stringify(message).includes("Night time")
+        ? JSON.stringify(message).includes('Night time')
         : false,
-      managerMail: contactMail ? JSON.stringify(contactMail) : "",
-      maxPeopleMessage: message ? message.replace(/"/g, "") : "",
-      linkOnWiki: wikiLink || "",
+      managerMail: contactMail ? JSON.stringify(contactMail) : '',
+      maxPeopleMessage: message ? message.replace(/"/g, '') : '',
+      linkOnWiki: wikiLink || '',
       formData: {
-        event_name: rest.purpose || "",
-        guests: rest.guests || "",
-        event_start: rest.start_datetime || "",
-        event_end: rest.end_datetime || "",
-        user_name: rest.user_name || "",
-        email: rest.email || "",
-        space: rest.serviceName || "",
+        event_name: rest.purpose || '',
+        guests: rest.guests || '',
+        event_start: rest.start_datetime || '',
+        event_end: rest.end_datetime || '',
+        user_name: rest.user_name || '',
+        email: rest.email || '',
+        space: rest.serviceName || '',
         allSpace: (rest.allService || []).filter(
           (service) => service !== rest.serviceName
         ),
-        manager_contact_mail: contactMail || "",
+        manager_contact_mail: contactMail || '',
       },
     };
   };
@@ -63,8 +63,8 @@ const SuccessPage = () => {
                 <p className="text-l md:text-xl text-green-700 mb-4">
                   If you are reserving for {maxPeopleMessage}, you must fill out
                   this registration form. It will be sent to the Head of
-                  Dormitory ({emails.headOfDormitory}), with the manager
-                  ({managerMail}) in CC.
+                  Dormitory ({emails.headOfDormitory}), with the manager (
+                  {managerMail}) in CC.
                 </p>
                 <div className="pb-2">
                   <a
@@ -143,7 +143,7 @@ const SuccessPage = () => {
             </p>
             <div>
               <Link
-                to={`/dashboard`}
+                to={`/events`}
                 className="inline-flex no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 Dashboard

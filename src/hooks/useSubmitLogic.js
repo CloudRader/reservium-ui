@@ -32,7 +32,18 @@ const useSubmitLogic = (service, allService) => {
             onError: (error) => {
                 if (error.response?.status === 401)
                     navigate("/logout");
-                setErrorMessage({ general: 'Cannot create a reservation, try again later.' });
+
+                // Extract error message from server response
+                let errorMsg = 'Cannot create a reservation, try again later.';
+                if (error.response?.data?.detail?.[0]?.msg) {
+                    errorMsg = error.response.data.detail[0].msg;
+                } else if (error.response?.data?.message) {
+                    errorMsg = error.response.data.message;
+                } else if (error.response?.data?.detail) {
+                    errorMsg = error.response.data.detail;
+                }
+
+                setErrorMessage({ general: errorMsg });
             }
         }
     );

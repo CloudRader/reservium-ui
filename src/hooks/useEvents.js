@@ -10,23 +10,18 @@ export const useEvents = (userId, activeTab, managerRoles) => {
         return response.data;
     };
 
-    const fetchManagedEvents = async () => {
+    const fetchManagedEvents = async (eventState) => {
         // If no manager roles, return empty array
         if (!managerRoles || managerRoles.length === 0) {
             return [];
         }
 
-        // Fetch events for each manager role and combine results
-        const eventsPromises = managerRoles.map(role =>
-            // axios.get(`${API_BASE_URL}/events/state/reservation_service/${role}?event_state=${activeTab}`)
-            axios.get(`${API_BASE_URL}/events/get-by-user-roles`)
-        );
-
+        // Fetch events filtered by event_state on the server side
         try {
-            const responses = await Promise.all(eventsPromises);
-            // Combine all events into a single array
-            const allEvents = responses.flatMap(response => response.data);
-            return allEvents;
+            const response = await axios.get(`${API_BASE_URL}/events/get-by-user-roles`, {
+                params: { event_state: eventState }
+            });
+            return response.data;
         } catch (error) {
             console.error('Error fetching managed events:', error);
             throw error;
@@ -35,12 +30,16 @@ export const useEvents = (userId, activeTab, managerRoles) => {
 
     return useQuery(
         ['events', userId, activeTab],
-        () => {
+        async () => {
             switch (activeTab) {
                 case 'personal':
                     return fetchUserEvents();
-                case 'not_approved' || 'update_requested':
-                    return fetchManagedEvents();
+                case 'not_approved':
+                case 'update_requested':
+                case 'confirmed':
+                case 'canceled':
+                    // Pass event_state to API for server-side filtering
+                    return fetchManagedEvents(activeTab);
                 default:
                     return fetchUserEvents();
             }

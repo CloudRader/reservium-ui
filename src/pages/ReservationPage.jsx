@@ -38,6 +38,7 @@ const ReservationPage = ({ roomCalendarLinks, service, allService }) => {
             })) || []
           }
           selectedSlot={selectedSlot}
+          calendars={service?.calendars || []}
         />
         <div
           className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden ${

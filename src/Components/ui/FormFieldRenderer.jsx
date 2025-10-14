@@ -56,7 +56,7 @@ const FormFieldRenderer = ({ field, formData, handleChange }) => {
       );
     case "checkbox":
       // Support both single and multi-checkbox
-      if (field.options && field.options.length > 1) {
+      if (field.options && field.options.length > 0) {
         // Multi-checkbox
         return (
           <div className="space-y-2">
@@ -69,7 +69,7 @@ const FormFieldRenderer = ({ field, formData, handleChange }) => {
                   value={option.value}
                   checked={(formData[field.name] || []).includes(option.value)}
                   onChange={handleChange}
-                  className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+                  className="mr-2 h-4 w-4 accent-green-600 border-green-300 rounded"
                 />
                 <label
                   htmlFor={`${field.name}-${option.value}`}
@@ -82,17 +82,17 @@ const FormFieldRenderer = ({ field, formData, handleChange }) => {
           </div>
         );
       } else {
-        // Single checkbox
+        // Single checkbox (no options)
         return (
           <div className="flex items-center">
             <input
               type="checkbox"
               {...commonProps}
               checked={getValue(field.name) || false}
-              className="mr-2 focus:ring-green-500 h-4 w-4 text-green-600 border-green-300 rounded"
+              className="mr-2 h-4 w-4 accent-green-600 border-green-300 rounded"
             />
             <label htmlFor={field.name} className="text-sm text-green-700">
-              {field.options && field.options[0]?.label}
+              {field.labelText}
             </label>
           </div>
         );

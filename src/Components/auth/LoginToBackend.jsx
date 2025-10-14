@@ -25,38 +25,36 @@
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from "../../constants";
+import { API_BASE_URL } from '../../constants';
 import axios from 'axios';
-import { tokenManager } from "../../utils/tokenManager";
+import keycloak from './Keycloak';
 
 export const LoginToBackend = ({ login }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = tokenManager.getToken();
+  useEffect(() => {
+    if (keycloak.authenticated && keycloak.token) {
+      axios
+        .post(`${API_BASE_URL}/auth/login`, null)
+        .then((response) => {
+          // Backend handles creating/updating user
+          login(response.data);
 
-        if (token) {
-            axios
-                .post(`${API_BASE_URL}/auth/login`, null)
-                .then((response) => {
-                    // Backend handles creating/updating user
-                    login(response.data);
+          // Clean up query params
+          window.history.replaceState({}, document.title, '/');
 
-                    // Clean up query params
-                    window.history.replaceState({}, document.title, "/");
+          // Redirect to home
+          navigate('/', { replace: true });
+        })
+        .catch((err) => {
+          console.error('Backend login failed:', err);
+          navigate('/');
+        });
+    } else {
+      console.error('Not authenticated with Keycloak');
+      navigate('/login');
+    }
+  }, [login, navigate]);
 
-                    // Redirect to home
-                    navigate("/", { replace: true });
-                })
-                .catch((err) => {
-                    console.error('Backend login failed:', err);
-                    navigate('/');
-                });
-        } else {
-            console.error('No token found');
-            navigate('/');
-        }
-    }, [login, navigate]);
-
-    return null;
+  return null;
 };

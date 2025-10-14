@@ -33,11 +33,23 @@ const ManagerTabs = ({ activeTab, onTabChange }) => (
         >
             Update Requested
         </TabButton>
+        <TabButton
+            isActive={activeTab === 'confirmed'}
+            onClick={() => onTabChange('confirmed')}
+        >
+            Confirmed
+        </TabButton>
+        <TabButton
+            isActive={activeTab === 'canceled'}
+            onClick={() => onTabChange('canceled')}
+        >
+            Canceled
+        </TabButton>
     </div>
 );
 
 ManagerTabs.propTypes = {
-    activeTab: PropTypes.oneOf(['not_approved', 'update_requested']).isRequired,
+    activeTab: PropTypes.oneOf(['personal', 'not_approved', 'update_requested', 'confirmed', 'canceled']).isRequired,
     onTabChange: PropTypes.func.isRequired,
 };
 
@@ -64,7 +76,7 @@ const DashboardHeader = ({ activeTab, onTabChange, isManager }) => {
 };
 
 DashboardHeader.propTypes = {
-    activeTab: PropTypes.oneOf(['personal', 'not_approved', 'update_requested']).isRequired,
+    activeTab: PropTypes.oneOf(['personal', 'not_approved', 'update_requested', 'confirmed', 'canceled']).isRequired,
     onTabChange: PropTypes.func.isRequired,
     isManager: PropTypes.bool.isRequired,
 };

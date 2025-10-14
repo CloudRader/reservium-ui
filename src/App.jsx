@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
@@ -16,57 +16,46 @@ import { ServiceRoutes } from './routes/ServiceRoutes';
 import Dashboard from './Components/dashboard/Dashboard';
 import { ViewCalendarRoutes } from './routes/ViewCalendarRoutes';
 import LoginInfoPage from './pages/LoginInfoPage';
-import { tokenManager } from './utils/tokenManager';
+import keycloak from './Components/auth/Keycloak';
 
+// Request interceptor: Add Authorization header with token refresh
 axios.interceptors.request.use(
-  (config) => {
-    // Ensure headers object exists
+  async (config) => {
     if (!config.headers) {
       config.headers = {};
     }
-    const token = tokenManager.getToken();
 
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    // Only add token if user is authenticated
+    if (keycloak.authenticated) {
+      try {
+        // Refresh token if it expires in less than 30 seconds (industry standard)
+        await keycloak.updateToken(30);
+        config.headers['Authorization'] = `Bearer ${keycloak.token}`;
+      } catch (error) {
+        console.error('Failed to refresh token:', error);
+        keycloak.clearToken();
+      }
     }
 
     return config;
   },
   (error) => {
-    console.error('❌ Axios Request Error:', error);
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
 
-// Setup response interceptor for handling 401 errors
-// axios.interceptors.response.use(
-//   (response) => {
-//     console.log(
-//       '✅ Axios Response:',
-//       response.status,
-//       response.config.method?.toUpperCase(),
-//       response.config.url
-//     );
-//     return response;
-//   },
-//   (error) => {
-//     console.error(
-//       '❌ Axios Response Error:',
-//       error.response?.status,
-//       error.config?.method?.toUpperCase(),
-//       error.config?.url
-//     );
-//     if (error.response?.status === 401) {
-//       console.log(
-//         '🔒 401 Unauthorized - Clearing token and redirecting to logout'
-//       );
-//       tokenManager.clearToken();
-//       // Redirect to login or handle logout
-//       window.location.href = '/logout';
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+// Response interceptor: Handle 401/403 errors
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      console.warn('Authentication error, redirecting to logout');
+      keycloak.logout({ redirectUri: window.location.origin });
+    }
+    return Promise.reject(error);
+  }
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +67,25 @@ const queryClient = new QueryClient({
 });
 
 function AppContent() {
+  const [keycloakInitialized, setKeycloakInitialized] = useState(false);
+
+  useEffect(() => {
+    keycloak
+      .init({
+        onLoad: 'check-sso',
+        pkceMethod: 'S256',
+        checkLoginIframe: false,
+      })
+      .then((authenticated) => {
+        console.log('Keycloak initialized, authenticated:', authenticated);
+        setKeycloakInitialized(true);
+      })
+      .catch((error) => {
+        console.error('Keycloak init failed:', error);
+        setKeycloakInitialized(true);
+      });
+  }, []);
+
   const {
     login,
     isLoggedIn,
@@ -92,7 +100,7 @@ function AppContent() {
   const location = useLocation();
   const isViewCalendarRoute = location.pathname.startsWith('/view');
 
-  if (authState === 'loading') {
+  if (!keycloakInitialized || authState === 'loading') {
     return <PulsatingLoader />;
   }
 
@@ -110,16 +118,17 @@ function AppContent() {
     miniServices: {},
   };
 
-  //   if (!isLoggedIn) {
-  //       return (
-  //           <div className=" dark:!bg-slate-400 ">
-  //               <Routes>
-  //                   <Route path='/login' element={<LoginToIS />} />
-  //                   <Route path='/logined' element={<LoginToBackend login={login} />} />
-  //               </Routes>
-  //           </div>
-  //       );
-  //   }
+  if (!isLoggedIn) {
+    return (
+      <div className=" dark:!bg-slate-400 ">
+        <Routes>
+          <Route path="/login" element={<LoginToKeycloak />} />
+          <Route path="/logined" element={<LoginToBackend login={login} />} />
+          <Route path="*" element={<LoginInfoPage />} />
+        </Routes>
+      </div>
+    );
+  }
 
   return (
     <div className="dark:!bg-slate-400">
@@ -134,12 +143,12 @@ function AppContent() {
         <Route path="/logined" element={<LoginToBackend login={login} />} />
         <Route path="/logout" element={<Logout onLogout={logout} />} />
 
-        {!isLoggedIn && <Route path="*" element={<LoginInfoPage />} />}
-
         <Route path="/success" element={<SuccessPage />} />
 
+        {!isLoggedIn && <Route path="*" element={<LoginInfoPage />} />}
+
         <Route
-          path="/dashboard"
+          path="/events"
           element={
             <Dashboard
               userId={userId}

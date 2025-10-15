@@ -5,7 +5,17 @@ import EventsTable from './EventsTable';
 import PulsatingLoader from '../ui/PulsatingLoader';
 import { PAGINATION_LIMIT } from '../../constants';
 
-const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApproveEvent, isManager, userId, managerRoles }) => {
+const EventsList = ({
+  activeTab,
+  onRequestTimeChange,
+  onUpdateTime,
+  onDelete,
+  onApproveTime,
+  onApproveEvent,
+  isManager,
+  userId,
+  managerRoles,
+}) => {
   const [upcomingPage, setUpcomingPage] = useState(1);
   const [pastPage, setPastPage] = useState(1);
 
@@ -17,13 +27,18 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     data: upcomingData,
     isLoading: isUpcomingLoading,
     refetch: refetchUpcoming,
-  } = useEventsWithPagination(upcomingPage, PAGINATION_LIMIT, false);
+  } = useEventsWithPagination(
+    upcomingPage,
+    PAGINATION_LIMIT,
+    isPersonalTab,
+    false
+  );
 
   const {
     data: pastData,
     isLoading: isPastLoading,
     refetch: refetchPast,
-  } = useEventsWithPagination(pastPage, PAGINATION_LIMIT, true);
+  } = useEventsWithPagination(pastPage, PAGINATION_LIMIT, isPersonalTab, true);
 
   // For manager tabs - use the old hook
   const {
@@ -46,13 +61,17 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
         purpose: apiEvent.purpose,
         start_datetime: apiEvent.reservation_start,
         end_datetime: apiEvent.reservation_end,
+        requested_reservation_start: apiEvent.requested_reservation_start,
+        requested_reservation_end: apiEvent.requested_reservation_end,
         guests: apiEvent.guests,
         event_state: apiEvent.event_state,
-        additional_services: apiEvent.additional_services || []
+        additional_services: apiEvent.additional_services || [],
       },
-      user_name: apiEvent.user?.full_name || apiEvent.user?.username || 'Unknown User',
+      user_name:
+        apiEvent.user?.full_name || apiEvent.user?.username || 'Unknown User',
       reservation_type: apiEvent.calendar?.reservation_type || 'Unknown Type',
-      reservation_service_name: apiEvent.calendar?.reservation_service?.name || 'Unknown Service'
+      reservation_service_name:
+        apiEvent.calendar?.reservation_service?.name || 'Unknown Service',
     };
   };
 
@@ -60,10 +79,14 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
   const pastEvents = pastData?.map(transformEvent) || [];
   const managerEvents = managerData?.map(transformEvent) || [];
 
-  const hasMoreUpcoming = isPersonalTab && upcomingData?.length === PAGINATION_LIMIT;
+  const hasMoreUpcoming =
+    isPersonalTab && upcomingData?.length === PAGINATION_LIMIT;
   const hasMorePast = isPersonalTab && pastData?.length === PAGINATION_LIMIT;
-  const showUpcomingPagination = isPersonalTab && (upcomingEvents.length >= 10 || hasMoreUpcoming || upcomingPage > 1);
-  const showPastPagination = isPersonalTab && (pastEvents.length >= 10 || hasMorePast || pastPage > 1);
+  const showUpcomingPagination =
+    isPersonalTab &&
+    (upcomingEvents.length >= 10 || hasMoreUpcoming || upcomingPage > 1);
+  const showPastPagination =
+    isPersonalTab && (pastEvents.length >= 10 || hasMorePast || pastPage > 1);
 
   // Wrap handlers to include refetch
   const handleDeleteWithRefetch = async (params) => {
@@ -76,14 +99,27 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     }
   };
 
-  const handleUpdateTimeWithRefetch = async (params) => {
-    await onUpdateTime(params.eventId, params.newTime, params.endTime, params.note);
+  const handleRequestTimeChangeWithRefetch = async (params) => {
+    await onRequestTimeChange(
+      params.eventId,
+      params.newTime,
+      params.endTime,
+      params.note
+    );
     if (isPersonalTab) {
       await refetchUpcoming();
       await refetchPast();
-    } else {
-      await refetchManager();
     }
+  };
+
+  const handleUpdateTimeWithRefetch = async (params) => {
+    await onUpdateTime(
+      params.eventId,
+      params.newTime,
+      params.endTime,
+      params.note
+    );
+    await refetchManager();
   };
 
   const handleApproveTimeWithRefetch = async (params, approve) => {
@@ -102,7 +138,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     modalType: 'cancel',
     className: 'bg-red-500 text-white hover:bg-red-600',
     shouldShow: (event) => {
-      const canModify = event.event_state !== 'deleted' && event.event_state !== 'canceled';
+      const canModify =
+        event.event_state !== 'deleted' && event.event_state !== 'canceled';
       const isUpcoming = new Date(event.start_datetime) >= new Date();
       return canModify && isUpcoming;
     },
@@ -111,7 +148,7 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
         await handleDeleteWithRefetch({ eventId: params.eventId, note: '' });
       }
     },
-    modalConfig: null // No modal needed
+    modalConfig: null, // No modal needed
   });
 
   const getRequestTimeChangeAction = () => ({
@@ -119,18 +156,19 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     modalType: 'requestTimeChange',
     className: 'bg-blue-500 text-white hover:bg-blue-600',
     shouldShow: (event) => {
-      const canModify = event.event_state !== 'deleted' && event.event_state !== 'canceled';
+      const canModify =
+        event.event_state !== 'deleted' && event.event_state !== 'canceled';
       const isUpcoming = new Date(event.start_datetime) >= new Date();
       return canModify && isUpcoming;
     },
-    onConfirm: handleUpdateTimeWithRefetch,
+    onConfirm: handleRequestTimeChangeWithRefetch,
     modalConfig: {
       title: 'Request Time Change',
       inputType: 'datetime',
       placeholder: 'Please provide a reason for the time change request...',
       confirmText: 'Request Change',
-      required: true
-    }
+      required: true,
+    },
   });
 
   const getEditAction = () => ({
@@ -138,7 +176,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     modalType: 'edit',
     className: 'bg-blue-500 text-white hover:bg-blue-600',
     shouldShow: (event) => {
-      const canModify = event.event_state !== 'deleted' && event.event_state !== 'canceled';
+      const canModify =
+        event.event_state !== 'deleted' && event.event_state !== 'canceled';
       const isUpcoming = new Date(event.start_datetime) >= new Date();
       return canModify && isUpcoming;
     },
@@ -148,8 +187,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       inputType: 'datetime',
       placeholder: 'Please provide a reason for the time change...',
       confirmText: 'Save Changes',
-      required: true
-    }
+      required: true,
+    },
   });
 
   const getApproveTimeAction = () => ({
@@ -162,8 +201,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       title: 'Approve Time Change',
       inputType: 'none',
       confirmMessage: 'Are you sure you want to approve this time change?',
-      confirmText: 'Approve'
-    }
+      confirmText: 'Approve',
+    },
   });
 
   const getDeclineTimeAction = () => ({
@@ -177,8 +216,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       inputType: 'textarea',
       placeholder: 'Please provide reason for declining this time change...',
       confirmText: 'Decline',
-      required: true
-    }
+      required: true,
+    },
   });
 
   const getApproveEventAction = () => ({
@@ -191,8 +230,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       title: 'Approve Event',
       inputType: 'none',
       confirmMessage: 'Are you sure you want to approve this event?',
-      confirmText: 'Approve'
-    }
+      confirmText: 'Approve',
+    },
   });
 
   const getDeclineEventAction = () => ({
@@ -206,8 +245,8 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       inputType: 'textarea',
       placeholder: 'Please provide reason for declining this event...',
       confirmText: 'Decline',
-      required: true
-    }
+      required: true,
+    },
   });
 
   // Determine actions based on tab and role
@@ -224,11 +263,7 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
 
     // Manager on "Update Requested" tab
     if (activeTab === 'update_requested') {
-      return [
-        getApproveTimeAction(),
-        getDeclineTimeAction(),
-        getEditAction()
-      ];
+      return [getApproveTimeAction(), getDeclineTimeAction(), getEditAction()];
     }
 
     // Manager on "Not Approved" tab
@@ -236,16 +271,13 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       return [
         getApproveEventAction(),
         getDeclineEventAction(),
-        getEditAction()
+        getEditAction(),
       ];
     }
 
     // Manager on "Confirmed" tab
     if (activeTab === 'confirmed') {
-      return [
-        getEditAction(),
-        getCancelAction()
-      ];
+      return [getEditAction(), getCancelAction()];
     }
 
     // Manager on "Canceled" tab - no actions for canceled events
@@ -257,7 +289,10 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     return [getRequestTimeChangeAction(), getCancelAction()];
   };
 
-  if ((isPersonalTab && isUpcomingLoading && upcomingPage === 1) || (isManagerLoading && !isPersonalTab)) {
+  if (
+    (isPersonalTab && isUpcomingLoading && upcomingPage === 1) ||
+    (isManagerLoading && !isPersonalTab)
+  ) {
     return <PulsatingLoader />;
   }
 
@@ -266,7 +301,9 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
     return (
       <div className="space-y-8">
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Upcoming Events</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+            Upcoming Events
+          </h2>
           <EventsTable
             title="Upcoming Events"
             events={upcomingEvents}
@@ -281,7 +318,9 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Past Events</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+            Past Events
+          </h2>
           <EventsTable
             title="Past Events"
             events={pastEvents}
@@ -304,6 +343,7 @@ const EventsList = ({ activeTab, onUpdateTime, onDelete, onApproveTime, onApprov
       events={managerEvents}
       actions={getActionsForContext()}
       showPagination={false}
+      showRequestedTime={activeTab === 'update_requested'}
       emptyMessage="There are no events to manage at the moment."
     />
   );

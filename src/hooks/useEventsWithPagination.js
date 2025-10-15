@@ -4,7 +4,7 @@ import { API_BASE_URL } from '../constants';
 
 axios.defaults.withCredentials = true;
 
-export const useEventsWithPagination = (page = 1, limit = 10, past = false) => {
+export const useEventsWithPagination = (page = 1, limit = 10, isPersonalTab, past = false) => {
   const fetchEvents = async () => {
     const response = await axios.get(`${API_BASE_URL}/users/me/events`, {
       params: {
@@ -17,7 +17,7 @@ export const useEventsWithPagination = (page = 1, limit = 10, past = false) => {
   };
 
   return useQuery(['events-paginated', page, limit, past], fetchEvents, {
-    keepPreviousData: true,
-    staleTime: 10000,
+    enabled: isPersonalTab,
+    staleTime: 1000,
   });
 };

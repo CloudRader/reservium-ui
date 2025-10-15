@@ -13,7 +13,8 @@ const EventsTable = ({
   hasMore = false,
   isLoading = false,
   showPagination = false,
-  emptyMessage = "No events to display."
+  emptyMessage = "No events to display.",
+  showRequestedTime = false
 }) => {
   const [modalState, setModalState] = useState({
     isOpen: false,
@@ -191,12 +192,13 @@ const EventsTable = ({
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <colgroup>
-              <col style={{ width: '25%' }} />
-              <col style={{ width: '15%' }} />
-              <col style={{ width: '20%' }} />
+              <col style={{ width: showRequestedTime ? '20%' : '25%' }} />
+              <col style={{ width: showRequestedTime ? '12%' : '15%' }} />
+              <col style={{ width: showRequestedTime ? '16%' : '20%' }} />
+              {showRequestedTime && <col style={{ width: '16%' }} />}
               <col style={{ width: '8%' }} />
               <col style={{ width: '10%' }} />
-              <col style={{ width: '22%' }} />
+              <col style={{ width: showRequestedTime ? '18%' : '22%' }} />
             </colgroup>
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
@@ -207,8 +209,13 @@ const EventsTable = ({
                   Service
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Date & Time
+                  Current Time
                 </th>
+                {showRequestedTime && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Requested Time
+                  </th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Guests
                 </th>
@@ -258,6 +265,22 @@ const EventsTable = ({
                         </div>
                       </div>
                     </td>
+                    {showRequestedTime && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                          {event.requested_reservation_start ? (
+                            <>
+                              <div>{formatDateForDisplay(event.requested_reservation_start)}</div>
+                              <div className="text-xs text-blue-500 dark:text-blue-300">
+                                to {formatDateForDisplay(event.requested_reservation_end)}
+                              </div>
+                            </>
+                          ) : (
+                            <span className="text-gray-400 dark:text-gray-500">-</span>
+                          )}
+                        </div>
+                      </td>
+                    )}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                       {event.guests}
                     </td>

@@ -24,7 +24,31 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     }
   };
 
-  // Handle update event time (for managers - direct PUT to /events/{id})
+  // Handle request time change (for regular users - PUT to /events/{id}/request-time-change)
+  const handleRequestTimeChange = async (
+    eventId,
+    newStartTime,
+    newEndTime,
+    reason
+  ) => {
+    try {
+      if (!reason) return;
+
+      await axios.put(`${API_BASE_URL}/events/${eventId}/request-time-change`, {
+        event_update: {
+          requested_reservation_start: formatDateTimeLocalForAPI(newStartTime),
+          requested_reservation_end: formatDateTimeLocalForAPI(newEndTime),
+        },
+        reason: reason,
+      });
+      alert('Time change request sent successfully!');
+    } catch (error) {
+      console.error('Error requesting time change:', error);
+      alert('Failed to send time change request. Please try again.');
+    }
+  };
+
+  // Handle update event time (for managers on their services - direct PUT to /events/{id})
   const handleUpdateTime = async (
     eventId,
     newStartTime,
@@ -41,10 +65,10 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
         },
         reason: reason,
       });
-      alert('Time change request sent successfully!');
+      alert('Event time updated successfully!');
     } catch (error) {
       console.error('Error updating event:', error);
-      alert('Failed to send time change request. Please try again.');
+      alert('Failed to update event time. Please try again.');
     }
   };
 
@@ -92,6 +116,7 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
 
       <EventsList
         activeTab={activeTab}
+        onRequestTimeChange={handleRequestTimeChange}
         onUpdateTime={handleUpdateTime}
         onDelete={handleDelete}
         onApproveTime={handleApproveTime}

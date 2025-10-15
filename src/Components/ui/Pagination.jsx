@@ -1,14 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Pagination = ({ currentPage, onPageChange, hasMore, isLoading }) => {
+const Pagination = ({
+  currentPage,
+  onPageChange,
+  hasMore,
+  isLoading,
+  totalPages,
+}) => {
   const maxVisiblePages = 5;
-  const estimatedTotalPages = hasMore ? currentPage + 5 : currentPage;
+  // Use exact total when provided; otherwise, only expose at most one future page when hasMore
+  const effectiveTotalPages =
+    typeof totalPages === 'number' && totalPages > 0
+      ? totalPages
+      : currentPage + (hasMore ? 1 : 0);
 
   const getPageNumbers = () => {
     const pages = [];
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(estimatedTotalPages, startPage + maxVisiblePages - 1);
+    let endPage = Math.min(
+      effectiveTotalPages,
+      startPage + maxVisiblePages - 1
+    );
 
     if (endPage - startPage < maxVisiblePages - 1) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
@@ -63,7 +76,7 @@ const Pagination = ({ currentPage, onPageChange, hasMore, isLoading }) => {
         </button>
       ))}
 
-      {hasMore && pageNumbers[pageNumbers.length - 1] < estimatedTotalPages && (
+      {pageNumbers[pageNumbers.length - 1] < effectiveTotalPages && (
         <span className="text-gray-500 dark:text-gray-400">...</span>
       )}
 
@@ -82,11 +95,12 @@ Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   hasMore: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  totalPages: PropTypes.number,
 };
 
 Pagination.defaultProps = {
-  isLoading: false
+  isLoading: false,
 };
 
 export default Pagination;

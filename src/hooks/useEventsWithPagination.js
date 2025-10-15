@@ -13,6 +13,8 @@ export const useEventsWithPagination = (page = 1, limit = 10, isPersonalTab, pas
         past,
       },
     });
+
+    // Return raw array as provided by API
     return response.data;
   };
 

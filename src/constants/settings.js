@@ -4,4 +4,4 @@ export const settings = {
     MOBILE_SCREEN_BREAKPOINT: 1024,
 };
 
-export const PAGINATION_LIMIT = 10;
+export const PAGINATION_LIMIT = 2;

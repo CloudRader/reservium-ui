@@ -21,6 +21,8 @@ const EventsList = ({
 
   // Use different hooks based on activeTab
   const isPersonalTab = activeTab === 'personal';
+  // Overfetch by 1 on personal tab to detect if next page exists
+  const personalLimit = isPersonalTab ? PAGINATION_LIMIT + 1 : PAGINATION_LIMIT;
 
   // For personal tab - use pagination for both upcoming and past
   const {
@@ -29,7 +31,7 @@ const EventsList = ({
     refetch: refetchUpcoming,
   } = useEventsWithPagination(
     upcomingPage,
-    PAGINATION_LIMIT,
+    personalLimit,
     isPersonalTab,
     false
   );
@@ -38,7 +40,7 @@ const EventsList = ({
     data: pastData,
     isLoading: isPastLoading,
     refetch: refetchPast,
-  } = useEventsWithPagination(pastPage, PAGINATION_LIMIT, isPersonalTab, true);
+  } = useEventsWithPagination(pastPage, personalLimit, isPersonalTab, true);
 
   // For manager tabs - use the old hook
   const {
@@ -75,13 +77,20 @@ const EventsList = ({
     };
   };
 
-  const upcomingEvents = upcomingData?.map(transformEvent) || [];
-  const pastEvents = pastData?.map(transformEvent) || [];
+  // Personal API returns raw arrays; slice to display limit when overfetching
+  const upcomingArray = Array.isArray(upcomingData) ? upcomingData : [];
+  const pastArray = Array.isArray(pastData) ? pastData : [];
+  const hasMoreUpcomingRaw =
+    isPersonalTab && upcomingArray.length > PAGINATION_LIMIT;
+  const hasMorePastRaw = isPersonalTab && pastArray.length > PAGINATION_LIMIT;
+  const upcomingEvents = upcomingArray
+    .slice(0, PAGINATION_LIMIT)
+    .map(transformEvent);
+  const pastEvents = pastArray.slice(0, PAGINATION_LIMIT).map(transformEvent);
   const managerEvents = managerData?.map(transformEvent) || [];
 
-  const hasMoreUpcoming =
-    isPersonalTab && upcomingData?.length === PAGINATION_LIMIT;
-  const hasMorePast = isPersonalTab && pastData?.length === PAGINATION_LIMIT;
+  const hasMoreUpcoming = hasMoreUpcomingRaw;
+  const hasMorePast = hasMorePastRaw;
   const showUpcomingPagination =
     isPersonalTab &&
     (upcomingEvents.length >= 10 || hasMoreUpcoming || upcomingPage > 1);

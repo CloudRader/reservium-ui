@@ -13,8 +13,9 @@ const EventsTable = ({
   hasMore = false,
   isLoading = false,
   showPagination = false,
-  emptyMessage = "No events to display.",
-  showRequestedTime = false
+  emptyMessage = 'No events to display.',
+  showRequestedTime = false,
+  totalPages,
 }) => {
   const [modalState, setModalState] = useState({
     isOpen: false,
@@ -22,7 +23,7 @@ const EventsTable = ({
     note: '',
     newTime: '',
     endTime: '',
-    eventId: null
+    eventId: null,
   });
 
   const [loadingEventId, setLoadingEventId] = useState(null);
@@ -35,7 +36,7 @@ const EventsTable = ({
       note: '',
       newTime: '',
       endTime: '',
-      eventId
+      eventId,
     });
   };
 
@@ -46,13 +47,13 @@ const EventsTable = ({
       note: '',
       newTime: '',
       endTime: '',
-      eventId: null
+      eventId: null,
     });
   };
 
   const handleConfirm = async () => {
     // Find the action configuration that matches the modal type
-    const action = actions.find(a => a.modalType === modalState.type);
+    const action = actions.find((a) => a.modalType === modalState.type);
     if (action && action.onConfirm) {
       setIsModalLoading(true);
       setLoadingEventId(modalState.eventId);
@@ -62,7 +63,7 @@ const EventsTable = ({
           eventId: modalState.eventId,
           note: modalState.note,
           newTime: modalState.newTime,
-          endTime: modalState.endTime
+          endTime: modalState.endTime,
         });
         // Close modal after successful action
         closeModal();
@@ -76,13 +77,13 @@ const EventsTable = ({
   };
 
   const getModalContent = () => {
-    const action = actions.find(a => a.modalType === modalState.type);
+    const action = actions.find((a) => a.modalType === modalState.type);
     if (!action) {
       return {
         title: '',
         children: null,
         confirmText: 'Confirm',
-        isConfirmDisabled: false
+        isConfirmDisabled: false,
       };
     }
 
@@ -98,7 +99,9 @@ const EventsTable = ({
           <textarea
             className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             value={modalState.note}
-            onChange={(e) => setModalState(prev => ({ ...prev, note: e.target.value }))}
+            onChange={(e) =>
+              setModalState((prev) => ({ ...prev, note: e.target.value }))
+            }
             placeholder={config.placeholder || ''}
             rows="3"
           />
@@ -115,7 +118,12 @@ const EventsTable = ({
                 type="datetime-local"
                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={modalState.newTime}
-                onChange={(e) => setModalState(prev => ({ ...prev, newTime: e.target.value }))}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    newTime: e.target.value,
+                  }))
+                }
               />
             </div>
             <div>
@@ -126,7 +134,12 @@ const EventsTable = ({
                 type="datetime-local"
                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={modalState.endTime}
-                onChange={(e) => setModalState(prev => ({ ...prev, endTime: e.target.value }))}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    endTime: e.target.value,
+                  }))
+                }
               />
             </div>
             <div>
@@ -136,17 +149,22 @@ const EventsTable = ({
               <textarea
                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={modalState.note}
-                onChange={(e) => setModalState(prev => ({ ...prev, note: e.target.value }))}
+                onChange={(e) =>
+                  setModalState((prev) => ({ ...prev, note: e.target.value }))
+                }
                 placeholder={config.placeholder || ''}
                 rows="3"
               />
             </div>
           </div>
         );
-        isConfirmDisabled = !modalState.newTime || !modalState.endTime || !modalState.note.trim();
+        isConfirmDisabled =
+          !modalState.newTime || !modalState.endTime || !modalState.note.trim();
       } else if (config.inputType === 'none') {
         children = (
-          <p className="text-gray-600 dark:text-gray-300">{config.confirmMessage || 'Are you sure?'}</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            {config.confirmMessage || 'Are you sure?'}
+          </p>
         );
         isConfirmDisabled = false;
       }
@@ -155,7 +173,7 @@ const EventsTable = ({
         title: config.title,
         children,
         confirmText: config.confirmText || 'Confirm',
-        isConfirmDisabled
+        isConfirmDisabled,
       };
     }
 
@@ -163,7 +181,7 @@ const EventsTable = ({
       title: '',
       children: <div />,
       confirmText: 'Confirm',
-      isConfirmDisabled: false
+      isConfirmDisabled: false,
     };
   };
 
@@ -232,24 +250,30 @@ const EventsTable = ({
                 const { event, reservation_service_name } = eventData;
 
                 return (
-                  <tr key={event.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <tr
+                    key={event.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
                           {event.purpose}
                         </div>
-                        {event.additional_services && event.additional_services.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {event.additional_services.map((service, index) => (
-                              <span
-                                key={index}
-                                className="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded text-xs"
-                              >
-                                {service}
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                        {event.additional_services &&
+                          event.additional_services.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {event.additional_services.map(
+                                (service, index) => (
+                                  <span
+                                    key={index}
+                                    className="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded text-xs"
+                                  >
+                                    {service}
+                                  </span>
+                                )
+                              )}
+                            </div>
+                          )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -270,13 +294,22 @@ const EventsTable = ({
                         <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
                           {event.requested_reservation_start ? (
                             <>
-                              <div>{formatDateForDisplay(event.requested_reservation_start)}</div>
+                              <div>
+                                {formatDateForDisplay(
+                                  event.requested_reservation_start
+                                )}
+                              </div>
                               <div className="text-xs text-blue-500 dark:text-blue-300">
-                                to {formatDateForDisplay(event.requested_reservation_end)}
+                                to{' '}
+                                {formatDateForDisplay(
+                                  event.requested_reservation_end
+                                )}
                               </div>
                             </>
                           ) : (
-                            <span className="text-gray-400 dark:text-gray-500">-</span>
+                            <span className="text-gray-400 dark:text-gray-500">
+                              -
+                            </span>
                           )}
                         </div>
                       </td>
@@ -291,7 +324,9 @@ const EventsTable = ({
                       <div className="flex flex-wrap gap-2">
                         {actions.map((action, index) => {
                           // Check if action should be visible based on event state
-                          const shouldShow = action.shouldShow ? action.shouldShow(event) : true;
+                          const shouldShow = action.shouldShow
+                            ? action.shouldShow(event)
+                            : true;
 
                           if (!shouldShow) return null;
 
@@ -317,14 +352,32 @@ const EventsTable = ({
                               onClick={handleClick}
                               disabled={isButtonLoading}
                               className={`px-3 py-1.5 text-sm rounded transition-colors ${action.className} ${
-                                isButtonLoading ? 'opacity-50 cursor-not-allowed' : ''
+                                isButtonLoading
+                                  ? 'opacity-50 cursor-not-allowed'
+                                  : ''
                               }`}
                             >
                               {isButtonLoading ? (
                                 <span className="flex items-center gap-2">
-                                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  <svg
+                                    className="animate-spin h-4 w-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <circle
+                                      className="opacity-25"
+                                      cx="12"
+                                      cy="12"
+                                      r="10"
+                                      stroke="currentColor"
+                                      strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                      className="opacity-75"
+                                      fill="currentColor"
+                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
                                   </svg>
                                   Loading...
                                 </span>
@@ -335,7 +388,9 @@ const EventsTable = ({
                           );
                         })}
                         {actions.length === 0 && (
-                          <span className="text-sm text-gray-500 dark:text-gray-400">-</span>
+                          <span className="text-sm text-gray-500 dark:text-gray-400">
+                            -
+                          </span>
                         )}
                       </div>
                     </td>
@@ -353,6 +408,7 @@ const EventsTable = ({
           onPageChange={onPageChange}
           hasMore={hasMore}
           isLoading={isLoading}
+          totalPages={totalPages}
         />
       )}
     </>

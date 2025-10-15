@@ -40,22 +40,24 @@ const useCreateFormLogic = (initialFields, submitUrl) => {
                 .flatMap((f) => f.fields || [])
                 .find((f) => f.name === name);
 
-            if (field && field.options.length > 1) {
-              // Handle multiCheckbox
-              const updatedValues = prevData[name] ? [...prevData[name]] : [];
+            const isOneCheckbox = field?.sybType === "oneCheckbox";
+            const hasOptions = Array.isArray(field?.options) && field.options.length > 0;
+
+            if (!isOneCheckbox && hasOptions) {
+              // Handle multi-checkbox list
+              const current = Array.isArray(prevData[name]) ? prevData[name] : [];
+              const updatedValues = new Set(current.map(String));
+              const asString = String(value);
               if (checked) {
-                updatedValues.push(value);
+                updatedValues.add(asString);
               } else {
-                const index = updatedValues.indexOf(value);
-                if (index > -1) {
-                  updatedValues.splice(index, 1);
-                }
+                updatedValues.delete(asString);
               }
-              return { ...prevData, [name]: updatedValues };
-            } else {
-              // Handle regular checkbox
-              return { ...prevData, [name]: checked };
+              return { ...prevData, [name]: Array.from(updatedValues) };
             }
+
+            // Single checkbox (boolean)
+            return { ...prevData, [name]: !!checked };
           } else {
             return { ...prevData, [name]: value };
           }
@@ -78,10 +80,36 @@ const useCreateFormLogic = (initialFields, submitUrl) => {
         })
         .catch((error) => {
           console.error("Error:", error);
-          setMessage({
-            type: "error",
-            text: "An error occurred. Please try again.",
-          });
+          let text = "An error occurred. Please try again.";
+          const data = error?.response?.data;
+
+          // FastAPI-style: { detail: [{ msg, loc, type }, ...] } or string
+          if (Array.isArray(data?.detail) && data.detail.length > 0) {
+            const formatLoc = (loc) => {
+              if (!Array.isArray(loc) || loc.length === 0) return undefined;
+              // If FastAPI puts 'body' first, use the immediate field at index 1
+              if (loc[0] === "body" && loc.length >= 2) return String(loc[1]);
+              // Otherwise, prefer the last segment as the field name
+              return String(loc[loc.length - 1]);
+            };
+            text = data.detail
+              .map((d) => {
+                const loc = formatLoc(d?.loc);
+                const msg = d?.msg || d?.message || String(d);
+                return loc ? `${loc}: ${msg}` : msg;
+              })
+              .join("; ");
+          } else if (typeof data?.detail === "string") {
+            text = data.detail;
+          } else if (data?.message) {
+            text = data.message;
+          } else if (typeof data === "string") {
+            text = data;
+          } else if (error?.message) {
+            text = error.message;
+          }
+
+          setMessage({ type: "error", text });
         });
     },
     [submitUrl]

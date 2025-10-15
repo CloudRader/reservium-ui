@@ -22,7 +22,7 @@ const EventsList = ({
   // Use different hooks based on activeTab
   const isPersonalTab = activeTab === 'personal';
   // Overfetch by 1 on personal tab to detect if next page exists
-  const personalLimit = isPersonalTab ? PAGINATION_LIMIT + 1 : PAGINATION_LIMIT;
+  const personalLimit = PAGINATION_LIMIT + 1;
 
   // For personal tab - use pagination for both upcoming and past
   const {

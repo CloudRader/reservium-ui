@@ -9,7 +9,9 @@ axios.defaults.withCredentials = true;
 
 const getUserInfo = async () => {
   // Only fetch user info if authenticated with Keycloak
+  console.log('keycloak.authenticated', keycloak.authenticated);
   if (!keycloak.authenticated) {
+    console.log('Not authenticated');
     throw new Error('Not authenticated');
   }
 
@@ -44,7 +46,7 @@ export const useAuth = () => {
 
   const logout = useCallback(() => {
     queryClient.removeQueries('user');
-    navigate('/logout');
+    // navigate('/logout');
   }, [navigate, queryClient]);
 
   return {

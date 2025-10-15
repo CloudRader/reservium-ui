@@ -24,9 +24,7 @@ function Logout({ onLogout }) {
       }
 
       // Logout from Keycloak (clears tokens and redirects)
-      keycloak.logout({
-        redirectUri: window.location.origin,
-      });
+      keycloak.logout();
     };
 
     logoutUser();

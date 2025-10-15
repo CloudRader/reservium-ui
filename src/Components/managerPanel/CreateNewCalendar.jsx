@@ -220,10 +220,7 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
     handleSubmit,
     setMessage,
     handleChange,
-  } = useCreateFormLogic(
-    initialFields,
-    `${API_BASE_URL}/calendars/`
-  );
+  } = useCreateFormLogic(initialFields, `${API_BASE_URL}/calendars/`);
 
   const fetchMiniServices = useCallback(async () => {
     if (fetchedRef.current) return;
@@ -255,6 +252,10 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
   fetchMiniServices();
 
   const preparePayload = useCallback(() => {
+    const clubMemberRules = formData.club_member_rules || {};
+    const activeMemberRules = formData.active_member_rules || {};
+    const managerRules = formData.manager_rules || {};
+
     return {
       id: calendarIdInputType === 'manual' ? '' : formData.calendar_id,
       collision_ids: formData.collision_ids || [],
@@ -272,46 +273,46 @@ const CreateNewCalendar = ({ serviceId, serviceCalendars }) => {
       collision_with_itself: !!formData.collision_with_itself,
 
       club_member_rules: {
-        night_time: !!formData.club_member_rules.club_night_time,
+        night_time: !!clubMemberRules.club_night_time,
         reservation_without_permission:
-          !!formData.club_member_rules.reservation_without_permission,
+          !!clubMemberRules.reservation_without_permission,
         max_reservation_hours:
-          Number(formData.club_member_rules.max_reservation_hours) || 0,
-        in_advance_hours:
-          Number(formData.club_member_rules.in_advance_hours) || 0,
-        in_advance_minutes:
-          Number(formData.club_member_rules.in_advance_minutes) || 0,
-        in_prior_days: Number(formData.club_member_rules.in_prior_days) || 0,
+          Number(clubMemberRules.max_reservation_hours) || 0,
+        in_advance_hours: Number(clubMemberRules.in_advance_hours) || 0,
+        in_advance_minutes: Number(clubMemberRules.in_advance_minutes) || 0,
+        in_prior_days: Number(clubMemberRules.in_prior_days) || 0,
       },
       active_member_rules: {
-        night_time: !!formData.active_member_rules.club_night_time,
+        night_time: !!activeMemberRules.club_night_time,
         reservation_without_permission:
-          !!formData.active_member_rules.reservation_without_permission,
+          !!activeMemberRules.reservation_without_permission,
         max_reservation_hours:
-          Number(formData.active_member_rules.max_reservation_hours) || 0,
-        in_advance_hours:
-          Number(formData.active_member_rules.in_advance_hours) || 0,
-        in_advance_minutes:
-          Number(formData.active_member_rules.in_advance_minutes) || 0,
-        in_prior_days: Number(formData.active_member_rules.in_prior_days) || 0,
+          Number(activeMemberRules.max_reservation_hours) || 0,
+        in_advance_hours: Number(activeMemberRules.in_advance_hours) || 0,
+        in_advance_minutes: Number(activeMemberRules.in_advance_minutes) || 0,
+        in_prior_days: Number(activeMemberRules.in_prior_days) || 0,
       },
       manager_rules: {
-        night_time: !!formData.manager_rules.club_night_time,
+        night_time: !!managerRules.club_night_time,
         reservation_without_permission:
-          !!formData.manager_rules.reservation_without_permission,
-        max_reservation_hours:
-          Number(formData.manager_rules.max_reservation_hours) || 0,
-        in_advance_hours: Number(formData.manager_rules.in_advance_hours) || 0,
-        in_advance_minutes:
-          Number(formData.manager_rules.in_advance_minutes) || 0,
-        in_prior_days: Number(formData.manager_rules.in_prior_days) || 0,
+          !!managerRules.reservation_without_permission,
+        max_reservation_hours: Number(managerRules.max_reservation_hours) || 0,
+        in_advance_hours: Number(managerRules.in_advance_hours) || 0,
+        in_advance_minutes: Number(managerRules.in_advance_minutes) || 0,
+        in_prior_days: Number(managerRules.in_prior_days) || 0,
       },
     };
   }, [formData, calendarIdInputType, googleCalendars, serviceId]);
 
   const makeSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(preparePayload());
+    try {
+      const payload = preparePayload();
+      handleSubmit(payload);
+    } catch (err) {
+      console.error('Prepare payload error:', err);
+      setMessage({ type: 'error', text: err?.message || 'Invalid form data' });
+    }
   };
 
   const fetchGoogleCalendars = useCallback(async () => {

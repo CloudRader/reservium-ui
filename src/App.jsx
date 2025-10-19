@@ -49,7 +49,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (error.response?.status === 401) {
       console.warn('Authentication error, redirecting to logout');
       keycloak.logout({ redirectUri: window.location.origin });
     }

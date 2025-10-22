@@ -14,7 +14,10 @@ export const useEvents = (userId, activeTab, managerRoles) => {
         // Fetch events filtered by event_state on the server side
         try {
             const response = await axios.get(`${API_BASE_URL}/events/get-by-user-roles`, {
-                params: { event_state: eventState }
+                params: {
+                  event_state: eventState,
+                  past: false,
+                }
             });
             return response.data;
         } catch (error) {
@@ -34,4 +37,4 @@ export const useEvents = (userId, activeTab, managerRoles) => {
             staleTime: 1000
         }
     );
-}; 
+};

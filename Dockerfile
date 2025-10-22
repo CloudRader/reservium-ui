@@ -11,6 +11,11 @@ RUN npm install
 
 # Copy all application files and build the app
 COPY . .
+
+# Accept and use build argument for Vite
+ARG VITE_GOOGLE_CALENDAR_API_KEY
+ENV VITE_GOOGLE_CALENDAR_API_KEY=$VITE_GOOGLE_CALENDAR_API_KEY
+
 RUN npm run build
 
 # Production stage

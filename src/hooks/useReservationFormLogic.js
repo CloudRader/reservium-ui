@@ -1,205 +1,99 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useQuery } from 'react-query';
-import axios from 'axios';
-import config from '../Config';
+import { useState, useCallback, useMemo } from 'react';
+import { preparePayload } from './useReservationFormLogic.utils';
+import useFormFields from './useFormFields';
+import useInitialFormData from './useInitialFormData';
+import useSlotSync from './useSlotSync';
+import useFormValidation from './useFormValidation';
 
-// axios.defaults.withCredentials = true;
-const fetchAdditionalServices = async (calendarId) => {
-    const response = await axios.get(`${config.serverURL}/calendars/mini_services/${calendarId}`);
-    return response.data.map(service => ({ value: service, label: service }));
-};
-
-const useReservationFormLogic = (calendarIds, reservationTypes) => {
+const useReservationFormLogic = (calendarIds, reservationTypes, selectedSlot, onSubmit, calendars = []) => {
     const [formData, setFormData] = useState({});
-    const [errors, setErrors] = useState({});
-    const [reservationType, setReservationType] = useState('');
+    const { formFields } = useFormFields(reservationTypes);
 
-    const getTomorrowDate = useCallback(() => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        return tomorrow.toISOString().split('T')[0];
-    }, []);
+    useInitialFormData(formFields, setFormData, formData);
+    useSlotSync(selectedSlot, setFormData);
 
-    // Moving the initialFormFields definition before useState usage
-    const formFields  = useMemo(() => [
-        {
-            name: 'startDate',
-            type: 'date',
-            labelText: 'Start Date',
-            labelColor: 'text-success',
-            defaultValue: getTomorrowDate(),
-            validation: (value) => {
-                const year = new Date(value).getFullYear();
-                return year > 2023 && year < 3000;
-            }
-        },
-        {
-            name: 'startTime',
-            type: 'time',
-            labelText: 'Start Time',
-            labelColor: 'text-success',
-            defaultValue: '17:00',
-            validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
-        },
-        {
-            name: 'endDate',
-            type: 'date',
-            labelText: 'End Date',
-            labelColor: 'text-success',
-            defaultValue: getTomorrowDate(),
-            validation: (value) => {
-                const year = new Date(value).getFullYear();
-                return year > 2023 && year < 3000;
-            }
-        },
-        {
-            name: 'endTime',
-            type: 'time',
-            labelText: 'End Time',
-            labelColor: 'text-success',
-            defaultValue: '20:00',
-            validation: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
-        },
-        {
-            name: 'purpose',
-            type: 'text',
-            labelText: 'Purpose',
-            labelColor: 'text-success',
-            validation: (value) => !!value && value.length < 150,
-        },
-        {
-            name: 'guests',
-            type: 'number',
-            labelText: 'Number of Guests',
-            labelColor: 'text-success',
-            validation: (value) => value > 0 && value < 101,
-        },
-        {
-            name: 'email',
-            type: 'email',
-            labelText: 'Email',
-            labelColor: 'text-primary',
-            validation: (value) => /\S+@\S+\.\S+/.test(value),
-        },
-        {
-            name: 'type',
-            type: 'select',
-            labelText: 'Type of Reservation',
-            labelColor: 'text-primary',
-            options: reservationTypes,
-            validation: (value) => !!value
-        },
-    ], [getTomorrowDate, reservationTypes]);
-
-
-    // Initialize form data based on default values
-    useEffect(() => {
-        const initialData = formFields.reduce((acc, field) => {
-            if (field.defaultValue !== undefined) {
-                acc[field.name] = field.defaultValue;
-            }
-            return acc;
-        }, {});
-        setFormData(initialData);
-    }, [formFields]);
-
-    let { data: additionalServices = [] } = useQuery(
-        ['additionalServices', reservationType, calendarIds[reservationType]],
-        () => reservationType && calendarIds[reservationType] ? fetchAdditionalServices(calendarIds[reservationType]) : [],
-        {
-            enabled: !!reservationType && !!calendarIds[reservationType],
-            keepPreviousData: false,
-            onError: (error) => {
-                console.error('Error fetching additional services:', error);
-            }
+    // Filter and format mini services for the selected reservation type from the matching calendar
+    const filteredMiniServices = useMemo(() => {
+        if (!formData.type || !calendars || calendars.length === 0) {
+            return [];
         }
-    );
 
-    const validateField = useCallback((field, value) => {
-        if (field.validation && !field.validation(value)) {
-            return `Invalid value for ${field.labelText}`;
+        // Find the calendar that matches the selected reservation type
+        const selectedCalendar = calendars.find(
+            calendar => calendar.reservation_type === formData.type
+        );
+
+        if (!selectedCalendar || !selectedCalendar.mini_services) {
+            return [];
         }
-        return null;
-    }, []);
 
-    useEffect(() => {
-        setFormData(prevData => ({
-            ...prevData,
-            additionalServices: []
+        return selectedCalendar.mini_services.map(service => ({
+            value: service.name,
+            label: service.name
         }));
-    }, [reservationType]);
+    }, [formData.type, calendars]);
 
     const handleChange = useCallback((e, field) => {
         const { name, value, type, checked } = e.target;
-        let updatedValue = value;
 
-        if (field.type === 'time') {
+        if (type === 'checkbox' && name === 'additionalServices') {
+            setFormData(prevData => {
+                let updated;
+                if (checked) {
+                    updated = [...prevData.additionalServices, value];
+                } else {
+                    updated = prevData.additionalServices.filter(item => item !== value);
+                }
+                return {
+                    ...prevData,
+                    additionalServices: updated
+                };
+            });
+            return;
+        }
+
+        // Reset additionalServices if reservation type changes
+        if (name === 'type') {
+            setFormData(prevData => {
+                return {
+                    ...prevData,
+                    [name]: value,
+                    additionalServices: []
+                };
+            });
+            return;
+        }
+        // Validate time fields
+        if (type === 'time') {
             const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
             if (!timeRegex.test(value)) {
                 return;
             }
         }
-        if (field.type === 'date' || field.type === 'time') {
-            const error = validateField(field, value);
-            setErrors(prevErrors => ({
-                ...prevErrors,
-                [name]: error
-            }));
-            if (error) return;
-        }
-
-        if (field.name === 'type') {
-            setReservationType(value);
-
-        }
-
-        if (type === 'checkbox' && name === 'additionalServices') {
-            updatedValue = formData.additionalServices || [];
-            if (checked) {
-                updatedValue = [...updatedValue, value];
-            } else {
-                updatedValue = updatedValue.filter(item => item !== value);
-            }
-        }
 
         setFormData(prevData => ({
             ...prevData,
-            [name]: updatedValue
+            [name]: value
         }));
-    }, [formData, validateField]);
+    }, []);
 
-    const handleSubmit = useCallback((e, onSubmit) => {
+    const { errors, validateForm } = useFormValidation(formFields, formData);
+
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
-
-        const validationErrors = formFields.reduce((acc, field) => {
-            const error = validateField(field, formData[field.name]);
-            if (error) acc[field.name] = error;
-            return acc;
-        }, {});
-
-        setErrors(validationErrors);
-
-        if (Object.keys(validationErrors).length === 0) {
-            const payload = {
-                start_datetime: `${formData.startDate}T${formData.startTime}`,
-                end_datetime: `${formData.endDate}T${formData.endTime}`,
-                purpose: formData.purpose,
-                guests: parseInt(formData.guests, 10),
-                reservation_type: formData.type,
-                email: formData.email,
-                additional_services: formData.additionalServices || [],
-            };
+        if (validateForm()) {
+            const payload = preparePayload(formData, calendarIds);
             onSubmit(payload);
         }
-    }, [formData, formFields, validateField]);
+    }, [validateForm, preparePayload, onSubmit, formData]);
 
     return {
         formFields,
-        additionalServices,
+        miniServices: filteredMiniServices,
         formData,
         errors,
         handleChange,
-        handleSubmit
+        handleSubmit,
     };
 };
 

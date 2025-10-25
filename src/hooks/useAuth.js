@@ -1,79 +1,65 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import config from "../Config";
+import { useQuery, useQueryClient } from 'react-query';
+import { API_BASE_URL } from '../constants';
+import keycloak from '../Components/auth/Keycloak';
+
 axios.defaults.withCredentials = true;
 
-
-export const useAuth = (clientStatus, setClientStatus) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [username, setUsername] = useState(null);
-    const [userRoles, setUserRoles] = useState({ active_member: false, section_head: false });
-    const navigate = useNavigate();
-
-    const login = useCallback(async (code, state) => {
-        try {
-            const username = await sendCodeToServer(code, state);
-            const userInfo = await getUserInfo();
-            setIsLoggedIn(true);
-            setUsername(username);
-            setUserRoles({
-                active_member: userInfo.active_member,
-                section_head: userInfo.section_head
-            });
-            localStorage.setItem('userName', username);
-            navigate('/club'); // redirect here
-        } catch (error) {
-            console.error('Error during login:', error);
-            setClientStatus("unauthorized");
-            navigate('/');
-        }
-    }, [navigate]);
-
-    const logout = useCallback(() => {
-        setIsLoggedIn(false);
-        setUsername(null);
-        setUserRoles({ active_member: false, section_head: false });
-        localStorage.removeItem('userName');
-        navigate('/');
-    }, [navigate]);
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            const storedUserName = localStorage.getItem('userName');
-            if (storedUserName) {
-                try {
-                    const userInfo = await getUserInfo();
-                    setIsLoggedIn(true);
-                    setUsername(storedUserName);
-                    setUserRoles({
-                        active_member: userInfo.active_member,
-                        section_head: userInfo.section_head
-                    });
-                    setClientStatus("authorized");
-                } catch (error) {
-                    setClientStatus("unauthorized");
-                    console.error('Error verifying authentication:', error);
-                    logout();
-                }
-            }else {
-                setClientStatus("unauthorized");
-            }
-        };
-        checkAuth();
-    }, [logout, clientStatus]);
-
-    return { isLoggedIn, username, userRoles, login, logout };
-};
-
-const sendCodeToServer = async (code, state) => {
-    const response = await axios.get(`${config.serverURL}/users/callback`, {
-        params: { code, state }
-    });
-    return response.data.username;
-};
-
 const getUserInfo = async () => {
-    const response = await axios.get(`${config.serverURL}/users/me`);
-    return response.data;
+  // Only fetch user info if authenticated with Keycloak
+  console.log('keycloak.authenticated', keycloak.authenticated);
+  if (!keycloak.authenticated) {
+    console.log('Not authenticated');
+    throw new Error('Not authenticated');
+  }
+
+  const response = await axios.get(`${API_BASE_URL}/users/me`);
+  return response.data;
+};
+
+export const useAuth = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const {
+    data: userInfo,
+    isLoading,
+    isError,
+    isFetching,
+    status,
+  } = useQuery('user', getUserInfo, {
+    retry: false,
+    enabled: keycloak.authenticated, // Only run query if authenticated
+  });
+
+  const login = useCallback(async () => {
+    try {
+      await queryClient.invalidateQueries('user');
+      navigate('/club');
+    } catch (error) {
+      console.error('Login error:', error);
+      navigate('/');
+    }
+  }, [navigate, queryClient]);
+
+  const logout = useCallback(() => {
+    queryClient.removeQueries('user');
+    // navigate('/logout');
+  }, [navigate, queryClient]);
+
+  return {
+    login,
+    logout,
+    userInfo,
+    isLoggedIn: keycloak.authenticated && !!userInfo,
+    isLoading,
+    isError,
+    isFetching,
+    authState: status, // 'loading' | 'error' | 'success'
+    username: userInfo?.username ?? null,
+    userId: userInfo?.id ?? null,
+    managerRoles: userInfo?.roles ?? [],
+  };
 };

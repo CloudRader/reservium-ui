@@ -1,0 +1,347 @@
+import React, { useState, useEffect, useCallback } from "react";
+import UniversalLayout from "../../layouts/UniversalLayout.jsx";
+import { API_BASE_URL } from "../../constants";
+import useEditableForm from "../../hooks/useEditableForm.js";
+import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
+import ActionButtons from "../ui/ActionButtons.jsx";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
+const EditCalendar = ({
+  serviceName,
+  calendarBaseData,
+  serviceId,
+  isEditMode = false,
+  serviceCalendars = [],
+}) => {
+  const calendarFetchUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}/collisions`;
+  const calendarUpdateUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}`;
+  const initialData = {
+    ...calendarBaseData,
+    club_member_rules: {},
+    active_member_rules: {},
+    manager_rules: {},
+    collision_ids: serviceCalendars.collision_ids || [],
+  };
+
+  const [miniServices, setMiniServices] = useState([]);
+  const [isLoadingMiniServices, setIsLoadingMiniServices] = useState(false);
+
+  const fetchMiniServices = useCallback(async () => {
+    setIsLoadingMiniServices(true);
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/reservation-services/${serviceId}/mini-services`
+      );
+      setMiniServices(response.data);
+    } catch (error) {
+      console.error("Error fetching mini services:", error);
+    } finally {
+      setIsLoadingMiniServices(false);
+    }
+  }, [serviceId]);
+
+  useEffect(() => {
+    fetchMiniServices();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serviceId]);
+
+  const {
+    loading,
+    isEditing,
+    editedData,
+    message,
+    handleEdit,
+    handleSave,
+    handleCancel,
+    handleChange,
+    handleRulesChange,
+  } = useEditableForm(
+    initialData,
+    calendarUpdateUrl,
+    calendarFetchUrl,
+    isEditMode
+  );
+
+  if (loading || isLoadingMiniServices) return <p>Loading...</p>;
+
+  if (!editedData) return <p>No data available</p>;
+
+  // Ensure mini_services is always an array
+  if (!editedData.mini_services) {
+    editedData.mini_services = [];
+  }
+
+  return (
+    <UniversalLayout
+      centerContent
+      whiteBackGreenContentBackground
+      headerTittle={`${isEditing ? "Edit" : "View"} Calendar: ${serviceName}`}
+    >
+      <div className="bg-white p-4 rounded-lg shadow">
+        {message && <SuccessErrorMessage message={message} />}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">ID</label>
+          <input
+            type="text"
+            name="id"
+            value={editedData.id}
+            readOnly
+            className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Color
+          </label>
+          <div className="flex items-center space-x-2">
+            <input
+              type="color"
+              name="color"
+              value={editedData.color || "#000000"}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-12 h-12 p-1 rounded-md cursor-pointer"
+            />
+            <input
+              type="text"
+              name="color"
+              value={editedData.color || ""}
+              onChange={handleChange}
+              readOnly={!isEditing}
+              className={`flex-grow mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+                isEditing ? "bg-white" : "bg-gray-100"
+              }`}
+              placeholder="#000000"
+            />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Reservation Type
+          </label>
+          <input
+            type="text"
+            name="reservation_type"
+            value={editedData.reservation_type}
+            onChange={handleChange}
+            readOnly={!isEditing}
+            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+              isEditing ? "bg-white" : "bg-gray-100"
+            }`}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Max People
+          </label>
+          <input
+            type="number"
+            name="max_people"
+            value={editedData.max_people}
+            onChange={handleChange}
+            readOnly={!isEditing}
+            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+              isEditing ? "bg-white" : "bg-gray-100"
+            }`}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Allow More Than Max People With Permission
+          </label>
+          <input
+            type="checkbox"
+            name="more_than_max_people_with_permission"
+            checked={editedData.more_than_max_people_with_permission || false}
+            onChange={handleChange}
+            disabled={!isEditing}
+            className="mt-1"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Collision With Calendars
+          </label>
+          <div className="mt-1">
+            {serviceCalendars
+                ?.filter((calendar) => calendar.googleCalendarId !== calendarBaseData.googleCalendarId)
+                .map((calendar) => (
+              <div
+                key={calendar.googleCalendarId}
+                className="flex items-center mb-2"
+              >
+                <input
+                  type="checkbox"
+                  id={`collision-calendar-${calendar.googleCalendarId}`}
+                  checked={
+                    editedData.collision_ids?.includes(
+                      calendar.googleCalendarId
+                    ) || false
+                  }
+                  onChange={(e) => {
+                    const updatedCollisions = e.target.checked
+                      ? [
+                          ...(editedData.collision_ids || []),
+                          calendar.googleCalendarId,
+                        ]
+                      : (editedData.collision_ids || []).filter(
+                          (id) => id !== calendar.googleCalendarId
+                        );
+                    handleChange({
+                      target: {
+                        name: "collision_ids",
+                        value: updatedCollisions,
+                      },
+                    });
+                  }}
+                  disabled={!isEditing}
+                  className="mr-2"
+                />
+                <label
+                  htmlFor={`collision-calendar-${calendar.googleCalendarId}`}
+                >
+                  {calendar.className}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Mini Services
+          </label>
+          <div className="mt-1">
+            {miniServices.length > 0 ? (
+              miniServices.map((service) => (
+                <div key={service.id} className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    id={`mini-service-${service.id}`}
+                    checked={
+                        (editedData.mini_services || [])
+                            .map(ms => (typeof ms === "object" ? ms.id : ms))
+                            .includes(service.id)
+                    }
+                    onChange={(e) => {
+                        let updatedMiniServicesIds;
+                        if (e.target.checked) {
+                            updatedMiniServicesIds = [
+                                ...(editedData.mini_services || []).map(ms =>
+                                    typeof ms === "object" ? ms.id : ms
+                                ),
+                                service.id,
+                            ];
+                        } else {
+                            updatedMiniServicesIds = (editedData.mini_services || [])
+                                .map(ms => (typeof ms === "object" ? ms.id : ms)) // normalize to IDs
+                                .filter(id => id !== service.id);
+                        }
+                      handleChange({
+                        target: {
+                          name: "mini_services",
+                          value: updatedMiniServicesIds,
+                        },
+                      });
+                    }}
+                    disabled={!isEditing}
+                    className="mr-2"
+                  />
+                  <label htmlFor={`mini-service-${service.id}`}>
+                    {service.name}
+                  </label>
+                </div>
+              ))
+            ) : (
+              <p>No mini services available</p>
+            )}
+          </div>
+        </div>
+        {["club_member_rules", "active_member_rules", "manager_rules"].map(
+          (ruleType) =>
+            editedData[ruleType] && (
+              <div key={ruleType} className="mb-6">
+                <h3 className="text-lg font-semibold mb-2">
+                  {ruleType.replace(/_/g, " ").charAt(0).toUpperCase() +
+                    ruleType.replace(/_/g, " ").slice(1)}
+                </h3>
+                {Object.entries(editedData[ruleType]).map(([key, value]) => (
+                  <div key={key} className="mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      {key.replace(/_/g, " ")}
+                    </label>
+                    {key === "night_time" ? (
+                      <input
+                        type="checkbox"
+                        checked={value === true}
+                        onChange={(e) =>
+                          handleRulesChange(ruleType, key, e.target.checked)
+                        }
+                        disabled={!isEditing}
+                        className="mt-1"
+                      />
+                    ) : key === "max_reservation_hours" ? (
+                      <input
+                        type="number"
+                        value={value}
+                        onChange={(e) =>
+                          handleRulesChange(
+                            ruleType,
+                            key,
+                            parseInt(e.target.value) || 0
+                          )
+                        }
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+                          isEditing ? "bg-white" : "bg-gray-100"
+                        }`}
+                      />
+                    ) : typeof value === "boolean" ? (
+                      <input
+                        type="checkbox"
+                        checked={value}
+                        onChange={(e) =>
+                          handleRulesChange(ruleType, key, e.target.checked)
+                        }
+                        disabled={!isEditing}
+                        className="mt-1"
+                      />
+                    ) : (
+                      <input
+                        type="number"
+                        value={value}
+                        onChange={(e) =>
+                          handleRulesChange(
+                            ruleType,
+                            key,
+                            parseInt(e.target.value) || 0
+                          )
+                        }
+                        readOnly={!isEditing}
+                        className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
+                          isEditing ? "bg-white" : "bg-gray-100"
+                        }`}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )
+        )}
+
+        <div className="mt-6 flex justify-end space-x-3">
+          <ActionButtons
+            isEditing={isEditing}
+            onSave={handleSave}
+            onCancel={handleCancel}
+            onEdit={handleEdit}
+            editText="Edit Calendar"
+            isDeleted={calendarBaseData.deleted_at !== null}
+          />
+        </div>
+      </div>
+    </UniversalLayout>
+  );
+};
+
+export default EditCalendar;

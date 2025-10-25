@@ -1,9 +1,10 @@
 name: Docker Build and Push
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_run:
+    workflows: ["SemVer Tag"]
+    types:
+      - completed
 
 jobs:
   build-and-push-image:

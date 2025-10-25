@@ -53,22 +53,34 @@ const Dashboard = ({ userId, isManager, managerRoles }) => {
     eventId,
     newStartTime,
     newEndTime,
-    reason
+    reason,
+    purpose,
+    guests
   ) => {
     try {
       if (!reason) return;
 
+      const eventUpdate = {
+        reservation_start: formatDateTimeLocalForAPI(newStartTime),
+        reservation_end: formatDateTimeLocalForAPI(newEndTime),
+      };
+
+      // Add purpose and guests if provided
+      if (purpose) {
+        eventUpdate.purpose = purpose;
+      }
+      if (guests !== undefined && guests !== null) {
+        eventUpdate.guests = guests;
+      }
+
       await axios.put(`${API_BASE_URL}/events/${eventId}`, {
-        event_update: {
-          reservation_start: formatDateTimeLocalForAPI(newStartTime),
-          reservation_end: formatDateTimeLocalForAPI(newEndTime),
-        },
+        event_update: eventUpdate,
         reason: reason,
       });
-      alert('Event time updated successfully!');
+      alert('Event updated successfully!');
     } catch (error) {
       console.error('Error updating event:', error);
-      alert('Failed to update event time. Please try again.');
+      alert('Failed to update event. Please try again.');
     }
   };
 

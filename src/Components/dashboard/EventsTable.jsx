@@ -24,12 +24,14 @@ const EventsTable = ({
     newTime: '',
     endTime: '',
     eventId: null,
+    purpose: '',
+    guests: 0,
   });
 
   const [loadingEventId, setLoadingEventId] = useState(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
 
-  const openModal = (type, eventId) => {
+  const openModal = (type, eventId, eventData = {}) => {
     setModalState({
       isOpen: true,
       type,
@@ -37,6 +39,8 @@ const EventsTable = ({
       newTime: '',
       endTime: '',
       eventId,
+      purpose: eventData.purpose || '',
+      guests: eventData.guests || 0,
     });
   };
 
@@ -48,6 +52,8 @@ const EventsTable = ({
       newTime: '',
       endTime: '',
       eventId: null,
+      purpose: '',
+      guests: 0,
     });
   };
 
@@ -64,6 +70,8 @@ const EventsTable = ({
           note: modalState.note,
           newTime: modalState.newTime,
           endTime: modalState.endTime,
+          purpose: modalState.purpose,
+          guests: modalState.guests,
         });
         // Close modal after successful action
         closeModal();
@@ -107,6 +115,97 @@ const EventsTable = ({
           />
         );
         isConfirmDisabled = config.required && !modalState.note.trim();
+      } else if (config.inputType === 'edit-event') {
+        children = (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Start Time
+              </label>
+              <input
+                type="datetime-local"
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                value={modalState.newTime}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    newTime: e.target.value,
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                End Time
+              </label>
+              <input
+                type="datetime-local"
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                value={modalState.endTime}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    endTime: e.target.value,
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Purpose
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                value={modalState.purpose}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    purpose: e.target.value,
+                  }))
+                }
+                placeholder="Event purpose"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Guests
+              </label>
+              <input
+                type="number"
+                min="0"
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                value={modalState.guests}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    guests: parseInt(e.target.value, 10) || 0,
+                  }))
+                }
+                placeholder="Number of guests"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Reason for Change
+              </label>
+              <textarea
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                value={modalState.note}
+                onChange={(e) =>
+                  setModalState((prev) => ({ ...prev, note: e.target.value }))
+                }
+                placeholder={config.placeholder || ''}
+                rows="3"
+              />
+            </div>
+          </div>
+        );
+        isConfirmDisabled =
+          !modalState.newTime ||
+          !modalState.endTime ||
+          !modalState.purpose.trim() ||
+          !modalState.note.trim();
       } else if (config.inputType === 'datetime') {
         children = (
           <div className="space-y-4">
@@ -342,7 +441,7 @@ const EventsTable = ({
                                 setLoadingEventId(null);
                               }
                             } else {
-                              openModal(action.modalType, event.id);
+                              openModal(action.modalType, event.id, event);
                             }
                           };
 

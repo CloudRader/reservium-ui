@@ -126,7 +126,9 @@ const EventsList = ({
       params.eventId,
       params.newTime,
       params.endTime,
-      params.note
+      params.note,
+      params.purpose,
+      params.guests
     );
     await refetchManager();
   };
@@ -192,9 +194,9 @@ const EventsList = ({
     },
     onConfirm: handleUpdateTimeWithRefetch,
     modalConfig: {
-      title: 'Edit Event Time',
-      inputType: 'datetime',
-      placeholder: 'Please provide a reason for the time change...',
+      title: 'Edit Event',
+      inputType: 'edit-event',
+      placeholder: 'Please provide a reason for the changes...',
       confirmText: 'Save Changes',
       required: true,
     },
@@ -272,16 +274,12 @@ const EventsList = ({
 
     // Manager on "Update Requested" tab
     if (activeTab === 'update_requested') {
-      return [getApproveTimeAction(), getDeclineTimeAction(), getEditAction()];
+      return [getApproveTimeAction(), getDeclineTimeAction()];
     }
 
     // Manager on "Not Approved" tab
     if (activeTab === 'not_approved') {
-      return [
-        getApproveEventAction(),
-        getDeclineEventAction(),
-        getEditAction(),
-      ];
+      return [getApproveEventAction(), getDeclineEventAction()];
     }
 
     // Manager on "Confirmed" tab

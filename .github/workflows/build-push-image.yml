@@ -23,10 +23,9 @@ jobs:
 
       - name: Set image tags
         run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
           echo "IMAGE_NAME=${{ secrets.DOCKER_HUB_USER }}/reservium-ui" >> $GITHUB_ENV
           echo "VERSION_LATEST=latest" >> $GITHUB_ENV
-          echo "VERSION_TAG=$TAG_NAME" >> $GITHUB_ENV
+          VERSION_TAG=${{ github.event.workflow_run.outputs.NEW_VERSION }}
 
       - name: Build and push Docker image
         run: |

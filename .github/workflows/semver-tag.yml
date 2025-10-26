@@ -11,8 +11,6 @@ permissions:
 jobs:
   semver:
     runs-on: ubuntu-latest
-    outputs:
-      NEW_VERSION: ${{ steps.tag.outputs.NEW_VERSION }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -64,7 +62,6 @@ jobs:
 
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           echo "New version: $NEW_VERSION"
-          echo "::set-output name=NEW_VERSION::$NEW_VERSION"
 
       - name: Create Git tag
         env:

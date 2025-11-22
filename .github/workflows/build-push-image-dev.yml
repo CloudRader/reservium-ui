@@ -30,5 +30,4 @@ jobs:
           docker build \
             --build-arg VITE_GOOGLE_CALENDAR_API_KEY=${{ secrets.VITE_GOOGLE_CALENDAR_API_KEY }} \
             -t $IMAGE_NAME:$VERSION_TAG .
-          docker push $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:$VERSION_TAG

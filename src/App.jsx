@@ -96,14 +96,34 @@ function AppContent() {
     userId,
   } = useAuth();
 
-  const { data, isLoading, isError } = useReservationData(isLoggedIn);
   const location = useLocation();
   const isViewCalendarRoute = location.pathname.startsWith('/view');
 
-  if (!keycloakInitialized || authState === 'loading') {
+  // For view routes, don't wait for auth - they work without authentication
+  const shouldWaitForAuth = !isViewCalendarRoute;
+
+  const { data, isLoading, isError } = useReservationData(isLoggedIn);
+
+  // Only block on auth loading for non-view routes
+  if (!keycloakInitialized || (shouldWaitForAuth && authState === 'loading')) {
     return <PulsatingLoader />;
   }
 
+  // For view routes, render immediately (they don't need reservationData)
+  if (isViewCalendarRoute) {
+    return (
+      <div className="dark:!bg-slate-400">
+        <Routes>
+          <Route path="/login" element={<LoginToKeycloak />} />
+          <Route path="/logined" element={<LoginToBackend login={login} />} />
+          <Route path="view/*" element={<ViewCalendarRoutes />} />
+          <Route path="*" element={<LoginInfoPage />} />
+        </Routes>
+      </div>
+    );
+  }
+
+  // For other routes, wait for reservationData
   if (isError) {
     return <div>Error loading data. Please try again later.</div>;
   }
@@ -111,7 +131,7 @@ function AppContent() {
   if (isLoading) {
     return <PulsatingLoader />;
   }
-
+  console.log(data);
   const { services, calendars, miniServices } = data || {
     services: [],
     calendars: {},
@@ -124,6 +144,7 @@ function AppContent() {
         <Routes>
           <Route path="/login" element={<LoginToKeycloak />} />
           <Route path="/logined" element={<LoginToBackend login={login} />} />
+          <Route path="view/*" element={<ViewCalendarRoutes />} />
           <Route path="*" element={<LoginInfoPage />} />
         </Routes>
       </div>

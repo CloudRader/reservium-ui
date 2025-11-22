@@ -8,11 +8,14 @@ import keycloak from '../Components/auth/Keycloak';
 axios.defaults.withCredentials = true;
 
 const getUserInfo = async () => {
-  // Only fetch user info if authenticated with Keycloak
-  console.log('keycloak.authenticated', keycloak.authenticated);
+  // Double-check authentication at execution time (defense in depth)
+  // Even though enabled: keycloak.authenticated should prevent this,
+  // there can be race conditions during keycloak initialization
   if (!keycloak.authenticated) {
-    console.log('Not authenticated');
-    throw new Error('Not authenticated');
+    // Return null instead of throwing - this prevents errors
+    // The enabled flag should prevent this from being called, but if it does,
+    // we handle it gracefully
+    return null;
   }
 
   const response = await axios.get(`${API_BASE_URL}/users/me`);
@@ -32,7 +35,15 @@ export const useAuth = () => {
   } = useQuery('user', getUserInfo, {
     retry: false,
     enabled: keycloak.authenticated, // Only run query if authenticated
+    // If query somehow runs when not authenticated, treat null as no data
+    select: (data) => data || null,
   });
+
+  // When not authenticated, status is 'idle', not 'loading'
+  // We need to determine authState based on keycloak state and query status
+  const authState = keycloak.authenticated
+    ? (isLoading ? 'loading' : status)
+    : 'idle';
 
   const login = useCallback(async () => {
     try {
@@ -57,7 +68,7 @@ export const useAuth = () => {
     isLoading,
     isError,
     isFetching,
-    authState: status, // 'loading' | 'error' | 'success'
+    authState, // 'loading' | 'error' | 'success' | 'idle'
     username: userInfo?.username ?? null,
     userId: userInfo?.id ?? null,
     managerRoles: userInfo?.roles ?? [],

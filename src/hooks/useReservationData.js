@@ -10,7 +10,7 @@ export function useReservationData() {
         try {
             let response;
             if (isLoggedIn) {
-                response = await axios.get(`${API_BASE_URL}/reservation-services`);
+                response = await axios.get(`${API_BASE_URL}/reservation-services/`);
             } else {
                 response = await axios.get(`${API_BASE_URL}/reservation-services/public`);
             }

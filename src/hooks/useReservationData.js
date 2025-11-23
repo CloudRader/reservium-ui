@@ -50,7 +50,7 @@ export function useReservationData() {
         }
     };
 
-    return useQuery('reservationData', fetchData,
+    return useQuery(['reservationData', isLoggedIn], fetchData,
         {
             keepPreviousData: true,
             enabled: true,

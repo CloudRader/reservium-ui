@@ -36,9 +36,9 @@ export const LoginToBackend = ({ login }) => {
     if (keycloak.authenticated && keycloak.token) {
       axios
         .post(`${API_BASE_URL}/auth/login`, null)
-        .then((response) => {
+        .then(async (response) => {
           // Backend handles creating/updating user
-          login(response.data);
+          await login();
 
           // Clean up query params
           window.history.replaceState({}, document.title, '/');

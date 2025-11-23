@@ -23,6 +23,31 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     room_id: initialService.room_id || null,
   };
 
+  const handleSaveSuccess = (savedData) => {
+    // Navigate to new URL if name changed
+    if (savedData.name !== initialService.serviceName) {
+      navigate(`/manager/edit-service/${savedData.name}`, { replace: true });
+    }
+  };
+
+  // Helper to convert lockers_id to array format
+  const parseLockersId = (value) => {
+    if (!value || (Array.isArray(value) && value.length === 0)) return [];
+    if (Array.isArray(value)) return value.map(id => parseInt(id)).filter(id => !isNaN(id));
+    if (typeof value === 'string') {
+      return value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+    }
+    return [];
+  };
+
+  // Transform data before saving to API
+  const transformDataForSave = (data) => ({
+    ...data,
+    lockers_id: parseLockersId(data.lockers_id),
+    access_group: data.access_group !== '' ? data.access_group : null,
+    room_id: data.room_id !== '' ? data.room_id : null,
+  });
+
   const {
     isEditing,
     editedData,
@@ -36,7 +61,9 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     transformedInitialService,
     serviceUpdateUrl,
     null,
-    isEditMode
+    isEditMode,
+    handleSaveSuccess,
+    transformDataForSave
   );
 
   const handleNavigation = (path) => () =>

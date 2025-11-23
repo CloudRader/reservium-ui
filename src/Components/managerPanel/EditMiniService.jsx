@@ -1,11 +1,39 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import UniversalLayout from "../../layouts/UniversalLayout.jsx";
 import SuccessErrorMessage from "../ui/SuccessErrorMessage.jsx";
 import useEditableForm from "../../hooks/useEditableForm.js";
 import { API_BASE_URL } from "../../constants";
 import ActionButtons from "../ui/ActionButtons.jsx";
 
-const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
+const EditMiniService = ({ serviceName, miniServiceData, isEditMode = false }) => {
+  const navigate = useNavigate();
+
+  const handleSaveSuccess = (savedData) => {
+    // Navigate to new URL if name changed
+    if (savedData.name !== miniServiceData.name) {
+      navigate(`/manager/edit-mini-service/${serviceName}/${savedData.name}`, { replace: true });
+    }
+  };
+
+  // Helper to convert lockers_id to array format
+  const parseLockersId = (value) => {
+    if (!value || (Array.isArray(value) && value.length === 0)) return [];
+    if (Array.isArray(value)) return value.map(id => parseInt(id)).filter(id => !isNaN(id));
+    if (typeof value === 'string') {
+      return value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+    }
+    return [];
+  };
+
+  // Transform data before saving to API
+  const transformDataForSave = (data) => ({
+    ...data,
+    lockers_id: parseLockersId(data.lockers_id),
+    access_group: data.access_group !== '' ? data.access_group : null,
+    room_id: data.room_id !== '' ? data.room_id : null,
+  });
+
   const {
     isEditing,
     editedData,
@@ -18,7 +46,9 @@ const EditMiniService = ({ miniServiceData, isEditMode = false }) => {
     miniServiceData,
     `${API_BASE_URL}/mini-services/${miniServiceData.id}`,
     null,
-    isEditMode
+    isEditMode,
+    handleSaveSuccess,
+    transformDataForSave
   );
 
   if (!miniServiceData) {

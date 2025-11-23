@@ -3,17 +3,10 @@ import axios from 'axios';
 import { API_BASE_URL } from '../constants';
 import { transformService, transformCalendars } from '../utils/reservationDataTransformers';
 
-axios.defaults.withCredentials = true;
-
-export function useReservationData(isLoggedIn = false) {
+export function useReservationData() {
     const fetchData = async () => {
         try {
-            let response = null;
-            if (isLoggedIn) {
-                response = await axios.get(`${API_BASE_URL}/reservation-services/`);
-            } else {
-                response = await axios.get(`${API_BASE_URL}/reservation-services/public`);
-            }
+            const response = await axios.get(`${API_BASE_URL}/reservation-services/public`);
 
             const servicesData = response.data.map((info) =>
                 transformService(info, info.calendars, {
@@ -50,7 +43,7 @@ export function useReservationData(isLoggedIn = false) {
         }
     };
 
-    return useQuery(['reservationData', isLoggedIn], fetchData,
+    return useQuery('reservationData', fetchData,
         {
             keepPreviousData: true,
             enabled: true,

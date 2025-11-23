@@ -17,7 +17,7 @@ const HeaderNavigation = ({ services, showServices, isViewMode }) => {
                     {services.map((item) => (
                         <NavLink
                             key={item.linkName}
-                            to={isViewMode ? `view/${item.linkName}` : item.linkName}
+                            to={isViewMode ? `/view/${item.linkName}` : `/${item.linkName}`}
                             className={({ isActive }) =>
                                 `inline-flex items-center text-green-800 h-11 border-b-2 text-sm font-medium no-underline ${isActive
                                     ? 'border-green-600 text-green-900'

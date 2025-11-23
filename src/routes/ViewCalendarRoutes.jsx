@@ -4,6 +4,7 @@ import CalendarView from '../pages/ViewCalendarPage';
 import { useViewCalendarData } from '../hooks/useViewCalendarData';
 import NotFoundPage from '../pages/NotFoundPage';
 import PulsatingLoader from '../Components/ui/PulsatingLoader';
+import MainLayout from '../layouts/MainLayout';
 
 export const ViewCalendarRoutes = () => {
   const { services, calendars, isLoading, isError } = useViewCalendarData();
@@ -15,8 +16,9 @@ export const ViewCalendarRoutes = () => {
   if (isError) {
     return <div>Error loading data. Please try again later.</div>;
   }
+
   return (
-    <>
+    <MainLayout isLoggedIn={false} services={services} showFooter={false}>
       <Routes>
         {/* Default route that redirects to the first calendar if available */}
         <Route
@@ -46,6 +48,6 @@ export const ViewCalendarRoutes = () => {
         {/* 404 route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </>
+    </MainLayout>
   );
 };

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+import { useQueryClient } from 'react-query';
 
-const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = false) => {
+const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = false, onSuccess = null, transformData = null) => {
+    const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(initialEditMode);
     const [editedData, setEditedData] = useState(initialData);
     const [message, setMessage] = useState(null);
@@ -36,31 +37,18 @@ const useEditableForm = (initialData, updateUrl, fetchUrl, initialEditMode = fal
 
     const handleSave = async () => {
         try {
-            // Format lockers_id to array before saving
-            const dataToSave = {
-                ...editedData,
-                ...(editedData.lockers_id ?
-                    {
-                        lockers_id: editedData.lockers_id.length !== 0 ?
-                            editedData.lockers_id.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id))
-                            : []
-                    } : {}
-                ),
-                ...(editedData.access_group ?
-                    {
-                        access_group: editedData.access_group !== '' ? editedData.access_group : null
-                    } : {}
-                ),
-                ...(editedData.room_id ?
-                    {
-                        room_id: editedData.room_id !== '' ? editedData.room_id : null
-                    } : {}
-                )
-            };
+            // Apply custom transformation if provided, otherwise use editedData as-is
+            const dataToSave = transformData ? transformData(editedData) : editedData;
 
             await axios.put(updateUrl, dataToSave);
+            // Invalidate queries to refetch fresh data
+            queryClient.invalidateQueries('reservationData');
             setIsEditing(false);
             setMessage({ type: 'success', text: 'Update successful!' });
+            // Call onSuccess callback with the saved data
+            if (onSuccess) {
+                onSuccess(editedData);
+            }
         } catch (error) {
             if (error.response && error.response.data && Array.isArray(error.response.data.detail)) {
                 const errorDetails = error.response.data.detail

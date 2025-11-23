@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import UniversalLayout from "../../layouts/UniversalLayout.jsx";
 import { API_BASE_URL } from "../../constants";
 import useEditableForm from "../../hooks/useEditableForm.js";
@@ -14,6 +15,7 @@ const EditCalendar = ({
   isEditMode = false,
   serviceCalendars = [],
 }) => {
+  const navigate = useNavigate();
   const calendarFetchUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}/collisions`;
   const calendarUpdateUrl = `${API_BASE_URL}/calendars/${calendarBaseData.googleCalendarId}`;
   const initialData = {
@@ -46,6 +48,13 @@ const EditCalendar = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serviceId]);
 
+  const handleSaveSuccess = (savedData) => {
+    // Navigate to new URL if reservation_type (className) changed
+    if (savedData.reservation_type !== calendarBaseData.className) {
+      navigate(`/manager/edit-calendar/${serviceName}/${savedData.reservation_type}`, { replace: true });
+    }
+  };
+
   const {
     loading,
     isEditing,
@@ -60,7 +69,8 @@ const EditCalendar = ({
     initialData,
     calendarUpdateUrl,
     calendarFetchUrl,
-    isEditMode
+    isEditMode,
+    handleSaveSuccess
   );
 
   if (loading || isLoadingMiniServices) return <p>Loading...</p>;

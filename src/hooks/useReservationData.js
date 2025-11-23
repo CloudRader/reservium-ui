@@ -6,7 +6,7 @@ import { transformService, transformCalendars } from '../utils/reservationDataTr
 export function useReservationData() {
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/reservation-services/public`);
+            const response = await axios.get(`${API_BASE_URL}/reservation-services/`);
 
             const servicesData = response.data.map((info) =>
                 transformService(info, info.calendars, {

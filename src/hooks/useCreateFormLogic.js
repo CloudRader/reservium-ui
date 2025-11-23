@@ -69,8 +69,16 @@ const useCreateFormLogic = (initialFields, submitUrl) => {
 
   const handleSubmit = useCallback(
     (requestData) => {
+      // Apply customHandler transformations before sending
+      const transformedData = { ...requestData };
+      formFields.forEach((field) => {
+        if (field.customHandler && transformedData[field.name] !== undefined) {
+          transformedData[field.name] = field.customHandler(transformedData[field.name]);
+        }
+      });
+
       axios
-        .post(submitUrl, requestData)
+        .post(submitUrl, transformedData)
         .then(() => {
           setMessage({
             type: "success",
@@ -112,7 +120,7 @@ const useCreateFormLogic = (initialFields, submitUrl) => {
           setMessage({ type: "error", text });
         });
     },
-    [submitUrl]
+    [submitUrl, formFields]
   );
 
   return {

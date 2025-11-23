@@ -2,11 +2,18 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { API_BASE_URL } from '../constants';
 import { transformService, transformCalendars } from '../utils/reservationDataTransformers';
+import { useKeycloak } from './useKeycloak';
 
 export function useReservationData() {
+    const { isLoggedIn } = useKeycloak();
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/reservation-services/`);
+            let response;
+            if (isLoggedIn) {
+                response = await axios.get(`${API_BASE_URL}/reservation-services`);
+            } else {
+                response = await axios.get(`${API_BASE_URL}/reservation-services/public`);
+            }
 
             const servicesData = response.data.map((info) =>
                 transformService(info, info.calendars, {

@@ -2,8 +2,6 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { API_BASE_URL } from "../constants";
 
-axios.defaults.withCredentials = true;
-
 const useFetchWithDeleted = (queryKey, fetchUrl, enabled = true) => {
     const fetchData = async () => {
         try {
@@ -19,7 +17,8 @@ const useFetchWithDeleted = (queryKey, fetchUrl, enabled = true) => {
         fetchData,
         {
             enabled,
-            refetchOnWindowFocus: false,
+            staleTime: 0,
+            refetchOnWindowFocus: true,
             keepPreviousData: true,
         }
     );

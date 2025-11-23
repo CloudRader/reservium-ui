@@ -28,6 +28,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build \
-            --build-arg VITE_GOOGLE_CALENDAR_API_KEY=${{ secrets.VITE_GOOGLE_CALENDAR_API_KEY }} \
+            --build-arg VITE_GOOGLE_CALENDAR_API_KEY=${{ secrets.VITE_GOOGLE_CALENDAR_API_KEY_DEV }} \
+            --build-arg VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL_DEV }} \
             -t $IMAGE_NAME:$VERSION_TAG .
           docker push $IMAGE_NAME:$VERSION_TAG

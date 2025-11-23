@@ -35,7 +35,7 @@ jobs:
         run: |
           docker build \
             --build-arg VITE_GOOGLE_CALENDAR_API_KEY=${{ secrets.VITE_GOOGLE_CALENDAR_API_KEY }} \
-            --build-arg VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }} \
+            --build-arg VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }} \
             -t $IMAGE_NAME:$VERSION_LATEST \
             -t $IMAGE_NAME:$VERSION_TAG .
           docker push $IMAGE_NAME:$VERSION_LATEST

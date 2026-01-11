@@ -24,11 +24,6 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
-    minify: 'terser',
-  },
-  esbuild: {
-    // Prevent eval in production builds
-    legalComments: 'none',
   },
   server: {
     proxy: {

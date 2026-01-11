@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 // import ThemeToggle from "./ThemeToggle";
 import HeaderNavigation from './HeaderNavigation.jsx';
 
 const Header = ({ username, isLoggedIn, services, isManager }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
   const isViewMode = location.pathname.startsWith('/view');
 
@@ -13,9 +13,19 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  // Close mobile menu on Escape key
+  React.useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isMenuOpen]);
 
   return (
     <header className="bg-gradient-to-r from-green-50 to-green-100 shadow-md">
@@ -31,60 +41,65 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
               <div className="hidden sm:flex sm:items-center space-x-4">
                 {/*<ThemeToggle />*/}
                 {isLoggedIn ? (
-                  <div className="relative">
-                    <button
-                      onClick={toggleDropdown}
-                      className="flex items-center space-x-2 text-sm font-medium text-green-700 hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 rounded-md px-3 py-2 transition duration-150 ease-in-out"
-                    >
-                      <span>{username}</span>
-                      <svg
-                        className="w-4 h-4 transition-transform duration-200 ease-in-out"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{
-                          transform: isDropdownOpen
-                            ? 'rotate(180deg)'
-                            : 'rotate(0)',
-                        }}
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild>
+                      <button className="flex items-center space-x-2 text-sm font-medium text-green-700 hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 rounded-md px-3 py-2 transition duration-150 ease-in-out">
+                        <span>{username}</span>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+                    </DropdownMenu.Trigger>
+
+                    <DropdownMenu.Portal>
+                      <DropdownMenu.Content
+                        className="min-w-[9rem] bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5"
+                        sideOffset={5}
+                        align="end"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
-                    </button>
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg py-1 z-10 ring-1 ring-black ring-opacity-5">
-                        <NavLink
-                          to="/events"
-                          className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
-                          My Events
-                        </NavLink>
-                        {isManager && (
+                        <DropdownMenu.Item asChild>
                           <NavLink
-                            to="manager/manager-panel"
-                            className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
-                            onClick={() => setIsDropdownOpen(false)}
+                            to="/events"
+                            className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
                           >
-                            Manager panel
+                            My Events
                           </NavLink>
+                        </DropdownMenu.Item>
+
+                        {isManager && (
+                          <DropdownMenu.Item asChild>
+                            <NavLink
+                              to="manager/manager-panel"
+                              className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
+                            >
+                              Manager panel
+                            </NavLink>
+                          </DropdownMenu.Item>
                         )}
-                        <NavLink
-                          to="/logout"
-                          className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition duration-150 ease-in-out"
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
-                          Log out
-                        </NavLink>
-                      </div>
-                    )}
-                  </div>
+
+                        <DropdownMenu.Item asChild>
+                          <NavLink
+                            to="/logout"
+                            className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
+                          >
+                            Log out
+                          </NavLink>
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                  </DropdownMenu.Root>
                 ) : (
                   <NavLink
                     to="/login"
@@ -97,6 +112,9 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
               <div className="sm:hidden flex items-center">
                 <button
                   onClick={toggleMenu}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="mobile-menu"
+                  aria-label="Toggle mobile menu"
                   className="inline-flex items-center justify-center p-2 rounded-md text-green-600 hover:text-green-900 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 transition duration-150 ease-in-out"
                 >
                   <svg
@@ -104,6 +122,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                     stroke="currentColor"
                     fill="none"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     {isMenuOpen ? (
                       <path
@@ -129,7 +148,12 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
 
         {/* Mobile dropdown menu */}
         {isMenuOpen && (
-          <div className="sm:hidden bg-green-50 rounded-md shadow-md mt-2 p-4">
+          <div
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Mobile navigation"
+            className="sm:hidden bg-green-50 rounded-md shadow-md mt-2 p-4"
+          >
             <div className="space-y-2">
               {services.map((item) => (
                 <NavLink

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import keycloak from '../Components/auth/Keycloak';
+import { keycloak } from '@features/auth';
 
 // Request interceptor: Add Authorization header with token refresh
 axios.interceptors.request.use(

@@ -1,0 +1,49 @@
+.popoverStyle {
+  z-index: 99999 !important;
+}
+
+a {
+  color: #212529;
+  text-decoration: none;
+}
+
+.fc .fc-toolbar {
+  font-size: 0.9em;
+}
+
+/* Global styles for FullCalendar buttons */
+:global(.fc .fc-button) {
+  background-color: #16A34A !important;
+  border-color: #16A34A !important;
+}
+
+:global(.fc .fc-button:hover) {
+  background-color: #45a049 !important;
+  border-color: #45a049 !important;
+}
+
+:global(.fc .fc-button:focus) {
+  box-shadow: 0 0 0 0.2rem rgba(132, 241, 148, 0.5) !important;
+}
+
+:global(.fc .fc-button.fc-button-active) {
+  background-color: #166534 !important;
+  border-color: #AAD5BC !important;
+}
+
+:global( .fc .fc-toolbar-title) {
+  font-size: 17px;
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 768px) {
+  :global(.fc .fc-toolbar.fc-header-toolbar) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  :global(.fc .fc-toolbar-title) {
+    font-size: 1em;
+  }
+}

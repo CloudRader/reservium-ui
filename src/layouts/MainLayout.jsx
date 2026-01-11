@@ -11,14 +11,16 @@ const MainLayout = ({
   showFooter = true,
 }) => {
   return (
-    <div className="dark:!bg-slate-400">
+    <div className="flex flex-col min-h-screen">
       <Header
         isLoggedIn={isLoggedIn}
         username={username}
         services={services}
         isManager={isManager}
       />
-      {children}
+      <main className="flex-1">
+        {children}
+      </main>
       {showFooter && <Footer />}
     </div>
   );

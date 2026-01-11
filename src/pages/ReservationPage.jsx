@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import ReservationForm from "../Components/reservationForm/ReservationForm.jsx";
-import AdaptiveCalendar from "../Components/ui/AdaptiveCalendar.jsx";
-import WarningMessage from "../Components/ui/WarningMessage";
-import { ErrorMobileModal } from "../Components/ui/ErrorMobileModal";
-import PulsatingLoader from "../Components/ui/PulsatingLoader";
-import useSubmitLogic from "../hooks/useSubmitLogic";
-import useIsMobile from "../hooks/useIsMobile";
+import React, { useState, useEffect } from 'react';
+import { ReservationForm } from '@features/reservations';
+import AdaptiveCalendar from '@components/ui/calendar/AdaptiveCalendar';
+import WarningMessage from '@components/ui/feedback/WarningMessage';
+import ErrorMobileModal from '@components/ui/modals/ErrorMobileModal';
+import PulsatingLoader from '@components/ui/feedback/PulsatingLoader';
+import useSubmitLogic from '@features/reservations/hooks/useSubmitLogic';
+import useIsMobile from '@features/shared/hooks/useIsMobile';
 
 const ReservationPage = ({ roomCalendarLinks, service, allService }) => {
   const isMobile = useIsMobile();
@@ -42,7 +42,7 @@ const ReservationPage = ({ roomCalendarLinks, service, allService }) => {
         />
         <div
           className={`w-full dark:!bg-slate-400 shadow-md overflow-hidden ${
-            isMobile ? "p-1" : "p-6"
+            isMobile ? 'p-1' : 'p-6'
           } no-underline`}
         >
           <AdaptiveCalendar

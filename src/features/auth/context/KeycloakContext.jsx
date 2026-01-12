@@ -33,7 +33,6 @@ export const KeycloakProvider = ({ children }) => {
       })
       .then((authenticated) => {
         if (isMounted) {
-          console.log('Keycloak initialized, authenticated:', authenticated);
           setIsInitialized(true);
           setInitError(null);
         }

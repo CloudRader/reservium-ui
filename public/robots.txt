@@ -1,3 +1,11 @@
+# Reservation System - Block all crawling for privacy
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
-Disallow:
+Disallow: /
+
+# Specific blocks for common areas
+Disallow: /events
+Disallow: /manager
+Disallow: /login
+Disallow: /club

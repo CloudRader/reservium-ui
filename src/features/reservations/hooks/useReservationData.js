@@ -23,12 +23,9 @@ export const useReservationData = (options = {}) => {
         const endpoint = isLoggedIn
             ? `${API_BASE_URL}${API_ENDPOINTS.SERVICES.GET_ALL}`
             : `${API_BASE_URL}${API_ENDPOINTS.SERVICES.GET_ALL_PUBLIC}`;
-
         try {
             // For managers, include soft-deleted items
-            const response = await axios.get(endpoint, {
-                params: isLoggedIn ? { include_removed: true } : {}
-            });
+            const response = await axios.get(endpoint);
 
             const servicesData = response.data.map((info) =>
                 transformService(info, info.calendars, {

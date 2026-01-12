@@ -1,9 +1,9 @@
-import Keycloak from "keycloak-js";
+import Keycloak from 'keycloak-js';
 
 const keycloak = new Keycloak({
-    url: "https://auth.buk.cvut.cz", // change to your Keycloak base URL
-    realm: "buk.cvut.cz",             // change to your realm
-    clientId: "reservation-frontend-app",      // change to your clientId
+  url: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 });
 
 export default keycloak;

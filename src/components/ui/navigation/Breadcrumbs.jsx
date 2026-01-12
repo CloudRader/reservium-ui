@@ -2,13 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDownIcon } from '@components/ui/icons';
 
-/**
- * Breadcrumb Navigation Component
- * Displays a breadcrumb trail for hierarchical navigation
- *
- * @param {Array} items - Array of breadcrumb items: [{ label, href, isActive, isEllipsis }]
- * @param {string} className - Additional CSS classes
- */
 const Breadcrumbs = ({ items = [], className = '' }) => {
   if (!items || items.length === 0) {
     return null;

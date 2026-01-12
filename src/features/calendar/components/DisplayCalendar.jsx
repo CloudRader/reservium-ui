@@ -8,17 +8,9 @@ import { Popover } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './DisplayCalendar.module.css';
 import { keys } from '@constants';
+import { formatTime } from '@utils/dateUtils';
 
 function DisplayCalendar({ googleCalendars }) {
-  // Helper functions
-  const formatTime = useCallback((date) => {
-    if (!date) return 'N/A';
-    return date.toLocaleString([], {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: false,
-    });
-  }, []);
 
   const formatEventSources = useCallback(() => {
     if (!googleCalendars) {
@@ -71,7 +63,7 @@ function DisplayCalendar({ googleCalendars }) {
         html: true,
       });
     },
-    [formatTime]
+    []
   );
 
   // Updated calendar configuration

@@ -24,8 +24,6 @@ const AuthGate = ({ children, fallback = <PulsatingLoader /> }) => {
 
   const location = useLocation();
 
-  // PRIORITY 1: Handle auth callback routes FIRST
-  // These must bypass ALL loading checks to function properly
   const isAuthCallbackRoute = [ROUTES.LOGINED, ROUTES.LOGOUT].includes(
     location.pathname
   );
@@ -42,12 +40,10 @@ const AuthGate = ({ children, fallback = <PulsatingLoader /> }) => {
     );
   }
 
-  // PRIORITY 2: Wait for Keycloak initialization
   if (!isInitialized) {
     return fallback;
   }
 
-  // PRIORITY 3: Handle initialization errors
   if (initError) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -69,13 +65,10 @@ const AuthGate = ({ children, fallback = <PulsatingLoader /> }) => {
     );
   }
 
-  // PRIORITY 4: If authenticated, wait for user info to load
-  // This ensures isLoggedIn, username, userId, etc. are all available
   if (keycloak.authenticated && isLoading) {
     return fallback;
   }
 
-  // PRIORITY 5: Auth is fully ready - render children
   return children;
 };
 

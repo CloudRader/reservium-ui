@@ -4,6 +4,8 @@ import { useKeycloak } from '../hooks/useKeycloak';
 import { API_BASE_URL } from '@constants';
 import axios from 'axios';
 import PulsatingLoader from '@components/ui/feedback/PulsatingLoader';
+import { ROUTES } from '@config/routes';
+import { API_ENDPOINTS } from '@config/apiEndpoints';
 
 export const LoginToBackend = ({ login }) => {
   const navigate = useNavigate();
@@ -11,7 +13,6 @@ export const LoginToBackend = ({ login }) => {
 
   useEffect(() => {
     // Wait for Keycloak to initialize
-    // This is crucial because Keycloak needs to parse the callback URL
     if (!isInitialized) {
       return;
     }
@@ -19,25 +20,25 @@ export const LoginToBackend = ({ login }) => {
     // Check if user is authenticated after Keycloak has initialized
     if (keycloak.authenticated && keycloak.token) {
       axios
-        .post(`${API_BASE_URL}/auth/login`, null)
+        .post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGIN}`, null)
         .then(async (response) => {
           // Backend handles creating/updating user
           await login();
 
           // Clean up query params
-          window.history.replaceState({}, document.title, '/');
+          window.history.replaceState({}, document.title, ROUTES.HOME);
 
           // Redirect to home
-          navigate('/', { replace: true });
+          navigate(ROUTES.HOME, { replace: true });
         })
         .catch((err) => {
           console.error('Backend login failed:', err);
-          navigate('/');
+          navigate(ROUTES.HOME);
         });
     } else {
       // If not authenticated after initialization, redirect to login
       console.error('Not authenticated with Keycloak after initialization');
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     }
   }, [keycloak, isInitialized, login, navigate]);
 

@@ -3,11 +3,12 @@ import { NavLink, useLocation } from 'react-router-dom';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 // import ThemeToggle from "./ThemeToggle";
 import HeaderNavigation from './HeaderNavigation.jsx';
+import { ROUTES } from '../../config/routes.js';
 
 const Header = ({ username, isLoggedIn, services, isManager }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const isViewMode = location.pathname.startsWith('/view');
+  const isViewMode = location.pathname.startsWith(ROUTES.VIEW.ROOT);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -71,7 +72,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                       >
                         <DropdownMenu.Item asChild>
                           <NavLink
-                            to="/events"
+                            to={ROUTES.EVENTS}
                             className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
                           >
                             My Events
@@ -81,7 +82,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                         {isManager && (
                           <DropdownMenu.Item asChild>
                             <NavLink
-                              to="manager/manager-panel"
+                              to={ROUTES.MANAGER.SERVICES}
                               className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
                             >
                               Manager panel
@@ -91,7 +92,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
 
                         <DropdownMenu.Item asChild>
                           <NavLink
-                            to="/logout"
+                            to={ROUTES.LOGOUT}
                             className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
                           >
                             Log out
@@ -102,7 +103,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                   </DropdownMenu.Root>
                 ) : (
                   <NavLink
-                    to="/login"
+                    to={ROUTES.LOGIN}
                     className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                   >
                     Log in
@@ -178,21 +179,21 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                     {username}
                   </span>
                   <NavLink
-                    to="/events"
+                    to={ROUTES.EVENTS}
                     className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                   >
                     My Events
                   </NavLink>
                   {isManager && (
                     <NavLink
-                      to="manager/manager-panel"
+                      to={ROUTES.MANAGER.SERVICES}
                       className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                     >
                       Manager panel
                     </NavLink>
                   )}
                   <NavLink
-                    to="/logout"
+                    to={ROUTES.LOGOUT}
                     className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                   >
                     Log out
@@ -200,7 +201,7 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
                 </div>
               ) : (
                 <NavLink
-                  to="/login"
+                  to={ROUTES.LOGIN}
                   className="block w-full text-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
                 >
                   Log in

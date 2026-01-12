@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as Tabs from '@radix-ui/react-tabs';
 
 /**
- * Tab group component for rendering multiple tabs using Radix UI
+ * Tab group component for rendering multiple tabs
  */
 const TabGroup = ({ tabs, activeTab, onTabChange }) => (
   <Tabs.Root value={activeTab} onValueChange={onTabChange}>

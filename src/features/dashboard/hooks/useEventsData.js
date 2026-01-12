@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { PAGINATION_LIMIT } from '@constants';
+import { APP_SETTINGS } from '@config/appSettings';
 import { transformEvent } from '../utils/eventDataTransform';
 
 /**
@@ -28,15 +28,15 @@ export const useEventsData = ({
     const pastArray = Array.isArray(pastData) ? pastData : [];
 
     // Check if there are more items
-    const hasMoreUpcoming = isPersonalTab && upcomingArray.length > PAGINATION_LIMIT;
-    const hasMorePast = isPersonalTab && pastArray.length > PAGINATION_LIMIT;
+    const hasMoreUpcoming = isPersonalTab && upcomingArray.length > APP_SETTINGS.PAGINATION_LIMIT;
+    const hasMorePast = isPersonalTab && pastArray.length > APP_SETTINGS.PAGINATION_LIMIT;
 
     // Transform events (slice to limit and transform)
     const upcomingEvents = upcomingArray
-      .slice(0, PAGINATION_LIMIT)
+      .slice(0, APP_SETTINGS.PAGINATION_LIMIT)
       .map(transformEvent);
     const pastEvents = pastArray
-      .slice(0, PAGINATION_LIMIT)
+      .slice(0, APP_SETTINGS.PAGINATION_LIMIT)
       .map(transformEvent);
     const managerEvents = managerData?.map(transformEvent) || [];
 

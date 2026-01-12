@@ -4,7 +4,7 @@ import { useEventHandlers } from '../hooks/useEventHandlers';
 import { useEventsData } from '../hooks/useEventsData';
 import EventsTable from './EventsTable';
 import PulsatingLoader from '@components/ui/feedback/PulsatingLoader';
-import { PAGINATION_LIMIT } from '@constants';
+import { APP_SETTINGS } from '@config/appSettings';
 import { getActionsForContext } from '../config/eventActions';
 
 const EventsList = ({
@@ -22,7 +22,7 @@ const EventsList = ({
   const [pastPage, setPastPage] = useState(1);
 
   const isPersonalTab = activeTab === 'personal';
-  const personalLimit = PAGINATION_LIMIT + 1; // Overfetch by 1 to detect next page
+  const personalLimit = APP_SETTINGS.PAGINATION_LIMIT + 1; // Overfetch by 1 to detect next page
 
   // Fetch upcoming events (personal tab only) - using unified hook
   const {

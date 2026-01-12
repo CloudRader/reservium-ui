@@ -31,7 +31,7 @@ a {
   border-color: #AAD5BC !important;
 }
 
-:global( .fc .fc-toolbar-title) {
+:global(.fc .fc-toolbar-title) {
   font-size: 17px;
 }
 

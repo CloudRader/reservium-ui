@@ -9,7 +9,9 @@ import { Popover } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./AdaptiveCalendar.module.css";
 import moment from "moment";
-import { keys, settings } from "@constants";
+import { keys } from "@constants";
+import { APP_SETTINGS } from "@config/appSettings";
+import { formatDateTime, formatTime } from "@utils/dateUtils";
 
 const AdaptiveCalendar = memo(
   ({ isMobile, googleCalendars, setSelectedSlot }) => {
@@ -28,8 +30,8 @@ const AdaptiveCalendar = memo(
           "background-color: rgba(0, 128, 255, 0.3); border: 2px solid rgb(0, 128, 255);";
       }
 
-      let startTime = String(settings.default_reservation_start_time) + ":00";
-      let endTime = String(settings.default_reservation_end_time) + ":00";
+      let startTime = String(APP_SETTINGS.DEFAULT_RESERVATION_START_TIME) + ":00";
+      let endTime = String(APP_SETTINGS.DEFAULT_RESERVATION_END_TIME) + ":00";
 
       if (event.start) {
         startTime = formatDateTime(event.start);
@@ -82,14 +84,14 @@ const AdaptiveCalendar = memo(
           // For month view, set start to 17:00 and end to 22:00
           start = selectedDate
             .clone()
-            .hour(settings.default_reservation_start_time)
+            .hour(APP_SETTINGS.DEFAULT_RESERVATION_START_TIME)
             .minute(0)
             .second(0)
             .millisecond(0)
             .toDate();
           end = selectedDate
             .clone()
-            .hour(settings.default_reservation_end_time)
+            .hour(APP_SETTINGS.DEFAULT_RESERVATION_END_TIME)
             .minute(0)
             .second(0)
             .millisecond(0)
@@ -211,25 +213,5 @@ const AdaptiveCalendar = memo(
     );
   }
 );
-
-function formatDateTime(date) {
-  if (!date) return "N/A";
-  return date.toLocaleString([], {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false,
-  });
-}
-function formatTime(date) {
-  if (!date) return "N/A";
-  return date.toLocaleString([], {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false,
-  });
-}
 
 export default AdaptiveCalendar;

@@ -7,7 +7,6 @@ import LoginInfoPage from '@pages/LoginInfoPage';
  * ProtectedRoute Component
  *
  * Authorization-only guard for routes.
- * NOTE: Auth state is guaranteed to be initialized by AuthGate.
  * This component only checks authorization (not authentication state).
  *
  * @param {Object} props
@@ -17,9 +16,6 @@ import LoginInfoPage from '@pages/LoginInfoPage';
  */
 const ProtectedRoute = ({ children, requireManager = false }) => {
   const { isLoggedIn, managerRoles } = useKeycloak();
-
-  // No need to check isInitialized or isLoading
-  // AuthGate guarantees those are complete
 
   // Check if user is logged in
   if (!isLoggedIn) {

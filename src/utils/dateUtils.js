@@ -35,3 +35,38 @@ export const formatDateTimeLocalForAPI = (datetimeLocalValue) => {
   }
   return datetimeLocalValue.replace('T', ' ');
 };
+
+// Format datetime for datetime-local input (YYYY-MM-DDTHH:mm)
+export const formatForDateTimeLocal = (datetime) => {
+  if (!datetime) return '';
+  const date = new Date(datetime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+// Format date and time for display (e.g., "14/10/2025, 16:30")
+export const formatDateTime = (date) => {
+  if (!date) return "N/A";
+  return date.toLocaleString([], {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  });
+};
+
+// Format time only for display (e.g., "16:30")
+export const formatTime = (date) => {
+  if (!date) return "N/A";
+  return date.toLocaleString([], {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  });
+};

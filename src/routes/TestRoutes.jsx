@@ -1,15 +1,20 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import SamplePage from '../tests/testData/test';
-import EditService from '../Components/managerPanel/EditService.jsx';
-import testService from '../tests/testData/serviceTestData';
+import SamplePage from '@tests/testData/test';
+import { EditService } from '@features/managerPanel';
+import testService from '@tests/testData/serviceTestData';
+import { ROUTE_SEGMENTS } from '@config/routes';
 
-export const TestRoutes = () => (
+export const TestRoutes = () => {
+  return (
     <Routes>
-        <Route path="test-manager-table" element={<SamplePage />} />
-        <Route
-            path="test-edit-service"
-            element={<EditService service={testService} isEditMode={false} />}
-        />
+      <Route path={ROUTE_SEGMENTS.TEST.MANAGER_TABLE} element={<SamplePage />} />
+      <Route
+        path={ROUTE_SEGMENTS.TEST.EDIT_SERVICE}
+        element={<EditService service={testService} isEditMode={false} />}
+      />
     </Routes>
-); 
+  );
+};
+
+export default TestRoutes; 

@@ -19,6 +19,7 @@ export const transformCalendarIds = (calendars) => {
  * @param {Object} calendar - Calendar object from API
  * @param {Object} options - Transformation options
  * @param {boolean} options.includeDeletedAt - Whether to include deleted_at field
+ * @param {boolean} options.includeAllFields - Whether to include all original fields
  * @returns {Object} Transformed calendar object
  */
 export const transformCalendar = (calendar, options = {}) => {
@@ -31,6 +32,11 @@ export const transformCalendar = (calendar, options = {}) => {
 
     if (options.includeDeletedAt) {
         transformed.deleted_at = calendar.deleted_at;
+    }
+
+    if (options.includeAllFields) {
+        // Include all original calendar fields for manager panel
+        return { ...calendar, ...transformed };
     }
 
     return transformed;

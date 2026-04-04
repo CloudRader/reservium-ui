@@ -1,7 +1,8 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import ServicesSection from "../Components/ui/ServicesSection.jsx";
-import UniversalLayout from "../layouts/UniversalLayout";
+import { Link } from "react-router-dom";
+import ServiceLinksPanel from "@components/ui/navigation/ServiceLinksPanel";
+import UniversalLayout from "@layouts/UniversalLayout";
+import { ROUTES } from '@config/routes';
 
 const LoginInfoPage = () => {
   return (
@@ -11,14 +12,14 @@ const LoginInfoPage = () => {
           Please log in to make reservations.
         </h2>
         <Link
-          to="/login"
+          to={ROUTES.LOGIN}
           className="inline-flex self-center no-underline items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
         >
           Log in
         </Link>
       </div>
       <div className="w-full md:w-1/2 lg:w-7/12">
-        <ServicesSection />
+        <ServiceLinksPanel />
       </div>
     </UniversalLayout>
   );

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import ServicesSection from '../Components/ui/ServicesSection.jsx';
-import { emails } from '../constants';
-import EventRegistrationForm from '../Components/reservationForm/EventRegistrationForm.jsx';
+import ServiceLinksPanel from '@components/ui/navigation/ServiceLinksPanel';
+import { emails } from '@constants';
+import { EventRegistrationForm } from '@features/reservations';
 
 const SuccessPage = () => {
   // Extract state processing to a separate function
@@ -152,7 +152,7 @@ const SuccessPage = () => {
           </div>
         </div>
         <div className="w-full md:w-1/2 lg:w-7/12 md:flex md:flex-col">
-          <ServicesSection />
+          <ServiceLinksPanel />
         </div>
       </div>
     );

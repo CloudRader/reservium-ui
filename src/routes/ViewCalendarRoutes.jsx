@@ -1,10 +1,11 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import CalendarView from '../pages/ViewCalendarPage';
-import { useViewCalendarData } from '../hooks/useViewCalendarData';
-import NotFoundPage from '../pages/NotFoundPage';
-import PulsatingLoader from '../Components/ui/PulsatingLoader';
-import MainLayout from '../layouts/MainLayout';
+import CalendarView from '@pages/ViewCalendarPage';
+import { useViewCalendarData } from '@features/calendar/hooks/useViewCalendarData';
+import NotFoundPage from '@pages/NotFoundPage';
+import PulsatingLoader from '@components/ui/feedback/PulsatingLoader';
+import MainLayout from '@layouts/MainLayout';
+import { ROUTES } from '@config/routes';
 
 export const ViewCalendarRoutes = () => {
   const { services, calendars, isLoading, isError } = useViewCalendarData();
@@ -25,7 +26,7 @@ export const ViewCalendarRoutes = () => {
           path="/"
           element={
             services && services.length > 0 ? (
-              <Navigate to={`/view/${services[0].linkName}`} replace />
+              <Navigate to={ROUTES.VIEW.SERVICE(services[0].linkName)} replace />
             ) : (
               <div>No calendars available</div>
             )
@@ -51,3 +52,5 @@ export const ViewCalendarRoutes = () => {
     </MainLayout>
   );
 };
+
+export default ViewCalendarRoutes;

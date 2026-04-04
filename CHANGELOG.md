@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.1](https://github.com/CloudRader/reservium-ui/compare/v2.3.0...v2.3.1) (2026-04-04)
+
+
+### 🛠️ Fixes
+
+* keycloak realm ([391e6d1](https://github.com/CloudRader/reservium-ui/commit/391e6d1a8e699fb5cbf9045c4e15a2f977500ba9))
+* keycloak realm ([#16](https://github.com/CloudRader/reservium-ui/issues/16)) ([7be46f1](https://github.com/CloudRader/reservium-ui/commit/7be46f1e484613484066e3d10e68e9a077cbfc3b))
+
 ## [2.3.0](https://github.com/CloudRader/reservium-ui/compare/v2.2.2...v2.3.0) (2026-04-04)
 
 

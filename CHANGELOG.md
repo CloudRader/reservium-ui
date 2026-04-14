@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.3.2](https://github.com/CloudRader/reservium-ui/compare/v2.3.1...v2.3.2) (2026-04-14)
+
+
+### 🧱 Updates & Improvements
+
+* change realm to dev for development ([2999a2b](https://github.com/CloudRader/reservium-ui/commit/2999a2bf3d9b2393b6b96c4d479c77049c6156d8))
+* change to prod realm ([1b59279](https://github.com/CloudRader/reservium-ui/commit/1b592799d088067f09797a3b9b9416dd6d83e02d))
+
+
+### 🛠️ Fixes
+
+* to correct dev realm ([8dad8e5](https://github.com/CloudRader/reservium-ui/commit/8dad8e5dea72f486b7d5c7603f043c69ce8b04f6))
+
+
+### ⚙️ DevOps & CI/CD
+
+* **build:** migrate to ghrc from docker hub, merge build jobs and use docker/build-push-action ([a4a5892](https://github.com/CloudRader/reservium-ui/commit/a4a58923a4cc6160ffb7fdbcd0f7d779658a21ac))
+
 ## [2.3.1](https://github.com/CloudRader/reservium-ui/compare/v2.3.0...v2.3.1) (2026-04-04)
 
 

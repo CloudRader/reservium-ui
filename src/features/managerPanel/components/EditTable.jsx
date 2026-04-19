@@ -24,7 +24,7 @@ const EditTable = ({
       const response = await axios.put(
         `${API_BASE_URL}${retrieveLink}${itemId}/restore`
       );
-      if (response.status === 204) {
+      if (response.status === 200) {
         await refetch();
       }
     } catch (error) {
@@ -60,7 +60,7 @@ const EditTable = ({
         `${API_BASE_URL}${deleteLink}${itemId}/hard`
       );
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         await refetch();
       }
     } catch (error) {

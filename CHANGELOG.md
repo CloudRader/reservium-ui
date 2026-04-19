@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.3.3](https://github.com/CloudRader/reservium-ui/compare/v2.3.2...v2.3.3) (2026-04-19)
+
+
+### 🧱 Updates & Improvements
+
+* return realm to prod ([8b9fc18](https://github.com/CloudRader/reservium-ui/commit/8b9fc18dcd4b66b0eaae7cc2ca9c097ae03d7fcb))
+
+
+### 🛠️ Fixes
+
+* **delete:** correct endpoints for deletion ([f111bb2](https://github.com/CloudRader/reservium-ui/commit/f111bb25e40d61e218a83bb3012e2c1490d45402))
+* **edit-table:** status for hard delete (204) ([58dff72](https://github.com/CloudRader/reservium-ui/commit/58dff72a816d6a2517861398f6034e3fa6f3d5b2))
+* **edit-table:** status for hard delete (204) - correct action this time ([b33ed87](https://github.com/CloudRader/reservium-ui/commit/b33ed8741657097b75a6287ac7620f2c4cf3110b))
+
 ## [2.3.2](https://github.com/CloudRader/reservium-ui/compare/v2.3.1...v2.3.2) (2026-04-14)
 
 

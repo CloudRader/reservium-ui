@@ -32,17 +32,10 @@ const EditTable = ({
     }
   };
 
-  const handleDelete = async (itemId, hardRemove = false) => {
-    if (hardRemove) {
-      const confirmed = window.confirm(
-        'Are you sure you want to permanently delete this item? This action cannot be undone.'
-      );
-      if (!confirmed) return;
-    }
-
+  const handleDelete = async (itemId) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}${deleteLink}${itemId}?hard_remove=${hardRemove}`
+        `${API_BASE_URL}${deleteLink}${itemId}`
       );
 
       if (response.status === 200) {
@@ -51,13 +44,33 @@ const EditTable = ({
     } catch (error) {
       console.error('Failed to delete item:', error);
       alert(
-        `Failed to ${
-          hardRemove ? 'permanently ' : ''
-        }delete item. Please try again.`
+        `Failed to delete item. Please try again.`
       );
     }
   };
 
+  const handleHardDelete = async (itemId) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to permanently delete this item? This action cannot be undone.'
+    );
+    if (!confirmed) return;
+
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}${deleteLink}${itemId}/hard`
+      );
+
+      if (response.status === 204) {
+        await refetch();
+      }
+    } catch (error) {
+      console.error('Failed to hard delete item:', error);
+      alert(
+        `Failed to permanently delete item. Please try again.`
+      );
+    }
+  };  
+  
   const EmptyState = () => (
     <div className="text-center p-8 bg-white rounded-lg shadow-sm">
       <p className="text-green-800 text-xl mb-4">
@@ -100,6 +113,7 @@ const EditTable = ({
                   viewLink={viewLink}
                   editLink={editLink}
                   onDelete={handleDelete}
+                  onHardDelete={handleHardDelete}
                   onRetrieve={handleRetrieve}
                   nameAtr={nameAtr}
                   idAtr={idAtr}
@@ -126,6 +140,7 @@ const EditTable = ({
             viewLink={viewLink}
             editLink={editLink}
             onDelete={handleDelete}
+            onHardDelete={handleHardDelete}
             onRetrieve={handleRetrieve}
             nameAtr={nameAtr}
             idAtr={idAtr}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Pencil, Trash2, Eye, RotateCcw } from 'lucide-react';
 
-const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr, idAtr, isMobile }) => {
+const TableActions = ({ item, viewLink, editLink, onDelete, onHardDelete, onRetrieve, nameAtr, idAtr, isMobile }) => {
     const baseButtonClasses = "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200";
 
     return (
@@ -25,14 +25,14 @@ const TableActions = ({ item, viewLink, editLink, onDelete, onRetrieve, nameAtr,
                         Edit
                     </Link>
                     <button
-                        onClick={() => onDelete(item[idAtr], false)}
+                        onClick={() => onDelete(item[idAtr])}
                         className={`${baseButtonClasses} bg-red-400 hover:bg-red-500 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
                     >
                         <Trash2 className="w-4 h-4 mr-1" />
                         Soft Delete
                     </button>
                     <button
-                        onClick={() => onDelete(item[idAtr], true)}
+                        onClick={() => onHardDelete(item[idAtr])}
                         className={`${baseButtonClasses} bg-red-600 hover:bg-red-700 focus:ring-red-500 ${isMobile ? 'w-full' : ''}`}
                     >
                         <Trash2 className="w-4 h-4 mr-1" />
@@ -58,6 +58,7 @@ TableActions.propTypes = {
     viewLink: PropTypes.string.isRequired,
     editLink: PropTypes.string.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onHardDelete: PropTypes.func.isRequired,
     nameAtr: PropTypes.string.isRequired,
     idAtr: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired

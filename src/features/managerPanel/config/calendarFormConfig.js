@@ -88,7 +88,7 @@ export const getCalendarFormFields = (serviceCalendars) => [
     labelText: 'Collision With Calendars',
     labelColor: 'text-success',
     options: serviceCalendars.map((calendar) => ({
-      value: calendar.googleCalendarId,
+      value: calendar.calendarId,
       label: calendar.className,
     })),
   },

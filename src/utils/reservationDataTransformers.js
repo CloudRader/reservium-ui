@@ -23,8 +23,9 @@ export const transformCalendarIds = (calendars) => {
  * @returns {Object} Transformed calendar object
  */
 export const transformCalendar = (calendar, options = {}) => {
-    const transformed = {
-        googleCalendarId: calendar.id,
+  const transformed = {
+        calendarId: calendar.id,
+        googleCalendarId: calendar.provider_id,
         className: calendar.reservation_type,
         backgroundColor: calendar.color,
         borderColor: calendar.color,

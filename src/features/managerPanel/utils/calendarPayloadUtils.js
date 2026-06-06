@@ -30,15 +30,15 @@ export const prepareCalendarPayload = (
   googleCalendars,
   serviceId
 ) => {
-  // Determine calendar ID and reservation type based on input type
-  const calendarId = calendarIdInputType === 'manual' ? '' : formData.calendar_id;
+  // Determine provider ID (Google Calendar ID) based on input type
+  const providerId = calendarIdInputType === 'manual' ? null : formData.calendar_id;
   const reservationType =
     calendarIdInputType === 'manual'
       ? formData.reservation_type
       : googleCalendars.find((cal) => cal.id === formData.calendar_id)?.summary || '';
 
   return {
-    id: calendarId,
+    provider_id: providerId,
     collision_ids: formData.collision_ids || [],
     more_than_max_people_with_permission:
       !!formData.more_than_max_people_with_permission,

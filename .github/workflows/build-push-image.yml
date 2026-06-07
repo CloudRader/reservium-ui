@@ -48,7 +48,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max,ignore-error=true
 
-
   build-release-image:
     runs-on: ubuntu-latest
     if: >

@@ -19,8 +19,8 @@ const EditCalendar = ({
 }) => {
   const navigate = useNavigate();
   // Always fetch with include_removed=true to support viewing soft-deleted calendars
-  const calendarFetchUrl = `${API_BASE_URL}${API_ENDPOINTS.CALENDARS.GET_COLLISIONS(calendarBaseData.googleCalendarId)}`;
-  const calendarUpdateUrl = `${API_BASE_URL}${API_ENDPOINTS.CALENDARS.UPDATE(calendarBaseData.googleCalendarId)}`;
+  const calendarFetchUrl = `${API_BASE_URL}${API_ENDPOINTS.CALENDARS.GET_COLLISIONS(calendarBaseData.calendarId)}`;
+  const calendarUpdateUrl = `${API_BASE_URL}${API_ENDPOINTS.CALENDARS.UPDATE(calendarBaseData.calendarId)}`;
 
   // calendarBaseData now includes all backend fields thanks to includeAllFields option
   const initialData = {
@@ -202,30 +202,30 @@ const EditCalendar = ({
             {serviceCalendars
               ?.filter(
                 (calendar) =>
-                  calendar.googleCalendarId !==
-                  calendarBaseData.googleCalendarId
+                  calendar.calendarId !==
+                  calendarBaseData.calendarId
               )
               .map((calendar) => (
                 <div
-                  key={calendar.googleCalendarId}
+                  key={calendar.calendarId}
                   className="flex items-center mb-2"
                 >
                   <input
                     type="checkbox"
-                    id={`collision-calendar-${calendar.googleCalendarId}`}
+                    id={`collision-calendar-${calendar.calendarId}`}
                     checked={
                       editedData.collision_ids?.includes(
-                        calendar.googleCalendarId
+                        calendar.calendarId
                       ) || false
                     }
                     onChange={(e) => {
                       const updatedCollisions = e.target.checked
                         ? [
                             ...(editedData.collision_ids || []),
-                            calendar.googleCalendarId,
+                            calendar.calendarId,
                           ]
                         : (editedData.collision_ids || []).filter(
-                            (id) => id !== calendar.googleCalendarId
+                            (id) => id !== calendar.calendarId
                           );
                       handleChange({
                         target: {
@@ -238,7 +238,7 @@ const EditCalendar = ({
                     className="mr-2"
                   />
                   <label
-                    htmlFor={`collision-calendar-${calendar.googleCalendarId}`}
+                    htmlFor={`collision-calendar-${calendar.calendarId}`}
                   >
                     {calendar.className}
                   </label>

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/CloudRader/reservium-ui/compare/v2.3.3...v2.4.0) (2026-06-07)
+
+
+### ✨ New Features
+
+* **migration:** from google id to internal models UUID ([#22](https://github.com/CloudRader/reservium-ui/issues/22)) ([7c40230](https://github.com/CloudRader/reservium-ui/commit/7c402307f3b9de5c6e3bb4e95f1bf3b2df8b5c25))
+
 ## [2.3.3](https://github.com/CloudRader/reservium-ui/compare/v2.3.2...v2.3.3) (2026-04-19)
 
 

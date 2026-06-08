@@ -4,5 +4,4 @@ export const links = {
     wikiInfo: "https://wiki.buk.cvut.cz/en/club-zone/",
 };
 
-// export const API_BASE_URL = "https://api.reservation.buk.cvut.cz/v2";
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const API_BASE_URL = window._env_?.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_URL;

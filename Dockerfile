@@ -12,12 +12,6 @@ RUN npm install
 # Copy all application files and build the app
 COPY . .
 
-# Accept and use build argument for Vite
-ARG VITE_GOOGLE_CALENDAR_API_KEY
-ENV VITE_GOOGLE_CALENDAR_API_KEY=$VITE_GOOGLE_CALENDAR_API_KEY
-ARG VITE_API_BASE_URL
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
-
 RUN npm run build
 
 # Production stage
@@ -26,11 +20,15 @@ FROM nginx:stable-alpine
 # Copy the built app to the Nginx HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# Copy the env.sh script and make it executable
+COPY env.sh /usr/share/nginx/html/env.sh
+RUN chmod +x /usr/share/nginx/html/env.sh
+
 # Optional: If you have a custom Nginx config file, adjust the path accordingly
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80 (the default port for HTTP)
+# Expose port 3000
 EXPOSE 3000
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start Nginx by first generating the env-config.js file
+CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g 'daemon off;'"]

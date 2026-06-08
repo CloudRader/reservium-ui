@@ -41,10 +41,6 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:latest-dev
 
-          build-args: |
-            VITE_GOOGLE_CALENDAR_API_KEY=${{ secrets.VITE_GOOGLE_CALENDAR_API_KEY_DEV }}
-            VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL_DEV }}
-
           cache-from: type=gha
           cache-to: type=gha,mode=max,ignore-error=true
 
@@ -82,10 +78,6 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ env.TAG }}
-
-          build-args: |
-            VITE_GOOGLE_CALENDAR_API_KEY=${{ secrets.VITE_GOOGLE_CALENDAR_API_KEY }}
-            VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max,ignore-error=true

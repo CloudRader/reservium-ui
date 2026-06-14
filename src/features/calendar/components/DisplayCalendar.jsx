@@ -23,9 +23,9 @@ function DisplayCalendar({ googleCalendars }) {
       : [googleCalendars];
 
     const eventSources = calendarsArray
-      .filter((cal) => cal && cal.calendarId) // Filter out invalid calendars
+      .filter((cal) => cal && cal.googleCalendarId) // Filter out invalid calendars
       .map((calendar) => ({
-        calendarId: calendar.calendarId,
+        googleCalendarId: calendar.googleCalendarId,
         className: calendar.className,
         color: calendar.backgroundColor || calendar.borderColor,
         backgroundColor: calendar.backgroundColor,

@@ -18,9 +18,6 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     web: initialService.wikiLink,
     contact_mail: initialService.contact_mail,
     public: initialService.public,
-    lockers_id: initialService.lockers_id,
-    access_group: initialService.access_group || "",
-    room_id: initialService.room_id || null,
   };
 
   const handleSaveSuccess = (savedData) => {
@@ -29,24 +26,6 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
       navigate(`/manager/edit-service/${savedData.name}`, { replace: true });
     }
   };
-
-  // Helper to convert lockers_id to array format
-  const parseLockersId = (value) => {
-    if (!value || (Array.isArray(value) && value.length === 0)) return [];
-    if (Array.isArray(value)) return value.map(id => parseInt(id)).filter(id => !isNaN(id));
-    if (typeof value === 'string') {
-      return value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-    }
-    return [];
-  };
-
-  // Transform data before saving to API
-  const transformDataForSave = (data) => ({
-    ...data,
-    lockers_id: parseLockersId(data.lockers_id),
-    access_group: data.access_group !== '' ? data.access_group : null,
-    room_id: data.room_id !== '' ? data.room_id : null,
-  });
 
   const {
     isEditing,
@@ -63,7 +42,6 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
     null,
     isEditMode,
     handleSaveSuccess,
-    transformDataForSave
   );
 
   const handleNavigation = (path) => () =>
@@ -158,55 +136,6 @@ const EditService = ({ service: initialService, isEditMode = false }) => {
             onChange={handleChange}
             disabled={!isEditing}
             className="mt-1 focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="service-lockers-id" className="block text-sm font-medium text-gray-700">
-            Lockers IDs (comma-separated)
-          </label>
-          <input
-            id="service-lockers-id"
-            type="text"
-            name="lockers_id"
-            value={editedData.lockers_id}
-            onChange={handleChange}
-            readOnly={!isEditing}
-            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-              isEditing ? "bg-white" : "bg-gray-100"
-            }`}
-            placeholder="Enter locker IDs separated by commas (e.g., 1, 2, 3)"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="service-access-group" className="block text-sm font-medium text-gray-700">
-            Access Group
-          </label>
-          <input
-            id="service-access-group"
-            type="text"
-            name="access_group"
-            value={editedData.access_group}
-            onChange={handleChange}
-            readOnly={!isEditing}
-            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-              isEditing ? "bg-white" : "bg-gray-100"
-            }`}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="service-room-id" className="block text-sm font-medium text-gray-700">
-            Room ID
-          </label>
-          <input
-            id="service-room-id"
-            type="number"
-            name="room_id"
-            value={editedData.room_id || ""}
-            onChange={handleChange}
-            readOnly={!isEditing}
-            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-              isEditing ? "bg-white" : "bg-gray-100"
-            }`}
           />
         </div>
         <div className="mt-6 flex justify-end space-x-3">

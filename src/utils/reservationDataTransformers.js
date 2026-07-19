@@ -58,7 +58,6 @@ export const transformCalendars = (calendars, options = {}) => {
  * @param {Object} serviceInfo - Service object from API
  * @param {Array} calendars - Array of calendar objects (used for reservation_types and calendarIds)
  * @param {Object} options - Transformation options
- * @param {boolean} options.includeLockersId - Whether to include lockers_id field
  * @param {boolean} options.includeAllFields - Whether to spread all original fields
  * @returns {Object} Transformed service object
  */
@@ -76,11 +75,6 @@ export const transformService = (serviceInfo, calendars, options = {}) => {
 
     if (options.includeDeletedAt) {
         service.deleted_at = serviceInfo.deleted_at;
-    }
-
-    if (options.includeLockersId) {
-        service.lockers_id =
-            (serviceInfo.lockers_id || []).join(',') || '';
     }
 
     if (options.includeAllFields) {
@@ -107,4 +101,3 @@ export const getActiveCalendars = (calendars) => {
 export const isServiceValid = (service) => {
     return !service.deleted_at && service.public;
 };
-

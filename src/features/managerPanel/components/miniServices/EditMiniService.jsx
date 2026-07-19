@@ -16,24 +16,6 @@ const EditMiniService = ({ serviceName, miniServiceData, isEditMode = false }) =
     }
   };
 
-  // Helper to convert lockers_id to array format
-  const parseLockersId = (value) => {
-    if (!value || (Array.isArray(value) && value.length === 0)) return [];
-    if (Array.isArray(value)) return value.map(id => parseInt(id)).filter(id => !isNaN(id));
-    if (typeof value === 'string') {
-      return value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-    }
-    return [];
-  };
-
-  // Transform data before saving to API
-  const transformDataForSave = (data) => ({
-    ...data,
-    lockers_id: parseLockersId(data.lockers_id),
-    access_group: data.access_group !== '' ? data.access_group : null,
-    room_id: data.room_id !== '' ? data.room_id : null,
-  });
-
   const {
     isEditing,
     editedData,
@@ -48,7 +30,6 @@ const EditMiniService = ({ serviceName, miniServiceData, isEditMode = false }) =
     null,
     isEditMode,
     handleSaveSuccess,
-    transformDataForSave
   );
 
   if (!miniServiceData) {
@@ -85,55 +66,6 @@ const EditMiniService = ({ serviceName, miniServiceData, isEditMode = false }) =
             type="text"
             name="name"
             value={editedData.name}
-            onChange={handleChange}
-            readOnly={!isEditing}
-            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-              isEditing ? "bg-white" : "bg-gray-100"
-            }`}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="lockers-id" className="block text-sm font-medium text-gray-700">
-            Lockers IDs (comma-separated)
-          </label>
-          <input
-            id="lockers-id"
-            type="text"
-            name="lockers_id"
-            value={editedData.lockers_id}
-            onChange={handleChange}
-            readOnly={!isEditing}
-            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-              isEditing ? "bg-white" : "bg-gray-100"
-            }`}
-            placeholder="Enter locker IDs separated by commas (e.g., 1, 2, 3)"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="access-group" className="block text-sm font-medium text-gray-700">
-            Access Group
-          </label>
-          <input
-            id="access-group"
-            type="text"
-            name="access_group"
-            value={editedData.access_group || ""}
-            onChange={handleChange}
-            readOnly={!isEditing}
-            className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${
-              isEditing ? "bg-white" : "bg-gray-100"
-            }`}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="room-id" className="block text-sm font-medium text-gray-700">
-            Room ID
-          </label>
-          <input
-            id="room-id"
-            type="number"
-            name="room_id"
-            value={editedData.room_id || ""}
             onChange={handleChange}
             readOnly={!isEditing}
             className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 ${

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { Inbox } from '@novu/react';
 // import ThemeToggle from "./ThemeToggle";
 import HeaderNavigation from './HeaderNavigation.jsx';
 import { ROUTES } from '../../config/routes.js';
@@ -42,65 +43,73 @@ const Header = ({ username, isLoggedIn, services, isManager }) => {
               <div className="hidden sm:flex sm:items-center space-x-4">
                 {/*<ThemeToggle />*/}
                 {isLoggedIn ? (
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild>
-                      <button className="flex items-center space-x-2 text-sm font-medium text-green-700 hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 rounded-md px-3 py-2 transition duration-150 ease-in-out">
-                        <span>{username}</span>
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
-                    </DropdownMenu.Trigger>
-
-                    <DropdownMenu.Portal>
-                      <DropdownMenu.Content
-                        className="min-w-[9rem] bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5"
-                        sideOffset={5}
-                        align="end"
-                      >
-                        <DropdownMenu.Item asChild>
-                          <NavLink
-                            to={ROUTES.EVENTS}
-                            className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
+                  <div className="flex items-center space-x-3">
+                    <Inbox
+                      applicationIdentifier="b2thgHKdrrvq"
+                      subscriberId={username}
+                      backendUrl="http://localhost:8080"
+                      socketUrl="http://localhost:3002"
+                    />
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger asChild>
+                        <button className="flex items-center space-x-2 text-sm font-medium text-green-700 hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 rounded-md px-3 py-2 transition duration-150 ease-in-out">
+                          <span>{username}</span>
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
                           >
-                            My Events
-                          </NavLink>
-                        </DropdownMenu.Item>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+                      </DropdownMenu.Trigger>
 
-                        {isManager && (
+                      <DropdownMenu.Portal>
+                        <DropdownMenu.Content
+                          className="min-w-[9rem] bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5"
+                          sideOffset={5}
+                          align="end"
+                        >
                           <DropdownMenu.Item asChild>
                             <NavLink
-                              to={ROUTES.MANAGER.SERVICES}
+                              to={ROUTES.EVENTS}
                               className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
                             >
-                              Manager panel
+                              My Events
                             </NavLink>
                           </DropdownMenu.Item>
-                        )}
 
-                        <DropdownMenu.Item asChild>
-                          <NavLink
-                            to={ROUTES.LOGOUT}
-                            className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
-                          >
-                            Log out
-                          </NavLink>
-                        </DropdownMenu.Item>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Portal>
-                  </DropdownMenu.Root>
+                          {isManager && (
+                            <DropdownMenu.Item asChild>
+                              <NavLink
+                                to={ROUTES.MANAGER.SERVICES}
+                                className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
+                              >
+                                Manager panel
+                              </NavLink>
+                            </DropdownMenu.Item>
+                          )}
+
+                          <DropdownMenu.Item asChild>
+                            <NavLink
+                              to={ROUTES.LOGOUT}
+                              className="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 focus:bg-green-50 outline-none cursor-pointer transition duration-150 ease-in-out"
+                            >
+                              Log out
+                            </NavLink>
+                          </DropdownMenu.Item>
+                        </DropdownMenu.Content>
+                      </DropdownMenu.Portal>
+                    </DropdownMenu.Root>
+                  </div>
                 ) : (
                   <NavLink
                     to={ROUTES.LOGIN}

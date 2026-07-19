@@ -28,32 +28,6 @@ const CreateNewMiniService = ({ serviceId }) => {
         labelColor: "text-success",
         validation: (value) => !!value,
       },
-      {
-        name: "lockers_id",
-        type: "text",
-        labelText: "Lockers IDs (comma-separated)",
-        labelColor: "text-success",
-        customHandler: (value) => {
-          return value
-            ? value
-                .split(",")
-                .map((id) => parseInt(id.trim()))
-                .filter((id) => !isNaN(id))
-            : [];
-        },
-      },
-      {
-        name: "access_group",
-        type: "text",
-        labelText: "Access Group",
-        labelColor: "text-success",
-      },
-      {
-        name: "room_id",
-        type: "number",
-        labelText: "Room ID",
-        labelColor: "text-success",
-      },
     ]);
   }, [setFormFields]);
 

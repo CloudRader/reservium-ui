@@ -29,7 +29,6 @@ export const useReservationData = (options = {}) => {
 
             const servicesData = response.data.map((info) =>
                 transformService(info, info.calendars, {
-                    includeLockersId: true,
                     includeAllFields: true,
                 })
             );
@@ -47,8 +46,6 @@ export const useReservationData = (options = {}) => {
                     id: miniService.id,
                     name: miniService.name,
                     reservationServiceId: miniService.reservation_service_id,
-                    lockers_id: (miniService.lockers_id || []).join(',') || '',
-                    ...miniService,
                 }));
                 return acc;
             }, {});

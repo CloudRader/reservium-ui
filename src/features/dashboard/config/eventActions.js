@@ -14,7 +14,7 @@ const canModifyEvent = (event) => {
  * Check if event is upcoming
  */
 const isUpcomingEvent = (event) => {
-  return new Date(event.start_datetime) >= new Date();
+  return new Date(event.end_datetime) >= new Date();
 };
 
 /**

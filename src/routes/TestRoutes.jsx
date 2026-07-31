@@ -17,4 +17,4 @@ export const TestRoutes = () => {
   );
 };
 
-export default TestRoutes; 
+export default TestRoutes;

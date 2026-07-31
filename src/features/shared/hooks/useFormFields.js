@@ -78,4 +78,4 @@ const useFormFields = (reservationTypes) => {
     return { formFields };
 };
 
-export default useFormFields; 
+export default useFormFields;

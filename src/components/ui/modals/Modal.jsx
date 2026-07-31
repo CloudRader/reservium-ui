@@ -63,4 +63,4 @@ Modal.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default Modal; 
+export default Modal;

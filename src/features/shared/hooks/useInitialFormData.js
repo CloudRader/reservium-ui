@@ -14,4 +14,4 @@ const useInitialFormData = (formFields, setFormData, formData) => {
     }, []);
 };
 
-export default useInitialFormData; 
+export default useInitialFormData;

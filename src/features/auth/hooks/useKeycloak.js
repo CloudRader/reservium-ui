@@ -10,4 +10,3 @@ export const useKeycloak = () => {
 
   return context;
 };
-

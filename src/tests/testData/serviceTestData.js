@@ -25,4 +25,4 @@ export const longNameTestService = {
     wikiLink: "https://wiki.example.com/long-name-test-service",
     contact_mail: "long@example.com",
     public: true
-}; 
+};

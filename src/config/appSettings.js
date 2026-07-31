@@ -16,4 +16,3 @@ export const APP_SETTINGS = {
   // Pagination settings
   PAGINATION_LIMIT: 10,
 };
-

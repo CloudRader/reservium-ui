@@ -31,4 +31,3 @@ const ProtectedRoute = ({ children, requireManager = false }) => {
 };
 
 export default ProtectedRoute;
-

@@ -17,4 +17,4 @@ const useSlotSync = (selectedSlot, setFormData, formData) => {
     }, [selectedSlot, setFormData]);
 };
 
-export default useSlotSync; 
+export default useSlotSync;

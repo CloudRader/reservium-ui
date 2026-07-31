@@ -20,4 +20,4 @@ const useFormValidation = (formFields, formData, setErrorsProp) => {
     return { errors, validateForm };
 };
 
-export default useFormValidation; 
+export default useFormValidation;

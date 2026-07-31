@@ -64,4 +64,4 @@ TableActions.propTypes = {
     isMobile: PropTypes.bool.isRequired
 };
 
-export default TableActions; 
+export default TableActions;

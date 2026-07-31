@@ -69,8 +69,8 @@ const EditTable = ({
         `Failed to permanently delete item. Please try again.`
       );
     }
-  };  
-  
+  };
+
   const EmptyState = () => (
     <div className="text-center p-8 bg-white rounded-lg shadow-sm">
       <p className="text-green-800 text-xl mb-4">

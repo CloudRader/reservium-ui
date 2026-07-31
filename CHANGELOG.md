@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.4.2](https://github.com/CloudRader/reservium-ui/compare/v2.4.1...v2.4.2) (2026-07-31)
+
+
+### 🧱 Updates & Improvements
+
+* add pre-commit to repo ([e3e119d](https://github.com/CloudRader/reservium-ui/commit/e3e119d248b5d398c678dfd13811ef7d0b342bda))
+* **main:** release 2.4.1 ([#26](https://github.com/CloudRader/reservium-ui/issues/26)) ([f5134f1](https://github.com/CloudRader/reservium-ui/commit/f5134f130c58125e5952fe60234da2f1e38ec49e))
+* remove deprecated atributes from service and mini service ([62174f2](https://github.com/CloudRader/reservium-ui/commit/62174f259c0556cd3ecbb3b74726316ba91a51ff))
+* remove deprecated atributes from service and mini service ([#30](https://github.com/CloudRader/reservium-ui/issues/30)) ([b749c36](https://github.com/CloudRader/reservium-ui/commit/b749c362a1668bb3ac2fd44b7607bd24cbdb6779))
+
+
+### 🛠️ Fixes
+
+* **dashboard:** action button available untill end_datetime ([adcc754](https://github.com/CloudRader/reservium-ui/commit/adcc754627ea5dae685ba3fa83ff13dece0df692))
+* pre-commit validation in repo ([aefd9f2](https://github.com/CloudRader/reservium-ui/commit/aefd9f29cfe677cb12451f2cfda12ec1a43e5dba))
+
 ## [2.4.1](https://github.com/CloudRader/reservium-ui/compare/v2.4.0...v2.4.1) (2026-06-14)
 
 

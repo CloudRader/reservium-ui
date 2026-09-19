@@ -6,9 +6,7 @@
 ### 🧱 Updates & Improvements
 
 * add pre-commit to repo ([e3e119d](https://github.com/CloudRader/reservium-ui/commit/e3e119d248b5d398c678dfd13811ef7d0b342bda))
-* **main:** release 2.4.1 ([#26](https://github.com/CloudRader/reservium-ui/issues/26)) ([f5134f1](https://github.com/CloudRader/reservium-ui/commit/f5134f130c58125e5952fe60234da2f1e38ec49e))
 * remove deprecated atributes from service and mini service ([62174f2](https://github.com/CloudRader/reservium-ui/commit/62174f259c0556cd3ecbb3b74726316ba91a51ff))
-* remove deprecated atributes from service and mini service ([#30](https://github.com/CloudRader/reservium-ui/issues/30)) ([b749c36](https://github.com/CloudRader/reservium-ui/commit/b749c362a1668bb3ac2fd44b7607bd24cbdb6779))
 
 
 ### 🛠️ Fixes
